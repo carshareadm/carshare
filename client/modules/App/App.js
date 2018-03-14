@@ -50,7 +50,7 @@ export class App extends Component {
           />
           <Header />
           <div className={styles.container}>
-            {this.props.children}
+            
           </div>
           <Footer />
         </div>

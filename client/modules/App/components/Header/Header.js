@@ -6,7 +6,7 @@ import styles from './Header.css';
 
 export function Header(props) {
   return (
-    <header className={styles.header}>I'm a header! {props}</header>
+    <header className={styles.header}>I'm a header! {JSON.stringify(props)}</header>
   );
 }
 
