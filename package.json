@@ -1,7 +1,7 @@
 {
-  "name": "mern-starter",
-  "version": "2.0.0",
-  "description": "Boilerplate project for building Isomorphic apps using React and Redux",
+  "name": "carshare",
+  "version": "1.0.0",
+  "description": "a carshare app for university project",
   "scripts": {
     "test": "jest",
     "watch:test": "npm run test -- --watch",
@@ -9,9 +9,9 @@
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "start:dev": "cross-env BABEL_DISABLE_CACHE=1 NODE_ENV=development nodemon index.js",
     "start": "cross-env NODE_ENV=production node index.js",
-    "bs": "npm run clean && npm run build && npm run build:server && npm run start:prod",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack.config.server.js",
+    "build": "npm run clean && npm run build:prod && npm run build:server && npm run start",
     "clean": "rimraf dist",
     "slate": "rimraf node_modules && npm install",
     "lint": "eslint client server"
@@ -22,13 +22,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hashnode/mern-starter.git"
+    "url": "git+https://github.com/carshareadm/carshare.git"
   },
   "bugs": {
-    "url": "https://github.com/Hashnode/mern-starter/issues"
+    "url": "https://github.com/carshareadm/carshare/issues"
   },
-  "homepage": "https://github.com/Hashnode/mern-starter#readme",
-  "author": "Prashant Abhishek <prashant.abhishek7g@gmail.com>, Mayank Chandola <imayankchd@gmail.com>, Sandeep Panda <sandeep@hashnode.com>, Syed Fazle Rahman <fazle@hashnode.com>, Alkshendra Maurya <alkshendra@hashnode.com>",
+  "homepage": "https://github.com/carshareadm/carshare#readme",
+  "author": "Paul Crow <s3337852@student.rmit.edu.au>, Inga Pflaumer <s3385215@student.rmit.edu.au>, Tianqi Chen <s3584721@student.rmit.edu.au>, Jason Koh <s3211440@student.rmit.edu.au>, Matthew Ryan <s3572894@student.rmit.edu.au>, Daniel Zimmerman <s3514701@student.rmit.edu.au>",
   "license": "MIT",
   "dependencies": {
     "babel-core": "^6.9.1",
