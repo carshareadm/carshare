@@ -11,16 +11,16 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack.config.server.js",
-    "build": "npm run clean && npm run build:prod && npm run build:server && npm run start",
-    "build:no-start": "npm run clean && npm run build:prod && npm run build:server",
+    "build": "npm run clean && npm run build:prod && npm run build:server",
+    "build:start": "npm run build && npm run start",
     "clean": "rimraf dist",
     "slate": "rimraf node_modules && npm install",
-    "lint": "eslint client server"
+    "lint": "eslint client server",
+    "heroku-postinstall": "npm run build"
   },
   "pre-commit": [
     "lint",
-    "test",
-    "build:no-start"
+    "test"
   ],
   "repository": {
     "type": "git",
