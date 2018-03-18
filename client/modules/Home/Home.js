@@ -2,10 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 // Import Style
-import styles from './App.css';
+import styles from './Home.css';
 
 // Import Components
-import DevTools from './components/DevTools';
+import DevTools from '../../components/DevTools';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
