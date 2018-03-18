@@ -6,8 +6,8 @@ import styles from './Home.css';
 
 // Import Components
 import DevTools from '../../components/DevTools';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
 // Import Actions
 // import { toggleAddPost } from './AppActions'; // example
