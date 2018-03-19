@@ -10,7 +10,6 @@ Make sure that mongoDb is installed prior to running the project.
 
 Git Branching strategy - please refer to the document in the group's shared google drive Assignments folder
 
------
 
 FRONTEND INDTRUCTIONS:
 Install the project and open project folder.
@@ -46,3 +45,4 @@ Note that we are using old router, so look for documentation here: https://githu
 To start application in dev mode run
 npm run start:dev 
 and open localhost:8000 (check the port in the logs)
+
