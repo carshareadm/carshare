@@ -30,7 +30,6 @@ import { Provider } from 'react-redux';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
-import Helmet from 'react-helmet';
 
 // Import required modules
 import routes from '../client/routes';
@@ -60,8 +59,6 @@ app.use(Express.static(path.resolve(__dirname, '../dist/client')));
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
-  const head = Helmet.rewind();
-
   // Import Manifests
   const assetsManifest = process.env.webpackAssets && JSON.parse(process.env.webpackAssets);
   const chunkManifest = process.env.webpackChunkAssets && JSON.parse(process.env.webpackChunkAssets);
@@ -70,11 +67,9 @@ const renderFullPage = (html, initialState) => {
     <!doctype html>
     <html>
       <head>
-        ${head.base.toString()}
-        ${head.title.toString()}
-        ${head.meta.toString()}
-        ${head.link.toString()}
-        ${head.script.toString()}
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
         ${isProdMode ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
