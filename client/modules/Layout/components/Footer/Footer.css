@@ -4,6 +4,10 @@
   background-size: cover;
   background: #eee center;
   border-top: 1px solid #ccc;
+  /*
+  Header has border-bottom
+  thus footer had corresponding border-top
+  */
 }
 
 .footer p{
