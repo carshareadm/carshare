@@ -2,6 +2,8 @@
   text-align: center;
   padding: 56px 0;
   background-size: cover;
+  background: #eee center;
+  border-top: 1px solid #ccc;
 }
 
 .footer p{
@@ -15,3 +17,4 @@
   text-decoration: none;
   font-weight: 700;
 }
+
