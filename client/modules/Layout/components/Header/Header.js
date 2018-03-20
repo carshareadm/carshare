@@ -17,7 +17,6 @@ export function Header(props, context) {
     	<ul>
     		<li className={active(context.router, "/", true)}><Link to="/">Home</Link></li>
     		<li className={active(context.router, "/faq", true)}><Link to="/faq">FAQ</Link></li>
-    		<li><Link to="/contacts">Contacts</Link></li>
     	</ul>
 
     </header>
