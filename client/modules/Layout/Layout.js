@@ -7,6 +7,7 @@ import styles from './Layout.css';
 // Import Components
 import DevTools from '../../components/DevTools';
 import Header from './components/Header/Header';
+import UserBar from './components/UserBar/UserBar';
 import Footer from './components/Footer/Footer';
 
 // Import Actions
@@ -33,6 +34,7 @@ export class App extends Component {
         {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
         <div>
           <Header />
+          <UserBar />
           <div className={styles.container}>
             {this.props.children}
           </div>
