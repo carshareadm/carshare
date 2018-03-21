@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 // Import Style
 import styles from './Footer.css';
 
-export function Footer() {
+export function Footer(props) {
   return (
     <footer className={styles.footer}>
       <Link to="/">www.shacar.com.au</Link><br />
