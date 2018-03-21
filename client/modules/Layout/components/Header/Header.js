@@ -14,11 +14,15 @@ function active(router, path, indexOnly){
 export function Header(props, context) {
   return (
     <header className={styles.header}>
-    	<ul>
+	    <div className={styles.burgerImage}>
+	    </div>
+	    <ul>
     		<li className={active(context.router, "/", true)}><Link to="/">Home</Link></li>
     		<li className={active(context.router, "/faq", true)}><Link to="/faq">FAQ</Link></li>
-    	</ul>
-
+	    </ul>
+	    <div className={styles.siteLogo}>
+	    	<h1>Sha<span>Car</span></h1>
+	    </div>
     </header>
   );
 }

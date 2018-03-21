@@ -1,7 +1,8 @@
 .header {
-  background: #eee center;
   background-size: cover;
-  border-bottom: 1px solid #ccc;
+  background-color: rgb(85,85,85);
+  padding: 1em;
+  border-bottom:3px solid white;
 }
 
 .content {
@@ -25,4 +26,51 @@
 
 .active{
   background-color: blue;
+}
+
+.burgerImage
+{
+    width:50px;
+    height:5px;
+    background-color:rgb(76,157,38);
+    border-radius:5px;
+    position:absolute;
+    margin: 1em;
+}
+
+.burgerImage:after, .burgerImage:before
+{
+    content: '';
+    width: 100%;
+    height:5px;
+    background-color:rgb(76,157,38);
+    position:absolute;
+    border-radius:5px;
+}
+
+.burgerImage:after
+{
+    top:10px;
+}
+
+.burgerImage:before
+{
+    top:20px;
+}
+
+ul{
+  display: none;
+}
+
+h1{
+  color: white;
+}
+
+h1 span{
+  color:rgb(76,157,38);
+}
+
+.siteLogo{
+  width: 100%;
+  text-align: center;
 }
