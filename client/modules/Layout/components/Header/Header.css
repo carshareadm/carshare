@@ -1,7 +1,8 @@
 .header {
   background-size: cover;
   background-color: rgb(85,85,85);
-  padding: 1em;
+  height:70px;
+  padding-top: 10px;
   border-bottom:3px solid white;
 }
 
@@ -25,7 +26,8 @@
 }
 
 .active{
-  background-color: blue;
+  background-color: rgb(76,157,38);
+  font-weight: bold;
 }
 
 .burgerImage
@@ -36,6 +38,7 @@
     border-radius:5px;
     position:absolute;
     margin: 1em;
+    cursor: pointer;
 }
 
 .burgerImage:after, .burgerImage:before
@@ -46,20 +49,19 @@
     background-color:rgb(76,157,38);
     position:absolute;
     border-radius:5px;
+    cursor: pointer;
 }
 
 .burgerImage:after
 {
     top:10px;
+    cursor: pointer;
 }
 
 .burgerImage:before
 {
     top:20px;
-}
-
-ul{
-  display: none;
+    cursor: pointer;
 }
 
 h1{
@@ -73,4 +75,23 @@ h1 span{
 .siteLogo{
   width: 100%;
   text-align: center;
+}
+
+ul{
+  position: absolute;
+  background-color: rgb(85,85,85);
+  width: 300px;
+  height: 300px;
+  top: 70px;
+  list-style: none;
+}
+
+ul li{
+  padding:1em;
+  color: white;
+}
+
+ul li a{
+  color: white;
+  text-decoration: none;
 }
