@@ -8,7 +8,7 @@ export function Footer(props) {
   return (
     <footer className={styles.footer}>
       <Link to="/">www.shacar.com.au</Link><br />
-    	<Link to="/termsandconditions">Terms and Conditions of use</Link>
+    	<Link to="/terms">Terms and Conditions of use</Link>
     </footer>
   );
 }

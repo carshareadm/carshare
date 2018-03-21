@@ -8,7 +8,7 @@ export class App extends Component {
     // Here goes our page 
     return (
         <div>
-            <p>Here's our FAQ happening</p>
+            <p>Here\'s our FAQ happening</p>
         </div>
     );
   }
