@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -24,5 +26,27 @@ const userSchema = new Schema({
   }],
 });
 
-// TODO: auto hash password on set
+// example of presave and compare password from 
+// https://medium.com/@obrientimothya/make-an-api-with-node-js-mongodb-and-jwt-authentication-9da443a1f59b
+// hash password pre save
+userSchema.pre('save', function(next) {
+  var user = this;
+  if (!user.isModified('password')) {
+    return next();
+  }
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      user.password = hash;
+      next();
+    });
+  });
+});
+
+// compare hashed password to plain text password
+personSchema.methods.comparePassword = function(password, done) {
+  bcrypt.compare(password, this.password, function(err, isMatch) {
+    done(err, isMatch);
+  });
+};
+
 export default mongoose.model('User', userSchema);
