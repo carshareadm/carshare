@@ -34,10 +34,10 @@ export class App extends Component {
         {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
         <div>
           <Header />
-          <UserBar />
           <div className={styles.container}>
             {this.props.children}
           </div>
+          <UserBar />
           <Footer />
         </div>
       </div>
