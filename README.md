@@ -8,7 +8,9 @@ hosted in heroku - visit it at https://obscure-waters-10676.herokuapp.com/
 
 Make sure that mongoDb is installed prior to running the project.
 
-Git Branching strategy - please refer to the document in the group's shared google drive Assignments folder
+### see [DevRequirements](./DevRequirements.md) for a list of tools to install
+
+### [Git branching Strategy](./GitBranching.md)
 
 
 FRONTEND INDTRUCTIONS:
