@@ -1,7 +1,7 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
 
-import style from './tnc.css'
+import style from './Tnc.css'
 
 //Create a component class
 export class App extends Component {
@@ -10,7 +10,7 @@ export class App extends Component {
     // Here goes our page 
     return (
       <div>
-      <p className={style.c9+ ' ' + style.title} id="h.30j0zll"><span className={style.c4}>Terms and Conditions</span></p>
+      <p className={style.title}>Terms and Conditions</p>
       <p className="c1 c3"><span className="c0" /></p>
       <p className="c1"><span className="c5">OUR COMMITMENT TO YOU</span></p>
       <p className="c1"><span className="c0">The ShaCar Group is an Australia based business providing a variety of vehicles at numerous locations. We are committed to providing quality service and value for</span></p>
