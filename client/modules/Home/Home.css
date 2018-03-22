@@ -1,0 +1,52 @@
+.home {
+  /* background-color: rgb(221, 221, 221); */
+  width: 100%;
+}
+
+.banner {
+  background-image: url("./banner-img.jpg");
+  background-size: cover;
+  background-position: 100% 50%;
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  border-bottom:3px solid white;
+}
+
+.bannerText {
+  background-color: rgba(255, 255, 255, 0.7);
+  width: inherit;
+  position: absolute;
+  top: 60%;
+  margin: auto;
+  padding: 0.5rem;
+  color: rgb(76, 157, 38);
+  font-size: 1.5rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.location, .register, .about {
+  width: 100%;
+  height: 60px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.location {
+  background-color: rgb(55, 55, 55);
+  border-bottom:3px solid white;
+  color: rgb(255, 255, 255);
+}
+
+.register {
+  background-color: rgb(76, 157, 38);
+  border-bottom:3px solid white;
+  color: rgb(255, 255, 255);
+}
+
+.about {
+  background-color: rgb(255, 255, 255);
+  border:3px solid rgb(76, 157, 38);
+  color: rgb(76, 157, 38);
+}
