@@ -7,6 +7,8 @@ import { IndexRoute } from 'react-router'
 import Layout from './modules/Layout/Layout';
 import Faq from './modules/Faq/Faq';
 import Home from './modules/Home/Home';
+import tnc from './modules/tnc/tnc';
+import contact from './modules/contact/contact';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
