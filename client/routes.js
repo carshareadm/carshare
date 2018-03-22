@@ -24,5 +24,7 @@ export default (
 	<Route path="/" component={Layout}>
 		<IndexRoute component={Home} />
 		<Route path="faq" component={Faq} />
+		<Route path="terms" component={tnc} />
+		<Route path="contactus" component={contact} />
 	</Route>
 );

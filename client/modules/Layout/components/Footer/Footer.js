@@ -1,14 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 // Import Style
 import styles from './Footer.css';
 
-export function Footer() {
+export function Footer(props) {
   return (
     <footer className={styles.footer}>
-      <p>I'm a footer!</p>
+      <Link to="/">www.shacar.com.au</Link><br />
+    	<Link to="/terms">Terms and Conditions of use</Link>
     </footer>
   );
 }
+
+Footer.contextTypes = {
+  router: React.PropTypes.object,
+  /* 
+  Reference to router
+  */
+};
 
 export default Footer;
