@@ -27,6 +27,6 @@ export default (
 		<IndexRoute component={Home} />
 		<Route path="faq" component={Faq} />
 		<Route path="terms" component={TermsAndConditions} />
-		<Route path="contactus" component={Contact} />
+		<Route path="contact" component={Contact} />
 	</Route>
 );
