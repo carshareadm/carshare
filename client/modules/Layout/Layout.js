@@ -11,9 +11,8 @@ import UserBar from './components/UserBar/UserBar';
 import Footer from './components/Footer/Footer';
 
 // Import Actions
-// import { toggleAddPost } from './AppActions'; // example
 
-export class App extends Component {
+export class Layout extends Component {
   constructor(props) {
     super(props);
     this.state = { isMounted: false };
@@ -45,7 +44,7 @@ export class App extends Component {
   }
 }
 
-App.propTypes = {
+Layout.propTypes = {
   children: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
@@ -57,4 +56,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(Layout);
