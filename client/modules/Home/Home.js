@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import styles from './Home.css'
 
 //Create a component class
-export class App extends Component {
+export class Home extends Component {
   // constructor(props) {
   //   super(props);
   // }
@@ -35,4 +35,4 @@ export class App extends Component {
   }
 }
 
-export default App;
+export default Home;
