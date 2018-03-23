@@ -7,7 +7,7 @@ import { IndexRoute } from 'react-router'
 import Layout from './modules/Layout/Layout';
 import Faq from './modules/Faq/Faq';
 import Home from './modules/Home/Home';
-import Tnc from './modules/Tnc/Tnc';
+import TermsAndConditions from './modules/TermsAndConditions/TermsAndConditions';
 import Contact from './modules/Contact/Contact';
 
 // require.ensure polyfill for node
@@ -26,7 +26,7 @@ export default (
 	<Route path="/" component={Layout}>
 		<IndexRoute component={Home} />
 		<Route path="faq" component={Faq} />
-		<Route path="terms" component={Tnc} />
-		<Route path="contactus" component={Contact} />
+		<Route path="terms" component={TermsAndConditions} />
+		<Route path="contact" component={Contact} />
 	</Route>
 );

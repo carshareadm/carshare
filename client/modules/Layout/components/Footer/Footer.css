@@ -1,17 +1,17 @@
 .footer{
-  text-align: center;
-  padding: 56px 0;
-  background-size: cover;
-}
-
-.footer p{
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  color: #FFF;
+	width: 100%;
+	position: fixed;
+  	text-align: center;
+  	margin: 0 auto;
+  	background-size: cover;
+  	background-color: rgb(76,157,38);
+  	bottom:0;
+  	padding: 1em;
 }
 
 .footer a{
-  color: #FFF;
-  text-decoration: none;
-  font-weight: 700;
+	font-weight: bold;
+	color: black;
+	text-decoration: none;
 }
+

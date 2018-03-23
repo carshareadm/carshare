@@ -27,12 +27,14 @@ export class Header extends Component{
 		return (
 		    <header className={styles.header}>
 			    <div onClick={() => this.burgerToggle()} className={styles.burgerImage}></div>
-			    <ul style={{display:this.state.menuIsVisible ? "block" : "none"}}>
+			    <ul className={styles.ul} style={{display:this.state.menuIsVisible ? "block" : "none"}}>
 		    		<li className={active(this.context.router, "/", true)}><Link to="/">Home</Link></li>
 		    		<li className={active(this.context.router, "/faq", true)}><Link to="/faq">FAQ</Link></li>
+		    		<li className={active(this.context.router, "/terms", true)}><Link to="/terms">Terms and Conditions</Link></li>
+		    		<li className={active(this.context.router, "/contact", true)}><Link to="/contact">Contact</Link></li>
 			    </ul>
 			    <div className={styles.siteLogo}>
-			    	<h1>Sha<span>Car</span></h1>
+			    	<h1 className={styles.h1}>Sha<span className={styles.h1_span}>Car</span></h1>
 			    </div>
 		    </header>
   		);
