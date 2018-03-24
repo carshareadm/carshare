@@ -8,7 +8,7 @@ import Layout from './modules/Layout/Layout';
 import Faq from './modules/Faq/Faq';
 import Home from './modules/Home/Home';
 import TermsAndConditions from './modules/TermsAndConditions/TermsAndConditions';
-import Contact from './modules/Contact/Contact';
+// import Contact from './modules/Contact/Contact';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -27,6 +27,6 @@ export default (
 		<IndexRoute component={Home} />
 		<Route path="faq" component={Faq} />
 		<Route path="terms" component={TermsAndConditions} />
-		<Route path="contact" component={Contact} />
+		{/* <Route path="contact" component={Contact} /> */}
 	</Route>
 );
