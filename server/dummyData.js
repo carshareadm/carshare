@@ -22,17 +22,39 @@ export default function () {
 
   // add an admin user if there is not one already in the system... preferably using carshareadm@gmail.com
   
+  //1st User is userOne
   
-  let admin = new user();
-  admin.email= "carshareadmin@gmail.com";
-  admin.mobile= "0412345678";
-  admin.password="shacar";
-  admin.isAdmin= true;
-  admin.save(function(err, result) {
+  let userOne = new user();
+  userOne.email= "carshareuserOne@gmail.com";
+  userOne.mobile= "0412345678";
+  userOne.password="shacar";
+  userOne.isAdmin= true;
+  userOne.save(function(err) {
     if (11000 === err.code || 11001 === err.code) {
-      console.log("DB Error: Duplicate of user:",admin.email);
+      console.log("DB Error: Duplicate of user:",userOne.email);
     }
   });
+
+  //TestUsers
+  /*
+  Added in next pull
+  let userTwo = new user();
+  userTwo.email="user1@test.com";
+  userTwo.mobile="0411111111";
+  userTwo.password="user1";
+  userTwo.license=new license();
+  userTwo.address=new address();
+  userTwo.creditCard=new creditCard;
+  userTwo.confirmationCodes=new confirmationCode;
+  userTwo.save(function(err) {
+    if (11000 === err.code || 11001 === err.code) {
+      console.log("DB Error: Duplicate of user:",userOne.email);
+    }
+  });
+  
+
+  */
+
 
 
   // add locations if there are none already in the system
@@ -64,46 +86,125 @@ export default function () {
   locationThree.coordinates=coordinateThree;
   locationThree.save();
 
-  // add cars if there are none already in the system
-  let smallcar = new vehicleType();
-  smallcar.name = "small";
-  smallcar.hourlyRate = 7;
-  smallcar.save(
-    function(err, result) {
+    // add vehicle types if not already in the system
+  let typeSmall = new vehicleType();
+  typeSmall.name = "small";
+  typeSmall.hourlyRate = 7;
+  typeSmall.save(
+    function(err) {
       if (11000 === err.code || 11001 === err.code) {
-        console.log("DB Error: Duplicate of type:",smallcar.name);
+        console.log("DB Error: Duplicate of type:",typeSmall.name);
       }
     }
   );
 
-  let sportscar = new vehicleType();
-  sportscar.name = "sports";
-  sportscar.hourlyRate = 8.75;
-  sportscar.save(
-    function(err, result) {
+  let typeSports = new vehicleType();
+  typeSports.name = "sports";
+  typeSports.hourlyRate = 8.75;
+  typeSports.save(
+    function(err) {
       if (11000 === err.code || 11001 === err.code) {
-        console.log("DB Error: Duplicate of type:",sportscar.name);
+        console.log("DB Error: Duplicate of type:",typeSports.name);
       }
     }
   );
-  let luxurycar = new vehicleType();
-  luxurycar.name = "luxury";
-  luxurycar.hourlyRate = 10.5;
-  luxurycar.save(
-    function(err, result) {
+  let typeLuxury = new vehicleType();
+  typeLuxury.name = "luxury";
+  typeLuxury.hourlyRate = 10.5;
+  typeLuxury.save(
+    function(err) {
       if (11000 === err.code || 11001 === err.code) {
-        console.log("DB Error: Duplicate of type:",luxurycar.name);
+        console.log("DB Error: Duplicate of type:",typeLuxury.name);
       }
     }
   );
-  let suvcar = new vehicleType();
-  suvcar.name = "suv";
-  suvcar.hourlyRate = 10.5;
-  suvcar.save(
-    function(err, result) {
+  let typeSuv = new vehicleType();
+  typeSuv.name = "suv";
+  typeSuv.hourlyRate = 10.5;
+  typeSuv.save(
+    function(err) {
       if (11000 === err.code || 11001 === err.code) {
-        console.log("DB Error: Duplicate of type:",suvcar.name);
+        console.log("DB Error: Duplicate of type:",typeSuv.name);
       }
     }
   );
+  // add cars if there are none already in the system
+
+  let carOne = new car();
+  carOne.rego="ABC123",
+  carOne.make="Hyundai";
+  carOne.model="Getz";
+  carOne.colour="white";
+  carOne.year="2017";
+  carOne.seats="5";
+  carOne.doors="3";
+  carOne.vehicleType=typeSmall;
+  carOne.location=locationOne;
+  carOne.movements=new movement();
+  carOne.movements.car=carOne;
+  carOne.location=locationOne;
+  carOne.save(function(err) {
+    if (11000 === err.code || 11001 === err.code) {
+      console.log("DB Error: Duplicate of car:",carOne.rego);
+    }
+  });;
+  
+  let carTwo = new car();
+  carTwo.rego="ABC456",
+  carTwo.make="Mazda";
+  carTwo.model="MX-5";
+  carTwo.colour="blue";
+  carTwo.year="2017";
+  carTwo.seats="5";
+  carTwo.doors="5";
+  carTwo.vehicleType=typeSports;
+  carTwo.location=locationOne;
+  carTwo.movements=new movement();
+  carTwo.movements.car=carTwo;
+  carTwo.location=locationOne;
+  carTwo.save(function(err) {
+    if (11000 === err.code || 11001 === err.code) {
+      console.log("DB Error: Duplicate of car:",carTwo.rego);
+    }
+  });
+  
+  let carThree = new car();
+  carThree.rego="ABC789",
+  carThree.make="Audi";
+  carThree.model="A6";
+  carThree.colour="red";
+  carThree.year="2017";
+  carThree.seats="5";
+  carThree.doors="5";
+  carThree.vehicleType=typeLuxury;
+  carThree.location=locationTwo;
+  carThree.movements=new movement();
+  carThree.movements.car=carThree;
+  carThree.location=locationTwo;
+  carThree.save(function(err) {
+    if (11000 === err.code || 11001 === err.code) {
+      console.log("DB Error: Duplicate of car:",carThree.rego);
+    }
+  });
+  
+
+  let carFour = new car();
+  carFour.rego="DEF125",
+  carFour.make="Mazda";
+  carFour.model="CX-9";
+  carFour.colour="silver";
+  carFour.year="2017";
+  carFour.seats="5";
+  carFour.doors="5";
+  carFour.vehicleType=typeSuv;
+  carFour.location=locationThree;
+  carFour.movements=new movement();
+  carFour.movements.car=carFour;
+  carFour.location=locationThree;
+  carFour.save(function(err) {
+    if (11000 === err.code || 11001 === err.code) {
+      console.log("DB Error: Duplicate of car:",carFour.rego);
+    }
+  });
+  
 }
