@@ -1,0 +1,35 @@
+.title{
+    font-size:26pt;
+    color: green;
+    margin-bottom: 1em;
+}
+
+.body{
+	padding: 2em;
+}
+
+.phoneNum{
+    font-size:20pt;
+    color: green;
+}
+
+p{
+	padding: 0.5em;
+}
+
+form{
+	padding: 0.5em;
+}
+
+.labels{
+	display: block;
+}
+
+.labels input{
+	width: 15em;
+}
+
+.labelText{
+	width: 10em;
+	display: inline-block;
+}
