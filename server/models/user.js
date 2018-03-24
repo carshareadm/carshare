@@ -43,7 +43,7 @@ userSchema.pre('save', function(next) {
 });
 
 // compare hashed password to plain text password
-personSchema.methods.comparePassword = function(password, done) {
+userSchema.methods.comparePassword = function(password, done) {
   bcrypt.compare(password, this.password, function(err, isMatch) {
     done(err, isMatch);
   });
