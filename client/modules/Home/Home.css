@@ -4,7 +4,7 @@
 }
 
 .banner {
-  background-image: url("./banner-img.jpg");
+  background-image: url("modules/Home/banner-img.jpg");
   background-size: cover;
   background-position: 100% 50%;
   position: relative;

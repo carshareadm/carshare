@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react'; 
 
 //Create a component class
-export class App extends Component {
+export class Contact extends Component {
 
   render() {
     // Here goes our page 
@@ -17,4 +17,4 @@ export class App extends Component {
   }
 }
 
-export default App;
+export default Contact;
