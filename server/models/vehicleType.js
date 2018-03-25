@@ -6,4 +6,4 @@ const vehicleTypeSchema = new Schema({
   hourlyRate: { type: "Number", required: true },
 });
 
-export default mongoose.model("VehicleType", vehicleTypeSchema);
+module.exports = mongoose.model("VehicleType", vehicleTypeSchema);

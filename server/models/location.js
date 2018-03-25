@@ -10,4 +10,4 @@ const locationSchema = new Schema({
   },
 });
 
-export default mongoose.model("Location", locationSchema);
+module.exports = mongoose.model("Location", locationSchema);

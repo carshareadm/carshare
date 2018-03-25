@@ -1,7 +1,7 @@
 //server.js
 const app = require("./app");
 
-import dummyData from "./dummyData";
+const dummyData = require("./dummyData");
 import serverConfig from "./config";
 
 import mongoose from "mongoose";

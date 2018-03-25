@@ -10,4 +10,4 @@ const enquirySchema = new Schema({
   priority: { type: "String", enum: ["low", "med", "high"] },
 });
 
-export default mongoose.model("Enquiry", enquirySchema);
+module.exports = mongoose.model("Enquiry", enquirySchema);

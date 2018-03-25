@@ -9,4 +9,4 @@ const creditCardSchema = new Schema({
   expiryYear: { type: 'Number', required: true, min: 2018 },
 });
 
-export default mongoose.model('CreditCard', creditCardSchema);
+module.exports = mongoose.model('CreditCard', creditCardSchema);

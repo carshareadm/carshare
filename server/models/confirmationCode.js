@@ -11,4 +11,4 @@ const confirmationCodeSchema = new Schema({
   expiresAt: { type: "Date", required: true },
 });
 
-export default mongoose.model("ConfirmationCode", confirmationCodeSchema);
+module.exports = mongoose.model("ConfirmationCode", confirmationCodeSchema);

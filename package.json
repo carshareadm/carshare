@@ -93,6 +93,7 @@
     "json-loader": "^0.5.4",
     "mock-css-modules": "^1.0.0",
     "mockgoose": "^6.0.8",
+    "mockgoose-fix": "^7.3.6",
     "nock": "^8.0.0",
     "nodemon": "^1.9.2",
     "null-loader": "^0.1.1",

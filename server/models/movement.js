@@ -15,4 +15,4 @@ const movementSchema = new Schema({
   timestamp: { type: mongoose.Schema.Types.Date, default: Date.now },
 });
 
-export default mongoose.model("Movement", movementSchema);
+module.exports = mongoose.model("Movement", movementSchema);

@@ -6,4 +6,4 @@ const coordinateSchema = new Schema({
   longitude: { type: 'String', required: true, trim: true },
 });
 
-export default mongoose.model('Coordinate', coordinateSchema);
+module.exports = mongoose.model('Coordinate', coordinateSchema);
