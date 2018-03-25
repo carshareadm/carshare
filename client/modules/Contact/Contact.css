@@ -22,7 +22,7 @@ form{
 }
 
 .labels{
-	display: block;
+	display: inline-block;
 }
 
 .labels input{

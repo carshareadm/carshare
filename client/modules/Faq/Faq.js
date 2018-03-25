@@ -21,7 +21,7 @@ class FaqItem extends Component{
 	render(){
 		return (
 			<div>
-	        	<h3 onClick={this.itemToggle} >{this.props.question}</h3> 
+	        	<h3 onClick={this.itemToggle}>{this.props.question}</h3> 
 	        	{this.state.itemIsVisible ? this.props.children : null}
 	        </div>
 

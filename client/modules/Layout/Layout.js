@@ -22,10 +22,6 @@ export class Layout extends Component {
     this.setState({isMounted: true}); // eslint-disable-line
   }
 
-  // an example of how to trigger actions
-  // toggleAddPostSection = () => {
-  //   this.props.dispatch(toggleAddPost());
-  // };
 
   render() {
     return (
