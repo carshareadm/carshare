@@ -15,4 +15,4 @@ const damageReportSchema = new Schema({
   }],
 });
 
-export default mongoose.model('DamageReport', damageReportSchema);
+module.exports = mongoose.model('DamageReport', damageReportSchema);

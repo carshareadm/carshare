@@ -6,4 +6,4 @@ const imageSchema = new Schema({
   extension: { type: 'String', required: true, trim: true },
 });
 
-export default mongoose.model('Image', imageSchema);
+module.exports = mongoose.model('Image', imageSchema);

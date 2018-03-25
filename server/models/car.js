@@ -25,4 +25,4 @@ const carSchema = new Schema({
   }],
 });
 
-export default mongoose.model("Car", carSchema);
+module.exports = mongoose.model("Car", carSchema);
