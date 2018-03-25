@@ -1,6 +1,8 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
 
+import style from './Faq.css'
+
 //Additional component. May be moved to the separate component file later
 class FaqItem extends Component{
 	
@@ -21,7 +23,7 @@ class FaqItem extends Component{
 	render(){
 		return (
 			<div>
-	        	<h3 onClick={this.itemToggle}>{this.props.question}</h3> 
+	        	<h3 onClick={this.itemToggle}  className={style.questiontitle}>{this.props.question}</h3> 
 	        	{this.state.itemIsVisible ? this.props.children : null}
 	        </div>
 
@@ -35,23 +37,51 @@ export class Faq extends Component {
   	render() {
 	    // Here goes our page 
 	    return (
-	        <div>
-	        	<h1>FAQ</h1>
-	        	<h2>Registration</h2>
-		        <FaqItem question="Question 1">
+	        <div className={style.body}>
+	        	<h1 className={style.title}>FAQ</h1>
+	        	<h2 className={style.subtitle}>Registration</h2>
+		        <FaqItem question="How to use ShaCar?">
 		        	<div>
-						<p>Question 1 answer: Lorem ipsum dolor sit amet, consectetur
-						adipiscing elit. Cras nunc dui, condimentum ut venenatis in,
-						condimentum vestibulum mi. Sed lobortis sapien vitae est blandit, sed
-						euismod turpis tincidunt. Fusce tincidunt imperdiet tellus vitae
-						ultrices. Integer sed turpis condimentum, condimentum velit eget,
-						consequat nibh. Nunc id augue dui.</p>
+						<ul>
+							<li className={style.innerLi}>
+							Go to registration page. From homepage, click/tap Register.
+							</li>
+							<li className={style.innerLi}>
+							Fill your details into our registration form.</li>
+							<li className={style.innerLi}>
+							Take or upload a photo of your licence.<br/>
+							Make sure the details and your face are clearly visible.</li>
+							<li className={style.innerLi}>Enter credit/debit card details.<br/>
+							Note: a $250 pre-authorization will be charged to your card.</li>
+							<li className={style.innerLi}>
+							Click/tap Get Verification Code.<br/>
+							A 4-digit verification code will be sent to your phone via SMS.</li>
+							<li className={style.innerLi}>
+							Enter verification code.<br/>
+							Once the code is verified, you are ready to use ShaCar!</li>
+						</ul>
 		        	</div>
 		        </FaqItem>
-
-	        	<FaqItem question="Question 2">
+				<FaqItem question="What do I need?">
 		        	<div>
-						<p>Question 2 answer: Lorem ipsum dolor sit amet, consectetur
+						<p>The following are required in the registration process:</p>
+						<ul>
+							<li className={style.innerLi}>A valid driver's license.</li>
+							<li className={style.innerLi}>A valid email you have access to.</li>
+							<li className={style.innerLi}>A valid phone number you have access to.</li>
+						</ul>
+						<p>The following is optional, but it will improve your experience:</p>
+						<ul>
+							<li className={style.innerLi}>A printer to print access codes to use offline. </li>
+							<li className={style.innerLi}>A smartphone with internet access and camera function. </li>
+						</ul>
+		        	</div>
+		        </FaqItem>
+				<br />
+				<h2 className={style.subtitle}>Booking a car</h2>
+	        	<FaqItem question="How to book a car?">
+		        	<div>
+						<p>Booking answer: PLACEHOLDER Lorem ipsum dolor sit amet, consectetur
 						adipiscing elit. Cras nunc dui, condimentum ut venenatis in,
 						condimentum vestibulum mi. Sed lobortis sapien vitae est blandit, sed
 						euismod turpis tincidunt. Fusce tincidunt imperdiet tellus vitae
@@ -59,18 +89,103 @@ export class Faq extends Component {
 						consequat nibh. Nunc id augue dui.</p>
 		        	</div>
 	        	</FaqItem>
-
-	        	<h2>Sharing a car</h2>
-	        	<FaqItem question="Question 3">
+				<FaqItem question="What is the cost?">
 		        	<div>
-						<p>Question 3 answer: Lorem ipsum dolor sit amet, consectetur
-						adipiscing elit. Cras nunc dui, condimentum ut venenatis in,
-						condimentum vestibulum mi. Sed lobortis sapien vitae est blandit, sed
-						euismod turpis tincidunt. Fusce tincidunt imperdiet tellus vitae
-						ultrices. Integer sed turpis condimentum, condimentum velit eget,
-						consequat nibh. Nunc id augue dui.</p>
+						<p>We charge per hr depending on the vehcilce type.<br/>
+						The cost per hr is listed below:</p>
+						<br/>
+						<ul>
+							<li className={style.innerLi}>Small Vehicle : $ 7.00 per hour.
+							
+							<ul>
+								<li className={style.innerLi}>Hyundai Getz</li>
+								<li className={style.innerLi}>Holden Cruze</li>
+							</ul>				
+							</li>
+							<li className={style.innerLi}>Sports Vehicle : $ 8.75 per 
+							hour.
+							
+							<ul>
+								<li className={style.innerLi}>Mazda MX-5</li>
+								<li className={style.innerLi}>Ford Mustang</li>
+							</ul>
+							</li>
+							<li className={style.innerLi}>Luxury Vehicle : $10.50 per hour.
+							
+							<ul>
+								<li className={style.innerLi}>Audi A6</li>
+								<li className={style.innerLi}>BMW Series 5</li>
+							</ul>
+							</li>
+							<li className={style.innerLi}>Sport Utility Vehicle : $ 10.50 per hour.
+							
+							<ul>
+								<li className={style.innerLi}>Kia Sorento</li>
+								<li className={style.innerLi}>Mazda CX-9</li>
+							</ul>
+							</li>
+						</ul>
 		        	</div>
 	        	</FaqItem>
+				<br />
+	        	<h2 className={style.subtitle}>Using a car</h2>
+	        	<FaqItem question="How to start my booking?">
+		        	<div>
+						<p>
+						To starting you booking.</p>
+						<ol>
+							<li className={style.innerLi}>Log in to ShaCar and navigate to your current booking. <br/>
+							This will show the QR code for the booking. <br/>
+							QR code will be saved in the app for access in event of loss of mobile coverage.</li>
+							
+							<li className={style.innerLi}>Scan the QR code through the windscreen to unlock the vehicle.<br/>
+							Note: the QR code will only be valid 5 minutes before the start of your booking. <br/>
+							The in-vehicle QR code scanner is located at the bottom corner on the driver’s side of the windscreen. </li>
+							<li className={style.innerLi}>Inspect the vehicle for any damage outside and inside.<br/>
+							Click/tap Log Damage to record any damage found.<br/>
+							Follow the prompts to record images and description of the damage.</li>
+							<li className={style.innerLi}>You are ready to go!<br/>
+							The keys are in the vehicle on a retractable cord attached to the bottom of the dashboard.</li>
+							</ol>
+		        	</div>
+	        	</FaqItem>
+				<FaqItem question="How to access a car during booking?">
+		        	<div>
+						<p>
+						To access the vehicle during your booking</p>
+						<ul>
+							<li className={style.innerLi}>To unlock the vehicle, scan the QR code again.</li>
+							<li className={style.innerLi}>If you leave the vehicle during the booking, scan the QR code to lock it.</li>
+						</ul>
+						<p><strong>DO NOT REMOVE THE KEYS FROM THE VEHICLE.</strong>
+						<br/>
+						<br/>The QR code will remain valid for 24 hours after the booking ends.<br/>
+						This is strictly for emergencies only.<br/>
+						Non-emergency access outside of your booking will incur a fine.
+						</p>
+							
+		        	</div>
+	        	</FaqItem>
+				<FaqItem question="What do I do when I am finished?">
+		        	<div>
+						<p>
+						To end your booking</p>
+						<ol>
+							<li className={style.innerLi}>Return the ShaCar vehicle to its designated location.</li>
+							<li className={style.innerLi}>Exit the vehicle and remove all personal belongings.</li>
+							<li className={style.innerLi}>Lock the car by scanning the QR code.
+							</li>
+						</ol>
+						<p><strong>DO NOT REMOVE THE KEYS FROM THE VEHICLE.</strong>
+						<br/>
+						<br/>The QR code will remain valid for 24 hours after the booking ends.<br/>
+						This is strictly for emergencies only.<br/>
+						Non-emergency access outside of your booking will incur a fine.
+						</p>
+							
+		        	</div>
+	        	</FaqItem>						
+				<br />
 	        </div>
 	    );
   }
