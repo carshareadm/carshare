@@ -15,6 +15,9 @@ export class Header extends Component{
 	constructor(props){
 		super(props);
 		this.state = {menuIsVisible:false};
+
+		//Bind the function to the class
+		this.burgerToggle = this.burgerToggle.bind(this);
 	}
 
 	burgerToggle(){
@@ -26,7 +29,7 @@ export class Header extends Component{
 	render(){
 		return (
 		    <header className={styles.header}>
-			    <div onClick={() => this.burgerToggle()} className={styles.burgerImage}></div>
+			    <div onClick={this.burgerToggle} className={styles.burgerImage}></div>
 			    <ul className={styles.ul} style={{display:this.state.menuIsVisible ? "block" : "none"}}>
 		    		<li className={active(this.context.router, "/", true)}><Link to="/">Home</Link></li>
 		    		<li className={active(this.context.router, "/faq", true)}><Link to="/faq">FAQ</Link></li>
