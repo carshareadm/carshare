@@ -1,6 +1,8 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
 
+import style from './Faq.css'
+
 //Additional component. May be moved to the separate component file later
 class FaqItem extends Component{
 	
@@ -35,10 +37,10 @@ export class Faq extends Component {
   	render() {
 	    // Here goes our page 
 	    return (
-	        <div>
-	        	<h1>FAQ</h1>
+	        <div className={style.body}>
+	        	<h1 className={style.title}>FAQ</h1>
 	        	<h2>Registration</h2>
-		        <FaqItem question="Question 1">
+		        <FaqItem question="How to use ShaCar?">
 		        	<div>
 						<p>Question 1 answer: Lorem ipsum dolor sit amet, consectetur
 						adipiscing elit. Cras nunc dui, condimentum ut venenatis in,
@@ -49,7 +51,7 @@ export class Faq extends Component {
 		        	</div>
 		        </FaqItem>
 
-	        	<FaqItem question="Question 2">
+	        	<FaqItem question="I've registered, what now?">
 		        	<div>
 						<p>Question 2 answer: Lorem ipsum dolor sit amet, consectetur
 						adipiscing elit. Cras nunc dui, condimentum ut venenatis in,
@@ -59,7 +61,7 @@ export class Faq extends Component {
 						consequat nibh. Nunc id augue dui.</p>
 		        	</div>
 	        	</FaqItem>
-
+				<br />
 	        	<h2>Sharing a car</h2>
 	        	<FaqItem question="Question 3">
 		        	<div>
@@ -71,6 +73,7 @@ export class Faq extends Component {
 						consequat nibh. Nunc id augue dui.</p>
 		        	</div>
 	        	</FaqItem>
+				
 	        </div>
 	    );
   }
