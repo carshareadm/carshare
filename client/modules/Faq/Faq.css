@@ -4,6 +4,17 @@
     margin-bottom: 1em;
 }
 
+.subtitle{
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+ }
+ 
+.questiontitle{
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    margin-left: 0.3em;
+}
+
 .body{
 	padding: 2em;
 }
