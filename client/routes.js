@@ -9,6 +9,7 @@ import Faq from './modules/Faq/Faq';
 import Home from './modules/Home/Home';
 import TermsAndConditions from './modules/TermsAndConditions/TermsAndConditions';
 import Contact from './modules/Contact/Contact';
+import Registration from './modules/Registration/Registration';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -28,5 +29,6 @@ export default (
 		<Route path="faq" component={Faq} />
 		<Route path="terms" component={TermsAndConditions} />
 		<Route path="contact" component={Contact} />
+		<Route path="register" component={Registration} />
 	</Route>
 );

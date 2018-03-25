@@ -27,7 +27,7 @@ export class UserBar extends Component{
 			    	<span className={styles.barItem} onClick={this.formToggle}>Login</span> 
 			    	<span className={styles.barItem}>	
 			    		&nbsp;or&nbsp;
-			    		<Link className={styles.barItem_link} to="/faq">Register</Link>
+			    		<Link className={styles.barItem_link} to="/register">Register</Link>
 			    	</span>
 			    </h3>
 			    <form style={{display:this.state.formIsVisible ? "block" : "none"}}>

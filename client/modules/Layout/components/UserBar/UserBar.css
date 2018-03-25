@@ -21,7 +21,8 @@
 }
 
 .labels input{
-	width: 15em;
+	width: 10em;
+	border:1px solid black;
 }
 
 .labelText{
