@@ -22,6 +22,9 @@ module.exports = function() {
   // add an admin user if there is not one already in the system... preferably using carshareadm@gmail.com
   console.log("DB: Start loading seed data");
 
+  const errorCode1 = 11000; 
+  const errorCode2 = 11001; 
+
   User.count({}, (err, count) => {
     if (count < 1) {
       console.log('Adding users...');
@@ -32,8 +35,8 @@ module.exports = function() {
       user1.password = "shacar";
       user1.isAdmin = true;
       user1.save({}).catch(function(err) {
-        if (11000 === err.code || 11001 === err.code) {
-          console.log("DB Error: Duplicate of user:", user1.email);
+        if (errorCode1 === err.code || errorCode2 === err.code) {
+          console.log("Duplicate of user:", user1.email);
         }
       });
     
@@ -53,12 +56,12 @@ module.exports = function() {
       imagelicenseU2.fileHandle = "user2";
       imagelicenseU2.extension = "jpg";
       imagelicenseU2.save({}).catch(function(err) {
-        if (11000 === err.code || 11001 === err.code) {
-          console.log("DB Error: Duplicate of license:", imagelicenseU2.fileHandle);
+        if (errorCode1 === err.code || errorCode2 === err.code) {
+          console.log("Duplicate of license:", imagelicenseU2.fileHandle);
         }
       });
       licenseU2.image = imagelicenseU2;
-      licenseU2.save({}).catch();
+      licenseU2.save().catch((e) => { console.log(e)});
       user2.license = licenseU2;
     
       let addressU2 = new Address();
@@ -67,7 +70,7 @@ module.exports = function() {
       addressU2.street2 = "";
       (addressU2.suburb = "Dickson"), (addressU2.state = "ACT");
       addressU2.postCode = "2602";
-      addressU2.save({}).catch();
+      addressU2.save().catch((e) => { console.log(e)});
       user2.address = addressU2;
     
       let creditCardU2 = new CreditCard();
@@ -77,19 +80,19 @@ module.exports = function() {
       creditCardU2.ccv = "3547";
       creditCardU2.expiryMonth = 12;
       creditCardU2.expiryYear = 2020;
-      creditCardU2.save({}).catch();
+      creditCardU2.save().catch((e) => { console.log(e)});
       user2.creditCard = creditCardU2;
     
       let confirmationCodeU2 = new ConfirmationCode();
       confirmationCodeU2.code = "ABC123456789";
       confirmationCodeU2.user = user2;
       confirmationCodeU2.expiresAt = "2018-05-01";
-      confirmationCodeU2.save({}).catch();
+      confirmationCodeU2.save().catch((e) => { console.log(e)});
       user2.confirmationCodes = confirmationCodeU2;
     
       user2.save({}).catch(function(err) {
-        if (11000 === err.code || 11001 === err.code) {
-          console.log("DB Error: Duplicate of user:", user2.email);
+        if (errorCode1 === err.code || errorCode2 === err.code) {
+          console.log("Duplicate of user:", user2.email);
         }
       });
     }
@@ -110,13 +113,13 @@ module.exports = function() {
               console.log('Adding', nameLocation1, '...');
               coordinate1.latitude = "-33.947346";
               coordinate1.longitude = "151.179428";
-              coordinate1.save({}).catch();
+              coordinate1.save().catch((e) => { console.log(e)});
               location1.name = nameLocation1;
               location1.coordinates = coordinate1;
-              location1.save({}).catch();
+              location1.save().catch((e) => { console.log(e)});
             }
             else {
-              console.log("DB Error: Location \'", nameLocation1, "\' already exists.");
+              console.log("Location \'", nameLocation1, "\' already exists.");
               location1 = location;
             }
           });
@@ -135,13 +138,13 @@ module.exports = function() {
               console.log('Adding', nameLocation2, '...');
               coordinate2.latitude = "-37.669012";
               coordinate2.longitude = "144.841027";
-              coordinate2.save({}).catch();
+              coordinate2.save().catch((e) => { console.log(e)});
               location2.name = nameLocation2;
               location2.coordinates = coordinate2;
-              location2.save({}).catch();
+              location2.save().catch((e) => { console.log(e)});
             }
             else {
-              console.log("DB Error: Location \'", nameLocation2, "\' already exists.");
+              console.log("Location \'", nameLocation2, "\' already exists.");
               location2 = location;
             }
           });
@@ -160,13 +163,13 @@ module.exports = function() {
      console.log('Adding', nameLocation3, '...');
       coordinate3.latitude = "-31.953512";
       coordinate3.longitude = "115.857048";
-      coordinate3.save({}).catch();
+      coordinate3.save().catch((e) => { console.log(e)});
       location3.name = nameLocation3;
       location3.coordinates = coordinate3;
-      location3.save({}).catch();
+      location3.save().catch((e) => { console.log(e)});
     }
     else {
-      console.log("DB Error: Location \'", nameLocation3, "\' already exists.");
+      console.log("Location \'", nameLocation3, "\' already exists.");
       location3 = location;
     }
   }); 
@@ -178,10 +181,10 @@ module.exports = function() {
     if(!vehicleType) {
       typeSmall.name = nameCarType1;
       typeSmall.hourlyRate = 7;
-      typeSmall.save({}).catch();   
+      typeSmall.save().catch((e) => { console.log(e)});   
     }
     else {
-      console.log("DB Error: vehicleType \'", nameCarType1, "\' already exists.");
+      console.log("vehicleType \'", nameCarType1, "\' already exists.");
       typeSmall = vehicleType;
     }
   });
@@ -193,10 +196,10 @@ module.exports = function() {
     if(!vehicleType) {
       typeSports.name = nameCarType2;
       typeSports.hourlyRate = 8.75;
-      typeSports.save({}).catch();      
+      typeSports.save().catch((e) => { console.log(e)});      
     }
     else {
-      console.log("DB Error: vehicleType \'", nameCarType2, "\' already exists.");
+      console.log("vehicleType \'", nameCarType2, "\' already exists.");
       typeSports = vehicleType;
     }
   });
@@ -207,10 +210,10 @@ module.exports = function() {
     if(!vehicleType) {
       typeLuxury.name = nameCarType3;
       typeLuxury.hourlyRate = 10.5;
-      typeLuxury.save({}).catch();
+      typeLuxury.save().catch((e) => { console.log(e)});
     }
     else {
-      console.log("DB Error: vehicleType \'", nameCarType3, "\' already exists.");
+      console.log("vehicleType \'", nameCarType3, "\' already exists.");
       typeLuxury = vehicleType; //Links variable to existing type
     }
   });
@@ -222,10 +225,10 @@ module.exports = function() {
     if(!vehicleType) {
       typeSuv.name = nameCarType4;
       typeSuv.hourlyRate = 10.5;
-      typeSuv.save({}).catch();
+      typeSuv.save().catch((e) => { console.log(e)});
     }
     else {
-      console.log("DB Error: vehicleType \'", nameCarType4, "\' already exists.");
+      console.log("vehicleType \'", nameCarType4, "\' already exists.");
       typeSuv = vehicleType;
     }
   });
@@ -250,14 +253,14 @@ module.exports = function() {
       let movementsC1 = new Movement();
       movementsC1.car = car1;
       movementsC1.coordinates = location1.coordinates;
-      movementsC1.save({}).catch();
+      movementsC1.save().catch((e) => { console.log(e)});
     
       car1.movements = movementsC1;
-      car1.save({}).catch();
+      car1.save().catch((e) => { console.log(e)});
     }
     else
     {
-      console.log("DB Error: Car \'", regoC1, "\' already exists.");
+      console.log("Car \'", regoC1, "\' already exists.");
     }
   });
 
@@ -278,15 +281,15 @@ module.exports = function() {
       let movementsC2 = new Movement();
       movementsC2.car = car2;
       movementsC2.coordinates = location1.coordinates;
-      movementsC2.save({}).catch();
+      movementsC2.save().catch((e) => { console.log(e)});
     
       car2.movements = movementsC2;
-      car2.save({}).catch();
+      car2.save().catch((e) => { console.log(e)});
 
     }
     else
     {
-      console.log("DB Error: Car \'", regoC2, "\' already exists.");
+      console.log("Car \'", regoC2, "\' already exists.");
     }
   });
 
@@ -308,15 +311,15 @@ module.exports = function() {
       let movementsC3 = new Movement();
       movementsC3.car = car3;
       movementsC3.coordinates = location2.coordinates;
-      movementsC3.save({}).catch();
+      movementsC3.save().catch((e) => { console.log(e)});
     
       car3.movements = movementsC3;
-      car3.save({}).catch();
+      car3.save().catch((e) => { console.log(e)});
 
     }
     else
     {
-      console.log("DB Error: Car \'", regoC3, "\' already exists.");
+      console.log("Car \'", regoC3, "\' already exists.");
     }
   });
 
@@ -338,15 +341,15 @@ module.exports = function() {
       let movementsC4 = new Movement();
       movementsC4.car = car4;
       movementsC4.coordinates = location3.coordinates;
-      movementsC4.save({}).catch();
+      movementsC4.save().catch((e) => { console.log(e)});
     
       car4.movements = movementsC4;
 
-      car4.save({}).catch();
+      car4.save().catch((e) => { console.log(e)});
     }
     else
     {
-      console.log("DB Error: Car \'", regoC4, "\' already exists.");
+      console.log("Car \'", regoC4, "\' already exists.");
     }
   });
 
