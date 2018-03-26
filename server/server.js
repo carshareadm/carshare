@@ -10,7 +10,7 @@ import mongoose from "mongoose";
 mongoose.Promise = global.Promise;
 
 // MongoDB Connection
-const options = {
+const mongoOptions = {
   useMongoClient: true,
   reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
   reconnectInterval: 500, // Reconnect every 500ms
@@ -19,7 +19,32 @@ const options = {
   bufferMaxEntries: 0,
 };
 
-mongoose.connect(serverConfig.mongoURL, options, error => {
+if (process.env.NODE_ENV !== 'production') {
+  const expressSwagger = require('express-swagger-generator')(app);
+  
+  let swaggerOptions = {
+      swaggerDefinition: {
+          info: {
+              description: 'ShaCar API',
+              title: 'Swagger',
+              version: '1.0.0',
+          },
+          host: 'localhost:8000',
+          basePath: '/api',
+          produces: [
+              "application/json",
+              "application/xml",
+          ],
+          schemes: ['http', 'https'],
+      },
+      basedir: __dirname, //app absolute path
+      files: ['./routes/**/*.js'], // Path to the API handle folder
+  };
+  expressSwagger(swaggerOptions);
+
+}
+
+mongoose.connect(serverConfig.mongoURL, mongoOptions, error => {
   if (error) {
     console.error("Please make sure Mongodb is installed and running!"); // eslint-disable-line no-console
     throw error;
