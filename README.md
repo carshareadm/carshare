@@ -6,6 +6,8 @@ Project bootstrapped with the MERN.io starter project
 
 hosted in heroku - visit it at https://obscure-waters-10676.herokuapp.com/
 
+Swagger API documentation available when running the ap in dev mode at http;//localhost:8000/api-docs
+
 Make sure that mongoDb is installed prior to running the project.
 
 ### see [DevRequirements](./DevRequirements.md) for a list of tools to install
