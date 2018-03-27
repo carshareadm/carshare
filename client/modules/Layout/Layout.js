@@ -26,7 +26,6 @@ export class Layout extends Component {
   render() {
     return (
       <div>
-        {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
         <div>
           <Header />
           <div className={styles.container}>
