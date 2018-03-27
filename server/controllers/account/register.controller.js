@@ -1,6 +1,6 @@
-import User from "../models/user";
+import User from "../../models/user";
 
-export function register(req, res) {
+exports.register = function (req, res) {
   const email = req.body.email;
   const mobile = req.body.mobile;
   const password = req.body.password;
@@ -17,9 +17,9 @@ export function register(req, res) {
   } else {
     user.save((err, saved) => {
       if (err) {
-        res.status(500).send();
+        res.status(500).send(err);
       } else {
-        res.json(saved);
+        res.json(saved._id);
       }
     });
   }

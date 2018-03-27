@@ -1,37 +1,63 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  email: { type: 'String', required: true, trim: true, unique: true, lowercase: true },
-  mobile: { type: 'String', required: true, trim: true },
-  password: { type: 'String', required: true, trim: true },
-  isAdmin: { type: 'Boolean', required: true, default: false },
+  email: {
+    type: "String",
+    required: true,
+    trim: true,
+    unique: true,
+    lowercase: true,
+    validate: {
+      validator: function(v) {
+        var re = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+        return re.test(v);
+      },
+      message: "Email format is invalid",
+    },
+  },
+  mobile: {
+    type: "String",
+    required: true,
+    trim: true,
+    validate: {
+      validator: function(v) {
+        var re = /^\d{10}$/;
+        return v.trim().length < 1 || re.test(v);
+      },
+      message: "Provided mobile number is invalid.",
+    },
+  },
+  password: { type: "String", required: true, trim: true, select: false },
+  isAdmin: { type: "Boolean", required: true, default: false },
   license: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'License',
+    ref: "License",
   },
   address: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Address',
+    ref: "Address",
   },
   creditCard: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'CreditCard',
+    ref: "CreditCard",
   },
-  confirmationCodes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ConfirmationCode',
-  }],
+  confirmationCodes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ConfirmationCode",
+    },
+  ],
 });
 
-// example of presave and compare password from 
+// example of presave and compare password from
 // https://medium.com/@obrientimothya/make-an-api-with-node-js-mongodb-and-jwt-authentication-9da443a1f59b
 // hash password pre save
-userSchema.pre('save', function(next) {
+userSchema.pre("save", function(next) {
   var user = this;
-  if (!user.isModified('password')) {
+  if (!user.isModified("password")) {
     return next();
   }
   bcrypt.genSalt(10, function(err, salt) {
@@ -49,4 +75,4 @@ userSchema.methods.comparePassword = function(password, done) {
   });
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

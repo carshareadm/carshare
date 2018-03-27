@@ -1,17 +1,16 @@
 // test registration controller
 import {Mockgoose} from 'mockgoose-fix';
 import mongoose from 'mongoose';
-import User from '../models/user';
+import User from '../../../models/user';
 
 const mockgoose = new Mockgoose(mongoose);
 
 
-const app = require("../app");
+const app = require("../../../app");
 const request = require("supertest");
 
 describe("Register controller", () => {
   beforeAll(async () => {
-    //await mockgoose.prepareStorage();
     await mongoose.connect('mongodb://localhost/test');
   })
 
@@ -32,9 +31,8 @@ describe("Register controller", () => {
     request(app)
       .post("/api/account/register")
       .send({
-        email: "foo@bar.com"
+        email: "foo@bar.com",
       })
-      //.set("Content-Type", "application/json")
       .then(response => {
         expect(response.statusCode).toBe(400);
         done();
