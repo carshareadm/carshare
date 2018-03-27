@@ -38,9 +38,25 @@ export class UserBar extends Component{
 
 	executeLogin(event){
 		event.preventDefault();
-		this.setState({
-			loggedIn: true,
-		});
+		const login = document.getElementById("login").value;
+		const pass = document.getElementById("password").value;
+
+		// Won't work in IE for now
+		fetch('/api/account/login', {
+			method: 'POST',
+			headers: {'content-type':'application/json'},
+			body: JSON.stringify({email: login, password: pass}),
+		})
+		.then((response) => {
+			if(!response.ok){
+				console.error("Something went wrong ",response);
+				return;
+			}
+			this.setState({
+				loggedIn: true,
+			});
+		})
+
 	}
 
 	loginFrm(){
