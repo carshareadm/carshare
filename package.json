@@ -16,7 +16,7 @@
     "clean": "rimraf dist",
     "slate": "rimraf node_modules && npm install",
     "lint": "eslint client server",
-    "heroku-postinstall": "npm run build"
+    "postinstall": "echo \"running shacar postinstall...\" && npm run build"
   },
   "jest": {
     "moduleNameMapper": {
