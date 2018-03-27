@@ -22,6 +22,7 @@ module.exports = function() {
   // add an admin user if there is not one already in the system... preferably using carshareadm@gmail.com
   console.log("DB: Start loading seed data");
 
+  // const to avoid magic number
   const errorCode1 = 11000; 
   const errorCode2 = 11001; 
 
