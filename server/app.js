@@ -42,7 +42,9 @@ app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../dist/client')));
 
 const account = require('./routes/account.routes');
+const profile = require('./routes/profile.routes');
 app.use('/api/account', account);
+app.use('/api/profile', profile);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
