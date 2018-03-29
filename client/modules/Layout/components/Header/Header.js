@@ -35,6 +35,7 @@ export class Header extends Component{
 		    		<li className={active(this.context.router, "/faq", true)}><Link to="/faq" onClick={this.burgerToggle}>FAQ</Link></li>
 		    		<li className={active(this.context.router, "/terms", true)}><Link to="/terms" onClick={this.burgerToggle}>Terms and Conditions</Link></li>
 		    		<li className={active(this.context.router, "/contact", true)}><Link to="/contact" onClick={this.burgerToggle}>Contact</Link></li>
+					<li className={active(this.context.router, "/about", true)}><Link to="/about" onClick={this.burgerToggle}>About Us</Link></li>
 			    </ul>
 			    <div className={styles.siteLogo}>
 			    	<h1 className={styles.h1}>Sha<span className={styles.h1_span}>Car</span></h1>
