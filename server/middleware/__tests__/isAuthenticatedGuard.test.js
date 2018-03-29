@@ -1,4 +1,4 @@
-// test profile controller
+// test isAuthenticatedGuard
 import { Mockgoose } from "mockgoose-fix";
 import mongoose from "mongoose";
 import User from "../../models/user";
