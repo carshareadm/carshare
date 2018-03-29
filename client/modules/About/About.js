@@ -1,7 +1,7 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
 
-import style from './Faq.css'
+import style from './About.css'
 
 //Additional component. May be moved to the separate component file later
 class FaqItem extends Component{
@@ -81,21 +81,12 @@ export class Faq extends Component {
 				<h2 className={style.subtitle}>Booking a car</h2>
 	        	<FaqItem question="How to book a car?">
 		        	<div>
-						<p>To make a booking.</p>
-						<ul>
-							<li className={style.innerLi}>Go to the ShaCar web application at ShaCar.com</li>
-							<li className={style.innerLi}>Tap/click Register / Login and login with your email and password.</li>
-							<li className={style.innerLi}>At the Locations screen, allow the app to use your location.
-							<br/>You will see a map of the area showing the vehicle locations near your current location.
-							<br/>You can use the location search to look at other areas.
-							<br/>Below the map is a list of the vehicles at the locations shown in the map. The vehicle type, pricing, and availability are shown.</li>
-							<li className={style.innerLi}>Tap/click Book to choose the car you want to book.
-							<br/>The details of the location and vehicle will be displayed. </li>
-							<li className={style.innerLi}>Select the time and duration of your booking. </li>
-							<li className={style.innerLi}>Check the charges for this booking. Tap/click Confirm to complete the booking. 
-							<br/>Your booking and the QR code for unlocking the car will be displayed.</li>
-						</ul>
-
+						<p>Booking answer: PLACEHOLDER Lorem ipsum dolor sit amet, consectetur
+						adipiscing elit. Cras nunc dui, condimentum ut venenatis in,
+						condimentum vestibulum mi. Sed lobortis sapien vitae est blandit, sed
+						euismod turpis tincidunt. Fusce tincidunt imperdiet tellus vitae
+						ultrices. Integer sed turpis condimentum, condimentum velit eget,
+						consequat nibh. Nunc id augue dui.</p>
 		        	</div>
 	        	</FaqItem>
 				<FaqItem question="What is the cost?">
