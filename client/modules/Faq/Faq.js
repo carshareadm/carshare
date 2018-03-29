@@ -49,16 +49,18 @@ export class Faq extends Component {
 							<li className={style.innerLi}>
 							Fill your details into our registration form.</li>
 							<li className={style.innerLi}>
+							A 4-digit verification code will be sent to your phone via SMS.</li>
+							<li className={style.innerLi}>
+							Enter verification code.<br/>
+							Once the code is verified, you will be directed to your profile to provide some additional informaiton.
+							<br />This includes your name, license information, and payment information.</li>
+							<li className={style.innerLi}>
 							Take or upload a photo of your licence.<br/>
 							Make sure the details and your face are clearly visible.</li>
 							<li className={style.innerLi}>Enter credit/debit card details.<br/>
 							Note: a $250 pre-authorization will be charged to your card.</li>
 							<li className={style.innerLi}>
-							Click/tap Get Verification Code.<br/>
-							A 4-digit verification code will be sent to your phone via SMS.</li>
-							<li className={style.innerLi}>
-							Enter verification code.<br/>
-							Once the code is verified, you are ready to use ShaCar!</li>
+							Once your profile is saved, you are ready to use ShaCar!</li>
 						</ul>
 		        	</div>
 		        </FaqItem>
