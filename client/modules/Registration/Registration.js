@@ -1,5 +1,6 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
+import { Link } from 'react-router';
 import styles from './Registration.css'
 
 //Create a component class
@@ -10,13 +11,6 @@ export class Registration extends Component {
     return (
         <div className={styles.body}>
             <h1 className={styles.title}>Registration</h1>
-
-            <p><strong>Problems with registration?</strong> Please contact us via the telephone numbers listed below or the contact page (link).</p>
-
-            <p><strong>Customer Services</strong><br />
-            Services available 7am - 7pm</p>
-            <p className={styles.phoneNum}>1300 000 123</p>
-
             <p><strong>Registration Form</strong><br /></p>
             <form>
                 <label className={styles.labels} for="firstName">
@@ -37,6 +31,10 @@ export class Registration extends Component {
                 </label>
                 <input type="submit" value="Submit" />
             </form>
+            <p><strong>Problems with registration?</strong><br/>Please contact us via the telephone numbers listed below or the <Link to="/register">contact page</Link>.</p>
+            <p><strong>Customer Services</strong><br />
+            Services available 7am - 7pm</p>
+            <p className={styles.phoneNum}>1300 000 123</p>
         </div>
     );
   }
