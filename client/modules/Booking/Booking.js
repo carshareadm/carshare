@@ -38,25 +38,25 @@ export class Booking extends Component {
                     <div className={style.labelText}>Start Date *</div>
                     <input type="date" name="startDate" id="startDate"/>
                 </label>
-				<p>Please provide date in mm/dd/yyyy</p>
+				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
 				<br/>
 				<label className={style.labels} for="startTime">
                     <div className={style.labelText}>Start Time *</div>
                     <input type="time" name="startTime" id="startTime"/>
                 </label>
-				<p>Please provide time in hh:mm AM/PM</p>
+				<p className={style.note}>Please provide time in hh:mm AM/PM</p>
 				<br/>
 				<label className={style.labels} for="endDate">
                     <div className={style.labelText}>End Date *</div>
                     <input type="date" name="endDate" id="endDate"/>
                 </label>
-				<p>Please provide date in mm/dd/yyyy</p>
+				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
 				<br/>
 				<label className={style.labels} for="endTime">
                     <div className={style.labelText}>End Time *</div>
                     <input type="time" name="endTime" id="endTime"/>
                 </label>
-				<p>Please provide time in hh:mm AM/PM</p>
+				<p className={style.note}>Please provide time in hh:mm AM/PM</p>
 				<br/>
                 <input type="submit" value="Submit" />
             </form>
