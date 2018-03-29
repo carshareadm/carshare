@@ -14,7 +14,18 @@ Make sure that mongoDb is installed prior to running the project.
 
 ### [Git branching Strategy](./GitBranching.md)
 
-
+### Site authentication
+* successful login now returns a [JWT](https://jwt.io/) (JSON Web Token) as body of response
+* endpoints that require user to be authorised need the request to have Authorization header set with value of 'Bearer <JWT value>'
+* the body of the JWT will contain an object if base64 decoded in the react app, the isAdmin field can be used to determine if user is an admin :)
+```
+{
+  "sub": "user._id",
+  "email": "user.email",
+  "isAdmin": false,
+  "exp": 1522246501.732
+}
+```
 FRONTEND INDTRUCTIONS:
 Install the project and open project folder.
 
