@@ -42,12 +42,18 @@ export class Faq extends Component {
 	        	<h2 className={style.subtitle}>Registration</h2>
 		        <FaqItem question="How to use ShaCar?">
 		        	<div>
-						<ul>
+						<ol>
 							<li className={style.innerLi}>
 							Go to registration page. From homepage, click/tap Register.
 							</li>
 							<li className={style.innerLi}>
-							Fill your details into our registration form.</li>
+							Fill your details into our registration form.
+							<ul>
+								<li className={style.innerLi}>E-mail address</li>
+								<li className={style.innerLi}>Mobile phone number</li>
+								<li className={style.innerLi}>Password</li>
+							</ul>
+							</li>
 							<li className={style.innerLi}>
 							A 4-digit verification code will be sent to your phone via SMS.</li>
 							<li className={style.innerLi}>
@@ -61,7 +67,7 @@ export class Faq extends Component {
 							Note: a $250 pre-authorization will be charged to your card.</li>
 							<li className={style.innerLi}>
 							Once your profile is saved, you are ready to use ShaCar!</li>
-						</ul>
+						</ol>
 		        	</div>
 		        </FaqItem>
 				<FaqItem question="What do I need?">

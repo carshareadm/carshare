@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react'; 
 import { Link } from 'react-router';
 
-import style from './About.css'
+import style from './Booking.css'
 
 //Faq component class
 export class About extends Component {
