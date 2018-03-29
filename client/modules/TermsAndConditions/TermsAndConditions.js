@@ -10,7 +10,7 @@ export class App extends Component {
     // Here goes our page 
     return (
       <div className={style.body}>
-            <p className={style.title}>Terms and Conditions</p>
+            <h1 className={style.title}>Terms and Conditions</h1>
             <p><strong>OUR COMMITMENT TO YOU</strong></p>
             <p>The ShaCar Group is an Australia based business providing a variety of vehicles at numerous locations. We are committed to providing quality service and value for money.</p>
             <p>In particular: we provide only current model vehicles; and our vehicles are serviced and maintained in accordance with manufacturers’ recommendations.</p>
