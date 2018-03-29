@@ -4,10 +4,33 @@
     margin-bottom: 1em;
 }
 
+.subtitle{
+    font-size:16px;
+}
+
 .body{
 	padding: 2em;
 }
 
 p{
+    padding: 0em;
+    font-size:9pt;
+}
+
+form{
 	padding: 0.5em;
+}
+
+.labels{
+	display: block;
+}
+
+.labels input{
+	width: 10em;
+	border:1px solid black;
+}
+
+.labelText{
+	width: 10em;
+	display: inline-block;
 }
