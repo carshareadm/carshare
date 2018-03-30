@@ -3,7 +3,7 @@ const jwt = require('jwt-simple');
 const User = require('../models/user');
 const DateUtils = require('../util/date.helper');
 
-const ensureAuthenticated = function (req, res, next) {
+const isAuthenticatedGuard = function (req, res, next) {
   if (!req.headers.authorization) {
     return res.status(401).send({ error: 'Token Missing' });
   }
@@ -23,9 +23,10 @@ const ensureAuthenticated = function (req, res, next) {
       return res.status(401).send({error: 'No User'});
     } else {
       req.userId = user._id;
+      req.iaAdmin = user.isAdmin;
       next();
     }
   });
 };
 
-module.exports = ensureAuthenticated;
+module.exports = isAuthenticatedGuard;

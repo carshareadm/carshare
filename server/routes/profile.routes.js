@@ -1,5 +1,5 @@
 const profile = require("../controllers/profile/profile.controller");
-const authMiddleware = require("../middleware/ensureAuthenticated");
+const isAuthenticatedGuard = require("../middleware/isAuthenticatedGuard");
 var express = require("express");
 var router = express.Router();
 /**
@@ -18,6 +18,6 @@ var router = express.Router();
  * @returns {Error} 404 - user not found
  * @returns {Error} 500 - internal server error
  */
-router.get("/my", authMiddleware, profile.getMyProfile);
+router.get("/my", isAuthenticatedGuard, profile.getMyProfile);
 
 module.exports = router;
