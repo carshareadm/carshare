@@ -62,7 +62,7 @@ export class UserBar extends Component{
 	loginFrm(){
 		return (
 			<div className={styles.bar}>
-			    <h3>
+			    <h4>
 			    	<span className={styles.barItem} onClick={this.formToggle}>Login</span>
 			    	{this.state.formIsVisible ? 
 			    		null :
@@ -71,7 +71,7 @@ export class UserBar extends Component{
 				    		<Link className={styles.barItem_link} to="/register">Register</Link>
 				    	</span>
 			    	}
-			    </h3>
+			    </h4>
 			    <form style={{display:this.state.formIsVisible ? "block" : "none"}} onSubmit={this.executeLogin}>
 		            <label className={styles.labels} htmlFor="login">
 		                <div className={styles.labelText}>Login</div>

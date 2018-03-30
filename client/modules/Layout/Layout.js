@@ -25,8 +25,9 @@ export class Layout extends Component {
 
   render() {
     return (
-      <div>
-        <div>
+      <div className="row no-gutters">
+        <div className={styles.backgrounds+" col-xl-2"}></div>
+        <div className="col-xl-8">
           <Header />
           <div className={styles.container}>
             {this.props.children}
@@ -34,6 +35,7 @@ export class Layout extends Component {
           <UserBar />
           <Footer />
         </div>
+        <div className={styles.backgrounds+" col-xl-2"}></div>
       </div>
     );
   }
