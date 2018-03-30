@@ -35,6 +35,6 @@ form{
 	display: inline-block;
 }
 
-.error {
+.labels input.error {
 	border: 1px solid red;
 }
