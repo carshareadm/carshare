@@ -24,7 +24,7 @@ const userSchema = new Schema({
     trim: true,
     validate: {
       validator: function(v) {
-        var re = /^\d{10}$/;
+        var re = /^(04|\+61)([\d]{8})$/;
         return v.trim().length < 1 || re.test(v);
       },
       message: "Provided mobile number is invalid.",
