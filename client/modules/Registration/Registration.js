@@ -64,7 +64,7 @@ export class Registration extends Component {
           return;
         }
         const { email, password, mobile, license } = this.state;
-        alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
+        //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
       }
       
       canBeSubmitted() {
