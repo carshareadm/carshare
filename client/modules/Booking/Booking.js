@@ -4,7 +4,34 @@ import { Link } from 'react-router';
 
 import style from './Booking.css'
 
-//Faq component class
+class BookingForm extends Component{
+	
+	constructor(props){
+		super(props);
+		this.state = {itemIsVisible:false};
+
+		//Bind the function to the class
+		this.itemToggle = this.itemToggle.bind(this);
+	}
+
+	itemToggle(){
+		this.setState({
+			itemIsVisible: !this.state.itemIsVisible,
+		});
+	}
+
+	render(){
+		return (
+			<div>
+	        	<h3 onClick={this.itemToggle}  className={style.questiontitle}>{this.props.question}</h3> 
+	        	{this.state.itemIsVisible ? this.props.children : null}
+	        </div>
+
+		)
+	}
+}
+
+//Booking component class
 export class Booking extends Component {
 
   	render() {
