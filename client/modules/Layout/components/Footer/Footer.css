@@ -1,17 +1,16 @@
 .footer{
 	width: 100%;
-	position: fixed;
-  	text-align: center;
-  	margin: 0 auto;
-  	background-size: cover;
-  	background-color: rgb(76,157,38);
-  	bottom:0;
-  	padding: 1em;
+	text-align: center;
+	margin: 0 auto;
+	background-color: rgb(41, 97, 31);
+	bottom:0;
+	padding: 1em;
+  bottom: 0px;
 }
 
 .footer a{
 	font-weight: bold;
-	color: black;
+	color: rgb(76, 157, 38);
 	text-decoration: none;
 }
 

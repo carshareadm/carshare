@@ -28,7 +28,7 @@ export class Header extends Component{
 
 	render(){
 		return (
-		    <header className={styles.header}>
+	  		<header className={styles.header}>
 			    <div onClick={this.burgerToggle} className={styles.burgerImage}></div>
 			    <ul className={styles.ul} style={{display:this.state.menuIsVisible ? "block" : "none"}}>
 		    		<li className={active(this.context.router, "/", true)}><Link to="/" onClick={this.burgerToggle}>Home</Link></li>
@@ -39,10 +39,11 @@ export class Header extends Component{
 					<li className={active(this.context.router, "/about", true)}><Link to="/about" onClick={this.burgerToggle}>About Us</Link></li>
 			    </ul>
 			    <div className={styles.siteLogo}>
-			    	<h1 className={styles.h1}>Sha<span className={styles.h1_span}>Car</span></h1>
+			    	<h1 className={styles.h1}><div className={styles.angle1}></div>Sha<span className={styles.h1_span}>Car</span>.</h1>
 			    </div>
-		    </header>
+	    	</header>
   		);
+
 	}
 
 }

@@ -5,15 +5,17 @@
 	width: 100%;
 	min-height: 30px;
 	text-align: center;
+	z-index: 9999;
 }
 
 .barItem{
 	cursor:pointer;
+	color: white;
 }
 
 .barItem_link{
 	text-decoration: none;
-	color: black;
+	color: white;
 }
 
 .labels{
