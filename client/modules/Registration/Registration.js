@@ -12,7 +12,7 @@ function validate(email, password1, password2, mobile, license) {
     return {
       email: !validator.isEmail(email),
       password1: password1.length === 0,
-      password2: password1 === password2,
+      password2: password1 !== password2,
       mobile: !validator.isMobilePhone(mobile,'en-AU'),
       license: license.length === 0,
     };
@@ -91,22 +91,22 @@ export class Registration extends Component {
                 </label>
                 <label className={styles.labels} for="licence">
                     <div className={styles.labelText}>Driver Licence *</div>
-                    <input className={errors.email ? "error" : ""} type="text" placeholder="Enter License Number"
+                    <input className={errors.license ? "error" : ""} type="text" placeholder="Enter License Number"
                      value={this.state.license} onChange={this.handleLicenseChange} />
                 </label>
                 <label className={styles.labels} for="mobile">
                     <div className={styles.labelText}>Mobile *</div>
-                    <input className={errors.email ? "error" : ""} type="text" placeholder="Enter Mobile"
+                    <input className={errors.mobile ? "error" : ""} type="text" placeholder="Enter Mobile"
                      value={this.state.mobile} onChange={this.handleMobileChange} />
                 </label>
                 <label className={styles.labels} for="password">
                     <div className={styles.labelText}>Password *</div>
-                    <input className={errors.password ? "error" : ""} type="password" placeholder="Enter Password"
+                    <input className={errors.password1 ? "error" : ""} type="password" placeholder="Enter Password"
                      value={this.state.password1} onChange={this.handlePassword1Change} />
                 </label>
                 <label className={styles.labels} for="password">
                     <div className={styles.labelText}>Confirm Password *</div>
-                    <input className={errors.password ? "error" : ""} type="password" placeholder="Repeat Password"
+                    <input className={errors.password2 ? "error" : ""} type="password" placeholder="Repeat Password"
                      value={this.state.password2} onChange={this.handlePassword2Change} />
                 </label>
         <button disabled={isDisabled}>Register</button>
