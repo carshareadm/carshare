@@ -34,3 +34,7 @@ form{
 	width: 10em;
 	display: inline-block;
 }
+
+.labels input.error {
+	border: 1px solid red;
+}
