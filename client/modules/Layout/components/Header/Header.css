@@ -64,17 +64,14 @@
     cursor: pointer;
 }
 
-.h1{
-  color: white;
-}
-
-.h1_span{
-  color:rgb(76,157,38);
-}
 
 .siteLogo{
   width: 100%;
   text-align: center;
+}
+
+.logo{
+  width: 170px;
 }
 
 .ul{
@@ -97,10 +94,3 @@
   text-decoration: none;
 }
 
-.angle1{
-  background-image: url("modules/Layout/components/Header/GreenArrow.png");
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  background-size: 100% 100%;
-}
