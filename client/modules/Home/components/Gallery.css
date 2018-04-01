@@ -1,0 +1,34 @@
+.bannerImage{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top right;
+  position: absolute;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100%;
+}
+
+.bnImg1{
+  background-image: url("modules/Home/banner-img.jpg");
+}
+
+.bnImg2{
+  background-image: url("modules/Home/banner-img2.jpg");
+}
+
+.bnImg3{
+  background-image: url("modules/Home/banner-img3.jpg");
+}
+
+.bnImg4{
+  background-image: url("modules/Home/banner-img4.jpg");
+}
+
+.banner{
+  position: absolute;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100%;
+}
