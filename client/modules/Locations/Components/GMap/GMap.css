@@ -1,0 +1,10 @@
+/* GMap.css */
+
+/* override bootstrap button color */
+.buttons {
+  background-color: rgb(76, 157, 38);
+}
+
+#gmap {
+  min-height: 80vh;
+}
