@@ -26,6 +26,7 @@ export class Home extends Component {
               </div>
             </div>
           </div>
+          <div className={styles.bigArrows}></div>
         </div>
         <div className="row no-gutters d-none d-md-block">
           <div className={styles.separator}></div>

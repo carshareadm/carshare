@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 // Import Style
 import styles from './Header.css';
+import logo from './Logo-ongray.png.png'
 
 
 //Helper to set the header active
@@ -39,7 +40,7 @@ export class Header extends Component{
 					<li className={active(this.context.router, "/about", true)}><Link to="/about" onClick={this.burgerToggle}>About Us</Link></li>
 			    </ul>
 			    <div className={styles.siteLogo}>
-			    	<h1 className={styles.h1}><div className={styles.angle1}></div>Sha<span className={styles.h1_span}>Car</span>.</h1>
+			    	<img className={styles.logo} src={logo} />
 			    </div>
 	    	</header>
   		);

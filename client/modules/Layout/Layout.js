@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 // Import Style
 import styles from './Layout.css';
+import arrows from './angle-double-right.svg.png';
 
 // Import Components
 import DevTools from '../../components/DevTools';
@@ -26,7 +27,9 @@ export class Layout extends Component {
   render() {
     return (
       <div className="row no-gutters">
-        <div className={styles.backgrounds+" col-xl-2"}></div>
+        <div className={styles.backgrounds+" d-none d-xl-flex col-xl-2"}>
+          <img className={styles.arrows1} src={arrows} />
+        </div>
         <div className="col-xl-8">
           <Header />
           <div className={styles.container}>
@@ -35,7 +38,9 @@ export class Layout extends Component {
           <UserBar />
           <Footer />
         </div>
-        <div className={styles.backgrounds+" col-xl-2"}></div>
+        <div className={styles.backgrounds+" col-xl-2"}>
+          <img className={styles.arrows2} src={arrows} />
+        </div>
       </div>
     );
   }

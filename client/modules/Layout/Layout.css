@@ -7,3 +7,22 @@
 .backgrounds{
 	background-color: rgb(41, 97, 31); 
 }
+
+.arrows1{
+	opacity: 0.5;
+	width: 250px;
+	height: 250px;
+	position: absolute;
+	top:200px;
+	object-fit: cover;
+}
+
+.arrows2{
+	opacity: 0.5;
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	top:50px;
+	object-fit: cover;
+    transform: rotate(180deg);
+}
