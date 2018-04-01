@@ -78,10 +78,10 @@
   position: absolute;
   background-color: rgb(85,85,85);
   width: 300px;
-  height: 300px;
+  height: 100%;
   top: 70px;
   list-style: none;
-  z-index: 9999;
+  z-index: 10000;
 }
 
 .ul li{

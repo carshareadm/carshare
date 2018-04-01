@@ -38,7 +38,7 @@ export class Layout extends Component {
           <UserBar />
           <Footer />
         </div>
-        <div className={styles.backgrounds+" col-xl-2"}>
+        <div className={styles.backgrounds+" d-none d-xl-flex col-xl-2"}>
           <img className={styles.arrows2} src={arrows} />
         </div>
       </div>
