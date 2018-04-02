@@ -6,6 +6,8 @@
 
 .body{
 	padding: 2em;
+	padding-top: 3em;
+	background-color: rgb(226, 226, 226);
 }
 
 .innerLi{

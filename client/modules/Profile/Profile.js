@@ -182,9 +182,9 @@ export class Profile extends Component {
 
   renderLabel(key, labelFor) {    
     if (this.isError(key)) {
-      return <Label for={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
+      return <Label htmlFor={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
     }
-    return <Label for={labelFor}>{this.labels[key]}</Label>
+    return <Label htmlFor={labelFor}>{this.labels[key]}</Label>
   }
 
   render() {

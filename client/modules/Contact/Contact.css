@@ -6,7 +6,9 @@
 
 .body{
 	padding: 2em;
-	background-color: white;
+	padding-top: 3em;
+	background-color: rgb(226, 226, 226);
+
 }
 
 .phoneNum{

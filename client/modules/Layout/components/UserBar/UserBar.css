@@ -1,7 +1,7 @@
 .bar{
 	position: absolute;
-  	top: 70px;
-	background-color: rgba(0,0,0,0.2);
+  top: 70px;
+	background-color: rgba(198, 198, 198, 0.8);
 	width: 100%;
 	min-height: 30px;
 	text-align: center;
