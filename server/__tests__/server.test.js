@@ -11,11 +11,11 @@ describe("Express app", () => {
       });
   });
 
-  test("It should respond NotFound to a bogus route", done => {
+  test("It should respond OK to a bogus route", done => {
     request(app)
       .get("/foo/bar")
       .then(response => {
-        expect(response.statusCode).toBe(404);
+        expect(response.statusCode).toBe(200);
         done();
       });
   });
