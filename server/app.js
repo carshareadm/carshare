@@ -44,9 +44,11 @@ app.use(Express.static(path.resolve(__dirname, '../dist/client')));
 const account = require('./routes/account.routes');
 const profile = require('./routes/profile.routes');
 const cars = require('./routes/cars.routes');
+const booking = require('./routes/booking.routes');
 app.use('/api/account', account);
 app.use('/api/profile', profile);
 app.use('/api/cars', cars);
+app.use('/api/booking', booking);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
