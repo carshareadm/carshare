@@ -1,24 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import {GoogleApiWrapper} from 'google-maps-react';
-import styles from './GMap.css';
+import GMap from './components/GMap.js'
+import styles from './GoogleMap.css';
 
 
 // Create a component class
 
-export class GMap extends Component {
+export class GoogleMap extends Component {
   render() {
     if (!this.props.loaded) {
       return <div>Loading...</div>
     }
     return (
-        <div className={styles.mapOverall}>
-          <Map google={this.props.google} />
-        </div>
+        <GMap google={this.props.google} />
     )
   }
 }
 
 export default GoogleApiWrapper({
   apiKey: "AIzaSyDNDbgxKeOa4-5-vKmCALzkNlVckM9rJ34"
-})(GMap)
+})(GoogleMap)
 
