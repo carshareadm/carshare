@@ -21,7 +21,7 @@ describe("Profile controller", () => {
   beforeEach(done => {
     const user = new User();
     user.email = "user1@gmail.com";
-    user.mobile = "1111111111";
+    user.mobile = "0411111111";
     user.password = "12345";
     user.save((err, saved) => {
       if (err) {
