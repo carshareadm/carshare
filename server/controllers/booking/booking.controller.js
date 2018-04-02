@@ -54,9 +54,22 @@ const getBooking = function(req, res) {
     });
 };
 
+const changeBooking = function(req, res) {
+  Booking.find()
+  // Placeholder, should look for booking belonging to current user
+    .exec((err, bookings) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(200).send(bookings);
+      }
+    });
+};
+
 
 module.exports = {
   createBooking: createBooking,
   getBooking: getBooking,
   cancelBooking: cancelBooking,
+  changeBooking: changeBooking,
 };
