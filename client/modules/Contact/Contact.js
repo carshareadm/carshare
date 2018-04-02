@@ -10,8 +10,10 @@ export class Contact extends Component {
     return (
         <div className={styles.body}>
             <div className="row no-gutters">
+                <h1 className={styles.title}>Contact Us</h1>
+            </div>
+            <div className="row no-gutters">
                 <div className="col-xs-12 col-md-6">
-                    <h1 className={styles.title}>Contact Us</h1>
                     <p><strong>Need Help?</strong><br/>
                     Please contact us via the telephone numbers listed below or the contact form above.</p>
 

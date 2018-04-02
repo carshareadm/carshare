@@ -86,27 +86,27 @@ export class Registration extends Component {
             <h1 className={styles.title}>Registration</h1>
             <p><strong>Registration Form</strong><br /></p>
             <form onSubmit={this.handleSubmit}>
-                <label className={styles.labels} for="email">
+                <label className={styles.labels} htmlFor="email">
                     <div className={styles.labelText}>Email *</div>
                     <input className={errors.email ? styles.error  : ""} type="text" placeholder="Enter Email"
                      value={this.state.email} onChange={this.handleEmailChange} />
                 </label>
-                <label className={styles.labels} for="licence">
+                <label className={styles.labels} htmlFor="licence">
                     <div className={styles.labelText}>Driver Licence *</div>
                     <input className={errors.license ? styles.error  : ""} type="text" placeholder="Enter License Number"
                      value={this.state.license} onChange={this.handleLicenseChange} />
                 </label>
-                <label className={styles.labels} for="mobile">
+                <label className={styles.labels} htmlFor="mobile">
                     <div className={styles.labelText}>Mobile *</div>
                     <input className={errors.mobile ? styles.error  : ""} type="text" placeholder="Enter Mobile"
                      value={this.state.mobile} onChange={this.handleMobileChange} />
                 </label>
-                <label className={styles.labels} for="password">
+                <label className={styles.labels} htmlFor="password">
                     <div className={styles.labelText}>Password *</div>
                     <input className={errors.password1 ? styles.error  : ""} type="password" placeholder="Enter Password"
                      value={this.state.password1} onChange={this.handlePassword1Change} />
                 </label>
-                <label className={styles.labels} for="password">
+                <label className={styles.labels} htmlFor="password">
                     <div className={styles.labelText}>Confirm Password *</div>
                     <input className={errors.password2 ? styles.error : ""} type="password" placeholder="Repeat Password"
                      value={this.state.password2} onChange={this.handlePassword2Change} />

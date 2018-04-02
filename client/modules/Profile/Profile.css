@@ -1,0 +1,24 @@
+.body {
+  padding: 2em;
+  background-color: rgb(226, 226, 226);
+}
+
+.title {
+  font-size: 26pt;
+  color: green;
+  margin-bottom: 1em;
+}
+
+.h4 {
+  color: green;
+  font-size: 1rem;
+}
+
+.wideBtn {
+  width: 100%;
+  text-align: right !important;
+}
+
+.form {
+  padding: none !important;
+}
