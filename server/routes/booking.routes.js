@@ -6,5 +6,6 @@ var router = express.Router();
 router.post("/", isAuthenticatedGuard, booking.createBooking);
 router.post("/cancel", isAuthenticatedGuard, booking.cancelBooking);
 router.get("/get", isAuthenticatedGuard, booking.getBooking);
+router.post("/change", isAuthenticatedGuard, booking.changeBooking);
 
 module.exports = router;
