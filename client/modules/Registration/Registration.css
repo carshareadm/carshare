@@ -39,3 +39,17 @@ form{
 .labels input.error {
 	border: 1px solid red;
 }
+
+.labels p.error {
+	color: red;
+	visibility: visible;
+	padding-left: 0.5em;
+	padding-bottom: 0;
+}
+
+.labels p{
+	color: red;
+	visibility: hidden;
+	padding-left: 0.5em;
+	padding-bottom: 0;
+}
