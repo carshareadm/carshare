@@ -105,11 +105,13 @@ export class Registration extends Component {
                     <div className={styles.labelText}>Password *</div>
                     <input className={errors.password1 ? styles.error  : ""} type="password" placeholder="Enter Password"
                      value={this.state.password1} onChange={this.handlePassword1Change} />
+                     <p className={errors.password1 ? styles.error : ""}>Password should be at least 8 digits</p>
                 </label>
                 <label className={styles.labels} htmlFor="password">
                     <div className={styles.labelText}>Confirm Password *</div>
                     <input className={errors.password2 ? styles.error : ""} type="password" placeholder="Repeat Password"
                      value={this.state.password2} onChange={this.handlePassword2Change} />
+                     <p className={errors.password2 ? styles.error : ""}>Please ensure passwords match</p>
                 </label>
         <button disabled={isDisabled}>Register</button>
             </form>
