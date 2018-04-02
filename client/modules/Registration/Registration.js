@@ -28,18 +28,23 @@ export class Registration extends Component {
           password2: '',
           mobile: '',
           license: '',
-
-          /* used in next iteration
-          everFocusedEmail: false,
-          everFocusedPassword1: false,
-          everFocusedPassword2: false,
-          everFocusedMobile: false,
-          everFocusedLicense: false,
-          inFocus: '',
-          */
+          
+          touched: {
+            email: false,
+            password1: false,
+            password2: false,
+            mobile: false,
+            license: false,
+          }, 
         };
       }
       
+      handleBlur = (field) => (evt) => {
+        this.setState({
+          touched: { ...this.state.touched, [field]: true },
+        });
+      }
+
       handleEmailChange = (evt) => {
         this.setState({ email: evt.target.value });
       }
@@ -76,10 +81,16 @@ export class Registration extends Component {
       }
 
   render() {
-    
+
     const errors = validate(this.state.email, this.state.password1, this.state.password2, this.state.mobile, this.state.license);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
 
+    const shouldMarkError = (field) => {
+      const hasError = errors[field];
+      const shouldShow = this.state.touched[field];
+      
+      return hasError ? shouldShow : false;
+    };
     
     return (
         <div className={styles.body}>
@@ -88,30 +99,38 @@ export class Registration extends Component {
             <form onSubmit={this.handleSubmit}>
                 <label className={styles.labels} htmlFor="email">
                     <div className={styles.labelText}>Email *</div>
-                    <input className={errors.email ? styles.error  : ""} type="text" placeholder="Enter Email"
+                    <input className={shouldMarkError('email') ? styles.error : ""} type="text" placeholder="Enter Email"
+                    onBlur={this.handleBlur('email')}
                      value={this.state.email} onChange={this.handleEmailChange} />
+                     <p className={shouldMarkError('email') ? styles.error : ""}>Please enter a valid email</p>
                 </label>
                 <label className={styles.labels} htmlFor="licence">
                     <div className={styles.labelText}>Driver Licence *</div>
-                    <input className={errors.license ? styles.error  : ""} type="text" placeholder="Enter License Number"
-                     value={this.state.license} onChange={this.handleLicenseChange} />
+                    <input className={shouldMarkError('license') ? styles.error : ""} type="text" placeholder="Enter License Number"
+                     value={this.state.license} onChange={this.handleLicenseChange}
+                     onBlur={this.handleBlur('license')} />
+                     <p className={shouldMarkError('license') ? styles.error : ""}>Please enter a valid license number</p>
                 </label>
                 <label className={styles.labels} htmlFor="mobile">
                     <div className={styles.labelText}>Mobile *</div>
-                    <input className={errors.mobile ? styles.error  : ""} type="text" placeholder="Enter Mobile"
-                     value={this.state.mobile} onChange={this.handleMobileChange} />
+                    <input className={shouldMarkError('mobile') ? styles.error : ""} type="text" placeholder="Enter Mobile"
+                     value={this.state.mobile} onChange={this.handleMobileChange} 
+                     onBlur={this.handleBlur('mobile')} />
+                     <p className={shouldMarkError('mobile') ? styles.error : ""} >Please enter a valid mobile</p>
                 </label>
                 <label className={styles.labels} htmlFor="password">
                     <div className={styles.labelText}>Password *</div>
-                    <input className={errors.password1 ? styles.error  : ""} type="password" placeholder="Enter Password"
-                     value={this.state.password1} onChange={this.handlePassword1Change} />
-                     <p className={errors.password1 ? styles.error : ""}>Password should be at least 8 digits</p>
+                    <input className={shouldMarkError('password1') ? styles.error : ""} type="password" placeholder="Enter Password"
+                     value={this.state.password1} onChange={this.handlePassword1Change}
+                     onBlur={this.handleBlur('password1')} />
+                     <p className={shouldMarkError('password1') ? styles.error : ""}>Password should be at least 8 digits</p>
                 </label>
                 <label className={styles.labels} htmlFor="password">
                     <div className={styles.labelText}>Confirm Password *</div>
-                    <input className={errors.password2 ? styles.error : ""} type="password" placeholder="Repeat Password"
-                     value={this.state.password2} onChange={this.handlePassword2Change} />
-                     <p className={errors.password2 ? styles.error : ""}>Please ensure passwords match</p>
+                    <input className={shouldMarkError('password2') ? styles.error : ""} type="password" placeholder="Repeat Password"
+                     value={this.state.password2} onChange={this.handlePassword2Change} 
+                     onBlur={this.handleBlur('password2')} />
+                     <p className={shouldMarkError('password2') ? styles.error : ""}>Please ensure passwords match</p>
                 </label>
         <button disabled={isDisabled}>Register</button>
             </form>
