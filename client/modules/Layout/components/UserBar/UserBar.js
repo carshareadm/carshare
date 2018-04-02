@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
+import * as http from '../../../../util/http';
+import * as storage from '../../../../util/persistedStorage';
+
 // Import Style
 import styles from './UserBar.css';
 
@@ -41,21 +44,16 @@ export class UserBar extends Component{
 		const login = document.getElementById("login").value;
 		const pass = document.getElementById("password").value;
 
-		// Won't work in IE for now
-		fetch('/api/account/login', {
-			method: 'POST',
-			headers: {'content-type':'application/json'},
-			body: JSON.stringify({email: login, password: pass}),
-		})
-		.then((response) => {
-			if(!response.ok){
-				console.error("Something went wrong ",response);
-				return;
-			}
-			this.setState({
-				loggedIn: true,
-			});
-		})
+		http.client()
+				.post('/account/login', {email: login, password: pass})
+				.then(res => {
+					console.log(res);
+					storage.set(storage.Keys.JWT, res.data.token);
+					this.setState({loggedIn: true});
+				})
+				.catch(err => {
+					console.log(err);
+				})
 
 	}
 
@@ -79,7 +77,7 @@ export class UserBar extends Component{
 		            </label>
 		            <label className={styles.labels} htmlFor="password">
 		                <div className={styles.labelText}>Password</div>
-		                <input type="text" name="password" id="password"/>
+		                <input type="password" name="password" id="password"/>
 		            </label>
 		            <input type="submit" value="Submit" />
 		    	</form>

@@ -12,6 +12,7 @@ import Contact from './modules/Contact/Contact';
 import Registration from './modules/Registration/Registration';
 import About from './modules/About/About'
 import Booking from './modules/Booking/Booking'
+import { Profile } from './modules/Profile/Profile';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -34,5 +35,6 @@ export default (
 		<Route path="register" component={Registration} />
 		<Route path="about" component={About} />
 		<Route path="booking" component={Booking} />
+		<Route path="profile" component={Profile} />
 	</Route>
 );
