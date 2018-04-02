@@ -1,5 +1,6 @@
 const register = require("../controllers/account/register.controller");
 const login = require("../controllers/account/login.controller");
+const reset = require("../controllers/account/reset.controller");
 var express = require("express");
 var router = express.Router();
 
@@ -34,5 +35,16 @@ router.post("/register", register.register);
  * @returns {Error} 401 - authentication issues
  */
 router.post("/login", login.login);
+
+/**
+ * @route POST /account/reset
+ * @group account
+ * @param {RegisterModel.model} resetModel.body.required - user details
+ * @returns {string} 200 - password updated
+ * @returns {Error} 400 - validation errors
+ * @returns {Error} 500 - database errors
+*/
+
+router.post("/reset", reset.reset);
 
 module.exports = router;
