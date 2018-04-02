@@ -1,33 +1,24 @@
-// GMap.js
-// Imports
 import React, { Component, PropTypes } from 'react';
+import {GoogleApiWrapper} from 'google-maps-react';
 import styles from './GMap.css';
-// dummy map image
-import dummyMap from './dummyMap.png'
+
 
 // Create a component class
-class GMap extends Component {
-  constructor(props) {
-    super(props);
-  }
 
+export class GMap extends Component {
   render() {
-    // Here goes our page
+    if (!this.props.loaded) {
+      return <div>Loading...</div>
+    }
     return (
-      <div className="col-sm">
-        <form>
-          <input type="text" className="form-control" id="geocodeSearch" placeholder="Search location"/>
-          <button type="button" className={styles.buttons + " btn btn-primary btn-lg btn-block"}>
-            Use Current Location
-          </button>
-        </form>
-
-        <div id="gmap">
-          <img className="img-fluid" src={dummyMap}/>
+        <div className={styles.mapOverall}>
+          <Map google={this.props.google} />
         </div>
-      </div>
-    );
+    )
   }
 }
 
-export default GMap;
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyDNDbgxKeOa4-5-vKmCALzkNlVckM9rJ34"
+})(GMap)
+

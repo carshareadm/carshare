@@ -26,7 +26,16 @@ class Locations extends Component {
         </div>
 
         <div className="row">
-          <GMap/>
+          <div className="col-sm">
+          <form>
+            <input type="text" className="form-control" id="geocodeSearch" placeholder="Search location"/>
+            <button type="button" className={styles.buttons + " btn btn-primary btn-lg btn-block"}>
+              Use Current Location
+            </button>
+          </form>
+
+          <GMap />
+        </div>
           <Cars/>
         </div>
       </div>
