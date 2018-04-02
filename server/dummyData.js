@@ -15,11 +15,7 @@ import User from "./models/user";
 import VehicleType from "./models/vehicleType";
 
 module.exports = function() {
-  // add dummy data here
-  // see http://mongoosejs.com/docs/queries.html for an intro on how to query mongoDb using mongoose
-  // see http://mongoosejs.com/docs/models.html for intro on how to add/save data
 
-  // add an admin user if there is not one already in the system... preferably using carshareadm@gmail.com
   console.log("DB: Start loading seed data");
 
   const errorCode1 = 11000; 
@@ -35,9 +31,7 @@ module.exports = function() {
       user1.password = "shacar";
       user1.isAdmin = true;
       user1.save({}).catch(function(err) {
-        if (errorCode1 === err.code || errorCode2 === err.code) {
-          console.log("Duplicate of user:", user1.email);
-        }
+        console.log(err);
       });
     
       //TestUsers
@@ -56,9 +50,7 @@ module.exports = function() {
       imagelicenseU2.fileHandle = "user2";
       imagelicenseU2.extension = "jpg";
       imagelicenseU2.save({}).catch(function(err) {
-        if (errorCode1 === err.code || errorCode2 === err.code) {
-          console.log("Duplicate of license:", imagelicenseU2.fileHandle);
-        }
+        console.log(err);
       });
       licenseU2.image = imagelicenseU2;
       licenseU2.save().catch((e) => { console.log(e)});
