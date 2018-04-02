@@ -1,0 +1,16 @@
+/* Locations.css */
+
+.title {
+    font-size:26pt;
+    color: rgb(76, 157, 38);
+}
+
+.subtitle {
+    font-size:10pt;
+    margin-bottom: 1em;
+}
+
+/* override bootstrap button color */
+.buttons {
+  background-color: rgb(76, 157, 38);
+}
