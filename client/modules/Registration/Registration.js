@@ -87,6 +87,7 @@ export class Registration extends Component {
           http.client().post('/account/register', {
             email: this.state.email,
             mobile: this.state.mobile,
+            license: this.state.license,
             password: this.state.password1,
           })
           .then(res => {

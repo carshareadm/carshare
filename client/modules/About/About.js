@@ -13,7 +13,8 @@ export class About extends Component {
 	        <div className={style.body}>
 	        	<h1 className={style.title}>About</h1>
 	        	<p>
-				ShaCar is a Car Share company to help put people in cars.  Reducing the requirement for car ownership for people, reducing costs for our members, also going green where we can. <br/><br/>
+				ShaCar is a Car Share company to help put people in cars. 
+				Reducing the requirement for car ownership for people, reducing costs for our members, also going green where we can. <br/><br/>
 				We love our cars and want to share with you.<br/><br/>
 				At ShaCar,<br/></p>
 				<p className={style.innerP}>	We own the cars, so you don't have to;<br/>
