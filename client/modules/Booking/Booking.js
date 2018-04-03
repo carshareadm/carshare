@@ -1,7 +1,20 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
 import { Link } from 'react-router';
-
+import {
+  Button,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
 import * as http from "../../util/http";
 
 import style from './Booking.css'
@@ -15,7 +28,10 @@ export class Booking extends Component {
 		this.state = {
 			email: '',
 			loggedIn:false,
+			booked:false,
 		};
+		this.handleSubmit = this.handleSubmit.bind(this);
+        this.canBeSubmitted = this.canBeSubmitted.bind(this);
 	}
 
 	componentDidMount() {
@@ -23,8 +39,40 @@ export class Booking extends Component {
 		this.setState({	loggedIn:true });
 	  }	
 
+	handleSubmit(evt){
+       if (!this.canBeSubmitted()) {
+         evt.preventDefault();
+         return;
+       }
+       else{
+         evt.preventDefault();
+         http.client().post('/booking/', {
+           email: this.state.email,
+           mobile: this.state.mobile,
+           password: this.state.password1,
+         })
+         .then(res => {
+           console.log(res);
+           this.setState({booked: true});
+         })
+         .catch(err => console.log(err));
+       }
+       //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
+	 }
+	 
+	 canBeSubmitted() {
+		/*
+        const errors = validate(this.state.email, this.state.password1, this.state.password2, this.state.mobile, this.state.license);
+		const isDisabled = Object.keys(errors).some(x => errors[x]);
+		
+		return !isDisabled;
+		*/
+		return true; 
+		// temporary, to be updated when validation is added
+     }
+
   	render() {
-		return this.state.loggedIn ? this.bookingFrm() : this.register()
+		return this.state.booked ? this.booked() : this.state.loggedIn ? this.bookingFrm() : this.register()
 	  }
 	register()
 	{
@@ -34,6 +82,14 @@ export class Booking extends Component {
 				<p><Link to="/register">Click here to go to Register</Link><br /></p>
 		</div>);
 	}
+	booked()
+	{
+		return(
+		<div className={style.body}>
+				<h1 className={style.title}>Booking success</h1>
+				<p><Link to="/">Click here to return home</Link><br /></p>
+		</div>);
+	}
 	bookingFrm()
 	{
 	    // Here goes our page 
@@ -41,7 +97,7 @@ export class Booking extends Component {
 	        <div className={style.body}>
 	        <h1 className={style.title}>Booking</h1>
             <p className={style.subtitle}><strong>Booking Form</strong><br /></p>
-            <form>
+            <form onSubmit={this.handleSubmit}>
                 <label className={style.labels} htmlFor="location">
                     <div className={style.labelText}>Location *</div>
                     <select name="location">
