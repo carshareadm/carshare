@@ -4,7 +4,7 @@
 
 Project bootstrapped with the MERN.io starter project
 
-hosted in heroku - visit it at https://obscure-waters-10676.herokuapp.com/
+hosted in heroku - visit it at https://shacar.herokuapp.com/
 
 Swagger API documentation available when running the ap in dev mode at http;//localhost:8000/api-docs
 
