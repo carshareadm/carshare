@@ -5,11 +5,11 @@ exports.register = function (req, res) {
   const mobile = req.body.mobile;
   const password = req.body.password;
 
-  let user = new User({
-    email: email,
-    mobile: mobile,
-    password: password,
-  });
+  let user = new User();
+  user.email= email;
+  user.mobile= mobile;
+  user.password= password;
+  user.isAdmin= false;
 
   var errs = user.validateSync();
   if (errs) {

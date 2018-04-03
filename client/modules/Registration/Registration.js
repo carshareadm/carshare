@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import styles from './Registration.css'
 
+import * as http from "../../util/http";
+
 var validator = require('validator');
 
 //Create a component class
@@ -20,14 +22,15 @@ function validate(email, password1, password2, mobile, license) {
 
 export class Registration extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
           email: '',
           password1: '',
           password2: '',
           mobile: '',
           license: '',
+          registered: false,
           
           touched: {
             email: false,
@@ -37,7 +40,30 @@ export class Registration extends Component {
             license: false,
           }, 
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.canBeSubmitted = this.canBeSubmitted.bind(this);
       }
+
+      mapUserToModel(user) {
+        if(user) {
+          this.setState({
+          registered:true,
+          });      
+        }
+        }
+    
+      componentDidMount() {
+        http
+          .client()
+          .get("/profile/my")
+          .then(res => {
+          this.mapUserToModel(res.data);
+          //this.render();
+          })
+          .catch(err => {
+          console.log(err);
+          });
+        }	
       
       handleBlur = (field) => (evt) => {
         this.setState({
@@ -65,12 +91,24 @@ export class Registration extends Component {
         this.setState({ mobile: evt.target.value });
       }
       
-      handleSubmit = (evt) => {
+      handleSubmit(evt){
         if (!this.canBeSubmitted()) {
           evt.preventDefault();
           return;
         }
-        const { email, password, mobile, license } = this.state;
+        else{
+          evt.preventDefault();
+          http.client().post('/account/register', {
+            email: this.state.email,
+            mobile: this.state.mobile,
+            password: this.state.password1,
+          })
+          .then(res => {
+            console.log(res);
+            this.setState({registered: true});
+          })
+          .catch(err => console.log(err));
+        }
         //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
       }
       
@@ -81,6 +119,17 @@ export class Registration extends Component {
       }
 
   render() {
+    return this.state.registered ? this.registered() : this.registerFrm()
+  }
+  registered()
+  {
+    return(
+    <div className={styles.body}>
+            <h1 className={styles.title}>Registered</h1>
+            <p><Link to="/profile">Click here to go to user profile</Link><br /></p>
+    </div>);
+  }
+  registerFrm(){
 
     const errors = validate(this.state.email, this.state.password1, this.state.password2, this.state.mobile, this.state.license);
     const isDisabled = Object.keys(errors).some(x => errors[x]);
