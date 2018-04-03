@@ -1,47 +1,104 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
 import { Link } from 'react-router';
+import {
+  Button,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
+import * as http from "../../util/http";
 
 import style from './Booking.css'
 
-class BookingForm extends Component{
-	
-	constructor(props){
-		super(props);
-		this.state = {itemIsVisible:false};
-
-		//Bind the function to the class
-		this.itemToggle = this.itemToggle.bind(this);
-	}
-
-	itemToggle(){
-		this.setState({
-			itemIsVisible: !this.state.itemIsVisible,
-		});
-	}
-
-	render(){
-		return (
-			<div>
-	        	<h3 onClick={this.itemToggle}  className={style.questiontitle}>{this.props.question}</h3> 
-	        	{this.state.itemIsVisible ? this.props.children : null}
-	        </div>
-
-		)
-	}
-}
-
+const storage = require('../../util/persistedStorage');
 //Booking component class
 export class Booking extends Component {
 
+	constructor(props){
+		super(props);
+		this.state = {
+			email: '',
+			loggedIn:false,
+			booked:false,
+		};
+		this.handleSubmit = this.handleSubmit.bind(this);
+        this.canBeSubmitted = this.canBeSubmitted.bind(this);
+	}
+
+	componentDidMount() {
+		if(storage.get(storage.Keys.JWT))
+		this.setState({	loggedIn:true });
+	  }	
+
+	handleSubmit(evt){
+       if (!this.canBeSubmitted()) {
+         evt.preventDefault();
+         return;
+       }
+       else{
+         evt.preventDefault();
+         http.client().post('/booking/', {
+           email: this.state.email,
+           mobile: this.state.mobile,
+           password: this.state.password1,
+         })
+         .then(res => {
+           console.log(res);
+           this.setState({booked: true});
+         })
+         .catch(err => console.log(err));
+       }
+       //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
+	 }
+	 
+	 canBeSubmitted() {
+		/*
+        const errors = validate(this.state.email, this.state.password1, this.state.password2, this.state.mobile, this.state.license);
+		const isDisabled = Object.keys(errors).some(x => errors[x]);
+		
+		return !isDisabled;
+		*/
+		return true; 
+		// temporary, to be updated when validation is added
+     }
+
   	render() {
+		return this.state.booked ? this.booked() : this.state.loggedIn ? this.bookingFrm() : this.register()
+	  }
+	register()
+	{
+		return(
+		<div className={style.body}>
+				<h1 className={style.title}>Please Register</h1>
+				<p><Link to="/register">Click here to go to Register</Link><br /></p>
+		</div>);
+	}
+	booked()
+	{
+		return(
+		<div className={style.body}>
+				<h1 className={style.title}>Booking success</h1>
+				<p><Link to="/">Click here to return home</Link><br /></p>
+		</div>);
+	}
+	bookingFrm()
+	{
 	    // Here goes our page 
 	    return (
 	        <div className={style.body}>
 	        <h1 className={style.title}>Booking</h1>
             <p className={style.subtitle}><strong>Booking Form</strong><br /></p>
-            <form>
-                <label className={style.labels} for="location">
+            <form onSubmit={this.handleSubmit}>
+                <label className={style.labels} htmlFor="location">
                     <div className={style.labelText}>Location *</div>
                     <select name="location">
 						<option value="location1">Location 1</option>
@@ -51,7 +108,7 @@ export class Booking extends Component {
 					</select>
                 </label>
 				<br/>
-                <label className={style.labels} for="Car">
+                <label className={style.labels} htmlFor="Car">
                     <div className={style.labelText}>Car *</div>
                     <select name="Car">
 						<option value="car1">Car 1</option>
@@ -61,25 +118,25 @@ export class Booking extends Component {
 					</select>
                 </label>
 				<br/>
-                <label className={style.labels} for="startDate">
+                <label className={style.labels} htmlFor="startDate">
                     <div className={style.labelText}>Start Date *</div>
                     <input type="date" name="startDate" id="startDate"/>
                 </label>
 				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
 				<br/>
-				<label className={style.labels} for="startTime">
+				<label className={style.labels} htmlFor="startTime">
                     <div className={style.labelText}>Start Time *</div>
                     <input type="time" name="startTime" id="startTime"/>
                 </label>
 				<p className={style.note}>Please provide time in hh:mm AM/PM</p>
 				<br/>
-				<label className={style.labels} for="endDate">
+				<label className={style.labels} htmlFor="endDate">
                     <div className={style.labelText}>End Date *</div>
                     <input type="date" name="endDate" id="endDate"/>
                 </label>
 				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
 				<br/>
-				<label className={style.labels} for="endTime">
+				<label className={style.labels} htmlFor="endTime">
                     <div className={style.labelText}>End Time *</div>
                     <input type="time" name="endTime" id="endTime"/>
                 </label>
