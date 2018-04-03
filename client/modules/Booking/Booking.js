@@ -2,46 +2,63 @@
 import React, { Component, PropTypes } from 'react'; 
 import { Link } from 'react-router';
 
+import * as http from "../../util/http";
+
 import style from './Booking.css'
-
-class BookingForm extends Component{
-	
-	constructor(props){
-		super(props);
-		this.state = {itemIsVisible:false};
-
-		//Bind the function to the class
-		this.itemToggle = this.itemToggle.bind(this);
-	}
-
-	itemToggle(){
-		this.setState({
-			itemIsVisible: !this.state.itemIsVisible,
-		});
-	}
-
-	render(){
-		return (
-			<div>
-	        	<h3 onClick={this.itemToggle}  className={style.questiontitle}>{this.props.question}</h3> 
-	        	{this.state.itemIsVisible ? this.props.children : null}
-	        </div>
-
-		)
-	}
-}
 
 //Booking component class
 export class Booking extends Component {
 
+	constructor(props){
+		super(props);
+		this.state = {
+			email: '',
+			loggedIn:false,
+		};
+	}
+
+	mapUserToModel(user) {
+		if(user) {
+		  this.setState({
+			email: user.email ? user.email : '',
+			loggedIn:true,
+		  });      
+		}
+	  }
+
+	componentDidMount() {
+		http
+		  .client()
+		  .get("/profile/my")
+		  .then(res => {
+			this.mapUserToModel(res.data);
+			//this.render();
+		  })
+		  .catch(err => {
+			console.log(err);
+		  });
+	  }	
+
   	render() {
+		return this.state.loggedIn ? this.bookingFrm() : this.register()
+	  }
+	register()
+	{
+		return(
+		<div className={style.body}>
+				<h1 className={style.title}>Please Register</h1>
+				<p><Link to="/register">Click here to go to Register</Link><br /></p>
+		</div>);
+	}
+	bookingFrm()
+	{
 	    // Here goes our page 
 	    return (
 	        <div className={style.body}>
 	        <h1 className={style.title}>Booking</h1>
             <p className={style.subtitle}><strong>Booking Form</strong><br /></p>
             <form>
-                <label className={style.labels} for="location">
+                <label className={style.labels} htmlFor="location">
                     <div className={style.labelText}>Location *</div>
                     <select name="location">
 						<option value="location1">Location 1</option>
@@ -51,7 +68,7 @@ export class Booking extends Component {
 					</select>
                 </label>
 				<br/>
-                <label className={style.labels} for="Car">
+                <label className={style.labels} htmlFor="Car">
                     <div className={style.labelText}>Car *</div>
                     <select name="Car">
 						<option value="car1">Car 1</option>
@@ -61,25 +78,25 @@ export class Booking extends Component {
 					</select>
                 </label>
 				<br/>
-                <label className={style.labels} for="startDate">
+                <label className={style.labels} htmlFor="startDate">
                     <div className={style.labelText}>Start Date *</div>
                     <input type="date" name="startDate" id="startDate"/>
                 </label>
 				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
 				<br/>
-				<label className={style.labels} for="startTime">
+				<label className={style.labels} htmlFor="startTime">
                     <div className={style.labelText}>Start Time *</div>
                     <input type="time" name="startTime" id="startTime"/>
                 </label>
 				<p className={style.note}>Please provide time in hh:mm AM/PM</p>
 				<br/>
-				<label className={style.labels} for="endDate">
+				<label className={style.labels} htmlFor="endDate">
                     <div className={style.labelText}>End Date *</div>
                     <input type="date" name="endDate" id="endDate"/>
                 </label>
 				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
 				<br/>
-				<label className={style.labels} for="endTime">
+				<label className={style.labels} htmlFor="endTime">
                     <div className={style.labelText}>End Time *</div>
                     <input type="time" name="endTime" id="endTime"/>
                 </label>
