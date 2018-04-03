@@ -6,6 +6,7 @@ import * as http from "../../util/http";
 
 import style from './Booking.css'
 
+const storage = require('../../util/persistedStorage');
 //Booking component class
 export class Booking extends Component {
 
@@ -17,26 +18,9 @@ export class Booking extends Component {
 		};
 	}
 
-	mapUserToModel(user) {
-		if(user) {
-		  this.setState({
-			email: user.email ? user.email : '',
-			loggedIn:true,
-		  });      
-		}
-	  }
-
 	componentDidMount() {
-		http
-		  .client()
-		  .get("/profile/my")
-		  .then(res => {
-			this.mapUserToModel(res.data);
-			//this.render();
-		  })
-		  .catch(err => {
-			console.log(err);
-		  });
+		if(storage.get(storage.Keys.JWT))
+		this.setState({	loggedIn:true });
 	  }	
 
   	render() {
