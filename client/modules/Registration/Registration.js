@@ -43,6 +43,27 @@ export class Registration extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.canBeSubmitted = this.canBeSubmitted.bind(this);
       }
+
+      mapUserToModel(user) {
+        if(user) {
+          this.setState({
+          registered:true,
+          });      
+        }
+        }
+    
+      componentDidMount() {
+        http
+          .client()
+          .get("/profile/my")
+          .then(res => {
+          this.mapUserToModel(res.data);
+          //this.render();
+          })
+          .catch(err => {
+          console.log(err);
+          });
+        }	
       
       handleBlur = (field) => (evt) => {
         this.setState({
