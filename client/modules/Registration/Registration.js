@@ -102,10 +102,11 @@ export class Registration extends Component {
   }
   registered()
   {
+    return(
     <div className={styles.body}>
-            <h1 className={styles.title}>Success</h1>
-            <p><strong>Registration Form</strong><br /></p>
-    </div>
+            <h1 className={styles.title}>Registered</h1>
+            <p><Link to="/profile">Click here to go to user profile</Link><br /></p>
+    </div>);
   }
   registerFrm(){
 
