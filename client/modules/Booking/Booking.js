@@ -48,8 +48,6 @@ export class Booking extends Component {
          evt.preventDefault();
          http.client().post('/booking/', {
            email: this.state.email,
-           mobile: this.state.mobile,
-           password: this.state.password1,
          })
          .then(res => {
            console.log(res);
