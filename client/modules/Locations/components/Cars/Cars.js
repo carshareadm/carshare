@@ -1,14 +1,39 @@
 // Cars.js
 // Imports
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
+import * as http from '../../../../util/http';
+
+// reactstrapify
+import {
+  Col,
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+  CardText,
+} from 'reactstrap';
+
 import styles from './Cars.css';
 
 // component class
 class Cars extends Component {
   constructor(props) {
     super(props);
-    // hardcoded dummy data only
-    this.state = { cars: createDummyData() };
+    // default empty list
+    this.state = { cars: [] };
+  }
+
+  componentDidMount() {
+    http
+      .client()
+      .get('/cars')
+      .then(res => {
+        this.setState({ cars: res.data })
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -16,99 +41,31 @@ class Cars extends Component {
     const cars = this.state.cars;
     const cards = cars.map(
       (car) =>
-        <div className="card" key={car.rego}>
-          <h5 className="card-header">
-            {car.year} {car.make} {car.model} ({car.colour})
-          </h5>
-          <div className="card-body">
+        <Card key={car._id}>
+          <CardHeader tag="h5">
+            {car.year} {car.make} {car.model} ({car.colour}) <br/>
+            <span className="text-muted">{car.location.name}</span>
+          </CardHeader>
+          <CardBody>
             <div className="float-right">
-              <button type="button" className="btn btn-primary btn-lg">Book</button>
+              <Button color="primary" size="lg">Book</Button>
             </div>
-            <h6 className="card-subtitle">
-              Location: {car.location.name}
-            </h6>
-            <p className="card-text">
+            <CardText>
               Vehicle type: {car.vehicleType.name}, {car.doors} doors<br/>
               Seats: {car.seats}<br/>
-              Hourly rate: ${car.vehicleType.hourlyRate}<br/>
+              Hourly rate: ${car.vehicleType.hourlyRate.toFixed(2)}<br/>
               Registration: {car.rego}
-            </p>
-          </div>
-        </div>
+            </CardText>
+          </CardBody>
+        </Card>
     );
 
     return (
-      <div className="col-sm">
+      <Col sm>
         {cards}
-      </div>
+      </Col>
     );
   }
-}
-
-function createDummyData ()
-{
-  let vehicleType1 =
-  {
-    name: "small",
-    hourlyRate: 7,
-  };
-
-  let location1 =
-  {
-    name: "Sydney Airport",
-    coordinates:
-    {
-      latitude: "-33.947346",
-      longitude: "151.179428",
-    },
-  };
-
-  let car1Movement =
-  {
-    car: car1,
-    coordinates:
-    {
-      latitude: "-33.947346",
-      longitude: "151.179428",
-    },
-    date: Date.now,
-  };
-
-  let car1 =
-  {
-    rego: "ABC123",
-    make: "Hyundai",
-    model: "Getz",
-    colour: "white",
-    year: "2017",
-    seats: 5,
-    doors: 3,
-    vehicleType: vehicleType1,
-    location: location1,
-    movements: [ car1Movement ],
-  };
-
-  let vehicleType2 =
-  {
-    name: "sports",
-    hourlyRate: 8.75,
-  };
-
-  let car2 =
-  {
-    rego: "ABC456",
-    make: "Mazda",
-    model: "MX-5",
-    colour: "blue",
-    year: "2017",
-    seats: 2,
-    doors: 2,
-    vehicleType: vehicleType2,
-    location: location1,
-    movements: [ car1Movement ],
-  };
-
-return [car1, car2];
 }
 
 export default Cars;
