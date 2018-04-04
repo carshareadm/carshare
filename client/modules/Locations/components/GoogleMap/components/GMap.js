@@ -35,11 +35,11 @@ export class GMap extends Component {
         zoom: zoom,
         style: {
           width: '100%',
-          height: '100%'
+          height: '100%',
         },
         containerStyle:{
           width: '100%',
-          height: '100%'
+          height: '100%',
         },
         className: "something",
       })
