@@ -92,6 +92,7 @@ export class Registration extends Component {
           })
           .then(res => {
             console.log(res);
+            storage.set(storage.Keys.JWT, res.data.token);
             this.setState({registered: true});
           })
           .catch(err => console.log(err));
