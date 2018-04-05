@@ -1,55 +1,35 @@
-.title{
-    font-size:26pt;
-    color: green;
-    margin-bottom: 1em;
+.body {
+  padding: 2em;
+  background-color: rgb(226, 226, 226);
 }
 
-.body{
-	padding: 2em;
-	background-color: rgb(226, 226, 226);
+.title {
+  font-size: 26pt;
+  color: green;
+  margin-bottom: 1em;
+}
+
+.h4 {
+  color: green;
+  font-size: 1rem;
+}
+
+.wideBtn {
+  width: 100%;
+  text-align: right !important;
+}
+
+.form {
+  padding: none !important;
 }
 
 .phoneNum{
-    font-size:20pt;
-    color: green;
+	font-size:20pt;
+	color: green;
 }
 
-p{
-	padding: 0.5em;
-}
-
-form{
-	padding: 0.5em;
-}
-
-.labels{
-	display: block;
-}
-
-.labels input{
-	width: 10em;
-	border:1px solid black;
-}
-
-.labelText{
-	width: 10em;
-	display: inline-block;
-}
-
-.labels input.error {
-	border: 1px solid red;
-}
-
-.labels p.error {
-	color: red;
-	visibility: visible;
-	padding-left: 0.5em;
-	padding-bottom: 0;
-}
-
-.labels p{
-	color: red;
-	visibility: hidden;
-	padding-left: 0.5em;
-	padding-bottom: 0;
+.regNote{
+visibility: visible;
+	font-size:20pt;
+	color: green;
 }
