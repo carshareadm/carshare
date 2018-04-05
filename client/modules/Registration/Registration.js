@@ -42,7 +42,7 @@ export class Registration extends Component {
             license: false,
           }, 
         };
-        this.canBeSubmitted = this.canBeSubmitted.bind(this);
+        this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
     //Set up variables for Msgs
@@ -109,7 +109,7 @@ export class Registration extends Component {
       }
       
       handleSubmit(evt){
-        if (!this.canBeSubmitted()) {
+        if (this.isFormInvalid()) {
           evt.preventDefault();
           return;
         }
@@ -131,7 +131,7 @@ export class Registration extends Component {
         //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
       }
       
-    canBeSubmitted() {
+    isFormInvalid() {
       return Object.keys(this.errors).some(x => this.errors[x] === true);
     }
 
@@ -162,7 +162,7 @@ export class Registration extends Component {
   registerFrm(){
 
     this.errors = this.validate();
-    const isDisabled = this.canBeSubmitted();
+    const isDisabled = this.isFormInvalid();
     
     return (
         <div className={styles.body}>
