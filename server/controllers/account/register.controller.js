@@ -55,9 +55,9 @@ exports.register = function (req, res) {
             res.status(500).send(err);
           } else {
             let token = {
-              sub: user._id,
-              email: user.email,
-              isAdmin: user.isAdmin,
+              sub: saved._id,
+              email: saved.email,
+              isAdmin: saved.isAdmin,
               exp: DateUtils.getDateInSeconds(DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)),
             };
   
