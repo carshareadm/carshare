@@ -3,6 +3,17 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import styles from './Registration.css'
 
+import {
+  Button,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
+
 import * as http from "../../util/http";
 
 var validator = require('validator');
@@ -10,17 +21,6 @@ var validator = require('validator');
 const storage = require('../../util/persistedStorage');
 
 //Create a component class
-
-function validate(email, password1, password2, mobile, license) {
-    // true means invalid, so our conditions got reversed
-    return {
-      email: !validator.isEmail(email),
-      password1: !validator.matches(password1, "^((\d)|[a-z]|[A-Z]|[^A-Z]){8,}$"),
-      password2: password1 !== password2,
-      mobile: !validator.isMobilePhone(mobile,'en-AU'),
-      license: license.length === 0,
-    };
-  }
 
 export class Registration extends Component {
 
@@ -42,18 +42,49 @@ export class Registration extends Component {
             license: false,
           }, 
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.canBeSubmitted = this.canBeSubmitted.bind(this);
-      }
+        this.isFormInvalid = this.isFormInvalid.bind(this);
+    }
+
+    //Set up variables for Msgs
+
+    labels = {
+      email: 'Email',
+      mobile: 'Mobile Phone',
+      license: 'Drivers License Number',
+      password1: 'Password',
+      password2: 'Confirm Password',
+    };
+  
+    errorMsgs = {
+      email: 'a valid email is required',
+      mobile: 'a valid mobile phone number is required',
+      license: 'required',
+      password1: 'must be minimum 8 characters with 1 uppercase, 1 lowercase and 1 number',
+      password2: 'must match password',
+    };
+
+    errors = { };
+
+    validate() {
+      // true means invalid, so our conditions got reversed
+      const errs = {
+        email: !validator.isEmail(this.state.email),
+        mobile: !validator.isMobilePhone(this.state.mobile,'en-AU'),
+        license: this.state.license.length < 1,
+        password1: !this.state.password1.match(/^$|^((\d)|[a-z]|[A-Z]|[^A-Z]){8,}$/),
+        password2: this.state.password1!=this.state.password2,
+      };
+      return errs;
+    }
 
       componentDidMount() {
         if(storage.get(storage.Keys.JWT))
         this.setState({	registered:true });
         }
       
-      handleBlur = (field) => (evt) => {
-        this.setState({
-          touched: { ...this.state.touched, [field]: true },
+      handleBlur(field) {
+        this.setState({ 
+          touched: Object.assign({}, this.state.touched, { [field]: true }),
         });
       }
 
@@ -78,7 +109,7 @@ export class Registration extends Component {
       }
       
       handleSubmit(evt){
-        if (!this.canBeSubmitted()) {
+        if (this.isFormInvalid()) {
           evt.preventDefault();
           return;
         }
@@ -92,6 +123,7 @@ export class Registration extends Component {
           })
           .then(res => {
             console.log(res);
+            storage.set(storage.Keys.JWT, res.data.token);
             this.setState({registered: true});
           })
           .catch(err => console.log(err));
@@ -99,11 +131,22 @@ export class Registration extends Component {
         //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
       }
       
-      canBeSubmitted() {
-        const errors = validate(this.state.email, this.state.password1, this.state.password2, this.state.mobile, this.state.license);
-        const isDisabled = Object.keys(errors).some(x => errors[x]);
-        return !isDisabled;
+    isFormInvalid() {
+      return Object.keys(this.errors).some(x => this.errors[x] === true);
+    }
+
+    renderLabel(key, labelFor) {  
+      if (this.isError(key)) {
+        return <Label htmlFor={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
       }
+      return <Label htmlFor={labelFor}>{this.labels[key]}</Label>
+    }
+
+  isError(key) {
+    const errorExists = this.errors[key];
+    const touched = this.state.touched[key] === true;
+    return errorExists && touched;
+  }
 
   render() {
     return this.state.registered ? this.registered() : this.registerFrm()
@@ -118,62 +161,98 @@ export class Registration extends Component {
   }
   registerFrm(){
 
-    const errors = validate(this.state.email, this.state.password1, this.state.password2, this.state.mobile, this.state.license);
-    const isDisabled = Object.keys(errors).some(x => errors[x]);
-
-    const shouldMarkError = (field) => {
-      const hasError = errors[field];
-      const shouldShow = this.state.touched[field];
-      
-      return hasError ? shouldShow : false;
-    };
+    this.errors = this.validate();
+    const isDisabled = this.isFormInvalid();
     
     return (
         <div className={styles.body}>
-            <h1 className={styles.title}>Registration</h1>
-            <p><strong>Registration Form</strong><br /></p>
-            <form onSubmit={this.handleSubmit}>
-                <label className={styles.labels} htmlFor="email">
-                    <div className={styles.labelText}>Email *</div>
-                    <input className={shouldMarkError('email') ? styles.error : ""} type="text" placeholder="Enter Email"
-                    onBlur={this.handleBlur('email')}
-                     value={this.state.email} onChange={this.handleEmailChange} />
-                     <p className={shouldMarkError('email') ? styles.error : ""}>Please enter a valid email</p>
-                </label>
-                <label className={styles.labels} htmlFor="licence">
-                    <div className={styles.labelText}>Driver Licence *</div>
-                    <input className={shouldMarkError('license') ? styles.error : ""} type="text" placeholder="Enter License Number"
-                     value={this.state.license} onChange={this.handleLicenseChange}
-                     onBlur={this.handleBlur('license')} />
-                     <p className={shouldMarkError('license') ? styles.error : ""}>Please enter a valid license number</p>
-                </label>
-                <label className={styles.labels} htmlFor="mobile">
-                    <div className={styles.labelText}>Mobile *</div>
-                    <input className={shouldMarkError('mobile') ? styles.error : ""} type="text" placeholder="Enter Mobile"
-                     value={this.state.mobile} onChange={this.handleMobileChange} 
-                     onBlur={this.handleBlur('mobile')} />
-                     <p className={shouldMarkError('mobile') ? styles.error : ""} >Please enter a valid mobile</p>
-                </label>
-                <label className={styles.labels} htmlFor="password">
-                    <div className={styles.labelText}>Password *</div>
-                    <input className={shouldMarkError('password1') ? styles.error : ""} type="password" placeholder="Enter Password"
-                     value={this.state.password1} onChange={this.handlePassword1Change}
-                     onBlur={this.handleBlur('password1')} />
-                     <p className={shouldMarkError('password1') ? styles.error : ""}>Password should be at least 8 digits</p>
-                </label>
-                <label className={styles.labels} htmlFor="password">
-                    <div className={styles.labelText}>Confirm Password *</div>
-                    <input className={shouldMarkError('password2') ? styles.error : ""} type="password" placeholder="Repeat Password"
-                     value={this.state.password2} onChange={this.handlePassword2Change} 
-                     onBlur={this.handleBlur('password2')} />
-                     <p className={shouldMarkError('password2') ? styles.error : ""}>Please ensure passwords match</p>
-                </label>
-        <button disabled={isDisabled}>Register</button>
+        <Container>
+          <Row>
+            <Col>
+              <h1 className={styles.title}>Registration</h1>
+            </Col>
+          </Row>
+            <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
+          <Row>
+              <Col xs="12" sm="6">
+                <hr />
+                <h4 className={styles.h4}>Registration Form</h4>
+                <FormGroup>
+                  {this.renderLabel("email", "email")}
+                  <Input
+                    name="email"
+                    id="email"
+                    className={this.isError('email') ? 'is-invalid' : ''}
+                    type="text" placeholder="Enter Email"
+                    onBlur={() => this.handleBlur('email')}
+                    value={this.state.email} 
+                    onChange={this.handleEmailChange.bind(this)} 
+                    required/>
+                </FormGroup>
+                <FormGroup>
+                  {this.renderLabel("password1", "password1")}
+                  <Input 
+                    name="password1"
+                    id="password1"
+                    className={this.isError('password1') ? 'is-invalid' : ''}
+                    type="password" placeholder="Enter Password"
+                    onBlur={() => this.handleBlur('password1')}
+                    value={this.state.password1} 
+                    onChange={this.handlePassword1Change.bind(this)}
+                    required/>
+                </FormGroup>
+                <FormGroup>
+                  {this.renderLabel("password2", "password2")}
+                  <Input 
+                    name="password2"
+                    id="password2"
+                    className={this.isError('password2') ? 'is-invalid' : ''}
+                    type="password" placeholder="Confirm Password"
+                    onBlur={() => this.handleBlur('password2')}
+                    value={this.state.password2} 
+                    onChange={this.handlePassword2Change.bind(this)} 
+                    required/>
+                </FormGroup>
+                <FormGroup>
+                  {this.renderLabel("license", "license")}
+                  <Input 
+                  name="license"
+                  id="license"
+                    className={this.isError('license') ? 'is-invalid' : ''}
+                    type="text" placeholder="Enter License"
+                    onBlur={() => this.handleBlur('license')}
+                    value={this.state.license} 
+                    onChange={this.handleLicenseChange.bind(this)}
+                    required/>
+                </FormGroup>
+                <FormGroup>
+                  {this.renderLabel("mobile", "mobile")}
+                  <Input 
+                    name="mobile"
+                    id="mobile"
+                    className={this.isError('mobile') ? 'is-invalid' : ''}
+                    type="text" placeholder="Enter Mobile"
+                    onBlur={() => this.handleBlur('mobile')}
+                    value={this.state.mobile} 
+                    onChange={this.handleMobileChange.bind(this)}
+                    required/>
+                </FormGroup>
+                <Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
+                  Register
+                </Button>
+              </Col>
+              <Col xs="12" sm="6">
+                <hr/>
+                <h4 className={styles.h4}>Problems with registration?</h4>
+                <p>Please contact us via the telephone numbers listed below or the <Link to="/contact">contact page</Link>.</p>
+                <h4 className={styles.h4}>Customer Services</h4>
+                <p>Services available 7am - 7pm</p>
+                <p className={styles.phoneNum}>1300 000 123</p>
+              </Col>
+            </Row>         
+              
             </form>
-            <p><strong>Problems with registration?</strong><br/>Please contact us via the telephone numbers listed below or the <Link to="/register">contact page</Link>.</p>
-            <p><strong>Customer Services</strong><br />
-            Services available 7am - 7pm</p>
-            <p className={styles.phoneNum}>1300 000 123</p>
+          </Container>
         </div>
     );
   }

@@ -2,6 +2,10 @@ import User from "../../models/user";
 import License from "../../models/license";
 import Image from "../../models/image"
 
+const config = require('../../config');
+const DateUtils = require('../../util/date.helper');
+const jwt = require('jwt-simple');
+
 exports.register = function (req, res) {
   const email = req.body.email;
   const mobile = req.body.mobile;
@@ -41,16 +45,24 @@ exports.register = function (req, res) {
   {
     userLicense.save((licenseerr,usrlicense) => {
       if (licenseerr) {
-        res.status(501).send(licenseerr);
+        res.status(500).send(licenseerr);
       }
       else{
   
         user.license=userLicense;
         user.save((err, saved) => {
           if (err) {
-            res.status(502).send(err);
+            res.status(500).send(err);
           } else {
-            res.status(200).send(saved._id);
+            let token = {
+              sub: saved._id,
+              email: saved.email,
+              isAdmin: saved.isAdmin,
+              exp: DateUtils.getDateInSeconds(DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)),
+            };
+  
+            const encodedToken = jwt.encode(token, config.jwt.secret);
+            res.status(200).send({ token: encodedToken });
           }
         });
       }
