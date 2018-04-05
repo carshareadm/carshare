@@ -47,8 +47,7 @@ module.exports = function() {
     
       let imagelicenseU2 = new Image();
       //user2 image block
-      imagelicenseU2.fileHandle = "user2";
-      imagelicenseU2.extension = "jpg";
+      imagelicenseU2.filename = "user2.jpg";
       imagelicenseU2.save({}).catch(function(err) {
         console.log(err);
       });

@@ -2,9 +2,12 @@
 const app = require("./app");
 
 const dummyData = require("./dummyData");
+const logger = require('./util/logger');
 import serverConfig from "./config";
 
 import mongoose from "mongoose";
+
+import * as s3Helper from './util/aws.helper';
 
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise;
@@ -19,44 +22,52 @@ const mongoOptions = {
   bufferMaxEntries: 0,
 };
 
+logger.info('Starting shacar ' + process.env.NODE_ENV + '...')
+
 if (process.env.NODE_ENV !== 'production') {
   const expressSwagger = require('express-swagger-generator')(app);
   
   let swaggerOptions = {
-      swaggerDefinition: {
-          info: {
-              description: 'ShaCar API',
-              title: 'Swagger',
-              version: '1.0.0',
-          },
-          host: 'localhost:8000',
-          basePath: '/api',
-          produces: [
-              "application/json",
-              "application/xml",
-          ],
-          schemes: ['http', 'https'],
+    swaggerDefinition: {
+      info: {
+        description: 'ShaCar API',
+        title: 'Swagger',
+        version: '1.0.0',
       },
-      basedir: __dirname, //app absolute path
-      files: ['./routes/**/*.js'], // Path to the API handle folder
+      host: 'localhost:8000',
+      basePath: '/api',
+      produces: [
+        "application/json",
+        "application/xml",
+      ],
+      schemes: ['http', 'https'],
+    },
+    basedir: __dirname, //app absolute path
+    files: ['./routes/**/*.js'], // Path to the API handle folder
   };
+  logger.info({message: 'setting up swagger with options', options: swaggerOptions});
   expressSwagger(swaggerOptions);
 
 }
 
+logger.info('connecting to mongodb...');
 mongoose.connect(serverConfig.mongoURL, mongoOptions, error => {
   if (error) {
-    console.error("Please make sure Mongodb is installed and running!"); // eslint-disable-line no-console
+    logger.err({message: "Please make sure Mongodb is installed and running!", err: error});
     throw error;
   }
-
+  logger.info('connected to mongodb...');
   // feed some dummy data in DB.
   dummyData();
 
   // start app
+  logger.info('starting express...');
   app.listen(serverConfig.port, error => {
     if (!error) {
-      console.log(`ShaCar is running on port: ${serverConfig.port}!`); 
+      logger.info(`ShaCar is running on port: ${serverConfig.port}!`);
+    }
+    else {
+      logger.err({message: 'express failed to start...', err: error});
     }
   });
 });

@@ -45,15 +45,17 @@ const account = require('./routes/account.routes');
 const profile = require('./routes/profile.routes');
 const cars = require('./routes/cars.routes');
 const booking = require('./routes/booking.routes');
+const images = require('./routes/images.routes');
+const license = require('./routes/license.routes');
 app.use('/api/account', account);
 app.use('/api/profile', profile);
 app.use('/api/cars', cars);
 app.use('/api/booking', booking);
+app.use('/api/images', images);
+app.use('/api/license', license);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
-  console.log('html', html);
-  console.log('initialState', initialState);
   // Import Manifests
   const assetsManifest = process.env.webpackAssets && JSON.parse(process.env.webpackAssets);
   const chunkManifest = process.env.webpackChunkAssets && JSON.parse(process.env.webpackChunkAssets);
@@ -93,7 +95,7 @@ const renderError = err => {
   return renderFullPage(`Server Error${errTrace}`, {});
 };
 
-app.use(
+app.use('/*',
   (req, res) => res.send(renderFullPage('', { app: {} }))
 );
 

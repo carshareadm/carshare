@@ -22,3 +22,13 @@
 .form {
   padding: none !important;
 }
+
+.imgContainer {
+  text-align: center;
+  background: rgba(0,0,0,0.3);
+}
+
+.imgContainer img {
+  max-width:100%;
+  max-height:200px;
+}

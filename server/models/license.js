@@ -6,7 +6,6 @@ const licenseSchema = new Schema({
   image: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Image',
-    required: true,
   },
 });
 
