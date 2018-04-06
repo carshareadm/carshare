@@ -17,7 +17,10 @@ import {
 } from "reactstrap";
 import * as http from "../../util/http";
 
-import style from './Booking.css'
+import styles from './Booking.css'
+import {Registration} from '../Registration/Registration';
+
+var validator = require('validator');
 
 const storage = require('../../util/persistedStorage');
 //Booking component class
@@ -26,12 +29,62 @@ export class Booking extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			email: '',
+			startDate: '',
+			startTime: '',
+			endDate: '',
+			endTime: '',
 			loggedIn:false,
-			booked:false,
-		};
-		this.handleSubmit = this.handleSubmit.bind(this);
-        this.canBeSubmitted = this.canBeSubmitted.bind(this);
+			
+			touched: {
+				startDate: false,
+				startTime: false,
+				endDate: false,
+				endTime: false,
+			}, 
+		  };
+		  this.isFormInvalid = this.isFormInvalid.bind(this);
+	
+	}
+//Set up variables for Msgs
+
+labels = {
+	startDate: 'Start Date',
+	startTime: 'Start Time',
+	endDate: 'End Date',
+	endTime: 'End Time',
+  };
+
+  errorMsgs = {
+	startDate: 'a valid date in mm/dd/yyyy is required',
+	startTime: 'Mobile Phone',
+	endDate: 'a valid date in mm/dd/yyyy is required',
+	endTime: 'Password',
+  };
+
+  errors = { };
+
+  validate() {
+	// true means invalid, so our conditions got reversed
+	const errs = {
+	  startDate: validator.isAfter (this.state.startDate,this.state.endDate),
+	  startTime: validator.isAfter (this.state.startDate,this.state.endDate),
+	  endDate: validator.isBefore (this.state.endDate,this.state.startDate),
+	  endTime: validator.isAfter (this.state.startDate,this.state.endDate),
+	  password1: !this.state.startDate.match(/^$|^((\d)|[a-z]|[A-Z]|[^A-Z]){8,}$/),
+	};
+	return errs;
+  }
+
+  isError(key) {
+    const errorExists = this.errors[key];
+    const touched = this.state.touched[key] === true;
+    return errorExists && touched;
+  }
+	  
+	handleBlur(field) {
+		this.setState({ 
+		  isTouched: Object.assign({}, this.state.touched, { [field]: true }),
+		});
 	}
 
 	componentDidMount() {
@@ -40,7 +93,7 @@ export class Booking extends Component {
 	  }	
 
 	handleSubmit(evt){
-       if (!this.canBeSubmitted()) {
+       if (this.isFormInvalid()) {
          evt.preventDefault();
          return;
        }
@@ -57,17 +110,16 @@ export class Booking extends Component {
        }
        //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
 	 }
-	 
-	 canBeSubmitted() {
-		/*
-        const errors = validate(this.state.email, this.state.password1, this.state.password2, this.state.mobile, this.state.license);
-		const isDisabled = Object.keys(errors).some(x => errors[x]);
-		
-		return !isDisabled;
-		*/
-		return true; 
-		// temporary, to be updated when validation is added
-     }
+
+	 isFormInvalid() {
+		return Object.keys(this.errors).some(x => this.errors[x] === true);
+	  }
+	renderLabel(key, labelFor) {  
+		if (this.isError(key)) {
+	  		return <Label htmlFor={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
+		}
+		return <Label htmlFor={labelFor}>{this.labels[key]}</Label>
+	}
 
   	render() {
 		return this.state.booked ? this.booked() : this.state.loggedIn ? this.bookingFrm() : this.register()
@@ -75,74 +127,80 @@ export class Booking extends Component {
 	register()
 	{
 		return(
-		<div className={style.body}>
-				<h1 className={style.title}>Please Register</h1>
+		<div className={styles.body}>
+				<h1 className={styles.title}>Please Register</h1>
 				<p><Link to="/register">Click here to go to Register</Link><br /></p>
 		</div>);
 	}
 	booked()
 	{
 		return(
-		<div className={style.body}>
-				<h1 className={style.title}>Booking success</h1>
+		<div className={styles.body}>
+				<h1 className={styles.title}>Booking success</h1>
 				<p><Link to="/">Click here to return home</Link><br /></p>
 		</div>);
 	}
+	
 	bookingFrm()
 	{
+		this.errors = this.validate();
+    	const isDisabled = this.isFormInvalid();
 	    // Here goes our page 
 	    return (
-	        <div className={style.body}>
-	        <h1 className={style.title}>Booking</h1>
-            <p className={style.subtitle}><strong>Booking Form</strong><br /></p>
-            <form onSubmit={this.handleSubmit}>
-                <label className={style.labels} htmlFor="location">
-                    <div className={style.labelText}>Location *</div>
-                    <select name="location">
-						<option value="location1">Location 1</option>
-						<option value="location2">Location 2</option>
-						<option value="location3">Location 3</option>
-						<option value="location4">Location 4</option>
-					</select>
-                </label>
+	    <div className={styles.body}>
+		<Container>
+		<Row>
+			<Col>
+	        <h1 className={styles.title}>Booking</h1>
+			</Col>
+		</Row>
+            <form onSubmit={this.handleSubmit.bind(this)}>
+        <Row>
+			<Col xs="12" sm="6">
+			<hr/>
+                <h4 className={styles.h4}>Check availability for:</h4>
+                <p>Vehicle - </p>
+                <p>Hire Type - </p>
+                <p>Registration - </p>
 				<br/>
-                <label className={style.labels} htmlFor="Car">
-                    <div className={style.labelText}>Car *</div>
-                    <select name="Car">
-						<option value="car1">Car 1</option>
-						<option value="car2">Car 2</option>
-						<option value="car3">Car 3</option>
-						<option value="car4">Car 4</option>
-					</select>
-                </label>
-				<br/>
-                <label className={style.labels} htmlFor="startDate">
-                    <div className={style.labelText}>Start Date *</div>
-                    <input type="date" name="startDate" id="startDate"/>
-                </label>
-				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
-				<br/>
-				<label className={style.labels} htmlFor="startTime">
-                    <div className={style.labelText}>Start Time *</div>
-                    <input type="time" name="startTime" id="startTime"/>
-                </label>
-				<p className={style.note}>Please provide time in hh:mm AM/PM</p>
-				<br/>
-				<label className={style.labels} htmlFor="endDate">
-                    <div className={style.labelText}>End Date *</div>
-                    <input type="date" name="endDate" id="endDate"/>
-                </label>
-				<p className={style.note}>Please provide date in mm/dd/yyyy</p>
-				<br/>
-				<label className={style.labels} htmlFor="endTime">
-                    <div className={style.labelText}>End Time *</div>
-                    <input type="time" name="endTime" id="endTime"/>
-                </label>
-				<p className={style.note}>Please provide time in hh:mm AM/PM</p>
-				<br/>
-                <input type="submit" value="Submit" />
+                <p>Address Placeholder</p>
+			</Col>
+			<Col xs="12" sm="6">
+			<hr/>
+			<h4 className={styles.h4}>Booking Form</h4>
+				<FormGroup>
+                {this.renderLabel("startDate", "startDate")}
+                    <Input type="date" name="startDate" id="startDate"/>
+				</FormGroup>
+				<FormGroup>
+				{this.renderLabel("startTime", "startTime")}
+                    <Input type="time" name="startTime" id="startTime"/>
+				</FormGroup>
+				<FormGroup>
+				{this.renderLabel("endDate", "endDate")}
+                    <Input type="date" name="endDate" id="endDate"/>
+				</FormGroup>
+				<FormGroup>
+				{this.renderLabel("endTime", "endTime")}
+                    <Input type="time" name="endTime" id="endTime"/>
+				</FormGroup>
+				<Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
+                  Check Availability
+                </Button>
+			</Col>
+		</Row>
             </form>
-	        </div>
+		<Row>
+			<Col>
+			<form onSubmit={this.handleSubmit.bind(this)}>
+				<Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
+				Book
+            	</Button>
+			</form>
+			</Col>
+		</Row>
+		</Container>
+	    </div>
 	    );
   }
 }
