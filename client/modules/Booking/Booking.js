@@ -17,10 +17,12 @@ import {
 } from "reactstrap";
 import * as http from "../../util/http";
 
+import DatePicker from 'react-datepicker';
+
+import moment from 'moment';
+
 import styles from './Booking.css'
 import {Registration} from '../Registration/Registration';
-
-var validator = require('validator');
 
 const storage = require('../../util/persistedStorage');
 //Booking component class
@@ -29,10 +31,10 @@ export class Booking extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			startDate: '',
-			startTime: '',
-			endDate: '',
-			endTime: '',
+			startDate: moment(),
+			startTime: moment(),
+			endDate: moment(),
+			endTime: moment(),
 			loggedIn:false,
 			
 			touched: {
@@ -42,62 +44,54 @@ export class Booking extends Component {
 				endTime: false,
 			}, 
 		  };
-		  this.isFormInvalid = this.isFormInvalid.bind(this);
+//		  this.isFormInvalid = this.isFormInvalid.bind(this);
 	
 	}
 //Set up variables for Msgs
 
 labels = {
-	startDate: 'Start Date',
-	startTime: 'Start Time',
-	endDate: 'End Date',
-	endTime: 'End Time',
+	startDate: 'Start Date and Time',
+	endDate: 'End Date and Time',
   };
 
   errorMsgs = {
 	startDate: 'a valid date in mm/dd/yyyy is required',
-	startTime: 'Mobile Phone',
 	endDate: 'a valid date in mm/dd/yyyy is required',
-	endTime: 'Password',
   };
-
-  errors = { };
-
-  validate() {
-	// true means invalid, so our conditions got reversed
-	const errs = {
-	  startDate: validator.isAfter (this.state.startDate,this.state.endDate),
-	  startTime: validator.isAfter (this.state.startDate,this.state.endDate),
-	  endDate: validator.isBefore (this.state.endDate,this.state.startDate),
-	  endTime: validator.isAfter (this.state.startDate,this.state.endDate),
-	  password1: !this.state.startDate.match(/^$|^((\d)|[a-z]|[A-Z]|[^A-Z]){8,}$/),
-	};
-	return errs;
-  }
-
-  isError(key) {
-    const errorExists = this.errors[key];
-    const touched = this.state.touched[key] === true;
-    return errorExists && touched;
-  }
-	  
-	handleBlur(field) {
-		this.setState({ 
-		  isTouched: Object.assign({}, this.state.touched, { [field]: true }),
-		});
-	}
-
+  
 	componentDidMount() {
 		if(storage.get(storage.Keys.JWT))
 		this.setState({	loggedIn:true });
 	  }	
 
+	handleBlur(field) {
+		this.setState({ 
+			touched: Object.assign({}, this.state.touched, { [field]: true }),
+		});
+	}
+	
+	handleStartDateChange = (evt) => {
+		this.setState({ startDate: evt.target.value });
+	}
+
+	handleStartTimeChange = (evt) => {
+		this.setState({ startTime: evt.target.value });
+	}
+
+	handleEndDateChange = (evt) => {
+		this.setState({ endDate: evt.target.value });
+	}
+
+	handleEndTimeChange = (evt) => {
+		this.setState({ endTime: evt.target.value });
+	}
+
 	handleSubmit(evt){
-       if (this.isFormInvalid()) {
-         evt.preventDefault();
-         return;
-       }
-       else{
+//       if (this.isFormInvalid()) {
+//         evt.preventDefault();
+//         return;
+//       }
+//       else{
          evt.preventDefault();
          http.client().post('/booking/', {
            email: this.state.email,
@@ -107,17 +101,16 @@ labels = {
            this.setState({booked: true});
          })
          .catch(err => console.log(err));
-       }
+//       }
        //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
 	 }
 
-	 isFormInvalid() {
-		return Object.keys(this.errors).some(x => this.errors[x] === true);
-	  }
 	renderLabel(key, labelFor) {  
+		/*
 		if (this.isError(key)) {
 	  		return <Label htmlFor={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
 		}
+		*/
 		return <Label htmlFor={labelFor}>{this.labels[key]}</Label>
 	}
 
@@ -143,11 +136,11 @@ labels = {
 	
 	bookingFrm()
 	{
-		this.errors = this.validate();
-    	const isDisabled = this.isFormInvalid();
+//		this.errors = this.validate();
+//    const isDisabled = this.isFormInvalid();
 	    // Here goes our page 
-	    return (
-	    <div className={styles.body}>
+	  return (
+	  <div className={styles.body}>
 		<Container>
 		<Row>
 			<Col>
@@ -169,22 +162,28 @@ labels = {
 			<hr/>
 			<h4 className={styles.h4}>Booking Form</h4>
 				<FormGroup>
-                {this.renderLabel("startDate", "startDate")}
-                    <Input type="date" name="startDate" id="startDate"/>
+          {this.renderLabel("startDate", "startDate")}
+						<DatePicker 
+						selected={this.state.startDate} 
+						onChange={this.handleStartDateChange.bind(this)}
+						showTimeSelect 
+						timeFormat="HH:mm" 
+						timeIntervals={15} 
+						dateFormat="LLL" 
+						timeCaption="time"/>
 				</FormGroup>
 				<FormGroup>
-				{this.renderLabel("startTime", "startTime")}
-                    <Input type="time" name="startTime" id="startTime"/>
+					{this.renderLabel("endDate", "endDate")}
+						<DatePicker 
+						selected={this.state.endDate} 
+						onChange={this.handleEndDateChange.bind(this)}
+						showTimeSelect 
+						timeFormat="HH:mm" 
+						timeIntervals={15} 
+						dateFormat="LLL" 
+						timeCaption="time"/>
 				</FormGroup>
-				<FormGroup>
-				{this.renderLabel("endDate", "endDate")}
-                    <Input type="date" name="endDate" id="endDate"/>
-				</FormGroup>
-				<FormGroup>
-				{this.renderLabel("endTime", "endTime")}
-                    <Input type="time" name="endTime" id="endTime"/>
-				</FormGroup>
-				<Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
+				<Button outline color="success" className={styles.wideBtn}>
                   Check Availability
                 </Button>
 			</Col>
@@ -193,7 +192,9 @@ labels = {
 		<Row>
 			<Col>
 			<form onSubmit={this.handleSubmit.bind(this)}>
-				<Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
+				<Button 
+//				disabled={isDisabled} 
+				outline color="success" className={styles.wideBtn}>
 				Book
             	</Button>
 			</form>
