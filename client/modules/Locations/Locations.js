@@ -1,6 +1,8 @@
 // Locations.js
 // Imports
 import React, { Component, PropTypes } from 'react';
+import * as http from '../../util/http';
+
 import styles from './Locations.css';
 
 // import components
@@ -11,6 +13,19 @@ import Cars from './components/Cars/Cars';
 class Locations extends Component {
   constructor(props) {
     super(props);
+    this.state = { cars: [] };
+  }
+
+  componentDidMount() {
+    http
+      .client()
+      .get('/cars')
+      .then(res => {
+        this.setState({ cars: res.data })
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -38,7 +53,7 @@ class Locations extends Component {
 
             <GoogleMap />
           </div>
-          <Cars/>
+          <Cars cars={this.state.cars}/>
         </div>
       </div>
     );

@@ -2,7 +2,7 @@
 // Imports
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import * as http from '../../../../util/http';
+
 
 // reactstrapify
 import {
@@ -18,27 +18,10 @@ import styles from './Cars.css';
 
 // component class
 class Cars extends Component {
-  constructor(props) {
-    super(props);
-    // default empty list
-    this.state = { cars: [] };
-  }
-
-  componentDidMount() {
-    http
-      .client()
-      .get('/cars')
-      .then(res => {
-        this.setState({ cars: res.data })
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
 
   render() {
-    // Generate a list of vehicles
-    const cars = this.state.cars;
+    // Generate a list of vehicles taking them from props
+    const cars = this.props.cars;
     const cards = cars.map(
       (car) =>
         <Card key={car._id}>
