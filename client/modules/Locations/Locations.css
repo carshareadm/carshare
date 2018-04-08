@@ -25,11 +25,6 @@
 	display: inline-block;
 }
 
-.dropdown{
-	background-color: rgb(76, 157, 38) !important;
-  	border: solid rgb(76, 157, 38) 1px !important;
-}
-
 .mapDiv>div{
 	width: 100%;
 	height: 100%;

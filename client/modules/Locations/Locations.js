@@ -2,13 +2,15 @@
 import React, { Component, PropTypes } from 'react';
 import {geolocated} from 'react-geolocated';
 import * as http from '../../util/http';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 
 import styles from './Locations.css';
 
 // import components
 import GoogleMap from './components/GoogleMap/GoogleMap';
 import Cars from './components/Cars/Cars';
+import distanceKM from './distanceKM';
+import SelectLocation from './components/SelectLocation/SelectLocation';
 
 const CLOSEZOOM = 14;
 const INITIALLOC = {
@@ -17,24 +19,6 @@ const INITIALLOC = {
       zoom: 3
 }
 
-//Next 2 functions are from StackOverflow https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
-function distanceKM(lat1,lon1,lat2,lon2) {
-  var R = 6371; // Radius of the earth in km
-  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLon = deg2rad(lon2-lon1); 
-  var a = 
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-    Math.sin(dLon/2) * Math.sin(dLon/2)
-    ; 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-  var d = R * c; // Distance in km
-  return d;
-}
-
-function deg2rad(deg) {
-  return deg * (Math.PI/180)
-}
 
 //Create a component class
 class Locations extends Component {
@@ -115,23 +99,6 @@ class Locations extends Component {
     }
   }
 
-  showDropdown(){
-    return(
-      <UncontrolledDropdown>
-        <DropdownToggle caret className={styles.dropdown}>
-          {this.state.currentLocation ? this.state.currentLocation.name : "Select Location"}
-        </DropdownToggle>
-        <DropdownMenu>
-          {this.state.locations.map(l => (
-            <DropdownItem key={l._id} data-id={l._id} onClick={this.setLocation}>
-              {l.name}
-            </DropdownItem>
-          ))}
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    )
-  }
-
   render() {
     // Here goes our page
     return (
@@ -143,7 +110,11 @@ class Locations extends Component {
         </div>
         <div className="row">
           <Col xs="12" sm="6">
-              {this.showDropdown()}
+              <SelectLocation 
+                currentLocation={this.state.currentLocation} 
+                locations={this.state.locations}
+                setLocation={this.setLocation}
+              />
           </Col>
           <Col xs="12" sm="6">
               <button type="button" 
