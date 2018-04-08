@@ -1,0 +1,11 @@
+/* PaymentDetails.css */
+.body {
+  padding: 2em;
+  background-color: rgb(226, 226, 226);
+}
+
+.title {
+  font-size: 26pt;
+  color: green;
+  margin-bottom: 1em;
+}

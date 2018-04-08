@@ -47,12 +47,14 @@ const cars = require('./routes/cars.routes');
 const booking = require('./routes/booking.routes');
 const images = require('./routes/images.routes');
 const license = require('./routes/license.routes');
+const paymentDetails = require('./routes/paymentDetails.routes');
 app.use('/api/account', account);
 app.use('/api/profile', profile);
 app.use('/api/cars', cars);
 app.use('/api/booking', booking);
 app.use('/api/images', images);
 app.use('/api/license', license);
+app.use('/api/paymentDetails', paymentDetails);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {

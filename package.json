@@ -47,6 +47,7 @@
     "body-parser": "^1.15.1",
     "bootstrap": "^4.0.0",
     "compression": "^1.6.2",
+    "credit-card": "^3.0.1",
     "cross-env": "^1.0.8",
     "cuid": "^1.3.8",
     "express": "^4.13.4",
