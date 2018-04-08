@@ -6,7 +6,22 @@ export class GMap extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.coords && prevProps.coords !== this.props.coords) {
       this.loadMap();
+      this.forceUpdate();
     }
+  }
+
+  renderChildren() {
+    const {children} = this.props;
+
+    if (!children || !this.map) return;
+    console.log("renderChildren ", children);
+    return React.Children.map(children, c => {
+      return React.cloneElement(c, {
+        map: this.map,
+        google: this.props.google,
+        mapCenter: this.props.coords
+      });
+    })
   }
 
   loadMap() {
@@ -51,7 +66,9 @@ export class GMap extends Component {
       return <div>Waiting for geo coordinates...</div>
     }
 
-    return <div ref='map' style={{width: '100%', height: '100%'}} />;
+    return <div ref='map' style={{width: '100%', height: '100%'}}>
+         {this.renderChildren()}
+    </div>;
   }
 }
 

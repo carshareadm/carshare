@@ -13,7 +13,7 @@ import Cars from './components/Cars/Cars';
 class Locations extends Component {
   constructor(props) {
     super(props);
-    this.state = { cars: [] };
+    this.state = { cars: [], locations: [] };
   }
 
   componentDidMount() {
@@ -21,7 +21,10 @@ class Locations extends Component {
       .client()
       .get('/cars')
       .then(res => {
-        this.setState({ cars: res.data })
+        this.setState({ 
+          cars: res.data,
+          locations: res.data.map(car => car.location)  
+        })
       })
       .catch(err => {
         console.log(err);
@@ -32,7 +35,6 @@ class Locations extends Component {
     // Here goes our page
     return (
       <div className="container">
-
         <div className="row">
           <div className="col">
             <h1 className={styles.title}>Locations</h1>
@@ -50,8 +52,9 @@ class Locations extends Component {
 
         <div className={styles.mapContainer+" row"}>
           <div className={styles.mapDiv+" col-sm"}>
-
-            <GoogleMap />
+            {console.log(this.state.locations)}
+            <GoogleMap locations={this.state.locations}/>
+            }
           </div>
           <Cars cars={this.state.cars}/>
         </div>

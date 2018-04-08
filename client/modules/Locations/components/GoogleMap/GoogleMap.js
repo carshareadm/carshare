@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {GoogleApiWrapper} from 'google-maps-react';
 import GMap from './components/GMap.js'
+import Marker from './components/Marker.js'
+
 import styles from './GoogleMap.css';
 
 
@@ -12,7 +14,9 @@ export class GoogleMap extends Component {
       return <div>Loading...</div>
     }
     return (
-        <GMap google={this.props.google} />
+        <GMap google={this.props.google}>
+        	{this.props.locations.map(loc => <Marker position={loc.coordinates} key={loc._id} /> )}
+        </GMap>
     )
   }
 }
