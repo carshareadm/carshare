@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import {geolocated} from 'react-geolocated';
 import * as http from '../../util/http';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 import styles from './Locations.css';
 
@@ -40,11 +41,18 @@ class Locations extends Component {
   constructor(props) {
     super(props);
     this.setLocation = this.setLocation.bind(this);
-    this.state = { cars: [], locations: [], currentcoords: INITIALLOC, sortedCars: []};
+    this.setInitialCoordinates = this.setInitialCoordinates.bind(this);
+    this.state = { 
+      cars: [], 
+      locations: [], 
+      currentcoords: INITIALLOC, 
+      currentLocation: null, 
+      sortedCars: []
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.coords && prevProps.coords != this.props.coords){ 
+    if((this.props.coords && prevProps.coords != this.props.coords)&& !this.state.currentLocation){ 
       this.setCoordinates(this.props.coords.latitude, this.props.coords.longitude);
     }
   }
@@ -77,6 +85,9 @@ class Locations extends Component {
   setLocation(event){
     const loc = this.state.locations.find(l => l._id===event.target.dataset.id);
     this.setCoordinates(loc.coordinates.latitude, loc.coordinates.longitude);
+    this.setState({
+      currentLocation: loc
+    });
   }
 
   setCoordinates(latitude, longitude){
@@ -90,6 +101,31 @@ class Locations extends Component {
     })
   }
 
+  setInitialCoordinates(){
+    this.setState({
+      currentLocation: null
+    });
+    if(this.props.coords){
+      this.setCoordinates(this.props.coords.latitude, this.props.coords.longitude);
+    }
+  }
+
+  showDropdown(){
+    return(
+      <UncontrolledDropdown>
+        <DropdownToggle caret>
+          {this.state.currentLocation ? this.state.currentLocation.name : "Select Location"}
+        </DropdownToggle>
+        <DropdownMenu>
+          {this.state.locations.map(l => (
+            <DropdownItem key={l._id} data-id={l._id} onClick={this.setLocation}>
+              {l.name}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    )
+  }
 
   render() {
     // Here goes our page
@@ -98,19 +134,15 @@ class Locations extends Component {
         <div className="row">
           <div className="col">
             <h1 className={styles.title}>Locations</h1>
-            <h2 className={styles.subtitle}>Find a vehicle</h2>
           </div>
         </div>
         <div className="row">
             <form>
-              {/* <input type="text" className={styles.input+" form-control"} id="geocodeSearch" placeholder="Search location"/> */}
-              
-              {this.state.locations.map(l => (
-                <button type="button" className={styles.buttons + " btn"} key={l._id} data-id={l._id} onClick={this.setLocation}>
-                  Use {l.name}
-                </button>
-              ))}
-              <button type="button" className={styles.buttons + " btn btn-primary btn-lg btn-block"}>
+              {this.showDropdown()}
+              <button type="button" 
+                className={styles.buttons + " btn btn-primary btn-lg"} 
+                onClick={this.setInitialCoordinates}
+              >
                 Use Current Location
               </button>
             </form>
