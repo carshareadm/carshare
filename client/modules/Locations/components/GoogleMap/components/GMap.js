@@ -24,6 +24,7 @@ export class GMap extends Component {
     if (!children || !this.map) return;
     console.log("renderChildren ", children);
     return React.Children.map(children, c => {
+      //Add data to each marker
       return React.cloneElement(c, {
         map: this.map,
         google: this.props.google,

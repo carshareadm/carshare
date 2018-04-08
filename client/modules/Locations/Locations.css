@@ -1,5 +1,8 @@
 /* Locations.css */
 
+.container{
+
+}
 .title {
     font-size:26pt;
     color: rgb(76, 157, 38);
@@ -12,23 +15,26 @@
 
 /* override bootstrap button color */
 .buttons {
-  background-color: rgb(76, 157, 38);
+  background-color: rgb(76, 157, 38) !important;
+  border: solid rgb(76, 157, 38) 1px !important;
   display: inline-block;
+  margin-bottom: 1em !important;
 }
 
 .input{
 	display: inline-block;
 }
 
-form{
-	width: 100%;
+.dropdown{
+	background-color: rgb(76, 157, 38) !important;
+  	border: solid rgb(76, 157, 38) 1px !important;
 }
-
 
 .mapDiv>div{
 	width: 100%;
 	height: 100%;
 	margin-bottom: 100px !important;
+	padding-left: 15px;
 }
 
 .mapContainer{

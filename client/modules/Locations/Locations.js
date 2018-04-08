@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import {geolocated} from 'react-geolocated';
 import * as http from '../../util/http';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Col } from 'reactstrap';
 
 import styles from './Locations.css';
 
@@ -42,6 +42,8 @@ class Locations extends Component {
     super(props);
     this.setLocation = this.setLocation.bind(this);
     this.setInitialCoordinates = this.setInitialCoordinates.bind(this);
+
+    //Set initial coordinates to Australia, make sure we don't have a current location selected
     this.state = { 
       cars: [], 
       locations: [], 
@@ -53,6 +55,7 @@ class Locations extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if((this.props.coords && prevProps.coords != this.props.coords)&& !this.state.currentLocation){ 
+      //set coordinates each update
       this.setCoordinates(this.props.coords.latitude, this.props.coords.longitude);
     }
   }
@@ -62,6 +65,7 @@ class Locations extends Component {
       .client()
       .get('/cars')
       .then(res => {
+        //Save locations and sort cars based on KM distance to current location
         this.setState({ 
           cars: res.data,
           locations: res.data.map(car => car.location),
@@ -73,6 +77,7 @@ class Locations extends Component {
       });
   }
 
+  //Sort cars based on location and save the distance to the cars to display in Car.js
   sortCarsOnLoc(cars, lat, lng){
     return cars.slice(0).map(c => {
       c.distanceKM = distanceKM(
@@ -113,7 +118,7 @@ class Locations extends Component {
   showDropdown(){
     return(
       <UncontrolledDropdown>
-        <DropdownToggle caret>
+        <DropdownToggle caret className={styles.dropdown}>
           {this.state.currentLocation ? this.state.currentLocation.name : "Select Location"}
         </DropdownToggle>
         <DropdownMenu>
@@ -132,32 +137,36 @@ class Locations extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col">
+          <Col>
             <h1 className={styles.title}>Locations</h1>
-          </div>
+          </Col>
         </div>
         <div className="row">
-            <form>
+          <Col xs="12" sm="6">
               {this.showDropdown()}
+          </Col>
+          <Col xs="12" sm="6">
               <button type="button" 
-                className={styles.buttons + " btn btn-primary btn-lg"} 
+                className={styles.buttons + " btn btn-primary"} 
                 onClick={this.setInitialCoordinates}
               >
                 Use Current Location
               </button>
-            </form>
+          </Col>
         </div>
 
-        <div className={styles.mapContainer+" row"}>
-          <div className={styles.mapDiv+" col-sm"}>
+        <div className={styles.mapContainer+" row no-gutters"}>
+          <Col xs="12" sm="6">
+            <Cars cars={this.state.sortedCars}/>
+          </Col>
+          <Col className={styles.mapDiv} xs="12" sm="6">
             <GoogleMap 
               locations={this.state.locations} 
               zoom={this.state.currentcoords.zoom} 
               lat={this.state.currentcoords.lat} 
               lng={this.state.currentcoords.lng}
             />
-          </div>
-          <Cars cars={this.state.sortedCars}/>
+          </Col>
         </div>
       </div>
     );

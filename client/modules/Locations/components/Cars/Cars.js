@@ -31,7 +31,7 @@ class Cars extends Component {
           </CardHeader>
           <CardBody>
             <div className="float-right">
-              <Button color="primary" size="lg">Book</Button>
+              <Button className={styles.buttons} color="primary" size="lg">Book</Button>
             </div>
             <CardText>
               Vehicle type: {car.vehicleType.name}, {car.doors} doors<br/>
@@ -44,9 +44,9 @@ class Cars extends Component {
     );
 
     return (
-      <Col sm>
+      <div>
         {cards}
-      </Col>
+      </div>
     );
   }
 }
