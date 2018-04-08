@@ -6,7 +6,10 @@ import Location from "../../models/location";
 const getCars = function(req, res) {
   Car.find().
     populate('vehicleType').
-    populate('location').
+    populate({
+      path:'location',
+      populate: {path: 'coordinates'} 
+    }).
     exec((err, cars) => {
       if (err) {
         res.status(500).send(err);
