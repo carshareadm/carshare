@@ -39,19 +39,13 @@ function deg2rad(deg) {
 class Locations extends Component {
   constructor(props) {
     super(props);
+    this.setLocation = this.setLocation.bind(this);
     this.state = { cars: [], locations: [], currentcoords: INITIALLOC, sortedCars: []};
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.coords && prevProps.coords != this.props.coords){
-      this.setState({
-        currentcoords: {
-          lat: this.props.coords.latitude,
-          lng: this.props.coords.longitude,
-          zoom: CLOSEZOOM,
-        },
-        sortedCars: this.sortCarsOnLoc(this.state.cars, this.props.coords.latitude, this.props.coords.longitude)
-      })
+    if(this.props.coords && prevProps.coords != this.props.coords){ 
+      this.setCoordinates(this.props.coords.latitude, this.props.coords.longitude);
     }
   }
 
@@ -80,6 +74,22 @@ class Locations extends Component {
     }).sort((c1, c2) => (c1.distanceKM - c2.distanceKM));
   }
 
+  setLocation(event){
+    const loc = this.state.locations.find(l => l._id===event.target.dataset.id);
+    this.setCoordinates(loc.coordinates.latitude, loc.coordinates.longitude);
+  }
+
+  setCoordinates(latitude, longitude){
+    this.setState({
+      currentcoords: {
+        lat: latitude,
+        lng: longitude,
+        zoom: CLOSEZOOM,
+      },
+      sortedCars: this.sortCarsOnLoc(this.state.cars,latitude, longitude)
+    })
+  }
+
 
   render() {
     // Here goes our page
@@ -93,7 +103,13 @@ class Locations extends Component {
         </div>
         <div className="row">
             <form>
-              <input type="text" className={styles.input+" form-control"} id="geocodeSearch" placeholder="Search location"/>
+              {/* <input type="text" className={styles.input+" form-control"} id="geocodeSearch" placeholder="Search location"/> */}
+              
+              {this.state.locations.map(l => (
+                <button type="button" className={styles.buttons + " btn"} key={l._id} data-id={l._id} onClick={this.setLocation}>
+                  Use {l.name}
+                </button>
+              ))}
               <button type="button" className={styles.buttons + " btn btn-primary btn-lg btn-block"}>
                 Use Current Location
               </button>
