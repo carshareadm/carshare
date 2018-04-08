@@ -23,7 +23,8 @@ const isAuthenticatedGuard = function (req, res, next) {
       return res.status(401).send({error: 'No User'});
     } else {
       req.userId = user._id;
-      req.iaAdmin = user.isAdmin;
+      req.user = user;
+      req.isAdmin = user.isAdmin;
       next();
     }
   });

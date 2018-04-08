@@ -16,9 +16,13 @@ import {
 } from "reactstrap";
 import { Link } from "react-router";
 import * as http from "../../util/http";
+import * as licenseService from '../../services/license.service';
 
 import * as validator from "validator";
 import styles from "./Profile.css";
+
+import FileUploader from '../FileUploader/FileUploader';
+import placeholderImg from './ic_image.svg';
 
 //Profile component class
 export class Profile extends Component {
@@ -30,13 +34,16 @@ export class Profile extends Component {
       // user profile deets
       email: '',
       mobile: '',
-      license: '',
+      license: '', // this is actually the id of the license in the db
       password: '',
       street1: '',
       street2: '',
       suburb: '',
       state: '',
       postCode: '',
+      // license deets
+      licenseImageUrl: '',
+      licenseNumber: '',
       // page state
       statesDropdownOpen: false,
       isTouched: {
@@ -148,6 +155,14 @@ export class Profile extends Component {
     });
   }
 
+  handleLicenseUploaded(image) {
+    licenseService.updateImageDetails(this.state.license, image._id)
+      .then(res => {
+        this.loadLicense();
+      })
+      .catch(e => console.log(e));
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     if (!this.isFormInvalid()) {
@@ -187,6 +202,13 @@ export class Profile extends Component {
     return <Label htmlFor={labelFor}>{this.labels[key]}</Label>
   }
 
+  renderImage() {
+    if(this.state.licenseImageUrl && this.state.licenseImageUrl.length > 0) {
+      return (<img src={this.state.licenseImageUrl} />);
+    }
+    return (<img src={placeholderImg} />);
+  }
+
   render() {
     this.errors = this.validate();
     const isDisabled = this.isFormInvalid();
@@ -201,7 +223,15 @@ export class Profile extends Component {
             </Col>
           </Row>
           <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
-            <Row>
+          <Row>
+              <Col xs="12" sm="6">
+                <hr />
+                <h4 className={styles.h4}>License</h4>
+                <div className={styles.imgContainer}>
+                  {this.renderImage()}
+                </div>
+                <FileUploader onFileUploaded={this.handleLicenseUploaded.bind(this)}></FileUploader>
+              </Col>
               <Col xs="12" sm="6">
                 <hr />
                 <h4 className={styles.h4}>User Details</h4>
@@ -258,6 +288,8 @@ export class Profile extends Component {
                   />
                 </FormGroup>
               </Col>
+            </Row>
+            <Row>              
               <Col xs="12" sm="6">
                 <hr />
                 <h4 className={styles.h4}>Address</h4>
@@ -369,7 +401,7 @@ export class Profile extends Component {
       this.setState({
         email: user.email ? user.email : '',
         mobile: user.mobile ? user.mobile : '',
-        license: user.license && user.license.licenseNumber ? user.license.licenseNumber : '',
+        license: user.license,        
         street1: user.address && user.address.street1 ? user.address.street1 : '',
         street2: user.address && user.address.street2 ? user.address.street2 : '',
         suburb: user.address && user.address.suburb ? user.address.suburb : '',
@@ -379,13 +411,24 @@ export class Profile extends Component {
     }
   }
 
+  loadLicense() {
+    http.client().get('/license/' + this.state.license)
+      .then(res => {
+        this.setState({
+          licenseImageUrl: res.data.imageUrl,
+          licenseNumber: res.data.licenseNumber,
+        })
+      })
+      .catch(e => console.log(e));
+  }
+
   componentDidMount() {
     http
       .client()
       .get("/profile/my")
       .then(res => {
         this.mapUserToModel(res.data);
-        //this.render();
+        this.loadLicense();
       })
       .catch(err => {
         console.log(err);

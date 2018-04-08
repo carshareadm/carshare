@@ -47,7 +47,6 @@ export class UserBar extends Component{
 		http.client()
 				.post('/account/login', {email: login, password: pass})
 				.then(res => {
-					console.log(res);
 					storage.set(storage.Keys.JWT, res.data.token);
 					this.setState({loggedIn: true});
 				})
