@@ -28,35 +28,34 @@ const storage = require('../../util/persistedStorage');
 //Booking component class
 export class Booking extends Component {
 
+	start = moment().add(30, "minutes");
+
 	constructor(props){
 		super(props);
 		this.state = {
-			startDate: moment(),
-			startTime: moment(),
-			endDate: moment(),
-			endTime: moment(),
-			loggedIn:false,
+			startDate: this.start,
+			endDate: this.start,
+			loggedIn: false,
+			booked: false,
 			
 			touched: {
 				startDate: false,
-				startTime: false,
 				endDate: false,
-				endTime: false,
 			}, 
 		  };
-//		  this.isFormInvalid = this.isFormInvalid.bind(this);
+		  this.isFormInvalid = this.isFormInvalid.bind(this);
 	
 	}
 //Set up variables for Msgs
 
 labels = {
-	startDate: 'Start Date and Time',
-	endDate: 'End Date and Time',
+	startDate: 'Start Time',
+	endDate: 'End Time',
   };
 
   errorMsgs = {
-	startDate: 'a valid date in mm/dd/yyyy is required',
-	endDate: 'a valid date in mm/dd/yyyy is required',
+	startDate: 'a valid date and time at least 30 mins in the future is required',
+	endDate: 'a date and time after start time is required',
   };
   
 	componentDidMount() {
@@ -69,21 +68,26 @@ labels = {
 			touched: Object.assign({}, this.state.touched, { [field]: true }),
 		});
 	}
+
+	validate() {
+		// true means invalid, so our conditions got reversed
+		const errs = {
+		  startDate: this.start.isAfter(this.state.startDate),
+		  endDate: (this.state.startDate===this.state.endDate||this.state.startDate.isAfter(this.state.endDate)),
+		};
+		return errs;
+	  }
+
+	isFormInvalid() {
+		return Object.keys(this.errors).some(x => this.errors[x] === true);
+	}
 	
-	handleStartDateChange = (evt) => {
-		this.setState({ startDate: evt.target.value });
+	handleStartDateChange(date) {
+		this.setState({ startDate: date });
 	}
 
-	handleStartTimeChange = (evt) => {
-		this.setState({ startTime: evt.target.value });
-	}
-
-	handleEndDateChange = (evt) => {
-		this.setState({ endDate: evt.target.value });
-	}
-
-	handleEndTimeChange = (evt) => {
-		this.setState({ endTime: evt.target.value });
+	handleEndDateChange(date) {
+		this.setState({ endDate: date });
 	}
 
 	handleSubmit(evt){
@@ -105,12 +109,18 @@ labels = {
        //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
 	 }
 
+	isError(key) {
+		const errorExists = this.errors[key];
+		const touched = this.state.touched[key] === true;
+		return errorExists && touched;
+	}
+
 	renderLabel(key, labelFor) {  
-		/*
+		
 		if (this.isError(key)) {
 	  		return <Label htmlFor={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
 		}
-		*/
+		
 		return <Label htmlFor={labelFor}>{this.labels[key]}</Label>
 	}
 
@@ -136,8 +146,8 @@ labels = {
 	
 	bookingFrm()
 	{
-//		this.errors = this.validate();
-//    const isDisabled = this.isFormInvalid();
+		this.errors = this.validate();
+	    const isDisabled = this.isFormInvalid();
 	    // Here goes our page 
 	  return (
 	  <div className={styles.body}>
@@ -164,26 +174,32 @@ labels = {
 				<FormGroup>
           {this.renderLabel("startDate", "startDate")}
 						<DatePicker 
+						className={this.isError('startDate') ? 'is-invalid' : ''}
 						selected={this.state.startDate} 
 						onChange={this.handleStartDateChange.bind(this)}
 						showTimeSelect 
+						minDate={moment()}
 						timeFormat="HH:mm" 
 						timeIntervals={15} 
 						dateFormat="LLL" 
+						onBlur={() => this.handleBlur('startDate')}
 						timeCaption="time"/>
 				</FormGroup>
 				<FormGroup>
 					{this.renderLabel("endDate", "endDate")}
 						<DatePicker 
+						className={this.isError('endDate') ? 'is-invalid' : ''}
 						selected={this.state.endDate} 
 						onChange={this.handleEndDateChange.bind(this)}
 						showTimeSelect 
 						timeFormat="HH:mm" 
 						timeIntervals={15} 
 						dateFormat="LLL" 
+						onBlur={() => this.handleBlur('endDate')}
 						timeCaption="time"/>
 				</FormGroup>
-				<Button outline color="success" className={styles.wideBtn}>
+				<Button outline color="success" className={styles.wideBtn}
+				disabled={isDisabled}>
                   Check Availability
                 </Button>
 			</Col>
