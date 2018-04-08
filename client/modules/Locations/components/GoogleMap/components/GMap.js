@@ -19,7 +19,6 @@ export class GMap extends Component {
   }
 
   renderChildren() {
-    return null;
     const {children} = this.props;
 
     if (!children || !this.map) return;
