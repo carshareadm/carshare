@@ -25,16 +25,22 @@ import styles from './Booking.css'
 import {Registration} from '../Registration/Registration';
 
 const storage = require('../../util/persistedStorage');
+
 //Booking component class
 export class Booking extends Component {
 
-	start = moment().add(30, "minutes");
+	intervalNum = 15;
+	intervalUnit = "minutes";
+
+	startTime = moment().add(2*this.intervalNum, this.intervalUnit);
 
 	constructor(props){
 		super(props);
 		this.state = {
-			startDate: this.start,
-			endDate: this.start,
+			car_id: '',
+			startDate: this.startTime,
+			endDate: this.startTime,
+			selectedCar:false,
 			loggedIn: false,
 			booked: false,
 			
@@ -54,13 +60,14 @@ labels = {
   };
 
   errorMsgs = {
-	startDate: 'a valid date and time at least 30 mins in the future is required',
+	startDate: 'a valid date and time at least '+2*this.intervalNum+' '+this.intervalUnit+' in the future is required',
 	endDate: 'a date and time after start time is required',
   };
   
 	componentDidMount() {
 		if(storage.get(storage.Keys.JWT))
 		this.setState({	loggedIn:true });
+		console.log(Buffer.from(storage.get(storage.Keys.JWT)));
 	  }	
 
 	handleBlur(field) {
@@ -72,7 +79,7 @@ labels = {
 	validate() {
 		// true means invalid, so our conditions got reversed
 		const errs = {
-		  startDate: this.start.isAfter(this.state.startDate),
+		  startDate: this.startTime.isAfter(this.state.startDate),
 		  endDate: (this.state.startDate===this.state.endDate||this.state.startDate.isAfter(this.state.endDate)),
 		};
 		return errs;
@@ -91,21 +98,21 @@ labels = {
 	}
 
 	handleSubmit(evt){
-//       if (this.isFormInvalid()) {
-//         evt.preventDefault();
-//         return;
-//       }
-//       else{
+       if (this.isFormInvalid()) {
+         evt.preventDefault();
+         return;
+       }
+       else{
          evt.preventDefault();
          http.client().post('/booking/', {
-           email: this.state.email,
+           car: this.state.car_id,
          })
          .then(res => {
            console.log(res);
            this.setState({booked: true});
          })
          .catch(err => console.log(err));
-//       }
+       }
        //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
 	 }
 
@@ -125,7 +132,7 @@ labels = {
 	}
 
   	render() {
-		return this.state.booked ? this.booked() : this.state.loggedIn ? this.bookingFrm() : this.register()
+		return this.state.booked ? this.booked() : (this.state.loggedIn ? this.bookingFrm() : this.register());
 	  }
 	register()
 	{
@@ -178,9 +185,9 @@ labels = {
 						selected={this.state.startDate} 
 						onChange={this.handleStartDateChange.bind(this)}
 						showTimeSelect 
-						minDate={moment()}
+						minDate={this.startTime}
 						timeFormat="HH:mm" 
-						timeIntervals={15} 
+						timeIntervals={this.intervalNum} 
 						dateFormat="LLL" 
 						onBlur={() => this.handleBlur('startDate')}
 						timeCaption="time"/>
@@ -192,8 +199,9 @@ labels = {
 						selected={this.state.endDate} 
 						onChange={this.handleEndDateChange.bind(this)}
 						showTimeSelect 
+						minDate={this.startTime}
 						timeFormat="HH:mm" 
-						timeIntervals={15} 
+						timeIntervals={this.intervalNum} 
 						dateFormat="LLL" 
 						onBlur={() => this.handleBlur('endDate')}
 						timeCaption="time"/>
