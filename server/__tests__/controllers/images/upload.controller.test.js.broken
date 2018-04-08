@@ -1,0 +1,66 @@
+import { Mockgoose } from "mockgoose-fix";
+import mongoose from "mongoose";
+const User = require('../../../models/user');
+const config = require("../../../config");
+const DateUtils = require("../../../util/date.helper");
+const jwt = require("jwt-simple");
+
+const mockgoose = new Mockgoose(mongoose);
+
+const app = require("../../../app");
+const request = require("supertest");
+
+let testUser = null;
+
+describe('Upload controller', () => {
+
+  beforeAll(async () => {
+    await mongoose.connect("mongodb://localhost/test");
+  });
+
+  beforeEach(done => {
+    testUser = new User();
+    testUser.email = "test@test.com";
+    testUser.mobile = "0444444444";
+    testUser.password = "pwd";
+    testUser.save(function(err){
+      if(err) done(err);
+      else done();
+    });
+  });  
+
+  afterEach(done => {
+    User.remove(testUser, function(err){
+      testUser = null;
+      if(err) done(err);
+      else done();
+    });
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
+
+  test('should generate an upload policy for AWS s3 bucket', done => {
+    let token = {
+      sub: testUser._id,
+      email: testUser.email,
+      isAdmin: false,
+      exp: DateUtils.getDateInSeconds(DateUtils.addHours(new Date(), 1)),
+    };
+
+    const encodedToken = jwt.encode(token, config.jwt.secret);
+    request(app)
+      .post("/api/images/presigned")
+      .set('Authorization', 'Bearer ' + encodedToken)
+      .send({
+        filename: "foo.png",
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        const bodyKeys = Object.keys(response.body);
+        expect(bodyKeys).toContain('url');
+        done();
+      });
+  });
+});

@@ -20,7 +20,6 @@ export class GMap extends Component {
       const maps = google.maps;
 
       const mapRef = this.refs.map;
-      console.log(mapRef);
 
       const node = ReactDOM.findDOMNode(mapRef);
 
