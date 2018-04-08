@@ -8,7 +8,7 @@ import styles from './GoogleMap.css';
 
 export class GoogleMap extends Component {
   render() {
-    if (!this.props.loaded) {
+    if (!this.props.loaded || !this.props.google) {
       return <div>Loading...</div>
     }
     return (
