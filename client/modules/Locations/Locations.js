@@ -16,11 +16,30 @@ const INITIALLOC = {
       zoom: 3
 }
 
+//Next 2 functions are from StackOverflow https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+function distanceKM(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
 //Create a component class
 class Locations extends Component {
   constructor(props) {
     super(props);
-    this.state = { cars: [], locations: [], currentcoords: INITIALLOC};
+    this.state = { cars: [], locations: [], currentcoords: INITIALLOC, sortedCars: []};
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -29,8 +48,9 @@ class Locations extends Component {
         currentcoords: {
           lat: this.props.coords.latitude,
           lng: this.props.coords.longitude,
-          zoom: CLOSEZOOM
-        }
+          zoom: CLOSEZOOM,
+        },
+        sortedCars: this.sortCarsOnLoc(this.state.cars, this.props.coords.latitude, this.props.coords.longitude)
       })
     }
   }
@@ -42,13 +62,24 @@ class Locations extends Component {
       .then(res => {
         this.setState({ 
           cars: res.data,
-          locations: res.data.map(car => car.location)  
+          locations: res.data.map(car => car.location),
+          sortedCars: this.sortCarsOnLoc(res.data, this.state.currentcoords.lat, this.state.currentcoords.lng)  
         })
       })
       .catch(err => {
         console.log(err);
       });
   }
+
+  sortCarsOnLoc(cars, lat, lng){
+    return cars.slice(0).map(c => {
+      c.distanceKM = distanceKM(
+        c.location.coordinates.latitude, c.location.coordinates.longitude, lat, lng 
+      ); 
+      return c;
+    }).sort((c1, c2) => (c1.distanceKM - c2.distanceKM));
+  }
+
 
   render() {
     // Here goes our page
@@ -78,7 +109,7 @@ class Locations extends Component {
               lng={this.state.currentcoords.lng}
             />
           </div>
-          <Cars cars={this.state.cars}/>
+          <Cars cars={this.state.sortedCars}/>
         </div>
       </div>
     );
