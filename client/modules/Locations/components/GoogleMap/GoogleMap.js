@@ -14,7 +14,7 @@ export class GoogleMap extends Component {
       return <div>Loading...</div>
     }
     return (
-        <GMap google={this.props.google}>
+        <GMap {...this.props}>
         	{this.props.locations.map(loc => <Marker position={loc.coordinates} key={loc._id} /> )}
         </GMap>
     )

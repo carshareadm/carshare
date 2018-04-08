@@ -3,10 +3,8 @@ import React, { Component, PropTypes } from 'react';
 export class Marker extends Component{
 
 	componentDidUpdate(prevProps) {
-		console.log("componentDidUpdate");
 	    if ((this.props.map !== prevProps.map) ||
 	      (this.props.position !== prevProps.position)) {
-	      	console.log("Trying to render marker");
 	        this.renderMarker();
 	    }
 	 }
@@ -16,14 +14,11 @@ export class Marker extends Component{
       let {
         map, google, position, mapCenter
       } = this.props;
-      console.log("Props ", this.props);
       const pos = new google.maps.LatLng(position.latitude, position.longitude);
-      console.log("Lat ", pos.lat());
       const pref = {
         map: map,
         position: pos
       };
-      console.log(pref);
       this.marker = new google.maps.Marker(pref);
   }
 

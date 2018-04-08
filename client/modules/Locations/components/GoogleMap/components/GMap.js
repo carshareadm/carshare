@@ -1,16 +1,25 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import {geolocated} from 'react-geolocated';
 
 export class GMap extends Component {
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.coords && prevProps.coords !== this.props.coords) {
-      this.loadMap();
-      this.forceUpdate();
+    if (this.map) {
+      if (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng) {
+        const center = new this.props.google.maps.LatLng(this.props.lat, this.props.lng)
+        this.map.panTo(center);
+      }
+      if(prevProps.zoom != this.props.zoom){
+        this.map.setZoom(this.props.zoom);
+      }
     }
   }
 
+  componentDidMount(){
+    this.loadMap();
+  }
+
   renderChildren() {
+    return null;
     const {children} = this.props;
 
     if (!children || !this.map) return;
@@ -25,16 +34,14 @@ export class GMap extends Component {
   }
 
   loadMap() {
+    console.log("This props ",this.props);
     const maps = this.props.google.maps;
-    const {coords} = this.props;
-
     const mapRef = this.refs.map;
-
     const node = ReactDOM.findDOMNode(mapRef);
 
-    let zoom = 14;
-    let lat = this.props.coords.latitude;
-    let lng = this.props.coords.longitude;
+    let zoom = this.props.zoom;
+    let lat = this.props.lat;
+    let lng = this.props.lng;
     const center = new maps.LatLng(lat, lng);
     
     const mapConfig = Object.assign({}, {
@@ -54,27 +61,8 @@ export class GMap extends Component {
   }
 
   render() {
-    if (!this.props.isGeolocationAvailable) {
-      return <div>Your browser does not support Geolocation</div>;
-    }
-
-    if (!this.props.isGeolocationEnabled) {
-      return <div>Waiting for geo location...</div>
-    }
-
-    if (!this.props.coords) {
-      return <div>Waiting for geo coordinates...</div>
-    }
-
-    return <div ref='map' style={{width: '100%', height: '100%'}}>
-         {this.renderChildren()}
-    </div>;
+    return <div ref='map' style={{width: '100%', height: '100%'}}>{this.renderChildren()}</div>;
   }
 }
 
-export default geolocated({
-  positionOptions: {
-    enableHighAccuracy: false,
-  },
-  userDecisionTimeout: 5000,
-})(GMap);
+export default GMap;

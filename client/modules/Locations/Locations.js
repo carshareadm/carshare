@@ -1,6 +1,6 @@
-// Locations.js
 // Imports
 import React, { Component, PropTypes } from 'react';
+import {geolocated} from 'react-geolocated';
 import * as http from '../../util/http';
 
 import styles from './Locations.css';
@@ -9,11 +9,30 @@ import styles from './Locations.css';
 import GoogleMap from './components/GoogleMap/GoogleMap';
 import Cars from './components/Cars/Cars';
 
+const CLOSEZOOM = 14;
+const INITIALLOC = {
+      lat: "-21.0891304",
+      lng: "95.4115513",
+      zoom: 3
+}
+
 //Create a component class
 class Locations extends Component {
   constructor(props) {
     super(props);
-    this.state = { cars: [], locations: [] };
+    this.state = { cars: [], locations: [], currentcoords: INITIALLOC};
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.coords && prevProps.coords != this.props.coords){
+      this.setState({
+        currentcoords: {
+          lat: this.props.coords.latitude,
+          lng: this.props.coords.longitude,
+          zoom: CLOSEZOOM
+        }
+      })
+    }
   }
 
   componentDidMount() {
@@ -52,9 +71,12 @@ class Locations extends Component {
 
         <div className={styles.mapContainer+" row"}>
           <div className={styles.mapDiv+" col-sm"}>
-            {console.log(this.state.locations)}
-            <GoogleMap locations={this.state.locations}/>
-            }
+            <GoogleMap 
+              locations={this.state.locations} 
+              zoom={this.state.currentcoords.zoom} 
+              lat={this.state.currentcoords.lat} 
+              lng={this.state.currentcoords.lng}
+            />
           </div>
           <Cars cars={this.state.cars}/>
         </div>
@@ -63,4 +85,9 @@ class Locations extends Component {
   }
 }
 
-export default Locations;
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(Locations);
