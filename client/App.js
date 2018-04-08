@@ -8,8 +8,12 @@ import { Router, browserHistory } from 'react-router';
 // Import Routes
 import routes from './routes';
 
+// Style sheet for react-datepicker package
+import 'react-datepicker/dist/react-datepicker.css';
+
 // Base stylesheet
 require('./main.css');
+
 
 export default function App(props) {
   return (
