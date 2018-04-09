@@ -165,6 +165,29 @@ module.exports = function() {
     }
   }); 
 
+
+  let location4 = new Location();
+
+  var nameLocation4 = "Sydney Shangri-La";
+  Location.findOne({'name': nameLocation4})
+  .populate('coordinates')
+  .exec((error, location) => {
+    if (!location) {
+      let coordinate4 = new Coordinate();
+     console.log('Adding', nameLocation4, '...');
+      coordinate4.latitude = "-33.8624313";
+      coordinate4.longitude = "151.204416";
+      coordinate4.save().catch((e) => { console.log(e)});
+      location4.name = nameLocation4;
+      location4.coordinates = coordinate4;
+      location4.save().catch((e) => { console.log(e)});
+    }
+    else {
+      console.log("Location \'", nameLocation4, "\' already exists.");
+      location4 = location;
+    }
+  }); 
+
   // add vehicle types if not already in the system
   let typeSmall = new VehicleType();
   var nameCarType1 = "small";
@@ -266,12 +289,12 @@ module.exports = function() {
       car2.seats = "5";
       car2.doors = "5";
       car2.vehicleType = typeSports;
-      car2.location = location1;
+      car2.location = location4;
     
       //Movement Block
       let movementsC2 = new Movement();
       movementsC2.car = car2;
-      movementsC2.coordinates = location1.coordinates;
+      movementsC2.coordinates = location4.coordinates;
       movementsC2.save().catch((e) => { console.log(e)});
     
       car2.movements = movementsC2;
