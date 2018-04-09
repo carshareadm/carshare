@@ -19,6 +19,13 @@ const getCars = function(req, res) {
     });
 };
 
+const getTimes = function(req, res) {
+  console.log(req.params.carId);
+  // Find car by ID and then times available from it -> Car.find({'_id': })
+  res.status(200).send([]);
+}
+
 module.exports = {
   getCars: getCars,
+  getTimes: getTimes,
 };
