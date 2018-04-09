@@ -60,6 +60,15 @@ export class Car extends Component {
         console.log(err);
       });
 	}	
+
+	sortCarsOnLoc(cars, lat, lng){
+    return cars.slice(0).map(c => {
+      c.distanceKM = distanceKM(
+        c.location.coordinates.latitude, c.location.coordinates.longitude, lat, lng 
+      ); 
+      return c;
+    }).sort((c1, c2) => (c1.distanceKM - c2.distanceKM));
+  }
 		
 	handleSubmit(evt){
        if (this.isFormInvalid()) {

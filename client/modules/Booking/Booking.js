@@ -5,12 +5,12 @@ import {
   Button,
   FormGroup,
   Label,
-  Input,
+	Input,
+  Card,
+  CardHeader,
+  CardBody,
+  CardText,
   FormText,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container,
   Row,
   Col,
@@ -37,11 +37,8 @@ export class Booking extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			car_id: '',
-			Vehicle: '',
-			Rego: '',
-			HireType: '',
-			Address: '',
+			selectedCar:[],
+			selectedLocation:[],
 			startDate: this.startTime,
 			endDate: this.startTime,
 			selectedCar:false,
@@ -75,7 +72,6 @@ labels = {
       .client()
       .get("/cars")
       .then(res => {
-		console.log(res.data);
         this.mapCarToModel(res.data);
       })
       .catch(err => {
@@ -86,13 +82,11 @@ labels = {
 	mapCarToModel(car) {
 		// forEach due to current car controller 
 		car.forEach(element => {
-			this.setState({
-				car_id: element._id ? element._id : '',
-				Vehicle: element.year ? element.make ? element.model ? element.colour ? element.year+' '+element.make+' '+element.model+' '+element.colour : '' : '' : '' : '',
-				Rego: element.rego ? element.rego : '',
-				HireType: element.vehicleType.name ? element.vehicleType.hourlyRate ? element.vehicleType.name+' - $'+element.vehicleType.hourlyRate+'\/hr' : '' : '',
-				Address: element.location.name ? element.location.name : '',
-			  }); 
+			if(element._id==this.props.location.query.carid)
+			{
+				this.setState({selectedCar: element,
+					selectedLocation: element.location}); 
+			}
 		}); 
 	  }
 
@@ -131,7 +125,7 @@ labels = {
        else{
          evt.preventDefault();
          http.client().post('/booking/', {
-           car: this.state.car_id,
+           car: this.props.location.query.carid,
          })
          .then(res => {
            console.log(res);
@@ -194,11 +188,20 @@ labels = {
         <Row>
 			<Col xs="12" sm="6">
 			<hr/>
-                <h4 className={styles.h4}>Check availability for:</h4>
-                <p>Vehicle : {this.state.Vehicle}</p>
-                <p>Hire Type : {this.state.HireType}</p>
-                <p>Registration : {this.state.Rego}</p>
-                <p>Address : {this.state.Address}</p>
+			<Card key={this.state.selectedCar._id}>
+          <CardHeader tag="h5">
+            {this.state.selectedCar.year} {this.state.selectedCar.make} {this.state.selectedCar.model} ({this.state.selectedCar.colour}) <br/>
+            <span className="text-muted">{this.state.selectedLocation.name}</span>
+          </CardHeader>
+          <CardBody>
+            <CardText>
+              Vehicle type: {this.state.selectedCar.vehicleType.name}, {this.state.selectedCar.doors} doors<br/>
+              Seats: {this.state.selectedCar.seats}<br/>
+              Hourly rate: ${this.state.selectedCar.vehicleType.hourlyRate.toFixed(2)}<br/>
+              Registration: {this.state.selectedCar.rego}
+            </CardText>
+          </CardBody>
+        </Card>
 			</Col>
 			<Col xs="12" sm="6">
 			<hr/>
