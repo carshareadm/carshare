@@ -21,17 +21,20 @@ class Cars extends Component {
   render() {
     // Generate a list of vehicles taking them from props
     const cars = this.props.cars;
+    const byType = this.props.byType;
     const cards = cars.map(
       (car) =>
         <Card key={car._id}>
           <CardHeader tag="h5">
-            <div className="float-right text-muted">{Math.round(car.distanceKM*100)/100} km away</div>
+            {byType ? '' : <div className={"float-right text-muted"}>{Math.round(car.distanceKM*100)/100} km away</div>}
             {car.year} {car.make} {car.model} ({car.colour}) <br/>
             <span className="text-muted">{car.location.name}</span>
           </CardHeader>
           <CardBody>
             <div className="float-right">
+            <Link to={"/booking?carid="+car._id}>
               <Button className={styles.buttons} color="primary" size="lg">Book</Button>
+            </Link>
             </div>
             <CardText>
               Vehicle type: {car.vehicleType.name}, {car.doors} doors<br/>
