@@ -15,12 +15,14 @@ const app = require("../../../app");
 const request = require("supertest");
 
 describe("Car controller", () => {
+	let car1;
+
 	beforeAll(async () => {
 		await mongoose.connect('mongodb://localhost/test');
 	})
 
 	beforeEach(done => {
-		const car1 = new Car();
+		car1 = new Car();
 		car1.rego = 'AAA111';
 		car1.make = "AudiA"
 		car1.model = "TT";
@@ -75,6 +77,16 @@ describe("Car controller", () => {
 			expect(response.statusCode).toBe(200);
 			const body = response.body;
 			console.log(body);
+			done();
+		})
+	})
+
+	test("Check car availability", done => {
+		request(app)
+		.get(`/api/cars/${car1._id}/times`)
+		.then(response => {
+			expect(response.statusCode).toBe(200);
+			const body = response.body;
 			done();
 		})
 	})

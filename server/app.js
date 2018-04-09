@@ -53,6 +53,7 @@ app.use('/api/cars', cars);
 app.use('/api/booking', booking);
 app.use('/api/images', images);
 app.use('/api/license', license);
+app.use('/api/*', (req, res) => { res.status(404).send("Not found"); });
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
