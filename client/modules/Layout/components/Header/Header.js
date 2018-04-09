@@ -36,7 +36,8 @@ export class Header extends Component{
 			    	{/* <div onClick={this.burgerToggle} className={styles.burgerImage}></div> */}
 			    <ul className={styles.ul} style={{display:this.state.menuIsVisible ? "block" : "none"}}>
 		    		<li className={active(this.context.router, "/", true)}><Link to="/" onClick={this.burgerToggle}>Home</Link></li>
-					<li className={active(this.context.router, "/booking", true)}><Link to="/booking" onClick={this.burgerToggle}>Booking</Link></li>
+					<li className={active(this.context.router, "/cars", true)}><Link to="/booking" onClick={this.burgerToggle}>Cars</Link></li>
+					<li className={active(this.context.router, "/locations", true)}><Link to="/booking" onClick={this.burgerToggle}>Locations</Link></li>
 					<li className={active(this.context.router, "/profile", true)}><Link to="/profile" onClick={this.burgerToggle}>Profile</Link></li>
 		    		<li className={active(this.context.router, "/faq", true)}><Link to="/faq" onClick={this.burgerToggle}>FAQ</Link></li>
 		    		<li className={active(this.context.router, "/terms", true)}><Link to="/terms" onClick={this.burgerToggle}>Terms and Conditions</Link></li>

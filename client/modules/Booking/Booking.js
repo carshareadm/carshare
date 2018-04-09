@@ -5,12 +5,12 @@ import {
   Button,
   FormGroup,
   Label,
-  Input,
+	Input,
+  Card,
+  CardHeader,
+  CardBody,
+  CardText,
   FormText,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container,
   Row,
   Col,
@@ -37,7 +37,8 @@ export class Booking extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			car_id: '',
+			selectedCar:[],
+			selectedLocation:[],
 			startDate: this.startTime,
 			endDate: this.startTime,
 			selectedCar:false,
@@ -67,8 +68,27 @@ labels = {
 	componentDidMount() {
 		if(storage.get(storage.Keys.JWT))
 		this.setState({	loggedIn:true });
-		console.log(Buffer.from(storage.get(storage.Keys.JWT)));
-	  }	
+		http
+      .client()
+      .get("/cars")
+      .then(res => {
+        this.mapCarToModel(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+	}	
+
+	mapCarToModel(car) {
+		// forEach due to current car controller 
+		car.forEach(element => {
+			if(element._id==this.props.location.query.carid)
+			{
+				this.setState({selectedCar: element,
+					selectedLocation: element.location}); 
+			}
+		}); 
+	  }
 
 	handleBlur(field) {
 		this.setState({ 
@@ -105,7 +125,7 @@ labels = {
        else{
          evt.preventDefault();
          http.client().post('/booking/', {
-           car: this.state.car_id,
+           car: this.props.location.query.carid,
          })
          .then(res => {
            console.log(res);
@@ -168,12 +188,20 @@ labels = {
         <Row>
 			<Col xs="12" sm="6">
 			<hr/>
-                <h4 className={styles.h4}>Check availability for:</h4>
-                <p>Vehicle - </p>
-                <p>Hire Type - </p>
-                <p>Registration - </p>
-				<br/>
-                <p>Address Placeholder</p>
+			<Card key={this.state.selectedCar._id}>
+          <CardHeader tag="h5">
+            {this.state.selectedCar.year} {this.state.selectedCar.make} {this.state.selectedCar.model} ({this.state.selectedCar.colour}) <br/>
+            <span className="text-muted">{this.state.selectedLocation.name}</span>
+          </CardHeader>
+          <CardBody>
+            <CardText>
+              Vehicle type: {this.state.selectedCar.vehicleType.name}, {this.state.selectedCar.doors} doors<br/>
+              Seats: {this.state.selectedCar.seats}<br/>
+              Hourly rate: ${this.state.selectedCar.vehicleType.hourlyRate.toFixed(2)}<br/>
+              Registration: {this.state.selectedCar.rego}
+            </CardText>
+          </CardBody>
+        </Card>
 			</Col>
 			<Col xs="12" sm="6">
 			<hr/>
@@ -181,7 +209,7 @@ labels = {
 				<FormGroup>
           {this.renderLabel("startDate", "startDate")}
 						<DatePicker 
-						className={this.isError('startDate') ? 'is-invalid' : ''}
+						className={'form-control ' +this.isError('startDate') ? 'is-invalid' : ''}
 						selected={this.state.startDate} 
 						onChange={this.handleStartDateChange.bind(this)}
 						showTimeSelect 
@@ -195,7 +223,7 @@ labels = {
 				<FormGroup>
 					{this.renderLabel("endDate", "endDate")}
 						<DatePicker 
-						className={this.isError('endDate') ? 'is-invalid' : ''}
+						className={'form-control ' +this.isError('endDate') ? 'is-invalid' : ''}
 						selected={this.state.endDate} 
 						onChange={this.handleEndDateChange.bind(this)}
 						showTimeSelect 
