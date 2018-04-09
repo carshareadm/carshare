@@ -93,7 +93,6 @@ labels = {
 				HireType: element.vehicleType.name ? element.vehicleType.hourlyRate ? element.vehicleType.name+' - $'+element.vehicleType.hourlyRate+'\/hr' : '' : '',
 				Address: element.location.name ? element.location.name : '',
 			  }); 
-			  console.log(this.state.Vehicle);
 		}); 
 	  }
 
