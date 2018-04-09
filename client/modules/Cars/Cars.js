@@ -22,17 +22,18 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 import styles from './Cars.css'
+import Cars from '../Locations/components/Cars/Cars';
 
 const storage = require('../../util/persistedStorage');
 
 //Booking component class
-export class Cars extends Component {
+export class Car extends Component {
 
 	constructor(props){
 		super(props);
 		this.state = {
-			Vehicles: [],
-			Vehicle: '',
+			cars: [], 
+      locations: [], 
 			Rego: '',
 			HireType: '',
 			Address: '',
@@ -42,7 +43,6 @@ export class Cars extends Component {
 		  };
 	
 	}
-  Cars = [];
 	componentDidMount() {
 		if(storage.get(storage.Keys.JWT))
 		this.setState({	loggedIn:true });
@@ -51,22 +51,15 @@ export class Cars extends Component {
       .get("/cars")
       .then(res => {
 
-        this.mapCarsToModel(res.data);
+        this.setState({ 
+          cars: res.data,
+          locations: res.data.map(car => car.location),
+        })
       })
       .catch(err => {
         console.log(err);
       });
 	}	
-
-	mapCarsToModel(car) {
-		// forEach due to current car controller 
-			if(car)
-				{
-					car.forEach(carItem => {
-						this.Cars.push(carItem)
-					});
-			}
-		}
 		
 	handleSubmit(evt){
        if (this.isFormInvalid()) {
@@ -120,16 +113,9 @@ export class Cars extends Component {
 		</Row>
             <form onSubmit={this.handleSubmit.bind(this)}>
 		<Row>
-			{console.log(this.Cars)}
-			{this.Cars.forEach(element =>{
-					console.log('ele has '+element);
 					<Col>
-					<p>{element.year+' '+element.make+' '+element.model+' '+element.colour}</p>
-					<p>{element.rego ? element.rego : ''}</p>
-					<p>{element.vehicleType.name ? element.vehicleType.hourlyRate ? element.vehicleType.name+' - $'+element.vehicleType.hourlyRate+'\/hr' : '' : ''}</p>
-					<p>{element.location.name ? element.location.name : ''}</p>
+					<Cars cars={this.state.cars} byType={true}/>
 					</Col>
-				})}
 		</Row>
             </form>
 		<Row>
@@ -149,4 +135,4 @@ export class Cars extends Component {
   }
 }
 
-export default Cars;
+export default Car;
