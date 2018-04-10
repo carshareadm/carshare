@@ -15,6 +15,8 @@ import Booking from './modules/Booking/Booking';
 import Locations from './modules/Locations/Locations';
 import Cars from './modules/Cars/Cars';
 import { Profile } from './modules/Profile/Profile';
+
+import {Manage} from './modules/Manage/Manage';
 import PaymentDetails from './modules/PaymentDetails/PaymentDetails';
 
 // require.ensure polyfill for node
@@ -38,6 +40,7 @@ export default (
 		<Route path="register" component={Registration} />
 		<Route path="about" component={About} />
 		<Route path="booking" component={Booking} />
+		<Route path="manage" component={Manage} />
 		<Route path="cars" component={Cars} />
     <Route path="locations" component={Locations}/>
 		<Route path="profile" component={Profile} />

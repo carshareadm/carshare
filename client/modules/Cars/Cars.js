@@ -26,7 +26,7 @@ import Cars from '../Locations/components/Cars/Cars';
 
 const storage = require('../../util/persistedStorage');
 
-//Booking component class
+//Cars component class
 export class Car extends Component {
 
 	constructor(props){
@@ -120,22 +120,15 @@ export class Car extends Component {
 	        <h1 className={styles.title}>Cars</h1>
 			</Col>
 		</Row>
-            <form onSubmit={this.handleSubmit.bind(this)}>
-		<Row>
-					<Col>
+    <form onSubmit={this.handleSubmit.bind(this)}>
+			<Row>
+				<Col>
 					<Cars cars={this.state.cars} byType={true}/>
-					</Col>
-		</Row>
-            </form>
+				</Col>
+			</Row>
+    </form>
 		<Row>
 			<Col>
-			<form onSubmit={this.handleSubmit.bind(this)}>
-				<Button 
-//				disabled={isDisabled} 
-				outline color="success" className={styles.wideBtn}>
-				Book
-            	</Button>
-			</form>
 			</Col>
 		</Row>
 		</Container>
