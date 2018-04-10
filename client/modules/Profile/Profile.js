@@ -59,7 +59,7 @@ export class Profile extends Component {
       },
     };
   }
-  
+
   auStates = ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"];
 
   labels = {
@@ -105,7 +105,7 @@ export class Profile extends Component {
   handleEmailChange = (evt) => {
     this.setState({ email: evt.target.value });
   }
-  
+
   handlePasswordChange = (evt) => {
     this.setState({ password: evt.target.value });
   }
@@ -121,15 +121,15 @@ export class Profile extends Component {
   handleStreet1Change = (evt) => {
     this.setState({ street1: evt.target.value });
   }
-  
+
   handleSuburbChange = (evt) => {
     this.setState({ suburb: evt.target.value });
   }
-  
+
   handleStreet2Change = (evt) => {
     this.setState({ street2: evt.target.value });
   }
-  
+
   handlePostCodeChange = (evt) => {
     this.setState({ postCode: evt.target.value });
   }
@@ -148,9 +148,9 @@ export class Profile extends Component {
     });
     this.handleBlur('state');
   }
-  
+
   handleBlur(field) {
-    this.setState({ 
+    this.setState({
       isTouched: Object.assign({}, this.state.isTouched, { [field]: true }),
     });
   }
@@ -195,7 +195,7 @@ export class Profile extends Component {
     return Object.keys(this.errors).some(x => this.errors[x] === true);
   }
 
-  renderLabel(key, labelFor) {    
+  renderLabel(key, labelFor) {
     if (this.isError(key)) {
       return <Label htmlFor={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
     }
@@ -249,7 +249,7 @@ export class Profile extends Component {
                   />
                 </FormGroup>
                 <FormGroup>
-                  {this.renderLabel("mobile", "mobile")}                  
+                  {this.renderLabel("mobile", "mobile")}
                   <Input
                     type="text"
                     name="mobile"
@@ -289,7 +289,7 @@ export class Profile extends Component {
                 </FormGroup>
               </Col>
             </Row>
-            <Row>              
+            <Row>
               <Col xs="12" sm="6">
                 <hr />
                 <h4 className={styles.h4}>Address</h4>
@@ -386,9 +386,12 @@ export class Profile extends Component {
           <Row>
             <Col>
               <hr />
-              <Button color="success" className={styles.wideBtn}>
+              <Link
+                className={styles.wideBtn + " btn btn-success"}
+                to="/paymentDetails"
+              >
                 Payment Details
-              </Button>
+              </Link>
             </Col>
           </Row>
         </Container>
@@ -401,13 +404,13 @@ export class Profile extends Component {
       this.setState({
         email: user.email ? user.email : '',
         mobile: user.mobile ? user.mobile : '',
-        license: user.license,        
+        license: user.license,
         street1: user.address && user.address.street1 ? user.address.street1 : '',
         street2: user.address && user.address.street2 ? user.address.street2 : '',
         suburb: user.address && user.address.suburb ? user.address.suburb : '',
         state: user.address && user.address.state ? user.address.state : '',
         postCode: user.address && user.address.postCode ? user.address.postCode : '',
-      });      
+      });
     }
   }
 
