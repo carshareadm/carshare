@@ -10,13 +10,4 @@ describe("Express app", () => {
         done();
       });
   });
-
-  test("It should respond OK to a bogus route", done => {
-    request(app)
-      .get("/foo/bar")
-      .then(response => {
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-  });
 });

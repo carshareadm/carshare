@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "a carshare app for university project",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand --forceExit",
     "watch:test": "npm run test -- --watch",
     "cover": "nyc npm run test",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
@@ -68,6 +68,7 @@
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "sanitize-html": "^1.11.4",
+    "twilio": "^3.14.0",
     "uuid": "^3.2.1",
     "validator": "^9.4.1"
   },

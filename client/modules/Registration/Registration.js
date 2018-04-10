@@ -13,7 +13,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
+import Confirmation from '../Confirmation/Confirmation';
 import * as http from "../../util/http";
 
 var validator = require('validator');
@@ -33,7 +33,8 @@ export class Registration extends Component {
           mobile: '',
           license: '',
           registered: false,
-          
+          confirmed: false,
+
           touched: {
             email: false,
             password1: false,
@@ -124,11 +125,18 @@ export class Registration extends Component {
           .then(res => {
             storage.set(storage.Keys.JWT, res.data.token);
             this.setState({registered: true});
+            this.requestConfirmationCode();
           })
           .catch(err => console.log(err));
         }
         //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
       }
+
+    requestConfirmationCode() {
+      http.client().post('/confirm/sms', {codeType: "Register"})
+        .then(() => {})
+        .catch(e => console.log(e));
+    }
       
     isFormInvalid() {
       return Object.keys(this.errors).some(x => this.errors[x] === true);
@@ -147,17 +155,30 @@ export class Registration extends Component {
     return errorExists && touched;
   }
 
-  render() {
-    return this.state.registered ? this.registered() : this.registerFrm()
+  handleCodeConfirmed() {
+    this.setState({confirmed: true});
   }
+
+  render() {
+    return this.state.registered && this.state.confirmed ? this.confirmed()
+      : this.state.registered ? this.registered() : this.registerFrm()
+  }
+
   registered()
   {
     return(
-    <div className={styles.body}>
-            <h1 className={styles.title}>Registered</h1>
-            <p><Link to="/profile">Click here to go to user profile</Link><br /></p>
-    </div>);
+      <Confirmation codeType={"Register"} onCodeConfirmed={this.handleCodeConfirmed.bind(this)}></Confirmation>
+    );
   }
+
+  confirmed() {
+    return(
+      <div className={styles.body}>
+              <h1 className={styles.title}>Registered</h1>
+              <p><Link to="/profile">Click here to go to user profile</Link><br /></p>
+      </div>);
+  }
+
   registerFrm(){
 
     this.errors = this.validate();
