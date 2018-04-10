@@ -21,13 +21,13 @@ import DatePicker from 'react-datepicker';
 
 import moment from 'moment';
 
-import styles from './Cars.css'
+import styles from './Manage.css'
 import Cars from '../Locations/components/Cars/Cars';
 
 const storage = require('../../util/persistedStorage');
 
 //Booking component class
-export class Car extends Component {
+export class Manage extends Component {
 
 	constructor(props){
 		super(props);
@@ -137,4 +137,4 @@ export class Car extends Component {
   }
 }
 
-export default Car;
+export default Manage;

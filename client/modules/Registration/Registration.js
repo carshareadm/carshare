@@ -122,7 +122,6 @@ export class Registration extends Component {
             password: this.state.password1,
           })
           .then(res => {
-            console.log(res);
             storage.set(storage.Keys.JWT, res.data.token);
             this.setState({registered: true});
           })

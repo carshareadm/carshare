@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 import styles from './Header.css';
 import logo from './Logo-ongray.png.png'
 
+const storage = require('../../../../util/persistedStorage');
+
 
 //Helper to set the header active
 function active(router, path, indexOnly){
@@ -15,7 +17,11 @@ export class Header extends Component{
 
 	constructor(props){
 		super(props);
-		this.state = {menuIsVisible:false};
+		this.state = {
+			isAdm: false,
+			loggedIn: false,
+			menuIsVisible:false,
+		};
 
 		//Bind the function to the class
 		this.burgerToggle = this.burgerToggle.bind(this);
@@ -27,6 +33,12 @@ export class Header extends Component{
 		});
 	}
 
+	componentDidMount() {
+		if(storage.get(storage.Keys.JWT))
+		this.setState({	loggedIn:true });
+		this.state.isAdm=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['isAdmin'];
+	}
+
 	render(){
 		return (
 	  		<header className={styles.header}>
@@ -36,9 +48,14 @@ export class Header extends Component{
 			    	{/* <div onClick={this.burgerToggle} className={styles.burgerImage}></div> */}
 			    <ul className={styles.ul} style={{display:this.state.menuIsVisible ? "block" : "none"}}>
 		    		<li className={active(this.context.router, "/", true)}><Link to="/" onClick={this.burgerToggle}>Home</Link></li>
-					<li className={active(this.context.router, "/cars", true)}><Link to="/booking" onClick={this.burgerToggle}>Cars</Link></li>
-					<li className={active(this.context.router, "/locations", true)}><Link to="/booking" onClick={this.burgerToggle}>Locations</Link></li>
-					<li className={active(this.context.router, "/profile", true)}><Link to="/profile" onClick={this.burgerToggle}>Profile</Link></li>
+					<li className={active(this.context.router, "/cars", true)}><Link to="/cars" onClick={this.burgerToggle}>Cars</Link></li>
+					<li className={active(this.context.router, "/locations", true)}><Link to="/locations" onClick={this.burgerToggle}>Locations</Link></li>
+					{this.state.loggedIn ?
+					<li className={active(this.context.router, "/profile", true)}><Link to="/profile" onClick={this.burgerToggle}>Profile</Link></li> : ''
+					}
+					{this.state.isAdm ?
+					<li className={active(this.context.router, "/manage", true)}><Link to="/manage" onClick={this.burgerToggle}>Manage</Link></li> : ''
+					}
 		    		<li className={active(this.context.router, "/faq", true)}><Link to="/faq" onClick={this.burgerToggle}>FAQ</Link></li>
 		    		<li className={active(this.context.router, "/terms", true)}><Link to="/terms" onClick={this.burgerToggle}>Terms and Conditions</Link></li>
 		    		<li className={active(this.context.router, "/contact", true)}><Link to="/contact" onClick={this.burgerToggle}>Contact Us</Link></li>

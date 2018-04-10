@@ -37,6 +37,8 @@ export class Booking extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
+			carid: '',
+			userid: '',
 			selectedCar:[],
 			selectedLocation:[],
 			startDate: this.startTime,
@@ -44,6 +46,8 @@ export class Booking extends Component {
 			selectedCar:false,
 			loggedIn: false,
 			booked: false,
+
+			validated: true,
 			
 			touched: {
 				startDate: false,
@@ -68,6 +72,8 @@ labels = {
 	componentDidMount() {
 		if(storage.get(storage.Keys.JWT))
 		this.setState({	loggedIn:true });
+		this.state.userid=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['sub'];
+		this.setState({	carid:this.props.location.query.carid });
 		http
       .client()
       .get("/cars")
@@ -76,7 +82,7 @@ labels = {
       })
       .catch(err => {
         console.log(err);
-      });
+			});
 	}	
 
 	mapCarToModel(car) {
@@ -117,6 +123,28 @@ labels = {
 		this.setState({ endDate: date });
 	}
 
+	handleBooking(evt){
+		if (this.isFormInvalid()) {
+			evt.preventDefault();
+			return;
+		}
+		else{
+			evt.preventDefault();
+			http.client().post('/booking/', {
+				userid: this.state.userid,
+				car: this.state.carid,
+				startAt: this.state.startDate,
+				endAt: this.state.endDate,
+			})
+			.then(res => {
+				console.log(res);
+				this.setState({booked: true});
+			})
+			.catch(err => console.log(err));
+		}
+		//alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
+}
+
 	handleSubmit(evt){
        if (this.isFormInvalid()) {
          evt.preventDefault();
@@ -124,12 +152,16 @@ labels = {
        }
        else{
          evt.preventDefault();
-         http.client().post('/booking/', {
-           car: this.props.location.query.carid,
+         http.client().post('/booking/check', {
+					 car: this.props.location.query.carid,
+					 startAt: this.state.startDate,
+					 endAt: this.state.endDate,
          })
          .then(res => {
-           console.log(res);
-           this.setState({booked: true});
+					 if(res.data===true)
+					 {
+					 	this.setState({validated: false});
+					 }
          })
          .catch(err => console.log(err));
        }
@@ -243,9 +275,9 @@ labels = {
             </form>
 		<Row>
 			<Col>
-			<form onSubmit={this.handleSubmit.bind(this)}>
+			<form onSubmit={this.handleBooking.bind(this)}>
 				<Button 
-//				disabled={isDisabled} 
+				disabled={this.state.validated ? true : false} 
 				outline color="success" className={styles.wideBtn}>
 				Book
             	</Button>
