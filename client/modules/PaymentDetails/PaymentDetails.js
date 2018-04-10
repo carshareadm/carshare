@@ -19,7 +19,7 @@ import {
 import { Link } from "react-router";
 import * as http from "../../util/http";
 
-import * as ccCheck from "credit-card";
+import * as ccCheck from "card-validator";
 import styles from "./PaymentDetails.css";
 
 const now = new Date(Date.now());
@@ -60,14 +60,15 @@ class PaymentDetails extends Component
 
   validate() {
     const cardNumber = this.state.cardNumber.replace(nonDigit, '');
-    const cardType = ccCheck.determineCardType(cardNumber);
     const ccv = this.state.ccv.replace(nonDigit, '');
+    const checkResult = cCheck.number(cardNumber);
+    const expiry = this.state.expiryMonth + this.state.expiryYear;
 
     const valids = {
-      cardNumber: cardType && ccCheck.luhn(cardNumber),
+      cardNumber: checkResult.isValid,
       nameOnCard: this.state.nameOnCard.length > 0,
-      ccv: ccCheck.doesCvvMatchType(ccv, cardType),
-      expiry: !ccCheck.isExpired(this.state.expiryMonth, this.state.expiryYear),
+      ccv: ccv.length === checkResult.code.size,
+      expiry: ccCheck.expirationDate(expiry).isValid,
     }
     console.log(valids);
     return valids;
@@ -81,7 +82,6 @@ class PaymentDetails extends Component
     props.touched = this.state.touched;
     props.touched [field] = true;
     this.setState(props);
-    console.log(this.state.touched);
   }
 
   handleExpiryMonthChange(evt) {
@@ -91,7 +91,6 @@ class PaymentDetails extends Component
     props.touched = this.state.touched;
     props.touched.expiry = true;
     this.setState(props);
-    console.log(this.state.touched);
   }
 
   handleExpiryYearChange = (evt) => {
@@ -101,7 +100,6 @@ class PaymentDetails extends Component
     props.touched = this.state.touched;
     props.touched.expiry = true;
     this.setState(props);
-    console.log(this.state.touched);
   }
 
   toggleExpMonthDropdown() {
@@ -142,7 +140,7 @@ class PaymentDetails extends Component
   }
 
   formIsValid() {
-    return Object.keys(this.valids).some(field => this.valids[field] === false);
+    return Object.keys(this.valids).every(field => this.valids[field] === true);
   }
 
   mapUserToModel(user)
