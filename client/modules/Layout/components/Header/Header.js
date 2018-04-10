@@ -35,8 +35,10 @@ export class Header extends Component{
 
 	componentDidMount() {
 		if(storage.get(storage.Keys.JWT))
-		this.setState({	loggedIn:true });
-		this.state.isAdm=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['isAdmin'];
+		{
+			this.setState({	loggedIn:true });
+			this.state.isAdm=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['isAdmin'];
+		}
 	}
 
 	render(){

@@ -68,8 +68,10 @@ labels = {
   
 	componentDidMount() {
 		if(window.localStorage.getItem('JWT'))
-		this.setState({	loggedIn:true });
-		this.state.userid=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['sub'];
+		{
+			this.setState({	loggedIn:true });
+			this.state.userid=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['sub'];
+		}
 		this.setState({	carid:this.props.location.query.carid });
 		http
       .client()
@@ -121,12 +123,11 @@ labels = {
 	}
 
 	handleBooking(evt){
+		evt.preventDefault();
 		if (this.isFormInvalid()) {
-			evt.preventDefault();
 			return;
 		}
 		else{
-			evt.preventDefault();
 			http.client().post('/booking/', {
 				userid: this.state.userid,
 				car: this.state.carid,
@@ -139,30 +140,27 @@ labels = {
 			})
 			.catch(err => console.log(err));
 		}
-		//alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
 }
 
 	handleSubmit(evt){
-       if (this.isFormInvalid()) {
-         evt.preventDefault();
-         return;
-       }
-       else{
-         evt.preventDefault();
-         http.client().post('/booking/check', {
-					 car: this.props.location.query.carid,
-					 startAt: this.state.startDate,
-					 endAt: this.state.endDate,
-         })
-         .then(res => {
-					 if(res.data===true)
-					 {
-					 	this.setState({validated: false});
-					 }
-         })
-         .catch(err => console.log(err));
-       }
-       //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
+			evt.preventDefault();
+      if (this.isFormInvalid()) {
+        return;
+      }
+      else{
+      	http.client().post('/booking/check', {
+					car: this.props.location.query.carid,
+					startAt: this.state.startDate,
+					endAt: this.state.endDate,
+      })
+      .then(res => {
+				if(res.data===true)
+				{
+					this.setState({validated: false});
+				}
+      })
+      .catch(err => console.log(err));
+    }
 	 }
 
 	isError(key) {

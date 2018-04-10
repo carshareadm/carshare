@@ -11,17 +11,17 @@ const createBooking = function (req, res) {
   const userid = req.body.userid;
 
   User.find({'_id': userid})
-  .exec((usrerr, selecteduser) => {
-    if (usrerr) {
-      res.status(500).send(usrerr);
+  .exec((usrErr, selecteduser) => {
+    if (usrErr) {
+      res.status(500).send(usrErr);
     } else if (!selecteduser) {
       res.status(404).send();
     } else {
 
   car.find({'_id': carid})
-  .exec((carerr, vehicle) => {
-    if (carerr) {
-      res.status(500).send(carerr);
+  .exec((carErr, vehicle) => {
+    if (carErr) {
+      res.status(500).send(carErr);
     } else if (!vehicle) {
       res.status(404).send();
     } else {

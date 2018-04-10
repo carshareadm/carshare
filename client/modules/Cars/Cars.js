@@ -120,13 +120,13 @@ export class Car extends Component {
 	        <h1 className={styles.title}>Cars</h1>
 			</Col>
 		</Row>
-            <form onSubmit={this.handleSubmit.bind(this)}>
-		<Row>
-					<Col>
+    <form onSubmit={this.handleSubmit.bind(this)}>
+			<Row>
+				<Col>
 					<Cars cars={this.state.cars} byType={true}/>
-					</Col>
-		</Row>
-            </form>
+				</Col>
+			</Row>
+    </form>
 		<Row>
 			<Col>
 			</Col>
