@@ -26,7 +26,7 @@ import Cars from '../Locations/components/Cars/Cars';
 
 const storage = require('../../util/persistedStorage');
 
-//Booking component class
+//Cars component class
 export class Car extends Component {
 
 	constructor(props){

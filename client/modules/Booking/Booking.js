@@ -22,9 +22,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 import styles from './Booking.css'
-import {Registration} from '../Registration/Registration';
-
-const storage = require('../../util/persistedStorage');
 
 //Booking component class
 export class Booking extends Component {
@@ -70,7 +67,7 @@ labels = {
   };
   
 	componentDidMount() {
-		if(storage.get(storage.Keys.JWT))
+		if(window.localStorage.getItem('JWT'))
 		this.setState({	loggedIn:true });
 		this.state.userid=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['sub'];
 		this.setState({	carid:this.props.location.query.carid });
@@ -184,7 +181,10 @@ labels = {
 	}
 
   	render() {
-		return this.state.booked ? this.booked() : (this.state.loggedIn ? this.bookingFrm() : this.register());
+			if(!this.props.location.query.carid)
+				return this.goback();
+			else
+				return this.state.booked ? this.booked() : (this.state.loggedIn ? this.bookingFrm() : this.register());
 	  }
 	register()
 	{
@@ -192,6 +192,14 @@ labels = {
 		<div className={styles.body}>
 				<h1 className={styles.title}>Please Register</h1>
 				<p><Link to="/register">Click here to go to Register</Link><br /></p>
+		</div>);
+	}
+	goback()
+	{
+		return(
+		<div className={styles.body}>
+				<h1 className={styles.title}>No car was selected</h1>
+				<p><Link to={window.history.back()}>Redirecting to previous page</Link><br /></p>
 		</div>);
 	}
 	booked()

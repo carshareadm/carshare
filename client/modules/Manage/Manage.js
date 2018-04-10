@@ -6,11 +6,15 @@ import {
   FormGroup,
   Label,
   Input,
-  FormText,
+	FormText,
+	Card,
+	CardBody,
+	CardHeader,
+	CardText,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
+	DropdownItem,
   Container,
   Row,
   Col,
@@ -24,92 +28,36 @@ import moment from 'moment';
 import styles from './Manage.css'
 import Cars from '../Locations/components/Cars/Cars';
 
-const storage = require('../../util/persistedStorage');
-
-//Booking component class
+//Manage component class
 export class Manage extends Component {
 
 	constructor(props){
 		super(props);
 		this.state = {
-			cars: [], 
-      locations: [], 
-			Rego: '',
-			HireType: '',
-			Address: '',
-			selectedCar:false,
 			loggedIn: false,
-			booked: false,
+			isAdm: false,
 		  };
 	
 	}
 	componentDidMount() {
-		if(storage.get(storage.Keys.JWT))
+		if(window.localStorage.getItem('JWT'))
 		this.setState({	loggedIn:true });
-		http
-      .client()
-      .get("/cars")
-      .then(res => {
-
-        this.setState({ 
-          cars: res.data,
-          locations: res.data.map(car => car.location),
-        })
-      })
-      .catch(err => {
-        console.log(err);
-      });
+		this.state.isAdm=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['isAdmin'];
 	}	
 
-	sortCarsOnLoc(cars, lat, lng){
-    return cars.slice(0).map(c => {
-      c.distanceKM = distanceKM(
-        c.location.coordinates.latitude, c.location.coordinates.longitude, lat, lng 
-      ); 
-      return c;
-    }).sort((c1, c2) => (c1.distanceKM - c2.distanceKM));
-  }
-		
-	handleSubmit(evt){
-       if (this.isFormInvalid()) {
-         evt.preventDefault();
-         return;
-       }
-       else{
-         evt.preventDefault();
-         http.client().post('/booking/', {
-           car: this.state.car_id,
-         })
-         .then(res => {
-           console.log(res);
-           this.setState({booked: true});
-         })
-         .catch(err => console.log(err));
-       }
-       //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
-	 }
-
   	render() {
-		return this.state.booked ? this.booked() : (this.state.loggedIn ? this.bookingFrm() : this.register());
+		return this.state.isAdm ? this.ManageFrm() : this.register();
 	  }
 	register()
 	{
 		return(
 		<div className={styles.body}>
-				<h1 className={styles.title}>Please Register</h1>
-				<p><Link to="/register">Click here to go to Register</Link><br /></p>
-		</div>);
-	}
-	booked()
-	{
-		return(
-		<div className={styles.body}>
-				<h1 className={styles.title}>Booking success</h1>
-				<p><Link to="/">Click here to return home</Link><br /></p>
+				<h1 className={styles.title}>Insufficient Access</h1>
+				<p><Link to="/">Redirecting to previous page</Link><br /></p>
 		</div>);
 	}
 	
-	bookingFrm()
+	ManageFrm()
 	{
 	    // Here goes our page 
 	  return (
@@ -117,19 +65,81 @@ export class Manage extends Component {
 		<Container>
 		<Row>
 			<Col>
-	        <h1 className={styles.title}>Cars</h1>
+	        <h1 className={styles.title}>Management Console</h1>
 			</Col>
 		</Row>
-            <form onSubmit={this.handleSubmit.bind(this)}>
 		<Row>
-					<Col>
-					<Cars cars={this.state.cars} byType={true}/>
-					</Col>
+				<Col xs="12" sm="6">
+					<Card key="manage_Users">
+          <CardHeader tag="h5">
+            Manage Users<br/>
+          </CardHeader>
+          <CardBody>
+            <div className="float-right">
+            <Link to={"/profile"}>
+              <Button className={styles.buttons} color="primary" size="lg">Manage Users</Button>
+            </Link>
+            </div>
+            <CardText>
+              Edit user profile & payment details
+            </CardText>
+          </CardBody>
+        	</Card>
+				</Col>
+				<Col xs="12" sm="6">
+					<Card key="manage_Locations">
+          <CardHeader tag="h5">
+            Manage Locations<br/>
+          </CardHeader>
+          <CardBody>
+            <div className="float-right">
+            <Link to={"/locations"}>
+              <Button className={styles.buttons} color="primary" size="lg">Manage Locations</Button>
+            </Link>
+            </div>
+            <CardText>
+             Edit location information
+            </CardText>
+          </CardBody>
+        	</Card>
+				</Col>
+				<br/>
 		</Row>
-            </form>
 		<Row>
-			<Col>
-			</Col>
+		<Col xs="12" sm="6">
+					<Card key="manage_Vehicles">
+          <CardHeader tag="h5">
+            Manage Vehicles<br/>
+          </CardHeader>
+          <CardBody>
+            <div className="float-right">
+            <Link to={"/cars"}>
+              <Button className={styles.buttons} color="primary" size="lg">Manage Vehicles</Button>
+            </Link>
+            </div>
+            <CardText>
+             Edit vehicle information
+            </CardText>
+          </CardBody>
+        	</Card>
+				</Col>
+				<Col xs="12" sm="6">
+					<Card key="manage_Bookings">
+          <CardHeader tag="h5">
+            Manage Bookings<br/>
+          </CardHeader>
+          <CardBody>
+            <div className="float-right">
+            <Link to={"/booking?carid=temp"}>
+              <Button className={styles.buttons} color="primary" size="lg">Manage Bookings</Button>
+            </Link>
+            </div>
+            <CardText>
+             Edit location information
+            </CardText>
+          </CardBody>
+        	</Card>
+				</Col>
 		</Row>
 		</Container>
 	    </div>
