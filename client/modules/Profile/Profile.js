@@ -386,7 +386,10 @@ export class Profile extends Component {
           <Row>
             <Col>
               <hr />
-              <Link className={styles.wideBtn + " btn btn-success"} >
+              <Link
+                className={styles.wideBtn + " btn btn-success"}
+                to="/paymentDetails"
+              >
                 Payment Details
               </Link>
             </Col>

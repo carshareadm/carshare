@@ -61,16 +61,18 @@ class PaymentDetails extends Component
   validate() {
     const cardNumber = this.state.cardNumber.replace(nonDigit, '');
     const ccv = this.state.ccv.replace(nonDigit, '');
-    const checkResult = cCheck.number(cardNumber);
+    const checkResult = ccCheck.number(cardNumber);
     const expiry = this.state.expiryMonth + this.state.expiryYear;
+    const ccvLength =
+      (checkResult.card && checkResult.card.type) ?
+      checkResult.card.code.size : null;
 
     const valids = {
       cardNumber: checkResult.isValid,
       nameOnCard: this.state.nameOnCard.length > 0,
-      ccv: ccv.length === checkResult.code.size,
+      ccv: ccvLength && ccv.length === ccvLength,
       expiry: ccCheck.expirationDate(expiry).isValid,
     }
-    console.log(valids);
     return valids;
   }
 
@@ -121,15 +123,24 @@ class PaymentDetails extends Component
     const ccv = this.state.ccv.replace(nonDigit, '');
 
     if (this.formIsValid()) {
-      http.client().put('/paymentDetals/change', {
-        cardNumber: cardNumber,
-        nameOnCard: this.state.nameOnCard,
-        ccv: ccv,
-        expiryMonth: Number(this.state.expiryMonth),
-        expiryYear: Number(this.state.expiryYear),
-      })
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      // logging to console only, won't actually write to database
+      console.log({
+         cardNumber: cardNumber,
+         nameOnCard: this.state.nameOnCard,
+         ccv: ccv,
+         expiryMonth: Number(this.state.expiryMonth),
+         expiryYear: Number(this.state.expiryYear),
+      });
+      // TO FIX
+      // http.client().put('/paymentDetals/change', {
+      //   cardNumber: cardNumber,
+      //   nameOnCard: this.state.nameOnCard,
+      //   ccv: ccv,
+      //   expiryMonth: Number(this.state.expiryMonth),
+      //   expiryYear: Number(this.state.expiryYear),
+      // })
+      // .then(res => console.log(res))
+      // .catch(err => console.log(err));
     }
   }
 
@@ -154,9 +165,9 @@ class PaymentDetails extends Component
           user.creditCard.nameOnCard : '',
         ccv: user.creditCard && user.creditCard.ccv ? user.creditCard.ccv : '',
         expiryMonth: user.creditCard && user.creditCard.expiryMonth ?
-          user.creditCard.expiryMonth : '',
+          user.creditCard.expiryMonth.toString() : '',
         expiryYear: user.creditCard && user.creditCard.expiryYear ?
-          user.creditCard.expiryYear : '',
+          user.creditCard.expiryYear.toString() : '',
       })
     }
   }
