@@ -3,9 +3,9 @@
 	text-align: center;
 	margin: 0 auto;
 	background-color: rgb(41, 97, 31);
-	bottom:0;
 	padding: 1em;
-  bottom: 0px;
+    left: 0;
+    right: 0;
 }
 
 .footer a{
