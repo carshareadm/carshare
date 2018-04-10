@@ -2,6 +2,10 @@
   width: 100%;
   padding: 0;
   margin: auto;
+  background-color: rgb(41, 97, 31); 
+  min-height: 100vh;
+  /*padding-bottom: calc(100%);*/
+
 }
 
 .backgrounds{
