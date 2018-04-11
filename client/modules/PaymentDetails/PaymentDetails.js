@@ -24,7 +24,7 @@ import styles from "./PaymentDetails.css";
 
 const now = new Date(Date.now());
 const yearNow = now.getFullYear();
-const selYears = Array.from([0, 1, 2, 3, 4], x => (yearNow + x).toFixed());
+const selYears = new Array(yearNow, yearNow + 1, yearNow + 2, yearNow + 3, yearNow + 4);
 const selMonths = [
   '01', '02', '03', '04', '05', '06',
   '07', '08', '09', '10', '11', '12']
