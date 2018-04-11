@@ -3,10 +3,20 @@
   top: 70px;
 	background-color: rgba(198, 198, 198, 0.8);
 	width: 100%;
-	min-height: 30px;
+	min-height: 3em;
 	text-align: center;
 	z-index: 9998;
 }
+
+.h4 {
+	font-size: 1rem;
+  }
+
+.buttons {
+	background-color: rgb(76, 157, 38) !important;
+	border: solid rgb(76, 157, 38) 1px !important;
+  }
+  
 
 .barItem{
 	cursor:pointer;
