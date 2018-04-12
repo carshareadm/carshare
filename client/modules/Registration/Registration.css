@@ -15,8 +15,12 @@
 }
 
 .wideBtn {
-  width: 100%;
+  width: 95%;
   text-align: right !important;
+  border-radius: 0 !important;
+  position: absolute;
+  bottom: 8px;
+  left: 2.5%;
 }
 
 .form {
@@ -32,4 +36,20 @@
 visibility: visible;
 	font-size:20pt;
 	color: green;
+}
+
+.label
+{
+  padding: none;
+  color: grey;
+}
+
+.btnarrows{
+	opacity: 0.5;
+	width: 50px;
+	height: 50px;
+	position: relative;
+	left:20px;
+  object-fit: cover;
+  display:inline-block;
 }
