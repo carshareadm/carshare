@@ -4,7 +4,15 @@ import { Link } from "react-router";
 import * as http from "../../../../util/http";
 import * as storage from "../../../../util/persistedStorage";
 
-import { Button, Row, Col } from "reactstrap";
+import {
+  Button,
+  Row,
+  Col,
+  ButtonGroup,
+  FormGroup,
+  Input,
+  Label
+} from "reactstrap";
 
 // Import Style
 import styles from "./UserBar.css";
@@ -14,7 +22,7 @@ export class UserBar extends Component {
     super(props);
     this.state = {
       formIsVisible: false,
-      loggedIn: false,
+      loggedIn: false
     };
 
     //Bind the function to the class
@@ -30,32 +38,39 @@ export class UserBar extends Component {
 
   formToggle() {
     this.setState({
-      formIsVisible: !this.state.formIsVisible,
+      formIsVisible: !this.state.formIsVisible
     });
   }
 
   loggedInBar() {
     return (
       <div className={styles.bar}>
-          <form onSubmit={this.logout.bind(this)}>
-            <span className={styles.barItem}>
-              <Row>
-                <Col />
-                <Col><h3>Welcome to ShaCar</h3></Col>
-                <Col>
-                  <div className="float-right">
-                    <Button
-                      className={styles.buttons}
-                      color="primary"
-                      size="lg"
-                    >
-                      Log Out
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </span>
-          </form>
+        <form onSubmit={this.logout.bind(this)}>
+          <span className={styles.barItem}>
+            <ButtonGroup>
+              <ButtonGroup>
+                <Link className={styles.barItem_link} to="/profile">
+                  <Button className={styles.buttons} color="primary" size="sm">
+                    Profile
+                  </Button>
+                </Link>
+                &nbsp;
+              </ButtonGroup>
+              <ButtonGroup>
+                <Button className={styles.buttons} color="primary" size="sm">
+                  History
+                </Button>
+                &nbsp;
+              </ButtonGroup>
+              <ButtonGroup>
+                <Button className={styles.buttons} color="primary" size="sm">
+                  Log Out
+                </Button>
+                &nbsp;
+              </ButtonGroup>
+            </ButtonGroup>
+          </span>
+        </form>
       </div>
     );
   }
@@ -114,15 +129,19 @@ export class UserBar extends Component {
           style={{ display: this.state.formIsVisible ? "block" : "none" }}
           onSubmit={this.executeLogin}
         >
-          <label className={styles.labels} htmlFor="login">
-            <div className={styles.labelText}>Login</div>
-            <input type="text" name="login" id="login" />
-          </label>
-          <label className={styles.labels} htmlFor="password">
-            <div className={styles.labelText}>Password</div>
-            <input type="password" name="password" id="password" />
-          </label>
-          <input type="submit" value="Submit" />
+          <FormGroup>
+            <Label className={styles.Labels} htmlFor="login">
+              <div className={styles.LabelText}>Login</div>
+              <Input type="text" name="login" id="login" />
+            </Label>
+            <Label className={styles.Labels} htmlFor="password">
+              <div className={styles.LabelText}>Password</div>
+              <Input type="password" name="password" id="password" />
+            </Label>
+            <Button className={styles.buttons} color="primary" size="sm">
+              Log in
+            </Button>
+          </FormGroup>
         </form>
       </div>
     );
@@ -135,7 +154,7 @@ export class UserBar extends Component {
 
 // Acces to router to show the active page
 UserBar.contextTypes = {
-  router: React.PropTypes.object,
+  router: React.PropTypes.object
 };
 
 export default UserBar;

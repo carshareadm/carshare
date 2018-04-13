@@ -15,12 +15,12 @@
 }
 
 .wideBtn {
-  width: 100%;
+  width: 95%;
   text-align: right !important;
-  border-radius: 0;
+  border-radius: 0 !important;
   position: absolute;
   bottom: 8px;
-  left: 0px;
+  left: 2.5%;
 }
 
 .form {

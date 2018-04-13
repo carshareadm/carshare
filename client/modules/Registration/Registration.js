@@ -111,11 +111,10 @@ export class Registration extends Component {
   };
 
   handleSubmit(evt) {
+    evt.preventDefault();
     if (this.isFormInvalid()) {
-      evt.preventDefault();
       return;
     } else {
-      evt.preventDefault();
       http
         .client()
         .post("/account/register", {
