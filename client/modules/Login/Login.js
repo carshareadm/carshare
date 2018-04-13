@@ -31,10 +31,7 @@ export class Login extends Component {
       password1: "",
       LoggedIn: false,
 
-      touched: {
-        email: false,
-        password: false,
-      },
+      touched: { email: false },
     };
     this.isFormInvalid = this.isFormInvalid.bind(this);
   }
@@ -174,10 +171,8 @@ export class Login extends Component {
                   <Input
                     name="password"
                     id="password"
-                    className={this.isError("password") ? "is-invalid" : ""}
                     type="password"
                     placeholder="Enter Password"
-                    onBlur={() => this.handleBlur("password")}
                     value={this.state.password1}
                     onChange={this.handlePassword1Change.bind(this)}
                     required
