@@ -64,12 +64,41 @@ const getTimes = function(req, res) {
 };
 
 const getCar = function(req, res) {
-  // WIP 
-  res.status(200).send([]);
+  Car.find({
+    _id:mongoose.Types.ObjectId(req.params.carId)
+  }).exec((err, car) => {
+    if(err){
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(car);
+    }
+  });
+}
+
+const getCarsForType = function(req, res){
+  VehicleType.find({
+      name: req.params.VehicleName
+    }).exec((err, vt) => {
+      if(err){
+        res.status(500).send(err);
+        return;
+      }
+      Car.find({
+        vehicleType: vt
+      }).exec((err, car) => {
+        if(err){
+          res.status(500).send(err);
+        } else {
+          res.status(200).send(car);
+        }
+      });
+    });
+
 }
 
 module.exports = {
   getCars: getCars,
   getTimes: getTimes,
   getCar: getCar,
+  getCarsForType: getCarsForType,
 };

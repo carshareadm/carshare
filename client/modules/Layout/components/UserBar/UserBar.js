@@ -4,7 +4,16 @@ import { Link } from "react-router";
 import * as http from "../../../../util/http";
 import * as storage from "../../../../util/persistedStorage";
 
-import { Button, Row, Col } from "reactstrap";
+import {
+  Button,
+  Row,
+  Col,
+  ButtonGroup,
+  FormGroup,
+  Input,
+  Label,
+  Form,
+} from "reactstrap";
 
 // Import Style
 import styles from "./UserBar.css";
@@ -15,6 +24,8 @@ export class UserBar extends Component {
     this.state = {
       formIsVisible: false,
       loggedIn: false,
+      email: "",
+      password1: "",
     };
 
     //Bind the function to the class
@@ -34,28 +45,39 @@ export class UserBar extends Component {
     });
   }
 
+  handlePassword1Change = evt => {
+    this.setState({ password1: evt.target.value });
+  };
+
   loggedInBar() {
     return (
       <div className={styles.bar}>
-          <form onSubmit={this.logout.bind(this)}>
-            <span className={styles.barItem}>
-              <Row>
-                <Col />
-                <Col><h3>Welcome to ShaCar</h3></Col>
-                <Col>
-                  <div className="float-right">
-                    <Button
-                      className={styles.buttons}
-                      color="primary"
-                      size="lg"
-                    >
-                      Log Out
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </span>
-          </form>
+        <form onSubmit={this.logout.bind(this)}>
+          <span className={styles.barItem}>
+            <ButtonGroup>
+              <ButtonGroup>
+                <Link className={styles.barItem_link} to="/profile">
+                  <Button className={styles.buttons} color="primary" size="sm">
+                    Profile
+                  </Button>
+                </Link>
+                &nbsp;
+              </ButtonGroup>
+              <ButtonGroup>
+                <Button className={styles.buttons} color="primary" size="sm">
+                  History
+                </Button>
+                &nbsp;
+              </ButtonGroup>
+              <ButtonGroup>
+                <Button className={styles.buttons} color="primary" size="sm">
+                  Log Out
+                </Button>
+                &nbsp;
+              </ButtonGroup>
+            </ButtonGroup>
+          </span>
+        </form>
       </div>
     );
   }
@@ -110,20 +132,44 @@ export class UserBar extends Component {
             </span>
           )}
         </h4>
-        <form
-          style={{ display: this.state.formIsVisible ? "block" : "none" }}
-          onSubmit={this.executeLogin}
-        >
-          <label className={styles.labels} htmlFor="login">
-            <div className={styles.labelText}>Login</div>
-            <input type="text" name="login" id="login" />
-          </label>
-          <label className={styles.labels} htmlFor="password">
-            <div className={styles.labelText}>Password</div>
-            <input type="password" name="password" id="password" />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
+        <Form inline style={{ display: this.state.formIsVisible ? "block" : "none" }}
+          onSubmit={this.executeLogin}>
+        
+        <Row>
+        <FormGroup> 
+        <Col xs="8" sm="4"/>
+          <Col className={styles.logincol}>
+          <Label className={styles.labels} htmlFor="login">
+              Email
+              <Input type="text" name="login" id="login" />
+              </Label>
+          </Col>
+          </FormGroup>
+          <FormGroup>
+          <Col>
+            <Label className={styles.labels} htmlFor="password">
+              Password
+            <Input
+                    name="password"
+                    id="password"
+                    type="password"
+                    placeholder="Enter Password"
+                    value={this.state.password1}
+                    onChange={this.handlePassword1Change.bind(this)}
+                    required
+                  />
+                  </Label>
+            </Col>
+            </FormGroup>
+            <FormGroup>
+            <Col>
+            <Button className={styles.buttons} color="primary" size="sm">
+              Log in
+            </Button>
+          </Col>
+          </FormGroup>
+        </Row>
+        </Form>
       </div>
     );
   }

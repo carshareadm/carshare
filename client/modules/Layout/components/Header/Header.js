@@ -52,11 +52,10 @@ export class Header extends Component{
 		    		<li className={active(this.context.router, "/", true)}><Link to="/" onClick={this.burgerToggle}>Home</Link></li>
 					<li className={active(this.context.router, "/cars", true)}><Link to="/cars" onClick={this.burgerToggle}>Cars</Link></li>
 					<li className={active(this.context.router, "/locations", true)}><Link to="/locations" onClick={this.burgerToggle}>Locations</Link></li>
-					{this.state.loggedIn ?
-					<li className={active(this.context.router, "/profile", true)}><Link to="/profile" onClick={this.burgerToggle}>Profile</Link></li> : ''
-					}
 					{this.state.isAdm ?
 					<li className={active(this.context.router, "/manage", true)}><Link to="/manage" onClick={this.burgerToggle}>Manage</Link></li> : ''
+					}
+					{this.state.loggedIn ? '' : <li className={active(this.context.router, "/login", true)}><Link to="/login" onClick={this.burgerToggle}>Login</Link></li>
 					}
 		    		<li className={active(this.context.router, "/faq", true)}><Link to="/faq" onClick={this.burgerToggle}>FAQ</Link></li>
 		    		<li className={active(this.context.router, "/terms", true)}><Link to="/terms" onClick={this.burgerToggle}>Terms and Conditions</Link></li>
