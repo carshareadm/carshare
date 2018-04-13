@@ -14,7 +14,7 @@ const config = {
     accountSid: process.env.TWILIO_ACCOUNT_SID || 'ACb2c95ca9c596846abfa75189338298b5',
     authToken: process.env.TWILIO_AUTH_TOKEN || 'f7dd9ea60433394d20c6e1462f749fc5',
     serviceSid: process.env.TWILIO_SERVICE_SID || 'IS3b2ab1b96693c152426f1ee9f587b6a7',
-    sendSmsFrom: '+15005550006',
+    sendSmsFrom: process.env.TWILIO_SEND_SMS_FROM || '+15005550006',
   },
 };
 
