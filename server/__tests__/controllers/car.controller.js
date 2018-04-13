@@ -19,6 +19,7 @@ const request = require("supertest");
 
 describe("Car controller", () => {
 	let car1;
+	let vehicleType;
 
 	beforeAll(async () => {
 		await mongoose.connect('mongodb://localhost/test');
@@ -47,8 +48,8 @@ describe("Car controller", () => {
 		movements.car = car1;
 		movements.coordinates = location.coordinates;
 
-		var vehicleType = new VehicleType();
-		vehicleType.name = "Small"
+		vehicleType = new VehicleType();
+		vehicleType.name = "small"
 		vehicleType.hourlyRate = 7;
 		car1.vehicleType = vehicleType;
 
@@ -76,7 +77,25 @@ describe("Car controller", () => {
 	test("Request all cars", async () => {
 		const response = await request(app).get("/api/cars")
 		expect(response.statusCode).toBe(200);
+	})
+
+	test("Request one car", async () => {
+		const response = await request(app).get(`/api/cars/${car1._id}`);
+		expect(response.statusCode).toBe(200);
 		const body = response.body;
+		//expect(body).toBe();
+	})
+
+	test("Get cars based on type", async () => {
+		const response = await request(app).get(`/api/cars/types/${vehicleType.name}`);
+		expect(response.statusCode).toBe(200);
+		const body = response.body; 
+		const obj = {
+			rego:'AAA111',
+			make: "AudiA",
+			model: "TT"
+		}
+		expect(body[0]).toMatchObject(obj);
 	})
 
 	test("Check car availability", async () => {
