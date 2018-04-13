@@ -15,6 +15,7 @@ import Booking from './modules/Booking/Booking';
 import Locations from './modules/Locations/Locations';
 import Cars from './modules/Cars/Cars';
 import { Profile } from './modules/Profile/Profile';
+import { Login } from './modules/Login/Login';
 
 import {Manage} from './modules/Manage/Manage';
 import PaymentDetails from './modules/PaymentDetails/PaymentDetails';
@@ -44,6 +45,7 @@ export default (
 		<Route path="cars" component={Cars} />
     <Route path="locations" component={Locations}/>
 		<Route path="profile" component={Profile} />
+		<Route path="login" component={Login} />
     <Route path='paymentDetails' component={PaymentDetails} />
 	</Route>
 );
