@@ -52,12 +52,15 @@ export class Cars extends Component {
 
 	setType(event){
 	    const type = event.target.dataset.type;
-	    console.log(type)
 	    this.setState({
 	      	vType:type,
 	      	cars:[],
 	    });
 	    this.setCars(type);
+	  }
+
+	  buttonStyle(type){
+	  	return type===this.state.vType ? styles.active : null;
 	  }
 
   	render() {
@@ -72,9 +75,9 @@ export class Cars extends Component {
 					</Row>
 		        	<Row>
 				      <Col className={styles.topButtons}>
-			            <Button className={stylesMain.buttons +" "+ styles.button +" "+ styles.active} color="primary" size="lg" data-type="small" onClick={this.setType}>Small Vehicle</Button>
-			            <Button className={stylesMain.buttons +" "+ styles.button} color="primary" size="lg" data-type="luxury" onClick={this.setType}>Luxury Vehicle</Button>
-			            <Button className={stylesMain.buttons +" "+ styles.button} color="primary" size="lg" data-type="suv" onClick={this.setType}>SUV Vehicle</Button>
+			            <Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('small')} color="primary" size="lg" data-type="small" onClick={this.setType}>Small Vehicle</Button>
+			            <Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('luxury')} color="primary" size="lg" data-type="luxury" onClick={this.setType}>Luxury Vehicle</Button>
+			            <Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('suv')} color="primary" size="lg" data-type="suv" onClick={this.setType}>SUV Vehicle</Button>
 			          </Col>
 		        	</Row>
 		        	<Row className={styles.carsList}>
