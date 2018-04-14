@@ -32,6 +32,7 @@ const userSchema = new Schema({
   },
   password: { type: "String", required: true, trim: true, select: false },
   isAdmin: { type: "Boolean", required: true, default: false },
+  isAccountConfirmed: { type: "Boolean", required: true, default: false },
   license: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "License",

@@ -42,8 +42,9 @@ describe("Profile controller", () => {
     });
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await mongoose.disconnect();
+    done();
   });
 
   test("it should return Unauthorised if no auth token", done => {

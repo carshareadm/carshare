@@ -14,7 +14,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
+import Confirmation from '../Confirmation/Confirmation';
 import * as http from "../../util/http";
 
 var validator = require("validator");
@@ -24,26 +24,28 @@ const storage = require("../../util/persistedStorage");
 //Create a component class
 
 export class Registration extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password1: "",
-      password2: "",
-      mobile: "",
-      license: "",
-      registered: false,
 
-      touched: {
-        email: false,
-        password1: false,
-        password2: false,
-        mobile: false,
-        license: false,
-      },
-    };
-    this.isFormInvalid = this.isFormInvalid.bind(this);
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+          email: '',
+          password1: '',
+          password2: '',
+          mobile: '',
+          license: '',
+          registered: false,
+          confirmed: false,
+
+          touched: {
+            email: false,
+            password1: false,
+            password2: false,
+            mobile: false,
+            license: false,
+          }, 
+        };
+        this.isFormInvalid = this.isFormInvalid.bind(this);
+    }
 
   //Set up variables for Msgs
 
@@ -109,29 +111,35 @@ export class Registration extends Component {
   handleMobileChange = evt => {
     this.setState({ mobile: evt.target.value });
   };
+   
+      handleSubmit(evt){
+        if (this.isFormInvalid()) {
+          evt.preventDefault();
+          return;
+        }
+        else{
+          evt.preventDefault();
+          http.client().post('/account/register', {
+            email: this.state.email,
+            mobile: this.state.mobile,
+            license: this.state.license,
+            password: this.state.password1,
+          })
+          .then(res => {
+            storage.set(storage.Keys.JWT, res.data.token);
+            this.setState({registered: true});
+            this.requestConfirmationCode();
+          })
+          .catch(err => console.log(err));
+        }
+      }
 
-  handleSubmit(evt) {
-    evt.preventDefault();
-    if (this.isFormInvalid()) {
-      return;
-    } else {
-      http
-        .client()
-        .post("/account/register", {
-          email: this.state.email,
-          mobile: this.state.mobile,
-          license: this.state.license,
-          password: this.state.password1,
-        })
-        .then(res => {
-          storage.set(storage.Keys.JWT, res.data.token);
-          this.setState({ registered: true });
-        })
-        .catch(err => console.log(err));
+    requestConfirmationCode() {
+      http.client().post('/confirm/sms', {codeType: "Register"})
+        .then(() => {})
+        .catch(e => console.log(e));
     }
-    //alert(`Signed up with email: ${email} password: ${password1} mobile: ${mobile} license: ${license}`);
-  }
-
+      
   isFormInvalid() {
     return Object.keys(this.errors).some(x => this.errors[x] === true);
   }
@@ -157,21 +165,31 @@ export class Registration extends Component {
     return errorExists && touched;
   }
 
-  render() {
-    return this.state.registered ? this.registered() : this.registerFrm();
+  handleCodeConfirmed() {
+    this.setState({confirmed: true});
   }
-  registered() {
-    return (
-      <div className={styles.body}>
-        <h1 className={styles.title}>Registered</h1>
-        <p>
-          <Link to="/profile">Click here to go to user profile</Link>
-          <br />
-        </p>
-      </div>
+
+  render() {
+    return this.state.registered && this.state.confirmed ? this.confirmed()
+      : this.state.registered ? this.registered() : this.registerFrm()
+  }
+
+  registered()
+  {
+    return(
+      <Confirmation codeType={"Register"} onCodeConfirmed={this.handleCodeConfirmed.bind(this)}></Confirmation>
     );
   }
-  registerFrm() {
+
+  confirmed() {
+    return(
+      <div className={styles.body}>
+              <h1 className={styles.title}>Registered</h1>
+              <p><Link to="/profile">Click here to go to user profile</Link><br /></p>
+      </div>);
+  }
+
+  registerFrm(){
     this.errors = this.validate();
     const isDisabled = this.isFormInvalid();
 

@@ -20,6 +20,7 @@ import * as licenseService from '../../services/license.service';
 
 import * as validator from "validator";
 import styles from "./Profile.css";
+import stylesMain from '../../main.css';
 
 import FileUploader from '../FileUploader/FileUploader';
 import placeholderImg from './ic_image.svg';
@@ -215,18 +216,18 @@ export class Profile extends Component {
 
     // Here goes our page
     return (
-      <div className={styles.body}>
+      <div className={stylesMain.body}>
         <Container>
           <Row>
             <Col>
-              <h1 className={styles.title}>Profile</h1>
+              <h1 className={stylesMain.title}>Profile</h1>
             </Col>
           </Row>
           <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
           <Row>
               <Col xs="12" sm="6">
                 <hr />
-                <h4 className={styles.h4}>License</h4>
+                <h4 className={stylesMain.h4}>License</h4>
                 <div className={styles.imgContainer}>
                   {this.renderImage()}
                 </div>

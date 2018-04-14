@@ -18,26 +18,20 @@ describe("Login controller", () => {
     user.email = "adm@gmail.com";
     user.mobile = "0411111111";
     user.password = "12345";
-    user.save((err, saved) => {
-      if (err) {
-        done(err);
-      } else {
-        done();
-      }
-    });
+    user.save()
+      .then(() => done())
+      .catch(err => done(err))
   });
 
   afterEach(done => {
-    User.remove({}, err => {
-      if (err) {
-        done(err);
-      }
-      done();
-    });
+    User.remove({})
+      .then(() => done())
+			.catch(err => done(err))
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await mongoose.disconnect();
+    done();
   });
 
   test("it should return Unauthorised if only has email", done => {

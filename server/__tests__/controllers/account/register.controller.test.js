@@ -17,28 +17,20 @@ describe("Register controller", () => {
   })
 
   afterEach((done) => {
-    User.remove({}, (err) => {
-      if (err) {
-        done(err);
-      }
-      done();
-    });
-    Image.remove({}, (err) => {
-      if (err) {
-        done(err);
-      }
-      done();
-    });
-    License.remove({}, (err) => {
-      if (err) {
-        done(err);
-      }
-      done();
-    });
+    User.remove({})
+      .then(() => done())
+			.catch(err => done(err))
+    Image.remove({})
+      .then(() => done())
+      .catch(err => done(err))
+    License.remove({})
+      .then(() => done())
+			.catch(err => done(err))
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await mongoose.disconnect();
+    done();
   });
 
   test("it should return BadRequest if only has email", done => {

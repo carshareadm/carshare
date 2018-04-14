@@ -48,6 +48,7 @@ const booking = require('./routes/booking.routes');
 const images = require('./routes/images.routes');
 const license = require('./routes/license.routes');
 const paymentDetails = require('./routes/paymentDetails.routes');
+const confirm = require('./routes/confirm.routes');
 app.use('/api/account', account);
 app.use('/api/profile', profile);
 app.use('/api/cars', cars);
@@ -55,6 +56,7 @@ app.use('/api/booking', booking);
 app.use('/api/images', images);
 app.use('/api/license', license);
 app.use('/api/paymentDetails', paymentDetails);
+app.use('/api/confirm', confirm);
 app.use('/api/*', (req, res) => { res.status(404).send("Not found"); });
 
 // Render Initial HTML
