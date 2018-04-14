@@ -1,0 +1,12 @@
+.carImage{
+	width: 100%;
+}
+
+.carDescr{
+	text-align: left;
+}
+
+.carDescr p{
+	padding:0;
+	margin:0;
+}

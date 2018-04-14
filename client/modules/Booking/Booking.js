@@ -73,15 +73,14 @@ labels = {
 			this.state.userid=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['sub'];
 		}
 		this.setState({	carid:this.props.location.query.carid });
-		http
-      .client()
-      .get("/cars")
-      .then(res => {
-        this.mapCarToModel(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-			});
+		http.client()
+		.get("/cars")
+      	.then(res => {
+        	this.mapCarToModel(res.data);
+      	})
+      	.catch(err => {
+        	console.log(err);
+		});
 	}	
 
 	mapCarToModel(car) {

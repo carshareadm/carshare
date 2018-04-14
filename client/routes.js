@@ -43,7 +43,7 @@ export default (
 		<Route path="booking" component={Booking} />
 		<Route path="manage" component={Manage} />
 		<Route path="cars" component={Cars} />
-    <Route path="locations" component={Locations}/>
+    	<Route path="locations" component={Locations}/>
 		<Route path="profile" component={Profile} />
 		<Route path="login" component={Login} />
     <Route path='paymentDetails' component={PaymentDetails} />
