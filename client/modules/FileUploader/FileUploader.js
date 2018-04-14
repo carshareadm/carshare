@@ -7,8 +7,12 @@ import {
   Container,
   Row,
   Col,
+  Alert,
 } from "reactstrap";
 import { Link } from "react-router";
+
+import Loading from '../Loading/Loading';
+
 import * as fileService from "../../services/file.service";
 
 import * as validator from "validator";
@@ -20,6 +24,8 @@ export class FileUploader extends Component {
   clearFile = "Clear";
   uploadFile = "Upload";
 
+  loadingMessage = 'Uploading your file. Please wait...';
+
   state = {};
 
   constructor(props) {
@@ -27,7 +33,19 @@ export class FileUploader extends Component {
     this.state = {
       selectedFileText: this.selectFile,
       fileSelected: false,
+      isLoading: false,
+      errorMessage: '',
     };
+
+    this.onDismiss = this.onDismiss.bind(this);
+  }
+
+  setLoading(isLoading) {
+    this.setState({isLoading: isLoading});
+  }
+
+  setError(msg) {
+    this.setState({errorMessage: msg});
   }
 
   handleInputClick(e) {
@@ -50,31 +68,68 @@ export class FileUploader extends Component {
   }
 
   handleUpload() {
+    this.setLoading(true);
     fileService.getPresignedUploadKey(this.state.selectedFileText)
       .then(res => {
+        this.setLoading(false);
         this.uploadToS3(res.data);
       })
-      .catch(e => console.log(e));
-  }
-
-  uploadToS3(s3Policy) {
-    fileService.uploadToStorage(document.getElementById('file-upload').files[0], s3Policy)
+      .catch(e => {
+        console.log(e);
+        this.setLoading(false);
+        this.setError('Upload failed: presigned key');
+      });
+    }
+    
+    uploadToS3(s3Policy) {
+      this.setLoading(true);
+      fileService.uploadToStorage(document.getElementById('file-upload').files[0], s3Policy)
       .then(res => {
+        this.setLoading(false);
         this.postToShaCar(s3Policy.fields.key);
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.log(e);
+        this.setLoading(false);
+        this.setError('Upload failed: file transfer');
+      });
+    }
+    
+    postToShaCar(filename) {
+      this.setLoading(true);
+      fileService.saveImageToShaCarDb(filename)
+      .then(res => {
+        this.setLoading(false);
+        this.props.onFileUploaded(res.data);        
+      })
+      .catch((e) => {
+        console.log(e);
+        this.setLoading(false);
+        this.setError('Upload failed: server error');
+      });
   }
 
-  postToShaCar(filename) {
-    fileService.saveImageToShaCarDb(filename)
-      .then(res => this.props.onFileUploaded(res.data))
-      .catch((e) => console.log(e));
+  onDismiss() {
+    this.setError('');
+  }
+
+  alert() {
+    if (this.state.errorMessage.length > 0) {
+      return (
+        <Alert color="danger" isOpen={true} toggle={this.onDismiss}>
+          {this.state.errorMessage}
+        </Alert>
+      );
+    }
   }
 
   render() {
+    const load = this.state.isLoading ? (<Loading msg={this.loadingMessage}></Loading>) : '';
+    const alert = this.state.errorMessage.length > 0 ? this.alert() : '';
     // Here goes our page
     return (
       <div>
+        {alert}
         <Input
           type="file"
           name="file"
@@ -102,6 +157,8 @@ export class FileUploader extends Component {
             </Button>
           </InputGroupAddon>              
         </InputGroup>
+
+        {load}
       </div>
     );
   }

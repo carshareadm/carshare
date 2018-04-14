@@ -405,7 +405,7 @@ export class Profile extends Component {
       this.setState({
         email: user.email ? user.email : '',
         mobile: user.mobile ? user.mobile : '',
-        license: user.license,
+        license: user.license || '',
         street1: user.address && user.address.street1 ? user.address.street1 : '',
         street2: user.address && user.address.street2 ? user.address.street2 : '',
         suburb: user.address && user.address.suburb ? user.address.suburb : '',
@@ -419,11 +419,23 @@ export class Profile extends Component {
     http.client().get('/license/' + this.state.license)
       .then(res => {
         this.setState({
-          licenseImageUrl: res.data.imageUrl,
+          //licenseImageUrl: res.data.imageUrl,
           licenseNumber: res.data.licenseNumber,
-        })
+        });
+        this.preLoadImage(res.data.imageUrl);
       })
       .catch(e => console.log(e));
+  }
+
+  preLoadImage(imageUrl) {
+    if (imageUrl && imageUrl.length > 0) {
+      this.setState({licenseImageUrl: ''}); 
+      const img = new Image();
+      img.onload = () => {
+        this.setState({licenseImageUrl: imageUrl});  
+      };
+      img.src = imageUrl;
+    }
   }
 
   componentDidMount() {
