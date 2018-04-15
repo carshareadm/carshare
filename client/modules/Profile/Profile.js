@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router";
 import * as http from "../../util/http";
 import * as licenseService from '../../services/license.service';
+import * as confirmService from '../../services/confirm.service';
 import Confirmation from '../Confirmation/Confirmation';
 
 import * as validator from "validator";
@@ -24,6 +25,7 @@ import styles from "./Profile.css";
 import stylesMain from '../../main.css';
 
 import FileUploader from '../FileUploader/FileUploader';
+import Loading from '../Loading/Loading';
 import placeholderImg from './ic_image.svg';
 
 const storage = require("../../util/persistedStorage");
@@ -35,8 +37,11 @@ export class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userid: '',
+      // loading state
+      isLoading: false,
+      loadingMsg: '',      
       // user profile deets
+      userid: '',
       email: '',
       mobile: '',
       license: '', // this is actually the id of the license in the db
@@ -50,8 +55,6 @@ export class Profile extends Component {
       licenseImageUrl: '',
       licenseNumber: '',
       multipleUpdate: false,
-      updated: false,
-      confirmed: false,
       // page state
       statesDropdownOpen: false,
       isTouched: {
@@ -64,6 +67,12 @@ export class Profile extends Component {
         suburb: false,
         state: false,
         postCode: false,
+      },
+      // confirmation codes
+      codes: {
+        isRequested: false,
+        deliveryMethod: '',
+        confirmed: false,
       },
     };
   }
@@ -175,36 +184,70 @@ export class Profile extends Component {
       .catch(e => console.log(e));
   }
 
+  requiresConfirmation() {
+    // have any sensitive fields been updated?
+    if (this.state.isTouched.email === true || 
+        this.state.isTouched.mobile  === true || 
+        this.state.isTouched.licenseNumber === true) {
+
+        // have we been through confirmation process yet?
+        if (this.state.codes.isRequested === false || this.state.codes.confirmed === false) {
+          return true;
+        }
+    }
+    // no sensitive fields updated OR confirmation already done
+    return false;
+  }
+
+  setIsLoading(isLoading, message) {
+    this.setState({
+      isLoading: isLoading,
+      loadingMsg: isLoading ? message : '',
+    });
+  }
+
   handleSubmit(e) {
-    e.preventDefault();
-    //if (!this.isFormInvalid()) {
-      // do post
-      console.log("Submitting");
+    if (e) {
+      e.preventDefault();
+    }
+    if (this.requiresConfirmation()) {
+      // require confirmation before proceeding
+      this.requestConfirmationCode();
+    } else {
+      this.setIsLoading(true, 'Saving updates...');
       http.client().post('/profile/', {
         user: this.state.userid,
-        email: this.state.isTouched['email'] ? this.state.email : '',
-        mobile: this.state.isTouched['mobile'] ? this.state.mobile : '',
-        license: this.state.isTouched['licenseNumber'] ? this.state.licenseNumber : '',
-        password: this.state.isTouched['profilePassword'] ? this.state.password : '',
-        street1: this.state.isTouched['street1'] ? this.state.street1 : '',
-        street2: this.state.isTouched['street2'] ? this.state.street2 : '',
-        suburb: this.state.isTouched['suburb'] ? this.state.suburb : '',
-        state: this.state.isTouched['state'] ? this.state.state : '',
-        postCode: this.state.isTouched['postCode'] ? this.state.postCode : '',
+        email: this.state.isTouched['email'] ? this.state.email : null,
+        mobile: this.state.isTouched['mobile'] ? this.state.mobile : null,
+        license: this.state.isTouched['licenseNumber'] ? this.state.licenseNumber : null,
+        password: this.state.isTouched['profilePassword'] ? this.state.password : null,
+        street1: this.state.isTouched['street1'] ? this.state.street1 : null,
+        street2: this.state.isTouched['street2'] ? this.state.street2 : null,
+        suburb: this.state.isTouched['suburb'] ? this.state.suburb : null,
+        state: this.state.isTouched['state'] ? this.state.state : null,
+        postCode: this.state.isTouched['postCode'] ? this.state.postCode : null,
       })
       .then(res => {
-        console.log(res);
-        this.setState({updated: true});
-        this.requestConfirmationCode();
+        this.setIsLoading(false, '');
+        const codes = {
+          isRequested: false,
+          deliveryMethod: '',
+          confirmed: false,
+        };
       })
-      .catch(err => console.log(err));
-//    }
+      .catch(err => {
+        this.setIsLoading(false, '');
+        console.log(err);
+      });
+    }
   }
 
   requestConfirmationCode() {
-    http.client().post('/confirm/sms', {codeType: "Register"})
-      .then(() => {})
-      .catch(e => console.log(e));
+    if (this.state.isTouched['mobile']) {
+      this.requestCode(confirmService.VerificationTypes.EMAIL);
+    } else {
+      this.requestCode(confirmService.VerificationTypes.SMS);
+    }
   }
 
   isError(key) {
@@ -231,28 +274,47 @@ export class Profile extends Component {
     return (<img src={placeholderImg} />);
   }
 
-  handleCodeConfirmed() {
-    this.setState({confirmed: true});
+  /********* confirmation code stubs *********/
+  requestCode(by) {
+    const codes = {
+      isRequested: true,
+      deliveryMethod: by,
+      confirmed: false,
+    };
+    this.setIsLoading(true, `Requesting a confirmation code via ${by}`);    confirmService.requestConfirmationCode(by, confirmService.CodeTypes.ACCOUNT_UPDATE)
+    .then(() => {
+      this.setIsLoading(false, '');
+      this.setState({codes: codes});
+    })
+    .catch(e => {
+      console.log(e);
+      this.setIsLoading(false, '');
+    });
   }
 
-  render() {
-    return this.state.updated && this.state.confirmed ? this.confirmed()
-      : this.state.updated ? this.updated() : this.profileFrm()
-  }
-
-  updated()
+  /**
+   * for rendering the Confirmation page
+   * @param {*} deliveryMethod VerificationTypes.EMAIL || VerificationTypes.SMS
+   */
+  renderConfirm(deliveryMethod)
   {
     return(
-      <Confirmation codeType={"Register"} onCodeConfirmed={this.handleCodeConfirmed.bind(this)}></Confirmation>
+      <Confirmation
+        codeType={confirmService.CodeTypes.ACCOUNT_UPDATE}
+        onCodeConfirmed={this.handleCodeConfirmed.bind(this)}
+        verificationMethod={deliveryMethod}
+      ></Confirmation>
     );
   }
 
-  confirmed() {
-    return(
-      <div className={styles.body}>
-              <h1 className={styles.title}>Updated</h1>
-              <p><Link to="/profile">Click here to return to user profile</Link><br /></p>
-      </div>);
+  handleCodeConfirmed() {
+    this.setState({codes: {confirmed: true}});
+    this.handleSubmit(null);
+  }
+
+  render() {
+    return this.state.codes.isRequested && !this.state.codes.confirmed ? 
+      this.renderConfirm(this.state.codes.deliveryMethod) : this.profileFrm()
   }
 
   profileFrm()
@@ -266,9 +328,12 @@ export class Profile extends Component {
     */
     const isDisabled = false;
     this.state.multipleUpdate=this.isError('multiple');
+
+    const load = this.state.isLoading ? (<Loading msg={this.state.loadingMsg}></Loading>) : '';
   
   return (
     <div className={stylesMain.body}>
+      {load}
       <Container>
         <Row>
           <Col>

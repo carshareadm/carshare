@@ -14,7 +14,7 @@ import {
 
 import stylesMain from '../../main.css';
 
-import * as http from "../../util/http";
+import * as confirmSvc from "../../services/confirm.service";
 
 import Loading from '../Loading/Loading';
 
@@ -28,7 +28,7 @@ export class Confirmation extends Component {
 
   constructor(props) {
     super(props);
-
+    console.log('props', this.props);
     this.state = {
       code: '',
       isSubmitting: false,
@@ -49,7 +49,8 @@ export class Confirmation extends Component {
     if (this.state.code && this.state.code.length > 0) {
       this.loadingMsg = this.verifyingCodeMsg;
       this.setSubmitting(true);
-      http.client().post("/confirm", {code: this.state.code, codeType: this.props.codeType})
+      console.log(this.state.code, this.props.codeType);
+      confirmSvc.confirmWithCode(this.state.code, this.props.codeType)
         .then(() => {
           this.setSubmitting(false);
           this.props.onCodeConfirmed();
@@ -72,7 +73,7 @@ export class Confirmation extends Component {
   handleRequestNewCode(event) {
     this.loadingMsg = this.requestingCodeMsg;
     this.setSubmitting(true);
-    http.client().post('/confirm/sms', { codeType: this.props.codeType })
+    confirmSvc.requestConfirmationCode(this.props.verificationMethod, this.props.codeType)
     .then(() => this,this.setSubmitting(false))
     .catch(e => {
       this.setSubmitting(false);
@@ -141,6 +142,7 @@ export class Confirmation extends Component {
 Confirmation.propTypes = {
   onCodeConfirmed: React.PropTypes.func,
   codeType: React.PropTypes.string,
+  verificationMethod: React.PropTypes.string,
 };
 
 export default Confirmation;

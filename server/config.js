@@ -1,3 +1,9 @@
+const dotenv = require('dotenv');
+
+// https://www.npmjs.com/package/dotenv#config
+// adds config vars in .env file to process.env
+const env = dotenv.config();
+
 const config = {
   mongoURL: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/carshare',
   port: process.env.PORT || 8000,
@@ -15,6 +21,10 @@ const config = {
     authToken: process.env.TWILIO_AUTH_TOKEN || 'f7dd9ea60433394d20c6e1462f749fc5',
     serviceSid: process.env.TWILIO_SERVICE_SID || 'IS3b2ab1b96693c152426f1ee9f587b6a7',
     sendSmsFrom: process.env.TWILIO_SEND_SMS_FROM || '+15005550006',
+  },
+  sendGrid: {
+    apiKey: process.env.SENDGRID_API_KEY,
+    sendEmailsFrom: 'carshareadm@gmail.com',
   },
 };
 

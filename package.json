@@ -39,6 +39,7 @@
   "author": "Paul Crow <s3337852@student.rmit.edu.au>, Inga Pflaumer <s3385215@student.rmit.edu.au>, Tianqi Chen <s3584721@student.rmit.edu.au>, Jason Koh <s3211440@student.rmit.edu.au>, Matthew Ryan <s3572894@student.rmit.edu.au>, Daniel Zimmerman <s3514701@student.rmit.edu.au>",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^6.2.1",
     "aws-sdk": "^2.221.1",
     "axios": "^0.18.0",
     "babel-core": "^6.9.1",
@@ -50,6 +51,7 @@
     "compression": "^1.6.2",
     "cross-env": "^1.0.8",
     "cuid": "^1.3.8",
+    "dotenv": "^5.0.1",
     "express": "^4.13.4",
     "google-maps-react": "^1.1.11",
     "isomorphic-fetch": "^2.2.1",

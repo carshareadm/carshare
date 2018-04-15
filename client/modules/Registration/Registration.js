@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 import Confirmation from '../Confirmation/Confirmation';
 import * as http from "../../util/http";
+import * as confirmService from '../../services/confirm.service';
 
 var validator = require("validator");
 
@@ -134,11 +135,11 @@ export class Registration extends Component {
         }
       }
 
-    requestConfirmationCode() {
-      http.client().post('/confirm/sms', {codeType: "Register"})
-        .then(() => {})
-        .catch(e => console.log(e));
-    }
+  requestConfirmationCode() {
+    confirmService.requestConfirmationCode(confirmService.VerificationTypes.SMS, confirmService.CodeTypes.REGISTER)
+      .then(() => {})
+      .catch(e => console.log(e));
+  }
       
   isFormInvalid() {
     return Object.keys(this.errors).some(x => this.errors[x] === true);
@@ -177,7 +178,11 @@ export class Registration extends Component {
   registered()
   {
     return(
-      <Confirmation codeType={"Register"} onCodeConfirmed={this.handleCodeConfirmed.bind(this)}></Confirmation>
+      <Confirmation
+        codeType={confirmService.CodeTypes.REGISTER}
+        onCodeConfirmed={this.handleCodeConfirmed.bind(this)}
+        verificationMethod={confirmService.VerificationTypes.SMS}
+      ></Confirmation>
     );
   }
 
