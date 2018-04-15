@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
+import { Link, Redirect } from "react-router";
 
 import * as http from "../../../../util/http";
 import * as storage from "../../../../util/persistedStorage";
