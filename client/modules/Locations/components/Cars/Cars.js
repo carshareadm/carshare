@@ -33,7 +33,7 @@ class Cars extends Component {
           <CardBody>
             <div className="float-right">
             <Link to={"/booking?carid="+car._id}>
-              <Button className={styles.buttons} color="primary" size="lg">Book</Button>
+              <Button className={stylesMain.buttons} color="primary" size="lg">Book</Button>
             </Link>
             </div>
             <CardText>

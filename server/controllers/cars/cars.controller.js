@@ -85,7 +85,7 @@ const getCarsForType = function(req, res){
       }
       Car.find({
         vehicleType: vt
-      }).exec((err, car) => {
+      }).populate('vehicleType').exec((err, car) => {
         if(err){
           res.status(500).send(err);
         } else {
