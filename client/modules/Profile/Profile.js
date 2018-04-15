@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router";
 import * as http from "../../util/http";
 import * as licenseService from '../../services/license.service';
+import * as confirmService from '../../services/confirm.service';
 
 import * as validator from "validator";
 import styles from "./Profile.css";
@@ -57,6 +58,12 @@ export class Profile extends Component {
         suburb: false,
         state: false,
         postCode: false,
+      },
+      // confirmation codes
+      codes: {
+        isRequested: false,
+        deliveryMethod: '',
+        confirmed: false,
       },
     };
   }
@@ -208,6 +215,41 @@ export class Profile extends Component {
       return (<img src={this.state.licenseImageUrl} />);
     }
     return (<img src={placeholderImg} />);
+  }
+
+  /********* confirmation code stubs *********/
+
+  handleCodeConfirmed() {
+    this.setState({confirmed: true});
+  }
+
+  requestSMSCode() {
+    this.requestCode(confirmService.VerificationTypes.SMS);
+  }
+  
+  requestEmailCode() {
+    this.requestCode(confirmService.VerificationTypes.EMAIL);
+  }
+
+  requestCode(by) {
+    confirmService.requestConfirmationCode(by, confirmService.CodeTypes.ACCOUNT_UPDATE)
+    .then(() => {})
+    .catch(e => console.log(e));
+  }
+
+  /**
+   * for rendering the Confirmation page
+   * @param {*} deliveryMethod VerificationTypes.EMAIL || VerificationTypes.SMS
+   */
+  renderConfirm(deliveryMethod)
+  {
+    return(
+      <Confirmation
+        codeType={confirmService.CodeTypes.ACCOUNT_UPDATE}
+        onCodeConfirmed={this.handleCodeConfirmed.bind(this)}
+        verificationMethod={deliveryMethod}
+      ></Confirmation>
+    );
   }
 
   render() {
