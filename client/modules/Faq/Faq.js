@@ -76,13 +76,13 @@ export class Faq extends Component {
 				        </FaqItem>
 						<FaqItem question="What do I need?">
 				        	<div>
-								<p>The following are required in the registration process:</p>
+								<p className={styles.innerLiBold}>The following are required in the registration process:</p>
 								<ul>
 									<li className={styles.innerLi}>A valid driver's license.</li>
 									<li className={styles.innerLi}>A valid email you have access to.</li>
 									<li className={styles.innerLi}>A valid phone number you have access to.</li>
 								</ul>
-								<p>The following is optional, but it will improve your experience:</p>
+								<p className={styles.innerLiBold}>The following is optional, but it will improve your experience:</p>
 								<ul>
 									<li className={styles.innerLi}>A printer to print access codes to use offline. </li>
 									<li className={styles.innerLi}>A smartphone with internet access and camera function. </li>
@@ -93,7 +93,7 @@ export class Faq extends Component {
 						<h3 className={styles.subtitle}>Booking a car</h3>
 			        	<FaqItem question="How to book a car?">
 				        	<div>
-								<p>To make a booking.</p>
+								<p className={styles.innerLiBold}>To make a booking.</p>
 								<ul>
 									<li className={styles.innerLi}>Go to the ShaCar web application at ShaCar.com</li>
 									<li className={styles.innerLi}>Tap/click Register / Login and login with your email and password.</li>
@@ -112,7 +112,7 @@ export class Faq extends Component {
 			        	</FaqItem>
 						<FaqItem question="What is the cost?">
 				        	<div>
-								<p>We charge per hr depending on the vehcilce type.<br/>
+								<p className={styles.innerLiBold}>We charge per hr depending on the vehcilce type.<br/>
 								The cost per hr is listed below:</p>
 								<br/>
 								<ul>
@@ -154,8 +154,7 @@ export class Faq extends Component {
 			        	<h3 className={styles.subtitle}>Using a car</h3>
 			        	<FaqItem question="How to start my booking?">
 				        	<div>
-								<p>
-								To starting you booking.</p>
+								<p className={styles.innerLiBold}>To starting you booking.</p>
 								<ol>
 									<li className={styles.innerLi}>Log in to ShaCar and navigate to your current booking. <br/>
 									This will show the QR code for the booking. <br/>
@@ -174,13 +173,12 @@ export class Faq extends Component {
 			        	</FaqItem>
 						<FaqItem question="How to access a car during booking?">
 				        	<div>
-								<p>
-								To access the vehicle during your booking</p>
+								<p className={styles.innerLiBold}>To access the vehicle during your booking</p>
 								<ul>
 									<li className={styles.innerLi}>To unlock the vehicle, scan the QR code again.</li>
 									<li className={styles.innerLi}>If you leave the vehicle during the booking, scan the QR code to lock it.</li>
 								</ul>
-								<p><strong>DO NOT REMOVE THE KEYS FROM THE VEHICLE.</strong>
+								<p className={styles.innerLiBold}><strong>DO NOT REMOVE THE KEYS FROM THE VEHICLE.</strong>
 								<br/>
 								<br/>The QR code will remain valid for 24 hours after the booking ends.<br/>
 								This is strictly for emergencies only.<br/>
@@ -191,15 +189,14 @@ export class Faq extends Component {
 			        	</FaqItem>
 						<FaqItem question="What do I do when I am finished?">
 				        	<div>
-								<p>
-								To end your booking</p>
+								<p className={styles.innerLiBold}>To end your booking</p>
 								<ol>
 									<li className={styles.innerLi}>Return the ShaCar vehicle to its designated location.</li>
 									<li className={styles.innerLi}>Exit the vehicle and remove all personal belongings.</li>
 									<li className={styles.innerLi}>Lock the car by scanning the QR code.
 									</li>
 								</ol>
-								<p><strong>DO NOT REMOVE THE KEYS FROM THE VEHICLE.</strong>
+								<p className={styles.innerLiBold}><strong>DO NOT REMOVE THE KEYS FROM THE VEHICLE.</strong>
 								<br/>
 								<br/>The QR code will remain valid for 24 hours after the booking ends.<br/>
 								This is strictly for emergencies only.<br/>

@@ -4,13 +4,14 @@
 }
 
 .subtitle{
-    margin-top: 0.3em;
+    margin-top: 0.5em;
     width: 90%;
     background-color: rgb(198, 198, 198);
     text-align: center;
-    color: rgb(76,157,38);
-    font-size: 24px;
+    color: rgb(41, 97, 31);
+    font-size: 20px;
     padding-bottom: 0.3em;
+    padding-top: 0.5em;
  }
  
 .questiontitle{
@@ -28,6 +29,17 @@
 .innerLi{
 	margin-left: 3em;
 	margin-bottom: 1em;
+    font-size: 16px;
+    color: rgb(41, 97, 31);
+}
+
+.innerLiBold{
+    margin-left: 0.3em;
+    margin-bottom: 1em;
+    font-size: 16px;
+    color: rgb(41, 97, 31);
+    font-weight: bold;
+    text-align: left;
 }
 
 p{
@@ -45,7 +57,7 @@ p{
 
 
 .faqItem h3{
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 10px;
 }
 
