@@ -74,17 +74,17 @@ export class Cars extends Component {
 					    </Col>
 					</Row>
 
-		  <div className="row no-gutters d-none d-md-flex">
-			<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('small')} color="primary" size="lg" data-type="small" onClick={this.setType}>Small Vehicle</Button>
-			<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('luxury')} color="primary" size="lg" data-type="luxury" onClick={this.setType}>Luxury Vehicle</Button>
-			<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('suv')} color="primary" size="lg" data-type="suv" onClick={this.setType}>SUV Vehicle</Button>
-        </div>
+		 			 <div className="row no-gutters d-none d-md-flex">
+						<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('small')} color="primary" size="lg" data-type="small" onClick={this.setType}>Small Vehicle</Button>
+						<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('luxury')} color="primary" size="lg" data-type="luxury" onClick={this.setType}>Luxury Vehicle</Button>
+						<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('suv')} color="primary" size="lg" data-type="suv" onClick={this.setType}>SUV Vehicle</Button>
+        			</div>
         
-        <div className="row no-gutters d-xs-block d-md-none">
-			<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('small')} color="primary" size="lg" data-type="small" onClick={this.setType}>Small Vehicle</Button>
-			<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('luxury')} color="primary" size="lg" data-type="luxury" onClick={this.setType}>Luxury Vehicle</Button>
-			<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('suv')} color="primary" size="lg" data-type="suv" onClick={this.setType}>SUV Vehicle</Button>
-        </div>
+        			<div className="row no-gutters d-xs-block d-md-none">
+						<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('small')} color="primary" size="lg" data-type="small" onClick={this.setType}>Small Vehicle</Button>
+						<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('luxury')} color="primary" size="lg" data-type="luxury" onClick={this.setType}>Luxury Vehicle</Button>
+						<Button className={stylesMain.buttons +" "+ styles.button +" "+ this.buttonStyle('suv')} color="primary" size="lg" data-type="suv" onClick={this.setType}>SUV Vehicle</Button>
+        			</div>
 
 		        	<Row className={styles.carsList}>
 		        		{this.state.cars.map(c => <Car key={c._id} data={c} />)}

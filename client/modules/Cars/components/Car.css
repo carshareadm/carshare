@@ -1,12 +1,38 @@
 .carImage{
 	width: 100%;
+	  background-color: rgb(226,226,226) ;
 }
 
 .carDescr{
 	text-align: left;
+	 padding: none;
+  	color: grey;
 }
 
 .carDescr p{
 	padding:0;
 	margin:0;
+}
+
+.carDescrLabel{
+
+	color: rgb(76, 157, 38);
+}
+
+
+.button {
+  margin-right: 1em;
+  margin-bottom: 1em;
+  background-color: rgb(76, 157, 38) !important;
+  color: white !important;
+  padding-bottom: 50px;
+  min-width: 100%;
+  border-radius: 0 !important;
+}
+
+.separator{
+  height: 3px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: rgb(76, 157, 38);
 }
