@@ -2,59 +2,85 @@ import User from '../../models/user';
 import CreditCard from '../../models/creditCard';
 
 const getMyPaymentDetails = function(req, res) {
-  User.
-  findById(req.userId)
+  User
+    .findById(req.userId)
     .select('creditCard')
     .populate('creditCard')
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send(err);
-      } else if (!user) {
-        res.status(404).send();
-      } else {
+    .then((user) => {
+      if (user) {
         res.status(200).send(user);
+      } else {
+        res.status(404).send();
       }
-    });
-};
+    })
+    .catch((err) => { res.status(500).send(err); });
+}
 
-const changePaymentDetails = function(req, res) {
+const addPaymentDetails = function(req, res) {
   let newCard = new CreditCard(
     {
       cardNumber: req.body.cardNumber,
       nameOnCard: req.body.nameOnCard,
       ccv: req.body.ccv,
-      expiryyMonth: req.body.expiryMonth,
+      expiryMonth: req.body.expiryMonth,
       expiryYear: req.body.expiryYear,
     }
   );
 
-  let validateErrs = newCard.validateSync();
-  if (validateErrs)
-  {
-    res.status(400).send(validateErrs);
-    return;
-  }
-
-  // perform update asynchronously
-  User
-    .findById(req.userId)
-    // get the old credit card
-    .select('creditCard')
-    // remove it
-    .then((user) => { CreditCard.findByIdAndRemove(user.creditCard); })
-    // save the new credit card
-    .then(() => { newCard.save; })
-    // update user's credit card field
-    .then((card) => {
-      User.findByIdAndUpdate(req.userId, { creditCard: card });
-    })
+  // save creditCard then add to user profile asynchronously
+  newCard
+    .save()
+    .then(
+      (card) => {
+        return User.findByIdAndUpdate(req.userId, { creditCard: card._id });
+      })
     // finally, send response
     .then((user) => { res.status(200).send(user); })
-    .catch((err) => { res.status(500).send(err); });
+    .catch((err) => {
+      switch (err.name)
+      {
+        case 'ValidationError':
+          res.status(400).send(err);
+          break;
+        case 'DocumentNotFoundError':
+          res.status(404).send(err);
+          break;
+        default:
+          res.status(500).send(err);
+      }
+    });
+}
 
+const updatePaymentDetails = function(req, res) {
+  CreditCard
+    .findByIdAndUpdate(
+        req.body._id,
+        {
+          cardNumber: req.body.cardNumber,
+          nameOnCard: req.body.nameOnCard,
+          ccv: req.body.ccv,
+          expiryMonth: req.body.expiryMonth,
+          expiryYear: req.body.expiryYear,
+        }
+      )
+    .then((user) => { res.status(200).send(user); })
+    .catch((err) => {
+      switch (err.name)
+      {
+        case 'ValidationError':
+          res.status(400).send(err);
+          break;
+        case 'DocumentNotFoundError':
+          res.status(404).send(err);
+          break;
+        default:
+          res.status(500).send(err);
+      }
+    });
 }
 
 module.exports = {
   getMyPaymentDetails: getMyPaymentDetails,
-  changePaymentDetails: changePaymentDetails,
+  addPaymentDetails: addPaymentDetails,
+  updatePaymentDetails: updatePaymentDetails,
 };
