@@ -41,7 +41,6 @@ const addPaymentDetails = function(req, res) {
       {
         case 'ValidationError':
           res.status(400).send(err);
-          console.log(err);
           break;
         case 'DocumentNotFoundError':
           res.status(404).send(err);
