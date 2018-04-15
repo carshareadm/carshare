@@ -1,0 +1,16 @@
+.tableContainer{
+	width: 100%;
+}
+
+.weekBlock{
+	width: 100%;
+	text-align: center;
+}
+
+.buttonL{
+	float: left;
+}
+
+.buttonR{
+	float: right;
+}
