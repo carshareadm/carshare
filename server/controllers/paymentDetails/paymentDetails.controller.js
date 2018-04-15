@@ -22,14 +22,14 @@ const addPaymentDetails = function(req, res) {
       cardNumber: req.body.cardNumber,
       nameOnCard: req.body.nameOnCard,
       ccv: req.body.ccv,
-      expiryyMonth: req.body.expiryMonth,
+      expiryMonth: req.body.expiryMonth,
       expiryYear: req.body.expiryYear,
     }
   );
 
   // save creditCard then add to user profile asynchronously
   newCard
-    .save
+    .save()
     .then(
       (card) => {
         return User.findByIdAndUpdate(req.userId, { creditCard: card._id });
@@ -41,6 +41,7 @@ const addPaymentDetails = function(req, res) {
       {
         case 'ValidationError':
           res.status(400).send(err);
+          console.log(err);
           break;
         case 'DocumentNotFoundError':
           res.status(404).send(err);
@@ -59,7 +60,7 @@ const updatePaymentDetails = function(req, res) {
           cardNumber: req.body.cardNumber,
           nameOnCard: req.body.nameOnCard,
           ccv: req.body.ccv,
-          expiryyMonth: req.body.expiryMonth,
+          expiryMonth: req.body.expiryMonth,
           expiryYear: req.body.expiryYear,
         }
       )

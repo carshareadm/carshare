@@ -126,13 +126,6 @@ class PaymentDetails extends Component
     const ccv = this.state.ccv.replace(nonDigit, '');
 
     if (this.formIsValid()) {
-      console.log({
-         cardNumber: cardNumber,
-         nameOnCard: this.state.nameOnCard,
-         ccv: ccv,
-         expiryMonth: Number(this.state.expiryMonth),
-         expiryYear: Number(this.state.expiryYear),
-      });
       if (this.state.hasCard) {
         // update credit card info only
         http
@@ -150,7 +143,7 @@ class PaymentDetails extends Component
       }
       else
       {
-        // create new creditCard 
+        // create new creditCard
         http
           .client()
           .post('/paymentDetails/add', {
