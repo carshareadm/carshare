@@ -27,13 +27,24 @@ class Car extends Component {
           <CardHeader>
             <img className={styles.carImage} src={carPlaceholder} />
           </CardHeader>
+          
+          <div className={styles.separator}></div>
+
           <CardBody className={styles.carDescr}>
-            <p>Vehicle - <b>{car.make} {car.model}</b></p>
-            <p>HireType - <b>{car.vehicleType.name}</b></p>
-            <p>Registration - <b>{car.rego}</b></p>
+            <p>Vehicle - <span className={stylesMain.h4}>{car.make} {car.model}</span></p>
+            <p>Hire Type - <span className={stylesMain.h4}>{car.vehicleType.name}</span></p>
+            <p>Registration - <span className={stylesMain.h4}>{car.rego}</span></p>
+            <p>Seats - <span className={stylesMain.h4}>{car.seats}</span></p>
+            <p>Doors - <span className={stylesMain.h4}>{car.doors}</span></p>
+            <p>Colour - <span className={stylesMain.h4}>{car.colour}</span></p>
+            <br/>
+            <p>Location - <span className={stylesMain.h4}>{car.location}</span></p>
+            <br/>
+            <p>$ {car.Cost} per hour</p>
           </CardBody>
             <Link to={"/booking?carid="+car._id}>
-              <Button className={stylesMain.buttons} color="primary" size="lg">Book</Button>
+              <Button className={stylesMain.buttons +" "+ styles.button}>Book</Button>
+            
             </Link>
         </Col>
     );

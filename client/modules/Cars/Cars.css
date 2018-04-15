@@ -4,9 +4,12 @@
 
 .button {
   margin-right: 1em;
-  margin-left: 1em;
-  background-color: white !important;
+  margin-bottom: 1em;
+  background-color: rgb(226,226,226) !important;
   color: rgb(76, 157, 38) !important;
+  padding-bottom: 50px;
+  min-width: 170px;
+  border-radius: 0 !important;
 }
 
 .button.active{
