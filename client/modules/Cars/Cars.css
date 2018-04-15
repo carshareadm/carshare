@@ -1,12 +1,15 @@
 .topButtons{
   text-align: center;
+    padding-bottom: 50px;
 }
 
 .button {
   margin-right: 1em;
   margin-left: 1em;
-  background-color: white !important;
+  background-color: rgb(226,226,226) !important;
   color: rgb(76, 157, 38) !important;
+  padding-bottom: 50px;
+  min-width: 170px;
 }
 
 .button.active{
