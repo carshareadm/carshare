@@ -9,12 +9,26 @@ import config from '../webpack.config.dev';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-// Initialize the Express App
-const app = new Express();
-
 // Set Development modes checks
 const isDevMode = process.env.NODE_ENV === 'development' || false;
 const isProdMode = process.env.NODE_ENV === 'production' || false;
+
+// Initialize the Express App
+const app = new Express();
+
+// in production we want to force app to be served over ssl
+// this will help resolve issues like not being able to fetch images from s3 due to CORS rules
+var forceSsl = function (req, res, next) {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(['https://', req.get('Host'), req.url].join(''));
+  }
+  return next();
+};
+
+if (isProdMode) {
+  app.use(forceSsl);
+}
+
 
 // Run Webpack dev server in development mode
 if (isDevMode) {

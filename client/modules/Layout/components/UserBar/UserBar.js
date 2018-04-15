@@ -19,6 +19,7 @@ import {
 import styles from "./UserBar.css";
 
 export class UserBar extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +27,7 @@ export class UserBar extends Component {
       loggedIn: false,
       email: "",
       password1: "",
+      redirectToHome: false,
     };
 
     //Bind the function to the class
@@ -83,20 +85,8 @@ export class UserBar extends Component {
   }
 
   logout(event) {
-    /*
-    http
-      .client()
-      .post("/account/login", { email: login, password: pass })
-      .then(res => {
-        storage.set(storage.Keys.JWT, res.data.token);
-        this.setState({ loggedIn: true });
-      })
-      .catch(err => {
-        console.log(err);
-	  });
-	  */
-    window.localStorage.removeItem("JWT");
-    this.setState({ loggedIn: false });
+    storage.remove(storage.Keys.JWT);
+    this.setState({ loggedIn: false, redirectToHome: true });
   }
 
   executeLogin(event) {
@@ -174,8 +164,13 @@ export class UserBar extends Component {
     );
   }
 
+  renderRedirect() {
+    return (<Redirect to="/" />);
+  }
+
   render() {
-    return this.state.loggedIn ? this.loggedInBar() : this.loginFrm();
+    return this.state.redirectToHome ? this.renderRedirect()
+    : this.state.loggedIn ? this.loggedInBar() : this.loginFrm();
   }
 }
 
