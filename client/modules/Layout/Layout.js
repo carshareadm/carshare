@@ -32,11 +32,12 @@ export class Layout extends Component {
         </div>
         <div className="col-xl-8">
           <Header />
+          <UserBar /> 
           <div className={styles.container}>
             {this.props.children}   
-            <Footer />
+          <Footer />
           </div>    
-          <UserBar />  
+           
         </div>
         <div className={styles.backgrounds+" d-none d-xl-flex col-xl-2"}>
           <img className={styles.arrows2} src={arrows} />
