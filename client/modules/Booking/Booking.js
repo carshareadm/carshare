@@ -21,6 +21,8 @@ import DatePicker from 'react-datepicker';
 
 import moment from 'moment';
 
+const storage = require("../../util/persistedStorage");
+
 import styles from './Booking.css'
 import TimeTable from './components/TimeTable'
 
@@ -68,10 +70,13 @@ errorMsgs = {
 };
 
 componentDidMount() {
-	if(window.localStorage.getItem('JWT'))
+	const token = storage.get(storage.Keys.JWT);
+	if(token)
 	{
-		this.setState({	loggedIn:true });
-		this.state.userid=JSON.parse(atob(window.localStorage.getItem('JWT').split('.')[1]))['sub'];
+		this.setState({	
+			loggedIn: true, 
+			userid: JSON.parse(atob(token.split('.')[1]))['sub']
+		});
 	}
 	this.setState({	carid:this.props.location.query.carid });
 	http.client()
@@ -184,7 +189,7 @@ mapCarToModel(car) {
 		else {
 			if(!this.state.loggedIn) return this.register();
 			if(this.state.booked) return this.booked();
-			if(!this.state.selectedCar._id) return "Loading";
+			if(!this.state.selectedCar._id) return <span>Loading...</span>;
 			return this.bookingFrm();
 		}
 	}
