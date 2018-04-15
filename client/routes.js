@@ -46,6 +46,7 @@ export default (
     	<Route path="locations" component={Locations}/>
 		<Route path="profile" component={Profile} />
 		<Route path="login" component={Login} />
-    <Route path='paymentDetails' component={PaymentDetails} />
+		<Route path="history" component={History} />
+    	<Route path='paymentDetails' component={PaymentDetails} />
 	</Route>
 );
