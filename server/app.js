@@ -62,6 +62,7 @@ const booking = require('./routes/booking.routes');
 const images = require('./routes/images.routes');
 const license = require('./routes/license.routes');
 const paymentDetails = require('./routes/paymentDetails.routes');
+const contact = require('./routes/contact.routes');
 const confirm = require('./routes/confirm.routes');
 app.use('/api/account', account);
 app.use('/api/profile', profile);
@@ -71,6 +72,7 @@ app.use('/api/images', images);
 app.use('/api/license', license);
 app.use('/api/paymentDetails', paymentDetails);
 app.use('/api/confirm', confirm);
+app.use('/api/contact', contact);
 app.use('/api/*', (req, res) => { res.status(404).send("Not found"); });
 
 // Render Initial HTML
@@ -86,7 +88,7 @@ const renderFullPage = (html, initialState) => {
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        
+
         ${isProdMode ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />

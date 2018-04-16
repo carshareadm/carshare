@@ -2,7 +2,19 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const enquirySchema = new Schema({
-  emailFrom: { type: "String", required: true, trim: true, lowercase: true },
+  emailFrom: {
+    type: "String",
+    required: true,
+    trim: true,
+    lowercase: true,
+    validate: {
+      validator: function(v) {
+        var re = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+        return re.test(v);
+      },
+      message: "Email format is invalid",
+    },
+  },
   message: { type: "String", required: true, trim: true },
   response: { type: "String", trim: true },
   receivedAt: { type: "Date", default: Date.now, required: true },
