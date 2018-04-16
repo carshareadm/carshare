@@ -33,6 +33,7 @@ export class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userid: '',
       // user profile deets
       email: '',
       mobile: '',
@@ -176,7 +177,8 @@ export class Profile extends Component {
     e.preventDefault();
     if (!this.isFormInvalid()) {
       // do post
-      http.client().put('/profile', {
+      http.client().post('/profile', {
+        user: this.state.userid,
         email: this.state.email,
         mobile: this.state.mobile,
         license: this.state.licenseNumber,
@@ -254,7 +256,12 @@ export class Profile extends Component {
   {
 
     this.errors = this.validate();
-    const isDisabled = this.isFormInvalid();
+    /*
+    Placeholder. isDisabled will be reviewed later to improve implementation
+    and enable the save button on a case by case validation bases
+    depending on which fields are touched
+    */
+    const isDisabled = false;
     this.state.multipleUpdate=this.isError('multiple');
   
   return (
@@ -419,7 +426,7 @@ export class Profile extends Component {
                   placeholder="Update Password"
                   className={this.isError('password') ? 'is-invalid' : ''}
                   onChange={this.handlePasswordChange.bind(this)}
-                  onBlur={() => this.handleBlur('password')}
+                  onBlur={() => this.handleBlur('profile-password')}
                   value={this.state.password}
                 />
               </FormGroup>
@@ -477,6 +484,12 @@ export class Profile extends Component {
   }
 
   componentDidMount() {
+    const token = window.localStorage.getItem("JWT");
+	  if (token) {
+		  this.setState({	
+			  userid: JSON.parse(atob(token.split('.')[1]))['sub'],
+  		});
+	  }
     http
       .client()
       .get("/profile/my")
