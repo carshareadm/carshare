@@ -2,7 +2,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-
 // reactstrapify
 import {
   Row,
@@ -33,22 +32,22 @@ class HistoryItem extends Component {
           </CardHeader>
           <CardBody >
             <Col sm="12" lg="6">
-              Booking Start: {bs.startsAt}
+              Booking Start: {bs.startsAt.toDate()}
             </Col>
             <Col sm="12" lg="6">
-              Booking End:
+              Booking End: {bs.endsAt.toDate()}
             </Col>
             <Col sm="12" lg="6">
-              Registration
+              Registration: {bs.car.make} {bs.car.model}
             </Col>
             <Col sm="12" lg="6">
-              Vehicle Type
+              Vehicle Type: {bs.car.vehicleType}
             </Col>
             <Col sm="12" lg="6">
-              Vehicle Location
+              Vehicle Location: {bs.car.location.name}
             </Col>
             <Col sm="12" lg="6">
-              Hire Cost
+              Hire Cost: WIP
             </Col>
           </CardBody>
         </Col>

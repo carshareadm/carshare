@@ -2,18 +2,18 @@
 import React, { Component, PropTypes } from 'react'; 
 import { Link } from 'react-router';
 import {
-  Button,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Container,
-  Row,
-  Col,
+	Button,
+	FormGroup,
+	Label,
+	Input,
+	FormText,
+	Dropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem,
+	Container,
+	Row,
+	Col,
 } from "reactstrap";
 import * as http from "../../util/http";
 
@@ -27,37 +27,41 @@ export class History extends Component {
 		super(props);
 		this.setBookings = this.setBookings.bind(this);
 		this.state = {
-			bookigs:[]
+			bookings:[]
 		}
 	}
 
-	setBookings(){
-		http
-	      .client()
-	      .get(`/profile/bookings`)
-	      .then(res => {
-	      	//save requested bookings to state
-	        this.setState({ 
-	          bookigs: res.data, 
-	        })
-	      })
-	      .catch(err => {
-	        console.log(err);
-	      });
+	componentDidMount(){
+		this.setBookings();
 	}
 
-  	render() {
+	setBookings(){
+			http
+		      .client()
+		      .get(`/profile/bookings`)
+		      .then(res => {
+		      	//save requested bookings to state
+		        this.setState({ 
+		          bookings: res.data, 
+		        })
+		      })
+		      .catch(err => {
+		        console.log(err);
+		      });
+	}
+
+	render() {
 		return (
-      		<div className={stylesMain.body}>
-		        <Container>
-		        	<Row>
-		        		{this.state.bookings.map(b => <HistoryItem key={b._id} data={b} />)}
-		        	</Row>
-		        </Container>
-       		</div>
+			<div className={stylesMain.body}>
+				<Container>
+					<Row>
+						{this.state.bookings.map(b => <HistoryItem key={b._id} data={b} />)}
+					</Row>
+				</Container>
+			</div>
 		)
 	}
-	
+
 }
 
 export default History;
