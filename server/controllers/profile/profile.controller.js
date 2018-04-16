@@ -14,11 +14,8 @@ const getMyProfile = function(req, res) {
     });
 };
 
-module.exports = {
-  getMyProfile: getMyProfile,
-};
-
 const updateMyProfile = function(req, res) {
+
   User.findById(req.userId)
     .populate("-confirmationCodes -__v")
     .exec((err, user) => {

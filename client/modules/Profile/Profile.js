@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router";
 import * as http from "../../util/http";
 import * as licenseService from '../../services/license.service';
+import Confirmation from '../Confirmation/Confirmation';
 
 import * as validator from "validator";
 import styles from "./Profile.css";
@@ -46,6 +47,8 @@ export class Profile extends Component {
       licenseImageUrl: '',
       licenseNumber: '',
       multipleUpdate: false,
+      updated: false,
+      confirmed: false,
       // page state
       statesDropdownOpen: false,
       isTouched: {
@@ -186,9 +189,17 @@ export class Profile extends Component {
       })
       .then(res => {
         console.log(res);
+        this.setState({updated: true});
+        this.requestConfirmationCode();
       })
       .catch(err => console.log(err));
     }
+  }
+
+  requestConfirmationCode() {
+    http.client().post('/confirm/sms', {codeType: "Register"})
+      .then(() => {})
+      .catch(e => console.log(e));
   }
 
   isError(key) {
@@ -215,192 +226,217 @@ export class Profile extends Component {
     return (<img src={placeholderImg} />);
   }
 
+  handleCodeConfirmed() {
+    this.setState({confirmed: true});
+  }
+
   render() {
+    return this.state.updated && this.state.confirmed ? this.confirmed()
+      : this.state.updated ? this.updated() : this.profileFrm()
+  }
+
+  updated()
+  {
+    return(
+      <Confirmation codeType={"Register"} onCodeConfirmed={this.handleCodeConfirmed.bind(this)}></Confirmation>
+    );
+  }
+
+  confirmed() {
+    return(
+      <div className={styles.body}>
+              <h1 className={styles.title}>Updated</h1>
+              <p><Link to="/profile">Click here to return to user profile</Link><br /></p>
+      </div>);
+  }
+
+  profileFrm()
+  {
+
     this.errors = this.validate();
     const isDisabled = this.isFormInvalid();
     this.state.multipleUpdate=this.isError('multiple');
+  
+  return (
+    <div className={stylesMain.body}>
+      <Container>
+        <Row>
+          <Col>
+            <h1 className={stylesMain.title}>Profile</h1>
+          </Col>
+        </Row>
+        <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
+        <Row>
+            <Col xs="12" sm="6">
+              <hr />
+              <h4 className={stylesMain.h4}>License</h4>
+              <div className={styles.imgContainer}>
+                {this.renderImage()}
+              </div>
+              <FileUploader onFileUploaded={this.handleLicenseUploaded.bind(this)}></FileUploader>
+            <hr />
+            <Link
+              className={styles.wideBtn + " btn btn-success"}
+              to="/paymentDetails"
+            >
+              Payment Details
+            </Link>
+          </Col>
+          <Col xs="12" sm="6">
+              <hr />
+              <h4 className={stylesMain.h4}>Address Details</h4>
 
-    // Here goes our page
-    return (
-      <div className={stylesMain.body}>
-        <Container>
-          <Row>
-            <Col>
-              <h1 className={stylesMain.title}>Profile</h1>
+              <FormGroup>
+                {this.renderLabel("street1", "street1")}
+                <Input
+                  type="text"
+                  name="street1"
+                  id="street1"
+                  placeholder="Street 1"
+                  className={this.isError('street1') ? 'is-invalid' : ''}
+                  onChange={this.handleStreet1Change.bind(this)}
+                  onBlur={() => this.handleBlur('street1')}
+                  value={this.state.street1}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                {this.renderLabel("street2", "street2")}
+                <Input
+                  type="text"
+                  name="street2"
+                  id="street2"
+                  placeholder="Street 2"
+                  onChange={this.handleStreet2Change.bind(this)}
+                  value={this.state.street2}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                {this.renderLabel("suburb", "suburb")}
+                <Input
+                  type="text"
+                  name="suburb"
+                  id="suburb"
+                  placeholder="Suburb"
+                  className={this.isError('suburb') ? 'is-invalid' : ''}
+                  onChange={this.handleSuburbChange.bind(this)}
+                  onBlur={() => this.handleBlur('suburb')}
+                  value={this.state.suburb}
+                  required
+                />
+              </FormGroup>
+
+              <FormGroup>
+                {this.renderLabel("state", "state")}
+                <Dropdown
+                  isOpen={this.state.statesDropdownOpen}
+                  toggle={this.toggleStatesDropdown.bind(this)}
+                >
+                  <DropdownToggle caret>
+                    {this.state.state.length > 0
+                      ? this.state.state
+                      : "Select State"}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {this.auStates.map(x => (
+                      <DropdownItem
+                        key={x}
+                        onClick={this.handleStateChange.bind(this)}
+                      >
+                        {x}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </FormGroup>
+
+              <FormGroup>
+                {this.renderLabel("postCode", "postcode")}
+                <Input
+                  type="text"
+                  name="postcode"
+                  id="postcode"
+                  placeholder="Postcode"
+                  className={this.isError('postCode') ? 'is-invalid' : ''}
+                  onChange={this.handlePostCodeChange.bind(this)}
+                  onBlur={() => this.handleBlur('postCode')}
+                  value={this.state.postCode}
+                  required
+                />
+              </FormGroup>
             </Col>
           </Row>
-          <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
           <Row>
-              <Col xs="12" sm="6">
-                <hr />
-                <h4 className={stylesMain.h4}>License</h4>
-                <div className={styles.imgContainer}>
-                  {this.renderImage()}
-                </div>
-                <FileUploader onFileUploaded={this.handleLicenseUploaded.bind(this)}></FileUploader>
+          <Col xs="12" sm="6">
               <hr />
-              <Link
-                className={styles.wideBtn + " btn btn-success"}
-                to="/paymentDetails"
-              >
-                Payment Details
-              </Link>
+              <h4 className={stylesMain.h4}>User Details</h4>
+              <FormGroup>
+                {this.renderLabel("mobile", "mobile")}
+                <Input
+                  type="text"
+                  name="mobile"
+                  id="mobile"
+                  placeholder="Mobile Phone"
+                  className={this.isError('mobile') ? 'is-invalid' : ''}
+                  onChange={this.handleMobileChange.bind(this)}
+                  onBlur={() => this.handleBlur('mobile')}
+                  value={this.state.mobile}
+                />
+              </FormGroup>
+              <FormGroup>
+                {this.renderLabel("licenseNumber", "licenseNumber")}
+                <Input
+                  type="text"
+                  name="licenseNumber"
+                  id="licenseNumber"
+                  placeholder="Drivers License Number"
+                  className={this.isError('licenseNumber') ? 'is-invalid' : ''}
+                  onChange={this.handleLicenseChange.bind(this)}
+                  onBlur={() => this.handleBlur('licenseNumber')}
+                  value={this.state.licenseNumber}
+                />
+              </FormGroup>
+              <FormGroup>
+                {this.renderLabel("email", "email")}
+                <Input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  className={this.isError('email') ? 'is-invalid' : ''}
+                  onChange={this.handleEmailChange.bind(this)}
+                  onBlur={() => this.handleBlur('email')}
+                  value={this.state.email}
+                />
+              </FormGroup>
+              <FormGroup>
+                {this.renderLabel("password", "profile-password")}
+                <Input
+                  type="password"
+                  name="profile-password"
+                  id="profile-password"
+                  placeholder="Update Password"
+                  className={this.isError('password') ? 'is-invalid' : ''}
+                  onChange={this.handlePasswordChange.bind(this)}
+                  onBlur={() => this.handleBlur('password')}
+                  value={this.state.password}
+                />
+              </FormGroup>
             </Col>
-            <Col xs="12" sm="6">
-                <hr />
-                <h4 className={stylesMain.h4}>Address Details</h4>
-
-                <FormGroup>
-                  {this.renderLabel("street1", "street1")}
-                  <Input
-                    type="text"
-                    name="street1"
-                    id="street1"
-                    placeholder="Street 1"
-                    className={this.isError('street1') ? 'is-invalid' : ''}
-                    onChange={this.handleStreet1Change.bind(this)}
-                    onBlur={() => this.handleBlur('street1')}
-                    value={this.state.street1}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  {this.renderLabel("street2", "street2")}
-                  <Input
-                    type="text"
-                    name="street2"
-                    id="street2"
-                    placeholder="Street 2"
-                    onChange={this.handleStreet2Change.bind(this)}
-                    value={this.state.street2}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  {this.renderLabel("suburb", "suburb")}
-                  <Input
-                    type="text"
-                    name="suburb"
-                    id="suburb"
-                    placeholder="Suburb"
-                    className={this.isError('suburb') ? 'is-invalid' : ''}
-                    onChange={this.handleSuburbChange.bind(this)}
-                    onBlur={() => this.handleBlur('suburb')}
-                    value={this.state.suburb}
-                    required
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  {this.renderLabel("state", "state")}
-                  <Dropdown
-                    isOpen={this.state.statesDropdownOpen}
-                    toggle={this.toggleStatesDropdown.bind(this)}
-                  >
-                    <DropdownToggle caret>
-                      {this.state.state.length > 0
-                        ? this.state.state
-                        : "Select State"}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {this.auStates.map(x => (
-                        <DropdownItem
-                          key={x}
-                          onClick={this.handleStateChange.bind(this)}
-                        >
-                          {x}
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                </FormGroup>
-
-                <FormGroup>
-                  {this.renderLabel("postCode", "postcode")}
-                  <Input
-                    type="text"
-                    name="postcode"
-                    id="postcode"
-                    placeholder="Postcode"
-                    className={this.isError('postCode') ? 'is-invalid' : ''}
-                    onChange={this.handlePostCodeChange.bind(this)}
-                    onBlur={() => this.handleBlur('postCode')}
-                    value={this.state.postCode}
-                    required
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-            <Col xs="12" sm="6">
-                <hr />
-                <h4 className={stylesMain.h4}>User Details</h4>
-                <FormGroup>
-                  {this.renderLabel("mobile", "mobile")}
-                  <Input
-                    type="text"
-                    name="mobile"
-                    id="mobile"
-                    placeholder="Mobile Phone"
-                    className={this.isError('mobile') ? 'is-invalid' : ''}
-                    onChange={this.handleMobileChange.bind(this)}
-                    onBlur={() => this.handleBlur('mobile')}
-                    value={this.state.mobile}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  {this.renderLabel("licenseNumber", "licenseNumber")}
-                  <Input
-                    type="text"
-                    name="licenseNumber"
-                    id="licenseNumber"
-                    placeholder="Drivers License Number"
-                    className={this.isError('licenseNumber') ? 'is-invalid' : ''}
-                    onChange={this.handleLicenseChange.bind(this)}
-                    onBlur={() => this.handleBlur('licenseNumber')}
-                    value={this.state.licenseNumber}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  {this.renderLabel("email", "email")}
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Email"
-                    className={this.isError('email') ? 'is-invalid' : ''}
-                    onChange={this.handleEmailChange.bind(this)}
-                    onBlur={() => this.handleBlur('email')}
-                    value={this.state.email}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  {this.renderLabel("password", "profile-password")}
-                  <Input
-                    type="password"
-                    name="profile-password"
-                    id="profile-password"
-                    placeholder="Update Password"
-                    className={this.isError('password') ? 'is-invalid' : ''}
-                    onChange={this.handlePasswordChange.bind(this)}
-                    onBlur={() => this.handleBlur('password')}
-                    value={this.state.password}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
-                  Save
-                </Button>
-              </Col>
-            </Row>
-          </form>
-        </Container>
-      </div>
-    );
-  }
+          </Row>
+          <Row>
+            <Col>
+              <Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
+                Save
+              </Button>
+            </Col>
+          </Row>
+        </form>
+      </Container>
+    </div>
+  );
+}
 
   mapUserToModel(user) {
     if(user) {
