@@ -75,7 +75,7 @@ componentDidMount() {
 	{
 		this.setState({	
 			loggedIn: true, 
-			userid: JSON.parse(atob(token.split('.')[1]))['sub']
+			userid: JSON.parse(atob(token.split('.')[1]))['sub'],
 		});
 	}
 	this.setState({	carid:this.props.location.query.carid });

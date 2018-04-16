@@ -142,6 +142,11 @@ export class Login extends Component {
         <Container>
           <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
             <Row>
+              <Col>
+                <h1 className={styles.title}>Login</h1>
+              </Col>
+            </Row>
+            <Row>
               <Col xs="12" sm="6">
                 <img className={styles.btnarrows} src={arrows} />
                 <Link to="/register">
@@ -151,7 +156,6 @@ export class Login extends Component {
                 </Link>
               </Col>
               <Col xs="12" sm="6">
-                <h1 className={styles.title}>Login</h1>
                 <FormGroup>
                   {this.renderLabel("email", "email")}
                   <Input
@@ -190,7 +194,7 @@ export class Login extends Component {
                   color="success"
                   className={styles.loginBtn}
                 >
-                  Register
+                  Login
                 </Button>
               </Col>
             </Row>

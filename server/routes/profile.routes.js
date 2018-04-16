@@ -18,6 +18,10 @@ var router = express.Router();
  * @returns {Error} 404 - user not found
  * @returns {Error} 500 - internal server error
  */
+
+
 router.get("/my", isAuthenticatedGuard, profile.getMyProfile);
+
+router.post("/", isAuthenticatedGuard, profile.updateMyProfile);
 
 module.exports = router;
