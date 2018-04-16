@@ -38,11 +38,14 @@ class PaymentDetails extends Component
     super(props);
     this.state = {
       // credit card fields
+      _id: '',
       cardNumber: '',
       nameOnCard: '',
       ccv: '',
       expiryMonth: '',
       expiryYear: '',
+      // user credit card status
+      hasCard: false,
       // page state
       updated: false,
       expMonthDropdownOpen: false,
@@ -79,29 +82,29 @@ class PaymentDetails extends Component
   handleInputChange(evt) {
     let field = evt.target.id;
     let value = evt.target.value
-    let props = {};
-    props [field] = value;
-    props.touched = this.state.touched;
-    props.touched [field] = true;
-    this.setState(props);
+    let temp = {};
+    temp [field] = value;
+    temp.touched = this.state.touched;
+    temp.touched [field] = true;
+    this.setState(temp);
   }
 
   handleExpiryMonthChange(evt) {
-    let props = {
+    let temp = {
       expiryMonth: evt.target.innerText,
       expMonthDropdownOpen: false }
-    props.touched = this.state.touched;
-    props.touched.expiry = true;
-    this.setState(props);
+    temp.touched = this.state.touched;
+    temp.touched.expiry = true;
+    this.setState(temp);
   }
 
   handleExpiryYearChange = (evt) => {
-    let props = {
+    let temp = {
       expiryYear: evt.target.innerText,
       expYearDropdownOpen: false }
-    props.touched = this.state.touched;
-    props.touched.expiry = true;
-    this.setState(props);
+    temp.touched = this.state.touched;
+    temp.touched.expiry = true;
+    this.setState(temp);
   }
 
   toggleExpMonthDropdown() {
@@ -119,28 +122,46 @@ class PaymentDetails extends Component
   handleSubmit(evt) {
     evt.preventDefault();
 
-    const cardNumber = this.state.cardNumber.replace(nonDigit, '');
-    const ccv = this.state.ccv.replace(nonDigit, '');
-
     if (this.formIsValid()) {
-      // logging to console only, won't actually write to database
-      console.log({
-         cardNumber: cardNumber,
-         nameOnCard: this.state.nameOnCard,
-         ccv: ccv,
-         expiryMonth: Number(this.state.expiryMonth),
-         expiryYear: Number(this.state.expiryYear),
-      });
-      // TO FIX
-      // http.client().put('/paymentDetals/change', {
-      //   cardNumber: cardNumber,
-      //   nameOnCard: this.state.nameOnCard,
-      //   ccv: ccv,
-      //   expiryMonth: Number(this.state.expiryMonth),
-      //   expiryYear: Number(this.state.expiryYear),
-      // })
-      // .then(res => console.log(res))
-      // .catch(err => console.log(err));
+      const cardNumber = this.state.cardNumber.replace(nonDigit, '');
+      const ccv = this.state.ccv.replace(nonDigit, '');
+
+      if (this.state.hasCard) {
+        // update credit card info only
+        http
+          .client()
+          .put('/paymentDetails/update', {
+            _id: this.state._id,
+            cardNumber: cardNumber,
+            nameOnCard: this.state.nameOnCard,
+            ccv: ccv,
+            expiryMonth: Number(this.state.expiryMonth),
+            expiryYear: Number(this.state.expiryYear),
+          })
+          .then(res => {
+            console.log(res);
+            this.fetchUser();
+          })
+          .catch(err => console.log(err));
+      }
+      else
+      {
+        // create new creditCard
+        http
+          .client()
+          .post('/paymentDetails/add', {
+            cardNumber: cardNumber,
+            nameOnCard: this.state.nameOnCard,
+            ccv: ccv,
+            expiryMonth: Number(this.state.expiryMonth),
+            expiryYear: Number(this.state.expiryYear),
+          })
+        .then(res => {
+          console.log(res);
+          this.fetchUser();
+        })
+        .catch(err => console.log(err));
+      }
     }
   }
 
@@ -156,23 +177,27 @@ class PaymentDetails extends Component
 
   mapUserToModel(user)
   {
-    if (user)
+    if (user && user.creditCard)
     {
       this.setState({
-        cardNumber: user.creditCard && user.creditCard.cardNumber ?
+        _id: user.creditCard._id ? user.creditCard._id : '',
+        cardNumber: user.creditCard.cardNumber ?
           user.creditCard.cardNumber : '',
-        nameOnCard: user.creditCard && user.creditCard.nameOnCard ?
+        nameOnCard: user.creditCard.nameOnCard ?
           user.creditCard.nameOnCard : '',
-        ccv: user.creditCard && user.creditCard.ccv ? user.creditCard.ccv : '',
-        expiryMonth: user.creditCard && user.creditCard.expiryMonth ?
+        ccv: user.creditCard.ccv ? user.creditCard.ccv : '',
+        expiryMonth: user.creditCard.expiryMonth ?
           user.creditCard.expiryMonth.toString() : '',
-        expiryYear: user.creditCard && user.creditCard.expiryYear ?
+        expiryYear: user.creditCard.expiryYear ?
           user.creditCard.expiryYear.toString() : '',
+        hasCard: true,
       })
     }
   }
 
-  componentDidMount()
+  componentDidMount() { this.fetchUser(); }
+
+  fetchUser()
   {
     http
       .client()
