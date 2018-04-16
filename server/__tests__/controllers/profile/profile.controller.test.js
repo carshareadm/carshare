@@ -34,7 +34,7 @@ describe("Profile controller", () => {
     await mongoose.connect("mongodb://localhost/test", { useMongoClient: true });
   });
 
-  beforeEach(done => {
+  beforeEach(async done => {
     const license = new License();
     license.licenseNumber = '12345';
     
@@ -49,20 +49,21 @@ describe("Profile controller", () => {
     user.mobile = "0411111111";
     user.password = "12345";
 
-    license.save()
-      .then(() => address.save())
-      .then(() => {
-        user.license = license;
-        user.address = address;
-        user.save();        
-      })
-      .then(() => {
-        testLicense = license;
-        testAddress = address;
-        testUser = user;
-        done();
-      })
-      .catch(e => done(e));
+    try {
+      const savedLicense = await license.save();
+      const savedAddress = await address.save();
+      user.license = savedLicense;
+      user.address = savedAddress;
+      const savedUser = await user.save();        
+      
+      testLicense = savedLicense;
+      testAddress = savedAddress;
+      testUser = savedUser;
+      done();
+    }
+    catch(e) {
+      done(e);
+    }    
   });
 
   afterEach(done => {
