@@ -335,6 +335,7 @@ class PaymentDetails extends Component
           <Row>
             <Col sm={{ size: 6, offset: 3 }}>
               <Button
+                type="submit"
                 disabled={isDisabled}
                 outline
                 color="success"
