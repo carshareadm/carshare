@@ -20,4 +20,6 @@ var router = express.Router();
  */
 router.get("/my", isAuthenticatedGuard, profile.getMyProfile);
 
+router.post("/my", isAuthenticatedGuard, profile.updateMyProfile);
+
 module.exports = router;

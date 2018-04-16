@@ -45,6 +45,7 @@ export class Profile extends Component {
       // license deets
       licenseImageUrl: '',
       licenseNumber: '',
+      multipleUpdate: false,
       // page state
       statesDropdownOpen: false,
       isTouched: {
@@ -99,6 +100,10 @@ export class Profile extends Component {
       suburb: this.state.suburb.length < 2,
       state: this.auStates.indexOf(this.state.state) < 0,
       postCode: !this.state.postCode.match(/^\d{4}$/),
+      multiple: (this.state.password.length > 0  && this.state.mobile.length > 0) 
+      || (this.state.password.length > 0  && this.state.mobile.length > 0) 
+      || (this.state.email.length > 0  && this.state.mobile.length > 0) 
+      || (this.state.password.length > 0  && this.state.email.length > 0),
     };
     return errs;
   }
@@ -171,7 +176,7 @@ export class Profile extends Component {
       http.client().put('/profile', {
         email: this.state.email,
         mobile: this.state.mobile,
-        license: this.state.license,
+        license: this.state.licenseNumber,
         password: this.state.password,
         street1: this.state.street1,
         street2: this.state.street2,
@@ -200,7 +205,7 @@ export class Profile extends Component {
     if (this.isError(key)) {
       return <Label htmlFor={labelFor} className={'text-danger'}>{this.labels[key]}: {this.errorMsgs[key]}</Label>
     }
-    return <Label htmlFor={labelFor}>{this.labels[key]}</Label>
+    return <Label htmlFor={labelFor} className={styles.label}>{this.labels[key]}</Label>
   }
 
   renderImage() {
@@ -213,6 +218,7 @@ export class Profile extends Component {
   render() {
     this.errors = this.validate();
     const isDisabled = this.isFormInvalid();
+    this.state.multipleUpdate=this.isError('multiple');
 
     // Here goes our page
     return (
@@ -242,7 +248,7 @@ export class Profile extends Component {
             </Col>
             <Col xs="12" sm="6">
                 <hr />
-                <h4 className={styles.h4}>Address Details</h4>
+                <h4 className={stylesMain.h4}>Address Details</h4>
 
                 <FormGroup>
                   {this.renderLabel("street1", "street1")}
@@ -328,7 +334,7 @@ export class Profile extends Component {
             <Row>
             <Col xs="12" sm="6">
                 <hr />
-                <h4 className={styles.h4}>User Details</h4>
+                <h4 className={stylesMain.h4}>User Details</h4>
                 <FormGroup>
                   {this.renderLabel("mobile", "mobile")}
                   <Input
