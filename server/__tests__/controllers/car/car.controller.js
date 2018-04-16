@@ -22,7 +22,7 @@ describe("Car controller", () => {
 	let vehicleType;
 
 	beforeAll(async () => {
-		await mongoose.connect('mongodb://localhost/test');
+		await mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
 	})
 
 	beforeEach(done => {

@@ -28,7 +28,7 @@ const updateMyProfile = function(req, res) {
   const state = req.body.state;
   const postCode = req.body.postCode;
 
-  var changeCnt = 0;
+  let isUpdated = false;
 
   if (
     !user &&
@@ -43,26 +43,26 @@ const updateMyProfile = function(req, res) {
     !postCode
   ) {
     // No fields sent, Bad request
-    res.status(400);
+    res.status(400).send('No request body');
   }
 
-  User.findById(user).exec((usrErr, userFound) => {
+  User.findById(user).populate('address license').exec((usrErr, userFound) => {
     if (usrErr) {
       res.status(500).send(usrErr);
     } else if (!userFound) {
-      res.status(404);
+      res.status(404).send();
     } else {
       if (email && (!mobile && !password)) {
         userFound.email = email;
-        changeCnt + 1;
+        isUpdated = true;
       }
       if (mobile && (!email && !password)) {
         userFound.mobile = mobile;
-        changeCnt + 1;
+        isUpdated = true
       }
       if (password && (!email && !mobile)) {
         userFound.password = password;
-        changeCnt + 1;
+        isUpdated = true
       }
       if (licenseNumber) {
         userFound.license.licenseNumber = licenseNumber;
@@ -71,10 +71,13 @@ const updateMyProfile = function(req, res) {
             res.status(500).send(licenseUpdErr);
           }
         });
-        changeCnt + 1;
+        isUpdated = true
       }
       // Address component update
       if (street1 || street2 || suburb || state || postCode) {
+        if (!userFound.address) {
+          userFound.address = new Address();
+        }
         if (street1) {
           userFound.address.street1 = street1;
         }
@@ -99,12 +102,13 @@ const updateMyProfile = function(req, res) {
             res.status(500).send(addressUpdErr);
           }
         });
-        changeCnt + 1;
+        isUpdated = true
       }
-      if (changeCnt > 0) {
-        usrChkErr = userFound.validateSync();
+
+      if (isUpdated) {
+        const usrChkErr = userFound.validateSync();
         if (usrChkErr) {
-          res.status(500);
+          res.status(500).send(usrChkErr);
         } else {
           userFound.save((usrUpdErr, savedUsr) => {
             if (usrUpdErr) {
@@ -115,9 +119,8 @@ const updateMyProfile = function(req, res) {
           });
         }
       } else {
-        res.status(400);
+        res.status(400).send('Nothing updated');
       }
-      res.status(400);
     }
   });
 };

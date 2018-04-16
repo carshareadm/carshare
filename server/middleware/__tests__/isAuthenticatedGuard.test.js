@@ -13,9 +13,9 @@ const request = require("supertest");
 
 let testUser = null;
 
-describe("Profile controller", () => {
+describe("isAuthenticatedGuard", () => {
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost/test");
+    await mongoose.connect("mongodb://localhost/test", { useMongoClient: true });
   });
 
   beforeEach(done => {

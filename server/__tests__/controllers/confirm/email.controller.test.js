@@ -12,7 +12,7 @@ const mockgoose = new Mockgoose(mongoose);
 const app = require("../../../app");
 const request = require("supertest");
 
-describe("SMS controller", () => {
+describe("Email controller", () => {
   let user;
   let code;
 
@@ -22,7 +22,7 @@ describe("SMS controller", () => {
   
 	beforeEach(done => {
     user = new User();
-    user.email = "testsms@gmail.com";
+    user.email = "test@example.com";
     user.mobile = "0411111111";
     user.password = "12345";
   
@@ -30,7 +30,7 @@ describe("SMS controller", () => {
     code.code = "123456";
     code.expiresAt = dateUtil.addHours(new Date(), 0.25);
     code.user = user;
-    code.codeType = "Register";
+    code.codeType = "AccountUpdate";
   
     code.save()
     .then(() => user.save())
@@ -48,7 +48,7 @@ describe("SMS controller", () => {
     mongoose.disconnect().then(() => done());
   });
 
-	test("it should send SMS", done => {
+	test("it should send Email", done => {
     let token = {
       sub: user._id,
       email: user.email,
@@ -59,10 +59,10 @@ describe("SMS controller", () => {
     const encodedToken = jwt.encode(token, config.jwt.secret);
     
 		request(app)
-    .post("/api/confirm/sms")
+    .post("/api/confirm/email")
     .set('Authorization', 'Bearer ' + encodedToken)
     .send({
-      codeType: "Register",
+      codeType: "AccountUpdate",
     })
 		.then(response => {
 			expect(response.statusCode).toBe(200);
