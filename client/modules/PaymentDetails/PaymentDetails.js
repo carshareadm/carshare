@@ -138,7 +138,10 @@ class PaymentDetails extends Component
             expiryMonth: Number(this.state.expiryMonth),
             expiryYear: Number(this.state.expiryYear),
           })
-          .then(res => console.log(res))
+          .then(res => {
+            console.log(res);
+            this.fetchUser();
+          })
           .catch(err => console.log(err));
       }
       else
