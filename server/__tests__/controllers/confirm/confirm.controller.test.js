@@ -16,7 +16,7 @@ describe("Confirm controller", () => {
   let testUser;
 
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost/test");
+    await mongoose.connect("mongodb://localhost/test", { useMongoClient: true });
   });
 
   beforeEach(done => {

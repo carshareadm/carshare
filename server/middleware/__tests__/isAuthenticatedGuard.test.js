@@ -15,7 +15,7 @@ let testUser = null;
 
 describe("isAuthenticatedGuard", () => {
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost/test");
+    await mongoose.connect("mongodb://localhost/test", { useMongoClient: true });
   });
 
   beforeEach(done => {

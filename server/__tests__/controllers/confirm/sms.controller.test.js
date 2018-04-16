@@ -17,7 +17,7 @@ describe("SMS controller", () => {
   let code;
 
 	beforeAll((done) => {
-    mongoose.connect('mongodb://localhost/test').then(() => done());    
+    mongoose.connect('mongodb://localhost/test', { useMongoClient: true }).then(() => done());    
 	})
   
 	beforeEach(done => {

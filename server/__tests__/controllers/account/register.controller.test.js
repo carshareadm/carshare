@@ -13,7 +13,7 @@ const request = require("supertest");
 
 describe("Register controller", () => {
   beforeAll(async () => {
-    await mongoose.connect('mongodb://localhost/test');
+    await mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
   })
 
   afterEach((done) => {

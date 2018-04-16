@@ -31,7 +31,7 @@ const getToken = () => {
 describe("Profile controller", () => {  
 
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost/test");
+    await mongoose.connect("mongodb://localhost/test", { useMongoClient: true });
   });
 
   beforeEach(done => {
@@ -45,7 +45,7 @@ describe("Profile controller", () => {
     address.postCode = '6000';
 
     const user = new User();
-    user.email = "user1@gmail.com";
+    user.email = "profileUser@gmail.com";
     user.mobile = "0411111111";
     user.password = "12345";
 
