@@ -28,14 +28,16 @@ const addPaymentDetails = function(req, res) {
   );
 
   // save creditCard then add to user profile asynchronously
+  let savedCard;
   newCard
     .save()
     .then(
       (card) => {
+        savedCard = card;
         return User.findByIdAndUpdate(req.userId, { creditCard: card._id });
       })
     // finally, send response
-    .then((user) => { res.status(200).send(user); })
+    .then(() => { res.status(200).send(savedCard); })
     .catch((err) => {
       switch (err.name)
       {
@@ -63,7 +65,7 @@ const updatePaymentDetails = function(req, res) {
           expiryYear: req.body.expiryYear,
         }
       )
-    .then((user) => { res.status(200).send(user); })
+    .then((card) => { res.status(200).send(card); })
     .catch((err) => {
       switch (err.name)
       {

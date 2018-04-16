@@ -30,7 +30,7 @@ router.get('/my', isAuthenticatedGuard, paymentDetails.getMyPaymentDetails);
 /**
  * @route POST /paymentDetails/add
  * @group profile
- * @returns {PaymentDetailsModel.model} 200
+ * @returns {CardModel.model} 200
  * @returns {Error} 400 - invalid card info
  * @returns {Error} 401 - user not authenticated
  * @returns {Error} 404 - user not found

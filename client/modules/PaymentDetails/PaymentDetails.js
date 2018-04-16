@@ -82,29 +82,29 @@ class PaymentDetails extends Component
   handleInputChange(evt) {
     let field = evt.target.id;
     let value = evt.target.value
-    let props = {};
-    props [field] = value;
-    props.touched = this.state.touched;
-    props.touched [field] = true;
-    this.setState(props);
+    let temp = {};
+    temp [field] = value;
+    temp.touched = this.state.touched;
+    temp.touched [field] = true;
+    this.setState(temp);
   }
 
   handleExpiryMonthChange(evt) {
-    let props = {
+    let temp = {
       expiryMonth: evt.target.innerText,
       expMonthDropdownOpen: false }
-    props.touched = this.state.touched;
-    props.touched.expiry = true;
-    this.setState(props);
+    temp.touched = this.state.touched;
+    temp.touched.expiry = true;
+    this.setState(temp);
   }
 
   handleExpiryYearChange = (evt) => {
-    let props = {
+    let temp = {
       expiryYear: evt.target.innerText,
       expYearDropdownOpen: false }
-    props.touched = this.state.touched;
-    props.touched.expiry = true;
-    this.setState(props);
+    temp.touched = this.state.touched;
+    temp.touched.expiry = true;
+    this.setState(temp);
   }
 
   toggleExpMonthDropdown() {
@@ -122,10 +122,10 @@ class PaymentDetails extends Component
   handleSubmit(evt) {
     evt.preventDefault();
 
-    const cardNumber = this.state.cardNumber.replace(nonDigit, '');
-    const ccv = this.state.ccv.replace(nonDigit, '');
-
     if (this.formIsValid()) {
+      const cardNumber = this.state.cardNumber.replace(nonDigit, '');
+      const ccv = this.state.ccv.replace(nonDigit, '');
+
       if (this.state.hasCard) {
         // update credit card info only
         http
@@ -147,14 +147,16 @@ class PaymentDetails extends Component
         http
           .client()
           .post('/paymentDetails/add', {
-            _id: this.state._id,
             cardNumber: cardNumber,
             nameOnCard: this.state.nameOnCard,
             ccv: ccv,
             expiryMonth: Number(this.state.expiryMonth),
             expiryYear: Number(this.state.expiryYear),
           })
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res);
+          this.fetchUser();
+        })
         .catch(err => console.log(err));
       }
     }
@@ -190,7 +192,9 @@ class PaymentDetails extends Component
     }
   }
 
-  componentDidMount()
+  componentDidMount() { this.fetchUser(); }
+
+  fetchUser()
   {
     http
       .client()
