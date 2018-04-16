@@ -50,7 +50,7 @@ export class Profile extends Component {
       isTouched: {
         email: false,
         mobile: false,
-        license: false,
+        licenseNumber: false,
         password: false,
         street1: false,
         street2: false,
@@ -66,7 +66,7 @@ export class Profile extends Component {
   labels = {
     email: 'Email',
     mobile: 'Mobile Phone',
-    license: 'Drivers License Number',
+    licenseNumber: 'Drivers License Number',
     password: 'Password',
     street1: 'Street 1',
     street2: 'Street 2',
@@ -78,7 +78,7 @@ export class Profile extends Component {
   errorMsgs = {
     email: 'a valid email is required',
     mobile: 'a valid mobile phone number is required',
-    license: 'required',
+    licenseNumber: 'required',
     password: 'must be minimum 8 characters with 1 uppercase, 1 lowercase and 1 number',
     street1: 'required',
     suburb: 'required',
@@ -93,7 +93,7 @@ export class Profile extends Component {
     const errs = {
       email: !validator.isEmail(this.state.email),
       mobile: !validator.isMobilePhone(this.state.mobile, "en-AU"),
-      license: this.state.license.length < 1,
+      licenseNumber: this.state.licenseNumber.length < 1,
       password: !this.state.password.match(/^$|^((\d)|[a-z]|[A-Z]|[^A-Z]){8,}$/),
       street1: this.state.street1.length < 5,
       suburb: this.state.suburb.length < 2,
@@ -116,7 +116,7 @@ export class Profile extends Component {
   }
 
   handleLicenseChange = (evt) => {
-    this.setState({ license: evt.target.value });
+    this.setState({ licenseNumber: evt.target.value });
   }
 
   handleStreet1Change = (evt) => {
@@ -232,68 +232,17 @@ export class Profile extends Component {
                   {this.renderImage()}
                 </div>
                 <FileUploader onFileUploaded={this.handleLicenseUploaded.bind(this)}></FileUploader>
-              </Col>
-              <Col xs="12" sm="6">
+              <hr />
+              <Link
+                className={styles.wideBtn + " btn btn-success"}
+                to="/paymentDetails"
+              >
+                Payment Details
+              </Link>
+            </Col>
+            <Col xs="12" sm="6">
                 <hr />
-                <h4 className={styles.h4}>User Details</h4>
-                <FormGroup>
-                  {this.renderLabel("email", "email")}
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Email"
-                    className={this.isError('email') ? 'is-invalid' : ''}
-                    onChange={this.handleEmailChange.bind(this)}
-                    onBlur={() => this.handleBlur('email')}
-                    value={this.state.email}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  {this.renderLabel("mobile", "mobile")}
-                  <Input
-                    type="text"
-                    name="mobile"
-                    id="mobile"
-                    placeholder="Mobile Phone"
-                    className={this.isError('mobile') ? 'is-invalid' : ''}
-                    onChange={this.handleMobileChange.bind(this)}
-                    onBlur={() => this.handleBlur('mobile')}
-                    value={this.state.mobile}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  {this.renderLabel("license", "license")}
-                  <Input
-                    type="text"
-                    name="license"
-                    id="license"
-                    placeholder="Drivers License Number"
-                    className={this.isError('license') ? 'is-invalid' : ''}
-                    onChange={this.handleLicenseChange.bind(this)}
-                    onBlur={() => this.handleBlur('license')}
-                    value={this.state.license}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  {this.renderLabel("password", "profile-password")}
-                  <Input
-                    type="password"
-                    name="profile-password"
-                    id="profile-password"
-                    placeholder="Update Password"
-                    className={this.isError('password') ? 'is-invalid' : ''}
-                    onChange={this.handlePasswordChange.bind(this)}
-                    onBlur={() => this.handleBlur('password')}
-                    value={this.state.password}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="12" sm="6">
-                <hr />
-                <h4 className={styles.h4}>Address</h4>
+                <h4 className={styles.h4}>Address Details</h4>
 
                 <FormGroup>
                   {this.renderLabel("street1", "street1")}
@@ -377,6 +326,64 @@ export class Profile extends Component {
               </Col>
             </Row>
             <Row>
+            <Col xs="12" sm="6">
+                <hr />
+                <h4 className={styles.h4}>User Details</h4>
+                <FormGroup>
+                  {this.renderLabel("mobile", "mobile")}
+                  <Input
+                    type="text"
+                    name="mobile"
+                    id="mobile"
+                    placeholder="Mobile Phone"
+                    className={this.isError('mobile') ? 'is-invalid' : ''}
+                    onChange={this.handleMobileChange.bind(this)}
+                    onBlur={() => this.handleBlur('mobile')}
+                    value={this.state.mobile}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  {this.renderLabel("licenseNumber", "licenseNumber")}
+                  <Input
+                    type="text"
+                    name="licenseNumber"
+                    id="licenseNumber"
+                    placeholder="Drivers License Number"
+                    className={this.isError('licenseNumber') ? 'is-invalid' : ''}
+                    onChange={this.handleLicenseChange.bind(this)}
+                    onBlur={() => this.handleBlur('licenseNumber')}
+                    value={this.state.licenseNumber}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  {this.renderLabel("email", "email")}
+                  <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    className={this.isError('email') ? 'is-invalid' : ''}
+                    onChange={this.handleEmailChange.bind(this)}
+                    onBlur={() => this.handleBlur('email')}
+                    value={this.state.email}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  {this.renderLabel("password", "profile-password")}
+                  <Input
+                    type="password"
+                    name="profile-password"
+                    id="profile-password"
+                    placeholder="Update Password"
+                    className={this.isError('password') ? 'is-invalid' : ''}
+                    onChange={this.handlePasswordChange.bind(this)}
+                    onBlur={() => this.handleBlur('password')}
+                    value={this.state.password}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
               <Col>
                 <Button disabled={isDisabled} outline color="success" className={styles.wideBtn}>
                   Save
@@ -384,17 +391,6 @@ export class Profile extends Component {
               </Col>
             </Row>
           </form>
-          <Row>
-            <Col>
-              <hr />
-              <Link
-                className={styles.wideBtn + " btn btn-success"}
-                to="/paymentDetails"
-              >
-                Payment Details
-              </Link>
-            </Col>
-          </Row>
         </Container>
       </div>
     );
