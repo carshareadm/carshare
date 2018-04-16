@@ -26,6 +26,8 @@ import stylesMain from '../../main.css';
 import FileUploader from '../FileUploader/FileUploader';
 import placeholderImg from './ic_image.svg';
 
+const storage = require("../../util/persistedStorage");
+
 //Profile component class
 export class Profile extends Component {
   state = {};
@@ -56,7 +58,7 @@ export class Profile extends Component {
         email: false,
         mobile: false,
         licenseNumber: false,
-        password: false,
+        profilePassword: false,
         street1: false,
         street2: false,
         suburb: false,
@@ -175,19 +177,20 @@ export class Profile extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (!this.isFormInvalid()) {
+    //if (!this.isFormInvalid()) {
       // do post
-      http.client().post('/profile', {
+      console.log("Submitting");
+      http.client().post('/profile/', {
         user: this.state.userid,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        license: this.state.licenseNumber,
-        password: this.state.password,
-        street1: this.state.street1,
-        street2: this.state.street2,
-        suburb: this.state.suburb,
-        state: this.state.state,
-        postCode: this.state.postCode,
+        email: this.state.isTouched['email'] ? this.state.email : '',
+        mobile: this.state.isTouched['mobile'] ? this.state.mobile : '',
+        license: this.state.isTouched['licenseNumber'] ? this.state.licenseNumber : '',
+        password: this.state.isTouched['profilePassword'] ? this.state.password : '',
+        street1: this.state.isTouched['street1'] ? this.state.street1 : '',
+        street2: this.state.isTouched['street2'] ? this.state.street2 : '',
+        suburb: this.state.isTouched['suburb'] ? this.state.suburb : '',
+        state: this.state.isTouched['state'] ? this.state.state : '',
+        postCode: this.state.isTouched['postCode'] ? this.state.postCode : '',
       })
       .then(res => {
         console.log(res);
@@ -195,7 +198,7 @@ export class Profile extends Component {
         this.requestConfirmationCode();
       })
       .catch(err => console.log(err));
-    }
+//    }
   }
 
   requestConfirmationCode() {
@@ -330,7 +333,6 @@ export class Profile extends Component {
                   onChange={this.handleSuburbChange.bind(this)}
                   onBlur={() => this.handleBlur('suburb')}
                   value={this.state.suburb}
-                  required
                 />
               </FormGroup>
 
@@ -369,7 +371,6 @@ export class Profile extends Component {
                   onChange={this.handlePostCodeChange.bind(this)}
                   onBlur={() => this.handleBlur('postCode')}
                   value={this.state.postCode}
-                  required
                 />
               </FormGroup>
             </Col>
@@ -418,15 +419,15 @@ export class Profile extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                {this.renderLabel("password", "profile-password")}
+                {this.renderLabel("password", "profilePassword")}
                 <Input
                   type="password"
-                  name="profile-password"
-                  id="profile-password"
+                  name="profilePassword"
+                  id="profilePassword"
                   placeholder="Update Password"
                   className={this.isError('password') ? 'is-invalid' : ''}
                   onChange={this.handlePasswordChange.bind(this)}
-                  onBlur={() => this.handleBlur('profile-password')}
+                  onBlur={() => this.handleBlur('profilePassword')}
                   value={this.state.password}
                 />
               </FormGroup>
@@ -484,12 +485,14 @@ export class Profile extends Component {
   }
 
   componentDidMount() {
-    const token = window.localStorage.getItem("JWT");
-	  if (token) {
+    const token = storage.get(storage.Keys.JWT);
+  	if(token)
+	  {
 		  this.setState({	
 			  userid: JSON.parse(atob(token.split('.')[1]))['sub'],
   		});
 	  }
+    console.log(this.state.userid);
     http
       .client()
       .get("/profile/my")
