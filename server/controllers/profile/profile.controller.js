@@ -1,6 +1,10 @@
 import User from "../../models/user";
 import Address from "../../models/address";
 import License from "../../models/license";
+import Booking from "../../models/booking";
+import Car from "../../models/car";
+
+import mongoose from 'mongoose';
 
 const getMyProfile = function(req, res) {
   User.findById(req.userId)
@@ -125,7 +129,24 @@ const updateMyProfile = function(req, res) {
   });
 };
 
+
+const getMyBookings = function(req, res){
+  Booking.find({
+    user:mongoose.Types.ObjectId(req.userId)
+  }).populate({
+      path:'car', populate: ['vehicleType', 'location']
+    })
+    .exec((err, bookings) =>{
+      if(err){
+        res.status(500).send(err);
+      } else {
+        res.status(200).send(bookings);
+      }
+    });
+};
+
 module.exports = {
   getMyProfile: getMyProfile,
   updateMyProfile: updateMyProfile,
+  bookings: getMyBookings
 };

@@ -1,11 +1,11 @@
 // Imports
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import carPlaceholder from '../carPlaceholder.png';
 
 
 // reactstrapify
 import {
+  Row,
   Col,
   Card,
   CardHeader,
@@ -25,16 +25,33 @@ class HistoryItem extends Component {
   }
 
   render() {
+    const bs = this.props.data;
     return (
-      <Row>
-        <Col xs="12" sm="6">
+        <Col>
           <CardHeader>
+            Status Booking
           </CardHeader>
-
           <CardBody >
+            <Col sm="12" lg="6">
+              Booking Start: {bs.startsAt}
+            </Col>
+            <Col sm="12" lg="6">
+              Booking End:
+            </Col>
+            <Col sm="12" lg="6">
+              Registration
+            </Col>
+            <Col sm="12" lg="6">
+              Vehicle Type
+            </Col>
+            <Col sm="12" lg="6">
+              Vehicle Location
+            </Col>
+            <Col sm="12" lg="6">
+              Hire Cost
+            </Col>
           </CardBody>
         </Col>
-      </Row>
     )
   }
 }

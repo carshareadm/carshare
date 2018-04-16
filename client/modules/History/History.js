@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react'; 
 import { Link } from 'react-router';
 import {
-   Button,
+  Button,
   FormGroup,
   Label,
   Input,
@@ -15,21 +15,44 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
 import * as http from "../../util/http";
 
 import styles from './History.css'
-import stylesMain from '../../main.css';
+import stylesMain from '../../main.css'
 
 import HistoryItem from './components/HistoryItem'
 
 export class History extends Component {
+	constructor(props){
+		super(props);
+		this.setBookings = this.setBookings.bind(this);
+		this.state = {
+			bookigs:[]
+		}
+	}
+
+	setBookings(){
+		http
+	      .client()
+	      .get(`/profile/bookings`)
+	      .then(res => {
+	      	//save requested bookings to state
+	        this.setState({ 
+	          bookigs: res.data, 
+	        })
+	      })
+	      .catch(err => {
+	        console.log(err);
+	      });
+	}
 
   	render() {
 		return (
       		<div className={stylesMain.body}>
 		        <Container>
-		        	<HistoryItem />
+		        	<Row>
+		        		{this.state.bookings.map(b => <HistoryItem key={b._id} data={b} />)}
+		        	</Row>
 		        </Container>
        		</div>
 		)

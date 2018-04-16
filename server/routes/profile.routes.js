@@ -21,7 +21,7 @@ var router = express.Router();
 
 
 router.get("/my", isAuthenticatedGuard, profile.getMyProfile);
-
 router.post("/", isAuthenticatedGuard, profile.updateMyProfile);
+router.get("/bookings", isAuthenticatedGuard, profile.bookings);
 
 module.exports = router;

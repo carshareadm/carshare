@@ -65,7 +65,7 @@ describe("Car controller", () => {
 
 	afterEach((done) => {
 		Promise.all(
-			[Car, Location, Movement, Coordinate, VehicleType, User].map(k => k.remove({}))
+			[Car, Location, Movement, Coordinate, VehicleType, User, Booking].map(k => k.remove({}))
 		).then(() => done())
 		.catch(err => done(err))
 	});
