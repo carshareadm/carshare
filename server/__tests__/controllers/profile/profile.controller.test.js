@@ -104,6 +104,30 @@ describe("Profile controller", () => {
       });
   });
 
-  // TODO: more tests for license and address, and happy path all save
+  // Test for email only
+  test("it should return 200 if only email", done => {
+    const jwt = getToken();
+    request(app)
+      .post("/api/profile")
+      .set('Authorization', 'Bearer ' + jwt)
+      .send({ user: testUser._id, email: 'userfoo@foo.com'})
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+  });
+
+  // Test for mobile only  
+  test("it should return 200 if only mobile", done => {
+    const jwt = getToken();
+    request(app)
+      .post("/api/profile")
+      .set('Authorization', 'Bearer ' + jwt)
+      .send({ user: testUser._id, mobile: '0422222222'})
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+  });
 
 });
