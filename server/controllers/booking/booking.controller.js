@@ -2,6 +2,8 @@ import Booking from "../../models/booking";
 import car from "../../models/car";
 import User from "../../models/user";
 
+import mongoose from 'mongoose';
+
 import moment from "moment";
 
 const createBooking = function(req, res) {
@@ -10,27 +12,27 @@ const createBooking = function(req, res) {
   const carid = req.body.car;
   const userid = req.body.userid;
 
-  User.find({ _id: userid }).exec((usrErr, selecteduser) => {
+  User.findById({ userid }).exec((usrErr, selecteduser) => {
     if (usrErr) {
       res.status(500).send(usrErr);
     } else if (!selecteduser) {
       res.status(404).send();
     } else {
-      car.find({ _id: carid }).exec((carErr, vehicle) => {
+      car.findById({ carid }).exec((carErr, vehicle) => {
         if (carErr) {
           res.status(500).send(carErr);
         } else if (!vehicle) {
           res.status(404).send();
         } else {
           let newBooking = new Booking();
-          newBooking.car = carid;
+          newBooking.car = vehicle._id;
           newBooking.startsAt = startAt.toString();
           newBooking.endsAt = endAt.toString();
-          newBooking.user = selecteduser;
+          newBooking.user = selecteduser._id;
 
           var errs = newBooking.validateSync();
           if (errs) {
-            res.status(400).send(errs);
+            res.status(500).send(errs);
           } else {
             newBooking.save((err, booking) => {
               if (err) {
@@ -94,22 +96,37 @@ const checkBooking = function(req, res) {
   const startsTime = moment(startAt).format("YYYY-mm-ddTHH:MM:ss");
   const endsTime = moment(endAt).format("YYYY-mm-ddTHH:MM:ss");
 
-  const carid = req.body.car;
-
-  Booking.find({ car: carid })
-    .populate("startsAt", "endsAt")
+  Booking.find({ 'car': req.body.car })
     // Placeholder, should look for booking belonging to current user
     .exec((err, bookings) => {
       if (err) {
         res.status(500).send(err);
       } else {
         // found match for car, start comparing time
-        if (!bookings.startsAt) {
+        if (!bookings) {
+          // No matching bookings -> ok to book
           res.status(200).send(true);
         } else {
           //checking of time to be implemented
-          moment(bookings.startsAt).format("YYYY-mm-ddTHH:MM:ss");
-          res.status(404);
+          bookings.forEach(b => {
+           var compStart = moment(bookings.startsAt);
+           var compEnd = moment(bookings.endsAt);
+           compDuartion=moment.duration(compEnd.diff(compStart));
+           if(compEnd.isSame(startsTime) 
+           //Attempted booking is during another booking
+           || (compEnd.isAfter(startsTime) && compStart.isBefore(startsTime))
+           //Attempted booking is overlapping another booking
+           || (compEnd.isBefore(startsTime) && compStart.isAfter(endsTime)))
+           {
+             //Bad request as the time slot is invalid
+             res.status(400).send();
+           }
+           else
+           {
+             next();
+           }
+          });
+          res.status(200).send(true);
         }
       }
     });
