@@ -119,10 +119,6 @@ const checkBooking = function(req, res) {
              //Bad request as the time slot is invalid
              res.status(400).send();
            }
-           else
-           {
-             next();
-           }
           });
           res.status(200).send(true);
         }
