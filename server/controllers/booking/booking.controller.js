@@ -2,7 +2,10 @@ import Booking from "../../models/booking";
 import car from "../../models/car";
 import User from "../../models/user";
 
+
 import moment from "moment";
+
+const codeGenerator = require('../../util/code.generator');
 
 const createBooking = function(req, res) {
   const startAt = moment(req.body.startAt).format("YYYY-mm-ddTHH:MM:ss");
@@ -10,13 +13,19 @@ const createBooking = function(req, res) {
   const carid = req.body.car;
   const userid = req.body.userid;
 
-  User.findById({ userid }).exec((usrErr, selecteduser) => {
+  if(!userid || !carid)
+  {
+    //Bad Request if not userid or carid
+    res.status(400).send();
+  }
+
+  User.findById(userid ).exec((usrErr, selecteduser) => {
     if (usrErr) {
       res.status(500).send(usrErr);
     } else if (!selecteduser) {
       res.status(404).send();
     } else {
-      car.findById({ carid }).exec((carErr, vehicle) => {
+      car.findById(carid).exec((carErr, vehicle) => {
         if (carErr) {
           res.status(500).send(carErr);
         } else if (!vehicle) {
@@ -27,14 +36,16 @@ const createBooking = function(req, res) {
           newBooking.startsAt = startAt.toString();
           newBooking.endsAt = endAt.toString();
           newBooking.user = selecteduser._id;
+          newBooking.unlockCode = codeGenerator.generate();
 
-          var errs = newBooking.validateSync();
-          if (errs) {
-            res.status(500).send(errs);
+          var validateErrs = newBooking.validateSync();
+          if (validateErrs) {
+            console.log(validateErrs);
+            res.status(503).send(errs);
           } else {
             newBooking.save((err, booking) => {
               if (err) {
-                res.status(500).send(err);
+                res.status(504).send(err);
               } else {
                 res.json(booking._id);
               }
