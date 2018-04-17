@@ -8,8 +8,8 @@ import moment from "moment";
 const codeGenerator = require('../../util/code.generator');
 
 const createBooking = function(req, res) {
-  const startAt = moment(req.body.startAt).format("YYYY-mm-ddTHH:MM:ss");
-  const endAt = moment(req.body.endAt).format("YYYY-mm-ddTHH:MM:ss");
+  const startAt = req.body.startAt;
+  const endAt = req.body.endAt;
   const carid = req.body.car;
   const userid = req.body.userid;
 
@@ -41,7 +41,7 @@ const createBooking = function(req, res) {
           var validateErrs = newBooking.validateSync();
           if (validateErrs) {
             console.log(validateErrs);
-            res.status(503).send(errs);
+            res.status(500).send(errs);
           } else {
             newBooking.save((err, booking) => {
               if (err) {
