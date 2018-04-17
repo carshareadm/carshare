@@ -5,6 +5,7 @@ import * as http from '../../util/http';
 import { Col } from 'reactstrap';
 
 import styles from './Locations.css';
+import stylesMain from '../../main.css';
 
 // import components
 import GoogleMap from './components/GoogleMap/GoogleMap';
@@ -102,7 +103,7 @@ class Locations extends Component {
   render() {
     // Here goes our page
     return (
-      <div className="container">
+      <div className={stylesMain.body}>
         <div className="row">
           <Col>
             <h1 className={styles.title}>Locations</h1>

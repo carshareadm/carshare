@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 
 import styles from './Cars.css';
+import stylesMain from '../../../../main.css';
 
 // component class
 class Cars extends Component {
