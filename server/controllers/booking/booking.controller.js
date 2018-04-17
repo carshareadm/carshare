@@ -109,9 +109,9 @@ const checkBooking = function(req, res) {
         } else {
           //checking of time to be implemented
           bookings.forEach(b => {
-           var compStart = moment(bookings.startsAt);
-           var compEnd = moment(bookings.endsAt);
-           compDuartion=moment.duration(compEnd.diff(compStart));
+           var compStart = moment(bookings.startsAt).format("YYYY-mm-ddTHH:MM:ss");
+           var compEnd = moment(bookings.endsAt).format("YYYY-mm-ddTHH:MM:ss");
+           //compDuartion=moment.duration(compEnd.diff(compStart));
            if(compEnd.isSame(startsTime) 
            //Attempted booking is during another booking
            || (compEnd.isAfter(startsTime) && compStart.isBefore(startsTime))
