@@ -112,11 +112,7 @@ const checkBooking = function(req, res) {
            var compStart = moment(bookings.startsAt).format("YYYY-mm-ddTHH:MM:ss");
            var compEnd = moment(bookings.endsAt).format("YYYY-mm-ddTHH:MM:ss");
            //compDuartion=moment.duration(compEnd.diff(compStart));
-           if(compEnd.isSame(startsTime) 
-           //Attempted booking is during another booking
-           || (compEnd.isAfter(startsTime) && compStart.isBefore(startsTime))
-           //Attempted booking is overlapping another booking
-           || (compEnd.isBefore(startsTime) && compStart.isAfter(endsTime)))
+           if(startsTime.isBetween(compStart, compEnd, null, '()') || endsTime.isBetween(compStart, compEnd, null, '()'))
            {
              //Bad request as the time slot is invalid
              res.status(400).send();
