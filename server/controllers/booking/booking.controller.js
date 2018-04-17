@@ -2,8 +2,6 @@ import Booking from "../../models/booking";
 import car from "../../models/car";
 import User from "../../models/user";
 
-import mongoose from 'mongoose';
-
 import moment from "moment";
 
 const createBooking = function(req, res) {
