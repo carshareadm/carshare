@@ -66,9 +66,11 @@ export class UserBar extends Component {
                 &nbsp;
               </ButtonGroup>
               <ButtonGroup>
+                <Link className={styles.barItem_link} to="/history">
                 <Button className={styles.buttons} color="primary" size="sm">
                   History
                 </Button>
+                </Link>
                 &nbsp;
               </ButtonGroup>
               <ButtonGroup>
