@@ -34,14 +34,14 @@ export class TimeTable extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			times:[]
+			times:[],
 		}
 	}
 	
 	componentDidMount(){
 		http.client().get(`/cars/${this.props.data._id}/times`).then(res => {
 			this.setState({
-				times: res.data
+				times: res.data,
 			})
 		})
 	}

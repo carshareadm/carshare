@@ -17,7 +17,7 @@ const CLOSEZOOM = 14;
 const INITIALLOC = {
       lat: "-21.0891304",
       lng: "95.4115513",
-      zoom: 3
+      zoom: 3,
 }
 
 
@@ -34,7 +34,7 @@ class Locations extends Component {
       locations: [], 
       currentcoords: INITIALLOC, 
       currentLocation: null, 
-      sortedCars: []
+      sortedCars: [],
     };
   }
 
@@ -54,7 +54,7 @@ class Locations extends Component {
         this.setState({ 
           cars: res.data,
           locations: res.data.map(car => car.location),
-          sortedCars: this.sortCarsOnLoc(res.data, this.state.currentcoords.lat, this.state.currentcoords.lng)  
+          sortedCars: this.sortCarsOnLoc(res.data, this.state.currentcoords.lat, this.state.currentcoords.lng),
         })
       })
       .catch(err => {
@@ -76,7 +76,7 @@ class Locations extends Component {
     const loc = this.state.locations.find(l => l._id===event.target.dataset.id);
     this.setCoordinates(loc.coordinates.latitude, loc.coordinates.longitude);
     this.setState({
-      currentLocation: loc
+      currentLocation: loc,
     });
   }
 
@@ -87,13 +87,13 @@ class Locations extends Component {
         lng: longitude,
         zoom: CLOSEZOOM,
       },
-      sortedCars: this.sortCarsOnLoc(this.state.cars,latitude, longitude)
+      sortedCars: this.sortCarsOnLoc(this.state.cars,latitude, longitude),
     })
   }
 
   setInitialCoordinates(){
     this.setState({
-      currentLocation: null
+      currentLocation: null,
     });
     if(this.props.coords){
       this.setCoordinates(this.props.coords.latitude, this.props.coords.longitude);

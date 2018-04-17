@@ -23,6 +23,7 @@ const carSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Movement",
   }],
+  disabled: { type: "Boolean", required: true, default: false },
 });
 
 module.exports = mongoose.model("Car", carSchema);

@@ -7,6 +7,8 @@ const licenseSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Image',
   },
+  disabled: { type: "Boolean", required: true, default: false },
+  approvedByAdmin: { type: "Boolean", required: true, default: false },
 });
 
 module.exports = mongoose.model('License', licenseSchema);

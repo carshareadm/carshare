@@ -12,12 +12,12 @@ export class Marker extends Component{
 
 	renderMarker() {
       let {
-        map, google, position, mapCenter
+        map, google, position, mapCenter,
       } = this.props;
       const pos = new google.maps.LatLng(position.latitude, position.longitude);
       const pref = {
         map: map,
-        position: pos
+        position: pos,
       };
       this.marker = new google.maps.Marker(pref);
   }
@@ -30,7 +30,7 @@ export class Marker extends Component{
 
 Marker.propTypes = {
   position: React.PropTypes.object,
-  map: React.PropTypes.object
+  map: React.PropTypes.object,
 }
 
 export default Marker;
