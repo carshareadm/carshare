@@ -91,8 +91,12 @@ const changeBooking = function(req, res) {
 const checkBooking = function(req, res) {
   const startAt = req.body.startAt;
   const endAt = req.body.endAt;
+
+  /* No longer necessary due to moment creation now completed later
+  To be removed at finalisation
   const startsTime = moment(startAt).format("YYYY-mm-ddTHH:MM:ss");
   const endsTime = moment(endAt).format("YYYY-mm-ddTHH:MM:ss");
+  */
 
   Booking.find({ 'car': req.body.car })
     // Placeholder, should look for booking belonging to current user
@@ -107,10 +111,10 @@ const checkBooking = function(req, res) {
         } else {
           //checking of time to be implemented
           bookings.forEach(b => {
-           var compStart = moment(bookings.startsAt).format("YYYY-mm-ddTHH:MM:ss");
-           var compEnd = moment(bookings.endsAt).format("YYYY-mm-ddTHH:MM:ss");
+           var compStart = moment(bookings.startsAt);
+           var compEnd = moment(bookings.endsAt);
            //compDuartion=moment.duration(compEnd.diff(compStart));
-           if(startsTime.isBetween(compStart, compEnd, null, '()') || endsTime.isBetween(compStart, compEnd, null, '()'))
+           if(moment(startAt).isBetween(compStart, compEnd, null, '()') || moment(endAt).isBetween(compStart, compEnd, null, '()'))
            {
              //Bad request as the time slot is invalid
              res.status(400).send();
