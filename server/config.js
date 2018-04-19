@@ -26,6 +26,10 @@ const config = {
     apiKey: process.env.SENDGRID_API_KEY,
     sendEmailsFrom: 'carshareadm@gmail.com',
   },
+  crypto: {
+    secret: process.env.CRYPTO_SECRET || 'r8ZThckT4eZTvrZjCGcVHC7wq7Qzh2Zx6KtWfLmz237rPYtUHRzASJfTRMagULRN',
+    algorithm: 'aes-256-cbc',
+  },
 };
 
 module.exports = config;

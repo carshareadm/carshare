@@ -21,7 +21,6 @@ const addPaymentDetails = function(req, res) {
     {
       cardNumber: req.body.cardNumber,
       nameOnCard: req.body.nameOnCard,
-      ccv: req.body.ccv,
       expiryMonth: req.body.expiryMonth,
       expiryYear: req.body.expiryYear,
     }

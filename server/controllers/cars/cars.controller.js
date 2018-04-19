@@ -8,17 +8,22 @@ import moment from 'moment';
 
 
 const getCars = function(req, res) {
-  Car.find().
+  const filter = {
+    'disabled': false, // cars that arent disabled
+  };
+  Car.find(filter).
     populate('vehicleType').
     populate({
-      path:'location',
-      populate: {path: 'coordinates'} 
-    }).
-    exec((err, cars) => {
+      path: 'location',
+      match: {disabled: false},
+      populate: {path: 'coordinates'},
+    })
+    .exec((err, cars) => {
       if (err) {
         res.status(500).send(err);
       } else {
-        res.status(200).send(cars);
+        const filtered = cars.filter(f => f.location !== null);
+        res.status(200).send(filtered);
       }
     });
 };
@@ -55,8 +60,9 @@ const getTimes = function(req, res) {
   Booking.find({
       startsAt:{$lt:endsAt.toDate()}, 
       endsAt:{$gt:startsAt.toDate()}, 
-      car:mongoose.Types.ObjectId(req.params.carId)
-    }).exec((err, bookings)=> {
+      car:mongoose.Types.ObjectId(req.params.carId),
+    }).populate('car')
+    .exec((err, bookings)=> {
       if (err) {
         res.status(500).send(err);
       } else {
@@ -72,7 +78,7 @@ const getTimes = function(req, res) {
 
 const getCar = function(req, res) {
   Car.find({
-    _id:mongoose.Types.ObjectId(req.params.carId)
+    _id:mongoose.Types.ObjectId(req.params.carId),
   }).exec((err, car) => {
     if(err){
       res.status(500).send(err);
@@ -83,23 +89,26 @@ const getCar = function(req, res) {
 }
 
 const getCarsForType = function(req, res){
-  VehicleType.find({
-      name: req.params.VehicleName
-    }).exec((err, vt) => {
+  VehicleType.find({name: req.params.VehicleName})
+  .exec((err, vt) => {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+    const carQry = {
+      vehicleType: vt,
+    };
+    if (!req.isAdmin) {
+      carQry.disabled = false;
+    }
+    Car.find(carQry).populate('vehicleType').exec((err, car) => {
       if(err){
         res.status(500).send(err);
-        return;
+      } else {
+        res.status(200).send(car);
       }
-      Car.find({
-        vehicleType: vt
-      }).populate('vehicleType').exec((err, car) => {
-        if(err){
-          res.status(500).send(err);
-        } else {
-          res.status(200).send(car);
-        }
-      });
     });
+  });
 
 }
 

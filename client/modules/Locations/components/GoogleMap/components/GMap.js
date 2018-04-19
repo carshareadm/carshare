@@ -5,7 +5,7 @@ export class GMap extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.map) {
       if (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng) {
-        const center = new this.props.google.maps.LatLng(this.props.lat, this.props.lng)
+        const center = new this.props.google.maps.LatLng(this.props.lat, this.props.lng);
         this.map.panTo(center);
       }
       if(prevProps.zoom != this.props.zoom){
@@ -27,7 +27,7 @@ export class GMap extends Component {
       return React.cloneElement(c, {
         map: this.map,
         google: this.props.google,
-        mapCenter: this.props.coords
+        mapCenter: this.props.coords,
       });
     })
   }

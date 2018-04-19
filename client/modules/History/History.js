@@ -27,7 +27,7 @@ export class History extends Component {
 		super(props);
 		this.setBookings = this.setBookings.bind(this);
 		this.state = {
-			bookings:[]
+			bookings:[],
 		}
 	}
 

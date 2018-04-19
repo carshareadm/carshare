@@ -323,4 +323,26 @@ describe("Profile controller", () => {
         done();
       });
   });
+
+  // Test for partial address with no existing address
+  test("it should return fail for partial address when no existing address", async (done) => {
+    const user = new User();
+    user.email = "profileUser2@gmail.com";
+    user.mobile = "0411111111";
+    user.password = "12345";
+    testUser = await user.save();
+
+    const jwt = getToken();
+    request(app)
+      .post("/api/profile")
+      .set("Authorization", "Bearer " + jwt)
+      .send({
+        user: testUser._id,
+        street1: "1 Foo St",
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(500);
+        done();
+      });
+  });
 });

@@ -19,7 +19,7 @@ const createBooking = function(req, res) {
     res.status(400).send();
   }
 
-  User.findById(userid ).exec((usrErr, selecteduser) => {
+  User.findById(userid).exec((usrErr, selecteduser) => {
     if (usrErr) {
       res.status(500).send(usrErr);
     } else if (!selecteduser) {
@@ -109,7 +109,7 @@ const checkBooking = function(req, res) {
   const endsTime = moment(endAt).format("YYYY-mm-ddTHH:MM:ss");
   */
 
-  Booking.find({ 'car': req.body.car })
+  Booking.find({ 'car': req.body.car, 'disabled': false })
     // Placeholder, should look for booking belonging to current user
     .exec((err, bookings) => {
       if (err) {
@@ -142,5 +142,5 @@ module.exports = {
   getBooking: getBooking,
   cancelBooking: cancelBooking,
   changeBooking: changeBooking,
-  checkBooking: checkBooking
+  checkBooking: checkBooking,
 };

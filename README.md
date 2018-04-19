@@ -1,5 +1,5 @@
 # carshare
-[![Build Status](https://travis-ci.org/carshareadm/carshare.svg?branch=master)](https://travis-ci.org/carshareadm/carshare)
+[![Build Status](https://travis-ci.org/carshareadm/carshare.svg?branch=master)](https://travis-ci.org/carshareadm/carshare) ![Heroku](http://heroku-badge.herokuapp.com/?app=shacar&style=flat&svg=1)
 ---
 
 Project bootstrapped with the MERN.io starter project

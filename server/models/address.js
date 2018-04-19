@@ -12,6 +12,7 @@ const addressSchema = new Schema({
     enum: ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"],
   },
   postCode: { type: "String", required: true, trim: true },
+  disabled: { type: "Boolean", required: true, default: false },
 });
 
 module.exports = mongoose.model("Address", addressSchema);

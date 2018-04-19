@@ -29,6 +29,8 @@ module.exports = function() {
       user1.mobile = "0412345678";
       user1.password = "shacar";
       user1.isAdmin = true;
+      user1.disabled = false;
+      user1.blockedByAdmin = false;
       user1.save({}).catch(function(err) {
         console.log(err);
       });
@@ -39,14 +41,18 @@ module.exports = function() {
       user2.email = "user1@test.com";
       user2.mobile = "0411111111";
       user2.password = "user1";
+      user2.disabled = false;
+      user2.blockedByAdmin = false;
 
       //User2 license block
       let licenseU2 = new License();
       licenseU2.licenseNumber = "ABC123456";
+      licenseU2.disabled = false;
+      licenseU2.approvedByAdmin = true;
 
       let imagelicenseU2 = new Image();
       //user2 image block
-      imagelicenseU2.filename = "user2.jpg";
+      imagelicenseU2.filename = "user2.jpg";      
       imagelicenseU2.save({}).catch(function(err) {
         console.log(err);
       });
@@ -62,6 +68,7 @@ module.exports = function() {
       addressU2.street2 = "";
       (addressU2.suburb = "Dickson"), (addressU2.state = "ACT");
       addressU2.postCode = "2602";
+      addressU2.disabled = false;
       addressU2.save().catch(e => {
         console.log(e);
       });
@@ -71,7 +78,6 @@ module.exports = function() {
       //user2 address block
       creditCardU2.cardNumber = " 3778 123456 12345";
       creditCardU2.nameOnCard = "user2";
-      creditCardU2.ccv = "3547";
       creditCardU2.expiryMonth = 12;
       creditCardU2.expiryYear = 2020;
       creditCardU2.save().catch(e => {
@@ -116,6 +122,7 @@ module.exports = function() {
         });
         location1.name = nameLocation1;
         location1.coordinates = coordinate1;
+        location1.disabled = false;
         location1.save().catch(e => {
           console.log(e);
         });
@@ -144,6 +151,7 @@ module.exports = function() {
         });
         location2.name = nameLocation2;
         location2.coordinates = coordinate2;
+        location2.disabled = false;
         location2.save().catch(e => {
           console.log(e);
         });
@@ -172,6 +180,7 @@ module.exports = function() {
         });
         location3.name = nameLocation3;
         location3.coordinates = coordinate3;
+        location3.disabled = false;
         location3.save().catch(e => {
           console.log(e);
         });
@@ -197,6 +206,7 @@ module.exports = function() {
         });
         location4.name = nameLocation4;
         location4.coordinates = coordinate4;
+        location4.disabled = false;
         location4.save().catch(e => {
           console.log(e);
         });
@@ -279,6 +289,7 @@ module.exports = function() {
       car1.seats = "5";
       car1.doors = "3";
       car1.vehicleType = typeSmall;
+      car1.disabled = false;
       car1.location = location1;
       car1.movements = new Movement();
       car1.movements.car = car1;
@@ -311,6 +322,7 @@ module.exports = function() {
       car2.doors = "5";
       car2.vehicleType = typeSports;
       car2.location = location4;
+      car2.disabled = false;
 
       //Movement Block
       let movementsC2 = new Movement();
@@ -342,6 +354,7 @@ module.exports = function() {
       car3.doors = "5";
       car3.vehicleType = typeLuxury;
       car3.location = location2;
+      car3.disabled = false;
 
       //Movement Block
       let movementsC3 = new Movement();
@@ -373,6 +386,7 @@ module.exports = function() {
       car4.doors = "5";
       car4.vehicleType = typeSuv;
       car4.location = location3;
+      car4.disabled = false;
 
       //Movement Block
       let movementsC4 = new Movement();
@@ -410,6 +424,7 @@ module.exports = function() {
         booking1C1.unlockCode = "123456";
         booking1C1.startsAt = "2018-02-10T09:50:42.389Z";
         booking1C1.endsAt = "2018-02-10T10:50:42.389Z";
+        booking1C1.disabled = false;
         booking1C1.save().catch(e => {
           console.log(e);
         });
@@ -418,6 +433,7 @@ module.exports = function() {
         booking2C1.unlockCode = "QWERTY";
         booking2C1.startsAt = "2018-02-20T09:50:42.389Z";
         booking2C1.endsAt = "2018-02-21T10:50:42.389Z";
+        booking2C1.disabled = false;
         booking2C1.save().catch(e => {
           console.log(e);
         });
@@ -434,6 +450,7 @@ module.exports = function() {
         booking1C2.unlockCode = "123456";
         booking1C2.startsAt = "2018-02-10T09:50:42.389Z";
         booking1C2.endsAt = "2018-02-10T10:50:42.389Z";
+        booking1C2.disabled = false;
         booking1C2.save().catch(e => {
           console.log(e);
         });
@@ -442,6 +459,7 @@ module.exports = function() {
         booking2C2.unlockCode = "QWERTY";
         booking2C2.startsAt = "2018-02-20T09:50:42.389Z";
         booking2C2.endsAt = "2018-02-21T10:50:42.389Z";
+        booking2C2.disabled = false;
         booking2C2.save().catch(e => {
           console.log(e);
         });
@@ -458,6 +476,7 @@ module.exports = function() {
         booking1C3.unlockCode = "123456";
         booking1C3.startsAt = "2018-02-10T09:50:42.389Z";
         booking1C3.endsAt = "2018-02-10T10:50:42.389Z";
+        booking1C3.disabled = false;
         booking1C3.save().catch(e => {
           console.log(e);
         });
@@ -466,6 +485,7 @@ module.exports = function() {
         booking2C3.unlockCode = "QWERTY";
         booking2C3.startsAt = "2018-02-20T09:50:42.389Z";
         booking2C3.endsAt = "2018-02-21T10:50:42.389Z";
+        booking2C3.disabled = false;
         booking2C3.save().catch(e => {
           console.log(e);
         });
@@ -482,6 +502,7 @@ module.exports = function() {
         booking1C4.unlockCode = "123456";
         booking1C4.startsAt = "2018-02-10T09:50:42.389Z";
         booking1C4.endsAt = "2018-02-10T10:50:42.389Z";
+        booking1C4.disabled = false;
         booking1C4.save().catch(e => {
           console.log(e);
         });
@@ -490,6 +511,7 @@ module.exports = function() {
         booking2C4.unlockCode = "QWERTY";
         booking2C4.startsAt = "2018-02-20T09:50:42.389Z";
         booking2C4.endsAt = "2018-02-21T10:50:42.389Z";
+        booking2C4.disabled = false;
         booking2C4.save().catch(e => {
           console.log(e);
         });
@@ -517,6 +539,7 @@ module.exports = function() {
                   booking1.unlockCode = "123456";
                   booking1.startsAt = "2018-02-10T09:50:42.389Z";
                   booking1.endsAt = "2018-02-10T10:50:42.389Z";
+                  booking1.disabled = false;
                   booking1.save().catch(e => {
                     console.log(e);
                   });
@@ -525,6 +548,7 @@ module.exports = function() {
                   booking2.unlockCode = "QWERTY";
                   booking2.startsAt = "2018-02-20T09:50:42.389Z";
                   booking2.endsAt = "2018-02-21T10:50:42.389Z";
+                  booking2.disabled = false;
                   booking2.save().catch(e => {
                     console.log(e);
                   });
