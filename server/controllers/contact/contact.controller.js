@@ -4,6 +4,7 @@ const addEnquiry = function(req, res)
 {
   let newEnquiry = new Enquiry({
     emailFrom: req.body.emailFrom,
+    name: req.body.name,
     message: req.body.message,
     priority: req.body.priority,
   });

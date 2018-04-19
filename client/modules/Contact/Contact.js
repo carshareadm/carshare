@@ -17,6 +17,7 @@ import styles from './Contact.css'
 
 const reset = {
   emailFrom: '',
+  name: '',
   message: '',
   priority: 'low',
   // page state
@@ -43,6 +44,7 @@ class Contact extends Component
   {
     const valids = {
       emailFrom: validator.isEmail(this.state.emailFrom),
+      name: this.state.name.length > 0,
       message: this.state.message.length > 0,
     }
     return valids;
@@ -69,6 +71,7 @@ class Contact extends Component
         .client()
         .post('/contact/add', {
           emailFrom: this.state.emailFrom,
+          name: this.state.name,
           message: this.state.message,
           priority: this.state.priority,
         })
@@ -147,6 +150,22 @@ class Contact extends Component
                 />
                 <FormFeedback>
                   A valid email address is required.
+                </FormFeedback>
+              </FormGroup>
+
+              <FormGroup>
+                <Label htmlFor="name">Name *</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Your name"
+                  className={this.isValid('name') ? '' : 'is-invalid'}
+                  value={this.state.name}
+                  onChange={this.handleInputChange.bind(this)}
+                />
+                <FormFeedback>
+                  Name is required.
                 </FormFeedback>
               </FormGroup>
 
