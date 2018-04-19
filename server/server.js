@@ -1,4 +1,5 @@
 //server.js
+import 'babel-polyfill';
 const app = require("./app");
 
 const dummyData = require("./dummyData");
