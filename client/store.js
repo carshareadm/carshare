@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import DevTools from './components/DevTools';
 import rootReducer from './reducers';
 
-export function configureStore(initialState = {}) {
+export function configureStore(initialState = { loggedIn: false, isAdmin: false }) {
   // Middleware and store enhancers
   const enhancers = [
     applyMiddleware(thunk),

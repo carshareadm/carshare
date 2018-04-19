@@ -1,8 +1,16 @@
 import React, { Component, PropTypes } from "react";
-import { Link, Redirect } from "react-router";
+import router, { Link, Redirect } from "react-router";
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import {
+  setLoggedIn,
+  setLoggedOut,
+  setAdmin,
+} from '../../../../infrastructure/AuthActions';
 
 import * as http from "../../../../util/http";
 import * as storage from "../../../../util/persistedStorage";
+import TokenUtils from '../../../../util/token.utils';
 
 import {
   Button,
@@ -24,7 +32,6 @@ export class UserBar extends Component {
     super(props);
     this.state = {
       formIsVisible: false,
-      loggedIn: false,
       email: "",
       password1: "",
       redirectToHome: false,
@@ -36,9 +43,9 @@ export class UserBar extends Component {
   }
 
   componentDidMount() {
-    if (window.localStorage.getItem("JWT")) {
-      this.setState({ loggedIn: true });
-    }
+    // if (window.localStorage.getItem("JWT")) {
+    //   this.setState({ loggedIn: true });
+    // }
   }
 
   formToggle() {
@@ -87,8 +94,11 @@ export class UserBar extends Component {
   }
 
   logout(event) {
-    storage.remove(storage.Keys.JWT);
+    TokenUtils.clearToken();
     this.setState({ loggedIn: false, redirectToHome: true });
+    //router.replace('/login');
+    this.props.setLoggedOut();
+    this.props.setAdmin(false);
   }
 
   executeLogin(event) {
@@ -100,8 +110,10 @@ export class UserBar extends Component {
       .client()
       .post("/account/login", { email: login, password: pass })
       .then(res => {
-        storage.set(storage.Keys.JWT, res.data.token);
-        this.setState({ loggedIn: true });
+        TokenUtils.setToken(res.data.token);
+        const adm = TokenUtils.isAdmin(TokenUtils.token());
+        this.props.setLoggedIn();
+        this.props.setAdmin(adm);
       })
       .catch(err => {
         console.log(err);
@@ -167,18 +179,37 @@ export class UserBar extends Component {
   }
 
   renderRedirect() {
-    return (<Redirect to="/" />);
+    return (<Redirect to="/login" />);
   }
 
   render() {
     return this.state.redirectToHome ? this.renderRedirect()
-    : this.state.loggedIn ? this.loggedInBar() : this.loginFrm();
+    : this.props.loggedIn ? this.loggedInBar() : this.loginFrm();
   }
 }
+
 
 // Acces to router to show the active page
 UserBar.contextTypes = {
   router: React.PropTypes.object,
 };
 
-export default UserBar;
+// redux mapping stuff
+UserBar.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.auth.loggedIn,
+  };
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  //dispatch,
+  setLoggedIn,
+  setLoggedOut,
+  setAdmin,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserBar);

@@ -1,6 +1,20 @@
 const storage = require('./persistedStorage');
 const axios = require('axios');
 
+const router = require('react-router');
+
+axios.interceptors.response.use((response) => {
+  return response;
+}, function (error) {
+  // Do something with response error
+  if (error.response.status === 401) {
+      console.log('unauthorized, logging out ...');
+      storage.remove(storage.Keys.JWT);
+      router.replace('/login');
+  }
+  return Promise.reject(error.response);
+});
+
 export const client = function(headers) {
   const reqHeaders = {};
   if (headers) {

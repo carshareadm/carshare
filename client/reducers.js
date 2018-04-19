@@ -4,9 +4,9 @@
 import { combineReducers } from 'redux';
 
 // Import Reducers
-import app from './modules/Layout/LayoutReducer';
+import auth from './infrastructure/AuthReducer';
 
 // Combine all reducers into one root reducer
 export default combineReducers({
-  app,
+  auth,
 });

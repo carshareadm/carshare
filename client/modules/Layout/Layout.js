@@ -1,5 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import {
+  setLoggedIn,
+  setLoggedOut,
+  setAdmin,
+} from '../../infrastructure/AuthActions';
 
 // Import Style
 import styles from './Layout.css';
@@ -11,6 +17,8 @@ import Header from './components/Header/Header';
 import UserBar from './components/UserBar/UserBar';
 import Footer from './components/Footer/Footer';
 
+import TokenUtils from '../../util/token.utils';
+
 // Import Actions
 
 export class Layout extends Component {
@@ -21,8 +29,20 @@ export class Layout extends Component {
 
   componentDidMount() {
     this.setState({isMounted: true}); // eslint-disable-line
-  }
+    const token = TokenUtils.token();
+    if (token){
+      if(!TokenUtils.isExpired(token)) {
+        this.props.setLoggedIn();
 
+        if (TokenUtils.isAdmin(token)) {
+          this.props.setAdmin(true);
+        }
+      } else {
+        TokenUtils.clearToken();
+      }
+
+    } 
+  }
 
   render() {
     return (
@@ -48,16 +68,25 @@ export class Layout extends Component {
   }
 }
 
+// redux mapping stuff
 Layout.propTypes = {
   children: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
-// Retrieve data from store as props
-function mapStateToProps(store) {
+const mapStateToProps = (state) => {
   return {
-    foo: store.foo, // dont use foo
+    loggedIn: state.auth.loggedIn,
+    isAdmin: state.auth.isAdmin,
   };
-}
+};
 
-export default connect(mapStateToProps)(Layout);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  //dispatch,
+  setLoggedIn,
+  setLoggedOut,
+  setAdmin,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
