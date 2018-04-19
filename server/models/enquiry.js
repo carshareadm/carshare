@@ -15,6 +15,7 @@ const enquirySchema = new Schema({
       message: "Email format is invalid",
     },
   },
+  name: { type: "String", required: true, trim: true },
   message: { type: "String", required: true, trim: true },
   response: { type: "String", trim: true },
   receivedAt: { type: "Date", default: Date.now, required: true },

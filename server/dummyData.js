@@ -52,7 +52,7 @@ module.exports = function() {
 
       let imagelicenseU2 = new Image();
       //user2 image block
-      imagelicenseU2.filename = "user2.jpg";      
+      imagelicenseU2.filename = "user2.jpg";
       imagelicenseU2.save({}).catch(function(err) {
         console.log(err);
       });
@@ -87,6 +87,7 @@ module.exports = function() {
 
       let confirmationCodeU2 = new ConfirmationCode();
       confirmationCodeU2.code = "ABC123456789";
+      confirmationCodeU2.codeType = "AccountUpdate";
       confirmationCodeU2.user = user2;
       confirmationCodeU2.expiresAt = "2018-05-01";
       confirmationCodeU2.save().catch(e => {
