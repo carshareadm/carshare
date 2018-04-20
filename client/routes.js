@@ -15,6 +15,7 @@ import Booking from './modules/Booking/Booking';
 import Locations from './modules/Locations/Locations';
 import Cars from './modules/Cars/Cars';
 import History from './modules/History/History';
+import Damages from './modules/Damages/Damages';
 import { Profile } from './modules/Profile/Profile';
 import { Login } from './modules/Login/Login';
 
@@ -49,5 +50,6 @@ export default (
 		<Route path="history" component={History} />
 		<Route path="login" component={Login} />
     	<Route path='paymentDetails' component={PaymentDetails} />
+    	<Route path='damage' component={Damages} />
 	</Route>
 );
