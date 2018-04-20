@@ -32,16 +32,16 @@ class HistoryItem extends Component {
           </CardHeader>
           <CardBody >
             <Col sm="12" lg="6">
-              Booking Start: {bs.startsAt.toDate()}
+              Booking Start: {bs.startsAt}
             </Col>
             <Col sm="12" lg="6">
-              Booking End: {bs.endsAt.toDate()}
+              Booking End: {bs.endsAt}
             </Col>
             <Col sm="12" lg="6">
               Registration: {bs.car.make} {bs.car.model}
             </Col>
             <Col sm="12" lg="6">
-              Vehicle Type: {bs.car.vehicleType}
+              Vehicle Type: {bs.car.vehicleType.name}
             </Col>
             <Col sm="12" lg="6">
               Vehicle Location: {bs.car.location.name}
@@ -49,6 +49,9 @@ class HistoryItem extends Component {
             <Col sm="12" lg="6">
               Hire Cost: WIP
             </Col>
+            <Link to={"/damage?bookingId="+bs._id}>
+              <Button className={stylesMain.buttons} color="primary" size="lg">Add Damage</Button>
+            </Link>
           </CardBody>
         </Col>
     )
