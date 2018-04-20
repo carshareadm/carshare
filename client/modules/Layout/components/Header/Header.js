@@ -63,7 +63,10 @@ export class Header extends Component{
 					<li className={active(this.context.router, "/about", true)}><Link to="/about" onClick={this.burgerToggle}>About Us</Link></li>
 			    </ul>
 			    <div className={styles.siteLogo}>
-			    	<img className={styles.logo} src={logo} />
+			    <Link to="/">
+			    	<img className={styles.logo} src={logo}/>
+			    	</Link>
+
 			    </div>
 	    	</header>
   		);
