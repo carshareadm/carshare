@@ -2,10 +2,9 @@ import Booking from "../../models/booking";
 import car from "../../models/car";
 import User from "../../models/user";
 
-
 import moment from "moment";
 
-const codeGenerator = require('../../util/code.generator');
+const codeGenerator = require("../../util/code.generator");
 
 const createBooking = function(req, res) {
   const startAt = req.body.startAt;
@@ -13,8 +12,16 @@ const createBooking = function(req, res) {
   const carid = req.body.car;
   const userid = req.body.userid;
 
-  if(!userid || !carid)
-  {
+  if (
+    typeof userid === "undefined" ||
+    typeof carid === "undefined" ||
+    typeof startAt === "undefined" ||
+    typeof endAt === "undefined"
+  ) {
+    res.status(400).send();
+  }
+
+  if (!userid || !carid || !startAt || !endAt) {
     //Bad Request if not userid or carid
     res.status(400).send();
   }
@@ -43,13 +50,60 @@ const createBooking = function(req, res) {
             console.log(validateErrs);
             res.status(500).send(errs);
           } else {
-            newBooking.save((err, booking) => {
-              if (err) {
-                res.status(504).send(err);
-              } else {
-                res.json(booking._id);
-              }
-            });
+            Booking.find({ car: req.body.car, disabled: false })
+              // Placeholder, should look for booking belonging to current user
+              .exec((err, bookings) => {
+                if (err) {
+                  res.status(500).send(err);
+                } else {
+                  // found match for car, start comparing time
+                  if (!bookings) {
+                    // No matching bookings -> ok to book
+                    res.status(200).send(true);
+                  } else {
+                    //checking of time to be implemented
+                    bookings.forEach(b => {
+                      var compStart = moment(bookings.startsAt);
+                      var compEnd = moment(bookings.endsAt);
+                      //compDuartion=moment.duration(compEnd.diff(compStart));
+                      var checkOne = moment(startAt).isBetween(
+                        compStart,
+                        compEnd,
+                        null,
+                        "()"
+                      );
+                      var checkTwo = moment(endAt).isBetween(
+                        compStart,
+                        compEnd,
+                        null,
+                        "()"
+                      );
+                      var checkThree = moment(endAt).isSame(compStart);
+                      var checkFour = moment(endAt).isSame(compEnd);
+                      var checkFive = moment(startAt).isSame(compStart);
+                      var checkSix = moment(startAt).isSame(compEnd);
+                      if (
+                        checkOne ||
+                        checkTwo ||
+                        checkThree ||
+                        checkFour ||
+                        checkFive ||
+                        checkSix
+                      ) {
+                        //Bad request as the time slot is invalid
+                        res.status(400).send();
+                      }
+                    });
+                    newBooking.save((err, booking) => {
+                      if (err) {
+                        res.status(500).send(err);
+                      } else {
+                        res.status(200).send(booking._id);
+                      }
+                    });
+                  }
+                }
+              });
           }
         }
       });
@@ -109,7 +163,7 @@ const checkBooking = function(req, res) {
   const endsTime = moment(endAt).format("YYYY-mm-ddTHH:MM:ss");
   */
 
-  Booking.find({ 'car': req.body.car, 'disabled': false })
+  Booking.find({ car: req.body.car, disabled: false })
     // Placeholder, should look for booking belonging to current user
     .exec((err, bookings) => {
       if (err) {
@@ -122,14 +176,36 @@ const checkBooking = function(req, res) {
         } else {
           //checking of time to be implemented
           bookings.forEach(b => {
-           var compStart = moment(bookings.startsAt);
-           var compEnd = moment(bookings.endsAt);
-           //compDuartion=moment.duration(compEnd.diff(compStart));
-           if(moment(startAt).isBetween(compStart, compEnd, null, '()') || moment(endAt).isBetween(compStart, compEnd, null, '()'))
-           {
-             //Bad request as the time slot is invalid
-             res.status(400).send();
-           }
+            var compStart = moment(bookings.startsAt);
+            var compEnd = moment(bookings.endsAt);
+            //compDuartion=moment.duration(compEnd.diff(compStart));
+            var checkOne = moment(startAt).isBetween(
+              compStart,
+              compEnd,
+              null,
+              "()"
+            );
+            var checkTwo = moment(endAt).isBetween(
+              compStart,
+              compEnd,
+              null,
+              "()"
+            );
+            var checkThree = moment(endAt).isSame(compStart);
+            var checkFour = moment(endAt).isSame(compEnd);
+            var checkFive = moment(startAt).isSame(compStart);
+            var checkSix = moment(startAt).isSame(compEnd);
+            if (
+              checkOne ||
+              checkTwo ||
+              checkThree ||
+              checkFour ||
+              checkFive ||
+              checkSix
+            ) {
+              //Bad request as the time slot is invalid
+              res.status(400).send();
+            }
           });
           res.status(200).send(true);
         }
