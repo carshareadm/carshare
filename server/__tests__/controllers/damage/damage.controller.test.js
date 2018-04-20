@@ -1,6 +1,7 @@
 import {Mockgoose} from 'mockgoose-fix';
 import moment from 'moment';
 import mongoose from 'mongoose';
+
 import Car from '../../../models/car';
 import VehicleType from '../../../models/vehicleType';
 import Movement from '../../../models/movement';
@@ -90,8 +91,9 @@ describe("Damage controller", () => {
 
 
 	test("Add damage", async () => {
-		const response = await request(app).post(`/api/damage/${booking1._id}/createDamage`);
+		const response = await request(app).post(`/api/damage/${booking1._id}/createDamage`).send({description: "Scrathc"});
 		const body = response.body;
+		console.log(response.text);
 		expect(response.statusCode).toBe(200);
 	})
 

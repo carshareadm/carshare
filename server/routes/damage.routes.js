@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router();
 
 
-router.post('/:Booking/createDamage', damage.createDamage);
-router.get('/:Booking/showDamage', damage.showDamage);
+router.post('/:booking/createDamage', damage.createDamage);
+router.get('/:booking/showDamage', damage.showDamage);
 
 module.exports = router;

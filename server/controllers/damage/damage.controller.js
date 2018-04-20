@@ -1,10 +1,11 @@
 import Damage from '../../models/damageReport';
+import mongoose from 'mongoose';
 
 const createDamage = function(req, res){
   let newDamage = new Damage({
     description: req.body.description,
     loggedAt: req.body.loggedAt,
-    booking: req.body.booking,
+    booking: mongoose.Types.ObjectId(req.params.booking)
   });
 
   newDamage
