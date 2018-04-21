@@ -1,3 +1,17 @@
-.something {
-	color: red;
+.currentB {
+	background-color: green;
+	width: 100%;
+	color: white;
+}
+
+.pastB {
+	background-color: grey;
+	width: 100%;
+	color: white;
+}
+
+.futureB {
+	background-color: black;
+	width: 100%;
+	color: white;
 }

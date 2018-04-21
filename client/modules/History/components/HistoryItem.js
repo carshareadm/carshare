@@ -41,12 +41,25 @@ class HistoryItem extends Component {
     }
   }
 
+  renderAddDamage(bs){
+    let booking = this.checkTheDate(bs);
+    if(booking=="current"){
+      return(
+        <Link to={"/damage?bookingId="+bs._id}>
+          <Button className={stylesMain.buttons} color="primary" size="lg">Add Damage</Button>
+        </Link>
+      )
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const bs = this.props.data;
     return (
         <div>
           <CardHeader>
-            { this.renderHeader(bs) }
+            {this.renderHeader(bs)}
           </CardHeader>
           <CardBody>
             <Col>
@@ -67,9 +80,7 @@ class HistoryItem extends Component {
             <Col>
               Hire Cost: WIP
             </Col>
-            <Link to={"/damage?bookingId="+bs._id}>
-              <Button className={stylesMain.buttons} color="primary" size="lg">Add Damage</Button>
-            </Link>
+            {this.renderAddDamage(bs)}
           </CardBody>
         </div>
     )
