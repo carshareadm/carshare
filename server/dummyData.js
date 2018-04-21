@@ -19,12 +19,13 @@ module.exports = function() {
 
   const errorCode1 = 11000;
   const errorCode2 = 11001;
+  let user1 = null;
 
   User.count({}, (err, count) => {
     if (count < 1) {
       console.log("Adding users...");
 
-      let user1 = new User();
+      user1 = new User();
       user1.email = "carshareadm@gmail.com";
       user1.mobile = "0412345678";
       user1.password = "shacar";
@@ -279,10 +280,11 @@ module.exports = function() {
   });
 
   // add cars if there are none already in the system
+  let car1 = null;
   var regoC1 = "ABC123";
   Car.findOne({ rego: regoC1 }, (error, car) => {
     if (!car) {
-      let car1 = new Car();
+      car1 = new Car();
       (car1.rego = regoC1), (car1.make = "Hyundai");
       car1.model = "Getz";
       car1.colour = "white";
@@ -311,10 +313,11 @@ module.exports = function() {
     }
   });
 
+  let car2 = null;
   var regoC2 = "ABC456";
   Car.findOne({ rego: regoC2 }, (error, car) => {
     if (!car) {
-      let car2 = new Car();
+      car2 = new Car();
       (car2.rego = regoC2), (car2.make = "Mazda");
       car2.model = "MX-5";
       car2.colour = "blue";
@@ -343,10 +346,11 @@ module.exports = function() {
   });
 
   //Car 3 data Block
+  let car3 = null;
   var regoC3 = "ABC789";
   Car.findOne({ rego: regoC3 }, (error, car) => {
     if (!car) {
-      let car3 = new Car();
+      car3 = new Car();
       (car3.rego = regoC3), (car3.make = "Audi");
       car3.model = "A6";
       car3.colour = "red";
@@ -376,9 +380,10 @@ module.exports = function() {
 
   //Car 4 data Block
   var regoC4 = "DEF125";
+  let car4 = null;
   Car.findOne({ rego: regoC4 }, (error, car) => {
     if (!car) {
-      let car4 = new Car();
+      car4 = new Car();
       (car4.rego = regoC4), (car4.make = "Mazda");
       car4.model = "CX-9";
       car4.colour = "silver";
@@ -408,159 +413,156 @@ module.exports = function() {
   });
 
   // Dummy Booking data
-
-  if (
-    typeof car1 !== "undefined" &&
-    typeof car2 !== "undefined" &&
-    typeof car3 !== "undefined" &&
-    typeof car4 !== "undefined" &&
-    typeof user1 !== "undefined"
-  ) {
-    Booking.find({ 'car':car1._id}).exec((error, bookingType)=> {
-      if (!bookingType) {
-        let booking1C1 = new Booking();
-        let booking2C1 = new Booking();
-        booking1C1.car = car1;
-        booking1C1.user = user1;
-        booking1C1.unlockCode = "123456";
-        booking1C1.startsAt = "2018-02-10T09:50:42.389Z";
-        booking1C1.endsAt = "2018-02-10T10:50:42.389Z";
-        booking1C1.disabled = false;
-        booking1C1.save().catch(e => {
-          console.log(e);
-        });
-        booking2C1.car = car1;
-        booking2C1.user = user1;
-        booking2C1.unlockCode = "QWERTY";
-        booking2C1.startsAt = "2018-02-20T09:50:42.389Z";
-        booking2C1.endsAt = "2018-02-21T10:50:42.389Z";
-        booking2C1.disabled = false;
-        booking2C1.save().catch(e => {
-          console.log(e);
-        });
-      } else {
-        console.log("Bookings for car 1 already exists.");
-      }
-    });
-    Booking.find({ 'car':car2._id}).exec((error, bookingType)=> {
-      if (!bookingType) {
-        let booking1C2 = new Booking();
-        let booking2C2 = new Booking();
-        booking1C2.car = car2;
-        booking1C2.user = user1;
-        booking1C2.unlockCode = "123456";
-        booking1C2.startsAt = "2018-02-10T09:50:42.389Z";
-        booking1C2.endsAt = "2018-02-10T10:50:42.389Z";
-        booking1C2.disabled = false;
-        booking1C2.save().catch(e => {
-          console.log(e);
-        });
-        booking2C2.car = car2;
-        booking2C2.user = user1;
-        booking2C2.unlockCode = "QWERTY";
-        booking2C2.startsAt = "2018-02-20T09:50:42.389Z";
-        booking2C2.endsAt = "2018-02-21T10:50:42.389Z";
-        booking2C2.disabled = false;
-        booking2C2.save().catch(e => {
-          console.log(e);
-        });
-      } else {
-        console.log("Bookings for car 2 already exists.");
-      }
-    });
-    Booking.find({ 'car':car3._id}).exec((error, bookingType)=> {
-      if (!bookingType) {
-        let booking1C3 = new Booking();
-        let booking2C3 = new Booking();
-        booking1C3.car = car3;
-        booking1C3.user = user1;
-        booking1C3.unlockCode = "123456";
-        booking1C3.startsAt = "2018-02-10T09:50:42.389Z";
-        booking1C3.endsAt = "2018-02-10T10:50:42.389Z";
-        booking1C3.disabled = false;
-        booking1C3.save().catch(e => {
-          console.log(e);
-        });
-        booking2C3.car = car3;
-        booking2C3.user = user1;
-        booking2C3.unlockCode = "QWERTY";
-        booking2C3.startsAt = "2018-02-20T09:50:42.389Z";
-        booking2C3.endsAt = "2018-02-21T10:50:42.389Z";
-        booking2C3.disabled = false;
-        booking2C3.save().catch(e => {
-          console.log(e);
-        });
-      } else {
-        console.log("Bookings for car 3 already exists.");
-      }
-    });
-    Booking.find({ 'car':car4._id}).exec((error, bookingType)=> {
-      if (!bookingType) {
-        let booking1C4 = new Booking();
-        let booking2C4 = new Booking();
-        booking1C4.car = car4;
-        booking1C4.user = user1;
-        booking1C4.unlockCode = "123456";
-        booking1C4.startsAt = "2018-02-10T09:50:42.389Z";
-        booking1C4.endsAt = "2018-02-10T10:50:42.389Z";
-        booking1C4.disabled = false;
-        booking1C4.save().catch(e => {
-          console.log(e);
-        });
-        booking2C4.car = car4;
-        booking2C4.user = user1;
-        booking2C4.unlockCode = "QWERTY";
-        booking2C4.startsAt = "2018-02-20T09:50:42.389Z";
-        booking2C4.endsAt = "2018-02-21T10:50:42.389Z";
-        booking2C4.disabled = false;
-        booking2C4.save().catch(e => {
-          console.log(e);
-        });
-      } else {
-        console.log("Bookings for car 4 already exists.");
-      }
-    });
-  } else {
-    User.findOne({ isAdmin: true }).exec((usrErr, users) => {
-      if (usrErr) {
-        console.log(usrErr);
-      } else {
-        Car.find().exec((carErr, cars) => {
-          if (carErr) {
-            console.log(carErr);
-          } else {
-            cars.forEach(c => {
-              Booking.findOne({ 'car':c._id}).exec((error, b) => {
-                // Check for existing Bookings to avoid flooding the db
-                if (!b) {
-                  let booking1 = new Booking();
-                  let booking2 = new Booking();
-                  booking1.car = c._id;
-                  booking1.user = users._id;
-                  booking1.unlockCode = "123456";
-                  booking1.startsAt = "2018-02-10T09:50:42.389Z";
-                  booking1.endsAt = "2018-02-10T10:50:42.389Z";
-                  booking1.disabled = false;
-                  booking1.save().catch(e => {
-                    console.log(e);
-                  });
-                  booking2.car = c._id;
-                  booking2.user = users._id;
-                  booking2.unlockCode = "QWERTY";
-                  booking2.startsAt = "2018-02-20T09:50:42.389Z";
-                  booking2.endsAt = "2018-02-21T10:50:42.389Z";
-                  booking2.disabled = false;
-                  booking2.save().catch(e => {
-                    console.log(e);
-                  });
-                }
+  Car.find().exec((carErr, anyCar) => {
+    if (carErr) {
+      console.log(carErr);
+    } else if (!anyCar) {
+      Booking.find({ car: car1._id }).exec((error, bookingType) => {
+        if (!bookingType) {
+          let booking1C1 = new Booking();
+          let booking2C1 = new Booking();
+          booking1C1.car = car1;
+          booking1C1.user = user1;
+          booking1C1.unlockCode = "123456";
+          booking1C1.startsAt = "2018-02-10T09:50:42.389Z";
+          booking1C1.endsAt = "2018-02-10T10:50:42.389Z";
+          booking1C1.disabled = false;
+          booking1C1.save().catch(e => {
+            console.log(e);
+          });
+          booking2C1.car = car1;
+          booking2C1.user = user1;
+          booking2C1.unlockCode = "QWERTY";
+          booking2C1.startsAt = "2018-02-20T09:50:42.389Z";
+          booking2C1.endsAt = "2018-02-21T10:50:42.389Z";
+          booking2C1.disabled = false;
+          booking2C1.save().catch(e => {
+            console.log(e);
+          });
+        } else {
+          console.log("Bookings for car 1 already exists.");
+        }
+      });
+      Booking.find({ car: car2._id }).exec((error, bookingType) => {
+        if (!bookingType) {
+          let booking1C2 = new Booking();
+          let booking2C2 = new Booking();
+          booking1C2.car = car2;
+          booking1C2.user = user1;
+          booking1C2.unlockCode = "123456";
+          booking1C2.startsAt = "2018-02-10T09:50:42.389Z";
+          booking1C2.endsAt = "2018-02-10T10:50:42.389Z";
+          booking1C2.disabled = false;
+          booking1C2.save().catch(e => {
+            console.log(e);
+          });
+          booking2C2.car = car2;
+          booking2C2.user = user1;
+          booking2C2.unlockCode = "QWERTY";
+          booking2C2.startsAt = "2018-02-20T09:50:42.389Z";
+          booking2C2.endsAt = "2018-02-21T10:50:42.389Z";
+          booking2C2.disabled = false;
+          booking2C2.save().catch(e => {
+            console.log(e);
+          });
+        } else {
+          console.log("Bookings for car 2 already exists.");
+        }
+      });
+      Booking.find({ car: car3._id }).exec((error, bookingType) => {
+        if (!bookingType) {
+          let booking1C3 = new Booking();
+          let booking2C3 = new Booking();
+          booking1C3.car = car3;
+          booking1C3.user = user1;
+          booking1C3.unlockCode = "123456";
+          booking1C3.startsAt = "2018-02-10T09:50:42.389Z";
+          booking1C3.endsAt = "2018-02-10T10:50:42.389Z";
+          booking1C3.disabled = false;
+          booking1C3.save().catch(e => {
+            console.log(e);
+          });
+          booking2C3.car = car3;
+          booking2C3.user = user1;
+          booking2C3.unlockCode = "QWERTY";
+          booking2C3.startsAt = "2018-02-20T09:50:42.389Z";
+          booking2C3.endsAt = "2018-02-21T10:50:42.389Z";
+          booking2C3.disabled = false;
+          booking2C3.save().catch(e => {
+            console.log(e);
+          });
+        } else {
+          console.log("Bookings for car 3 already exists.");
+        }
+      });
+      Booking.find({ car: car4._id }).exec((error, bookingType) => {
+        if (!bookingType) {
+          let booking1C4 = new Booking();
+          let booking2C4 = new Booking();
+          booking1C4.car = car4;
+          booking1C4.user = user1;
+          booking1C4.unlockCode = "123456";
+          booking1C4.startsAt = "2018-02-10T09:50:42.389Z";
+          booking1C4.endsAt = "2018-02-10T10:50:42.389Z";
+          booking1C4.disabled = false;
+          booking1C4.save().catch(e => {
+            console.log(e);
+          });
+          booking2C4.car = car4;
+          booking2C4.user = user1;
+          booking2C4.unlockCode = "QWERTY";
+          booking2C4.startsAt = "2018-02-20T09:50:42.389Z";
+          booking2C4.endsAt = "2018-02-21T10:50:42.389Z";
+          booking2C4.disabled = false;
+          booking2C4.save().catch(e => {
+            console.log(e);
+          });
+        } else {
+          console.log("Bookings for car 4 already exists.");
+        }
+      });
+    } else {
+      User.findOne({ isAdmin: true }).exec((usrErr, users) => {
+        if (usrErr) {
+          console.log(usrErr);
+        } else {
+          Car.find().exec((carErr, cars) => {
+            if (carErr) {
+              console.log(carErr);
+            } else {
+              cars.forEach(c => {
+                Booking.findOne({ car: c._id }).exec((error, b) => {
+                  // Check for existing Bookings to avoid flooding the db
+                  if (!b) {
+                    let booking1 = new Booking();
+                    let booking2 = new Booking();
+                    booking1.car = c._id;
+                    booking1.user = users._id;
+                    booking1.unlockCode = "123456";
+                    booking1.startsAt = "2018-02-10T09:50:42.389Z";
+                    booking1.endsAt = "2018-02-10T10:50:42.389Z";
+                    booking1.disabled = false;
+                    booking1.save().catch(e => {
+                      console.log(e);
+                    });
+                    booking2.car = c._id;
+                    booking2.user = users._id;
+                    booking2.unlockCode = "QWERTY";
+                    booking2.startsAt = "2018-02-20T09:50:42.389Z";
+                    booking2.endsAt = "2018-02-21T10:50:42.389Z";
+                    booking2.disabled = false;
+                    booking2.save().catch(e => {
+                      console.log(e);
+                    });
+                  }
+                });
               });
-            });
-          }
-        });
-      }
-    });
-  }
+            }
+          });
+        }
+      });
+    }
+  });
 
   console.log("____ Seeded data wrap-up ____");
   User.count({}, (err, count) => {

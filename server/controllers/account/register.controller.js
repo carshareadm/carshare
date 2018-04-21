@@ -17,6 +17,9 @@ exports.register = function(req, res) {
   user.mobile = mobile;
   user.password = password;
   user.isAdmin = false;
+  user.isAccountConfirmed = false;
+  user.disabled = false;
+  user.blockedByAdmin = false;
 
   var errs = user.validateSync();
 
@@ -25,6 +28,8 @@ exports.register = function(req, res) {
   } else {
     let userLicense = new License();
     userLicense.licenseNumber = licensenum;
+    userLicense.disabled = false;
+    userLicense.approvedByAdmin = false;
     var licenseerrs = userLicense.validateSync();
 
     if (licenseerrs) {
@@ -35,21 +40,27 @@ exports.register = function(req, res) {
           res.status(500).send(licenseerr);
         } else {
           user.license = userLicense;
-          user.save((err, saved) => {
-            if (err) {
-              res.status(500).send(err);
+          User.findOne({ email: user.email }).exec((error, exist) => {
+            if (exist) {
+              res.status(400).send();
             } else {
-              let token = {
-                sub: saved._id,
-                email: saved.email,
-                isAdmin: saved.isAdmin,
-                exp: DateUtils.getDateInSeconds(
-                  DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
-                ),
-              };
+              user.save((err, saved) => {
+                if (err) {
+                  res.status(500).send(err);
+                } else {
+                  let token = {
+                    sub: saved._id,
+                    email: saved.email,
+                    isAdmin: saved.isAdmin,
+                    exp: DateUtils.getDateInSeconds(
+                      DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
+                    ),
+                  };
 
-              const encodedToken = jwt.encode(token, config.jwt.secret);
-              res.status(200).send({ token: encodedToken });
+                  const encodedToken = jwt.encode(token, config.jwt.secret);
+                  res.status(200).send({ token: encodedToken });
+                }
+              });
             }
           });
         }
