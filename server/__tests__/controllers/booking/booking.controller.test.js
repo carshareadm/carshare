@@ -184,7 +184,7 @@ describe("Booking controller", () => {
     }
   });
 
-  test("it should return 200 if only user and carid present", async done => {
+  test("it should return 200 all fields are present", async done => {
     const badLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
     try {
       license = await badLicense.save();
