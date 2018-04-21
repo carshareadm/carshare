@@ -17,6 +17,7 @@ import * as fileService from "../../services/file.service";
 
 import * as validator from "validator";
 import styles from "./FileUploader.css";
+import stylesMain from '../../main.css';
 
 //Profile component class
 export class FileUploader extends Component {
@@ -35,6 +36,7 @@ export class FileUploader extends Component {
       fileSelected: false,
       isLoading: false,
       errorMessage: '',
+      licenceNotice: '',
     };
 
     this.onDismiss = this.onDismiss.bind(this);
@@ -46,6 +48,10 @@ export class FileUploader extends Component {
 
   setError(msg) {
     this.setState({errorMessage: msg});
+  }
+
+  setLicenseNotice() {
+        this.setState({licenceNotice: 'License image changes will be processed by ShaCar staff shortly.'})
   }
 
   handleInputClick(e) {
@@ -69,6 +75,7 @@ export class FileUploader extends Component {
 
   handleUpload() {
     this.setLoading(true);
+    this.setLicenseNotice();
     fileService.getPresignedUploadKey(this.state.selectedFileText)
       .then(res => {
         this.setLoading(false);
@@ -157,8 +164,8 @@ export class FileUploader extends Component {
             </Button>
           </InputGroupAddon>              
         </InputGroup>
-
         {load}
+        <h4 className={stylesMain.h4}>{this.state.licenceNotice}</h4>
       </div>
     );
   }
