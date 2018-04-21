@@ -116,7 +116,7 @@ class Contact extends Component
       <div className={styles.body}>
           <h1 className={styles.title}>Contact Us</h1>
         <Row noGutters>
-          <Col xs="12" md="6">
+          <Col xs="12" md="6" className="px-3">
             <p><strong>Need Help?</strong><br/>
             Please contact us via the telephone number below or
             use the contact form.</p>
@@ -130,7 +130,7 @@ class Contact extends Component
             1 Flinders St,<br />
             Melbourne, Victoria</p>
           </Col>
-          <Col xs="12" md="6">
+          <Col xs="12" md="6" className="px-3">
             <p><strong>Contact Form</strong><br /></p>
             <Form
               className="novalidate"
