@@ -62,7 +62,8 @@ export class Damages extends Component {
 	        .client()
 	        .post(`/${booking}/createDamage`, {
 	          description:this.state.descr,
-	          booking:this.props.query.bookingId
+	          booking:this.props.query.bookingId,
+	          image:this.state.image
 	        })
 		    .then(res => {
 		        console.log(res);
@@ -81,8 +82,10 @@ export class Damages extends Component {
 	  	});
 	}
 
-  	handleImageUploaded(){
-
+  	handleImageUploaded(img){
+  		this.setState({
+  			image:img._id
+  		})
   	}
 
 	render() {

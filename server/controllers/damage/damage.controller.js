@@ -5,7 +5,8 @@ const createDamage = function(req, res){
   let newDamage = new Damage({
     description: req.body.description,
     loggedAt: req.body.loggedAt,
-    booking: mongoose.Types.ObjectId(req.params.booking)
+    booking: mongoose.Types.ObjectId(req.params.booking),
+    images: [mongoose.Types.ObjectId(req.body.image)]
   });
 
   newDamage
