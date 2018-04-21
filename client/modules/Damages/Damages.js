@@ -34,46 +34,27 @@ export class Damages extends Component {
 	    this.state = {
 	      descr: "",
 	      image: "",
+	      message: ""
 	    };
   	}
 
-	valids = {};
-
-  	validate(){
-	    const valids = {
-	      descr: this.state.descr.length > 0,
-	    }
-	    return valids;
-	  }
-
-   	isValid(key){
-	    const valid = this.valids[key];
-	    return valid;
-  	}
-
-  	formIsValid(){
-  		return Object.keys(this.valids).every(field => this.valids[field] === true);
-  	}
 
   	handleSubmit(event){
 	    event.preventDefault();
-	    if (this.formIsValid()) {
-	      http
+	    http
 	        .client()
-	        .post(`/${booking}/createDamage`, {
+	        .post(`/damage/${this.props.location.query.bookingId}/createDamage`, {
 	          description:this.state.descr,
-	          booking:this.props.query.bookingId,
 	          image:this.state.image
 	        })
 		    .then(res => {
 		        console.log(res);
-		        this.setState({ successAlertOpen: true });
+		        this.setState({ message:"Thank you for your report!" });
 		    })
 		    .catch(err => {
 		        console.log(err);
-		        this.setState({ failAlertOpen: true });
+		        this.setState({ message:err });
 		    })
-	    }
   	}
 
 	handleInputChange(event){
@@ -83,47 +64,73 @@ export class Damages extends Component {
 	}
 
   	handleImageUploaded(img){
+  		console.log("Images ", img)
+  		console.log("Images id ", img._id)
   		this.setState({
   			image:img._id
   		})
   	}
 
+  	displayDescrForm(){
+  		return(
+  			<div>
+  				<FormGroup>
+	            <Label htmlFor="descr">Description *</Label>
+	            <Input
+	              type="text"
+	              name="descr"
+	              id="descr"
+	              placeholder="Describe the damage"
+	              value={this.state.description}
+	              onChange={this.handleInputChange.bind(this)}
+	            />
+	            <FormFeedback>
+	              A  description address is required.
+	            </FormFeedback>
+	        </FormGroup>
+	         <Button
+	            type="submit"
+	            disabled={this.state.descr==""}
+	            outline
+	            color="success"
+	            size="lg"
+	            block
+	          >
+	            Submit
+	          </Button>
+  			</div>
+  		)
+  	}
+
+  	displayForm(){
+  		return(
+			<Form className="novalidate" onSubmit={this.handleSubmit.bind(this)}>
+			<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
+	        {this.state.image? this.displayDescrForm() : null}
+	    </Form>
+  		)
+  	}
+
+  	displayMessage(){
+  		return(
+  			<div>
+	  			<div className={styles.damageMessage}>{this.state.message}</div>
+	  			<Link to={"/history"}>
+	              <Button className={stylesMain.buttons} color="primary" size="lg">Back to History</Button>
+	            </Link>
+            </div>
+  		)
+  	}
+
 	render() {
-		this.valids = this.validate();
-		const isDisabled = !this.formIsValid() || this.state.successAlertOpen || this.state.failAlertOpen;
 		return (
 			<div className={stylesMain.body}>
 				<Container>
 					<Row>
+					<Col>
 						<h4>Damage Report</h4>
-						<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
-						<Form className="novalidate" onSubmit={this.handleSubmit.bind(this)}>
-				            <FormGroup>
-				                <Label htmlFor="descr">Description *</Label>
-				                <Input
-				                  type="text"
-				                  name="descr"
-				                  id="descr"
-				                  placeholder="Describe the damage"
-				                  className={this.isValid('descr') ? '' : 'is-invalid'}
-				                  value={this.state.description}
-				                  onChange={this.handleInputChange.bind(this)}
-				                />
-				                <FormFeedback>
-				                  A  description address is required.
-				                </FormFeedback>
-				            </FormGroup>
-			                 <Button
-				                type="submit"
-				                disabled={isDisabled}
-				                outline
-				                color="success"
-				                size="lg"
-				                block
-				              >
-				                Submit
-				              </Button>
-			            </Form>
+						{this.state.message ? this.displayMessage() : this.displayForm()}
+			        </Col>
 					</Row>
 				</Container>
 			</div>
