@@ -15,7 +15,7 @@ export const getPresignedPost = function(req, res) {
     res.status(200).send(uploadPolicy);
   }
   catch (e) {
-    logger.error({message: 'generate upload policy failed', err: e});
+    logger.err({message: 'generate upload policy failed', err: e});
     res.status(500).send(e);
   }
 };

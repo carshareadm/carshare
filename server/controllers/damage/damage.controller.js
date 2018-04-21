@@ -4,8 +4,9 @@ import mongoose from 'mongoose';
 const createDamage = function(req, res){
   let newDamage = new Damage({
     description: req.body.description,
-    loggedAt: req.body.loggedAt,
-    booking: mongoose.Types.ObjectId(req.params.booking)
+    loggedAt: new Date(),
+    booking: mongoose.Types.ObjectId(req.params.booking),
+    images: [mongoose.Types.ObjectId(req.body.image)]
   });
 
   newDamage
