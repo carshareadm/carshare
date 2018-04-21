@@ -59,7 +59,13 @@ const createBooking = function(req, res) {
                   // found match for car, start comparing time
                   if (!bookings) {
                     // No matching bookings -> ok to book
-                    res.status(200).send(true);
+                    newBooking.save((err, booking) => {
+                      if (err) {
+                        res.status(500).send(err);
+                      } else {
+                        res.status(200).send(booking._id);
+                      }
+                    });
                   } else {
                     //checking of time to be implemented
                     bookings.forEach(b => {
