@@ -42,6 +42,7 @@ const createBooking = function(req, res) {
             newBooking.user = selecteduser._id;
             newBooking.unlockCode = codeGenerator.generate();
             newBooking.disabled = false;
+            let alreadyBooked = false;
 
             var validateErrs = newBooking.validateSync();
             if (validateErrs) {
@@ -91,17 +92,22 @@ const createBooking = function(req, res) {
                           checkFive ||
                           checkSix
                         ) {
+                          //Sets alreadyBooked flag to true
+                          alreadyBooked = true;
                           //Bad request as the time slot is invalid
                           res.status(400).send();
                         }
                       });
-                      newBooking.save((err, booking) => {
-                        if (err) {
-                          res.status(500).send(err);
-                        } else {
-                          res.status(200).send(booking._id);
-                        }
-                      });
+                      if(alreadyBooked===false)
+                      {
+                        newBooking.save((err, booking) => {
+                          if (err) {
+                            res.status(500).send(err);
+                          } else {
+                            res.status(200).send(booking._id);
+                          }
+                        });
+                      }
                     }
                   }
                 }
