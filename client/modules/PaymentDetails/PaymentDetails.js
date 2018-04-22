@@ -1,4 +1,3 @@
-// PaymentDetails.js
 import React, { Component, PropTypes } from "react";
 import {
   Alert,
@@ -12,14 +11,13 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Container,
   Row,
   Col,
 } from "reactstrap";
 import { Link } from "react-router";
 import * as http from "../../util/http";
 
-import * as ccCheck from "card-validator";
+import * as cardValidate from "card-validator";
 import styles from "./PaymentDetails.css";
 
 const now = new Date(Date.now());
@@ -37,11 +35,11 @@ class PaymentDetails extends Component
   {
     super(props);
     this.state = {
-      // credit card fields
+      // credit card info
       _id: '',
       cardNumber: '',
+      oldCard: '',
       nameOnCard: '',
-      ccv: '',
       expiryMonth: '',
       expiryYear: '',
       // user credit card status
@@ -50,6 +48,8 @@ class PaymentDetails extends Component
       updated: false,
       expMonthDropdownOpen: false,
       expYearDropdownOpen: false,
+      successAlertOpen: false,
+      failAlertOpen: false,
       touched: {
         cardNumber: false,
         nameOnCard: false,
@@ -61,25 +61,23 @@ class PaymentDetails extends Component
 
   valids = {};
 
-  validate() {
+  validate()
+  {
     const cardNumber = this.state.cardNumber.replace(nonDigit, '');
-    const ccv = this.state.ccv.replace(nonDigit, '');
-    const checkResult = ccCheck.number(cardNumber);
+    const checkResult = cardValidate.number(cardNumber);
     const expiry = this.state.expiryMonth + this.state.expiryYear;
-    const ccvLength =
-      (checkResult.card && checkResult.card.type) ?
-      checkResult.card.code.size : null;
 
     const valids = {
-      cardNumber: checkResult.isValid,
+      cardNumber: checkResult.isValid ||
+        (this.state.hasCard && cardNumber.length === 0),
       nameOnCard: this.state.nameOnCard.length > 0,
-      ccv: ccvLength && ccv.length === ccvLength,
-      expiry: ccCheck.expirationDate(expiry).isValid,
+      expiry: cardValidate.expirationDate(expiry).isValid,
     }
     return valids;
   }
 
-  handleInputChange(evt) {
+  handleInputChange(evt)
+  {
     let field = evt.target.id;
     let value = evt.target.value
     let temp = {};
@@ -89,7 +87,8 @@ class PaymentDetails extends Component
     this.setState(temp);
   }
 
-  handleExpiryMonthChange(evt) {
+  handleExpiryMonthChange(evt)
+  {
     let temp = {
       expiryMonth: evt.target.innerText,
       expMonthDropdownOpen: false }
@@ -98,7 +97,8 @@ class PaymentDetails extends Component
     this.setState(temp);
   }
 
-  handleExpiryYearChange = (evt) => {
+  handleExpiryYearChange(evt)
+  {
     let temp = {
       expiryYear: evt.target.innerText,
       expYearDropdownOpen: false }
@@ -107,16 +107,26 @@ class PaymentDetails extends Component
     this.setState(temp);
   }
 
-  toggleExpMonthDropdown() {
+  toggleExpMonthDropdown()
+  {
     this.setState({
       expMonthDropdownOpen: !this.state.expMonthDropdownOpen,
     });
   }
 
-  toggleExpYearDropdown() {
+  toggleExpYearDropdown()
+  {
     this.setState({
       expYearDropdownOpen: !this.state.expYearDropdownOpen,
     });
+  }
+
+  dismissSuccess() {
+    this.setState({ successAlertOpen: false })
+  }
+
+  dismissFail() {
+    this.setState({ failAlertOpen: false })
   }
 
   handleSubmit(evt) {
@@ -124,54 +134,63 @@ class PaymentDetails extends Component
 
     if (this.formIsValid()) {
       const cardNumber = this.state.cardNumber.replace(nonDigit, '');
-      const ccv = this.state.ccv.replace(nonDigit, '');
+      const card = {
+        nameOnCard: this.state.nameOnCard,
+        expiryMonth: Number(this.state.expiryMonth),
+        expiryYear: Number(this.state.expiryYear),
+      };
 
-      if (this.state.hasCard) {
+      // add cardnumber only if changed / new.
+      if (this.state.cardNumber)
+      {
+        card.cardNumber = this.state.cardNumber;
+      }
+
+      if (this.state.hasCard)
+      {
         // update credit card info only
+        card._id = this.state._id;
         http
           .client()
-          .put('/paymentDetails/update', {
-            _id: this.state._id,
-            cardNumber: cardNumber,
-            nameOnCard: this.state.nameOnCard,
-            ccv: ccv,
-            expiryMonth: Number(this.state.expiryMonth),
-            expiryYear: Number(this.state.expiryYear),
-          })
+          .put('/paymentDetails/update', card)
           .then(res => {
             console.log(res);
+            this.setState({ successAlertOpen: true })
             this.fetchUser();
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err);
+            this.setState({ failAlertOpen: true })
+          })
       }
       else
       {
         // create new creditCard
         http
           .client()
-          .post('/paymentDetails/add', {
-            cardNumber: cardNumber,
-            nameOnCard: this.state.nameOnCard,
-            ccv: ccv,
-            expiryMonth: Number(this.state.expiryMonth),
-            expiryYear: Number(this.state.expiryYear),
+          .post('/paymentDetails/add', card)
+          .then(res => {
+            console.log(res);
+            this.setState({ successAlertOpen: true })
+            this.fetchUser();
           })
-        .then(res => {
-          console.log(res);
-          this.fetchUser();
-        })
-        .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err);
+            this.setState({ failAlertOpen: true })
+          })
       }
     }
   }
 
-  isValid(key) {
+  isValid(key)
+  {
     const valid = this.valids[key];
     const touched = this.state.touched[key];
     return valid || !touched;
   }
 
-  formIsValid() {
+  formIsValid()
+  {
     return Object.keys(this.valids).every(field => this.valids[field] === true);
   }
 
@@ -181,13 +200,14 @@ class PaymentDetails extends Component
     {
       this.setState({
         _id: user.creditCard._id ? user.creditCard._id : '',
-        cardNumber: user.creditCard.cardNumber ?
-          user.creditCard.cardNumber : '',
+        // only the last 4 digits are retrieved
+        oldCard: user.creditCard.lastFourDigits ?
+          'Card ending in … ' + user.creditCard.lastFourDigits :
+          'No card on record',
         nameOnCard: user.creditCard.nameOnCard ?
           user.creditCard.nameOnCard : '',
-        ccv: user.creditCard.ccv ? user.creditCard.ccv : '',
         expiryMonth: user.creditCard.expiryMonth ?
-          user.creditCard.expiryMonth.toString() : '',
+          selMonths[user.creditCard.expiryMonth - 1] : '',
         expiryYear: user.creditCard.expiryYear ?
           user.creditCard.expiryYear.toString() : '',
         hasCard: true,
@@ -202,7 +222,10 @@ class PaymentDetails extends Component
     http
       .client()
       .get('/paymentDetails/my')
-      .then((res) => { this.mapUserToModel(res.data) })
+      .then((res) => {
+        console.log(res);
+        this.mapUserToModel(res.data);
+       })
       .catch((err) => { console.log(err) });
   }
 
@@ -214,19 +237,29 @@ class PaymentDetails extends Component
     return (
       <div className={styles.body}>
         <h1 className={styles.title}>Payment Details</h1>
-
-        <Form
-          className="novalidate"
-          onSubmit={this.handleSubmit.bind(this)}>
-          <Row>
-            <Col>
+        <Row noGutters>
+          <Col>
+            <Form
+              className="novalidate"
+              onSubmit={this.handleSubmit.bind(this)}>
               <FormGroup>
-                <Label for="cardNumber">Credit Card Number</Label>
+                <Label for="oldCard">Existing Credit Card</Label>
+                <Input
+                  type="text"
+                  readOnly
+                  name="oldCard"
+                  id="oldCard"
+                  value={this.state.oldCard}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <Label for="cardNumber">New Credit Card Number</Label>
                 <Input
                   type="text"
                   name="cardNumber"
                   id="cardNumber"
-                  placeholder="Card number"
+                  placeholder="Leave blank if card number unchanged"
                   className={this.isValid('cardNumber') ? '' : 'is-invalid'}
                   value={this.state.cardNumber}
                   onChange={this.handleInputChange.bind(this)}
@@ -235,11 +268,7 @@ class PaymentDetails extends Component
                   A valid credit card number is required.
                 </FormFeedback>
               </FormGroup>
-            </Col>
-          </Row>
 
-          <Row>
-            <Col xs="7">
               <FormGroup>
                 <Label for="expiry">Expiry</Label>
                 <div>
@@ -290,31 +319,11 @@ class PaymentDetails extends Component
                   className={this.isValid('expiry') ? '' : 'is-invalid'}
                   />
                 <FormFeedback>
-                  Card should not be expired. A valid expiry date is required.
+                  Card should not be expired. A card with valid expiry
+                  date is required.
                 </FormFeedback>
               </FormGroup>
-            </Col>
 
-            <Col xs="5">
-              <FormGroup>
-                <Label for="ccv">CVV</Label>
-                <Input
-                  type="text"
-                  name="ccv"
-                  id="ccv"
-                  placeholder="CVV"
-                  className={this.isValid('ccv') ? '' : 'is-invalid'}
-                  value={this.state.ccv}
-                  onChange={this.handleInputChange.bind(this)}/>
-                <FormFeedback>
-                  A valid CVV is required.
-                </FormFeedback>
-              </FormGroup>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
               <FormGroup>
                 <Label for="nameOnCard">Name on Card</Label>
                 <Input
@@ -329,40 +338,37 @@ class PaymentDetails extends Component
                   Name on card is required.
                 </FormFeedback>
               </FormGroup>
-            </Col>
-          </Row>
 
-          <Row>
-            <Col sm={{ size: 6, offset: 3 }}>
               <Button
                 type="submit"
                 disabled={isDisabled}
                 outline
                 color="success"
-                size="lg"
                 block
               >
                 Save
               </Button>
-            </Col>
-          </Row>
-        </Form>
+            </Form>
+          </Col>
+        </Row>
+        <Alert
+          color="success"
+          isOpen={this.state.successAlertOpen}
+          toggle={this.dismissSuccess.bind(this)}
+        >
+          Your payment details have been updated!
+        </Alert>
+        <Alert
+          color="danger"
+          isOpen={this.state.failAlertOpen}
+          toggle={this.dismissFail.bind(this)}
+        >
+          Sorry, we encountered a problem updating your payment details.
+          Please try again, or contact us on <strong>1300 000 123</strong>.
+        </Alert>
       </div>
     )
   }
-
-//   updated()
-//   {
-//     return (
-//       <Alert color="success">
-//         <h4 className="alert-heading">Payment details have been updated!</h4>
-//         <p><Link to="/profile">Click here to return to Profile</Link></p>
-//         <p><Link to="/">Click here to return home</Link></p>
-//       </Alert>
-//     );
-//   }
-//
-
 }
 
 export default PaymentDetails;

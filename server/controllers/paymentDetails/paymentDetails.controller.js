@@ -1,7 +1,8 @@
 import User from '../../models/user';
 import CreditCard from '../../models/creditCard';
 
-const getMyPaymentDetails = function(req, res) {
+const getMyPaymentDetails = function(req, res)
+{
   User
     .findById(req.userId)
     .select('creditCard')
@@ -16,7 +17,8 @@ const getMyPaymentDetails = function(req, res) {
     .catch((err) => { res.status(500).send(err); });
 }
 
-const addPaymentDetails = function(req, res) {
+const addPaymentDetails = function(req, res)
+{
   let newCard = new CreditCard(
     {
       cardNumber: req.body.cardNumber,
@@ -52,18 +54,26 @@ const addPaymentDetails = function(req, res) {
     });
 }
 
-const updatePaymentDetails = function(req, res) {
+const updatePaymentDetails = function(req, res)
+{
+  let update = {
+    nameOnCard: req.body.nameOnCard,
+    expiryMonth: req.body.expiryMonth,
+    expiryYear: req.body.expiryYear,
+  };
+
+  // Update card number only if changed
+  if (req.body.cardNumber)
+  {
+    update.cardNumber = req.body.cardNumber;
+  }
+
   CreditCard
-    .findByIdAndUpdate(
-        req.body._id,
-        {
-          cardNumber: req.body.cardNumber,
-          nameOnCard: req.body.nameOnCard,
-          ccv: req.body.ccv,
-          expiryMonth: req.body.expiryMonth,
-          expiryYear: req.body.expiryYear,
-        }
-      )
+    .findById(req.body._id)
+    .then((card) => {
+      card.set(update);
+      return card.save();
+    })
     .then((card) => { res.status(200).send(card); })
     .catch((err) => {
       switch (err.name)

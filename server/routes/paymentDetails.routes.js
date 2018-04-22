@@ -13,7 +13,6 @@ var router = express.Router();
   * @property {string} _id
   * @property {string} cardNumber
   * @property {string} nameOnCard
-  * @property {string} ccv
   * @property {string} expiryMonth
   * @property {string} expiryYear
 
