@@ -9,6 +9,7 @@ const damageReportSchema = new Schema({
     ref: 'Booking',
     required: true,
   },
+  car:{ type: 'String', required: true, trim: true },
   images: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Image',

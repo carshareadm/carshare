@@ -2,24 +2,29 @@ import Damage from '../../models/damageReport';
 import mongoose from 'mongoose';
 
 const createDamage = function(req, res){
-  let newDamage = new Damage({
-    description: req.body.description,
-    loggedAt: new Date(),
-    booking: mongoose.Types.ObjectId(req.params.booking),
-    images: [mongoose.Types.ObjectId(req.body.image)]
-  });
-
-  newDamage
-    .save()
-    .then((damage) => {
-      res.status(200).send(damage)
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError'){
-        res.status(400).send(err);
-      } else {
-        res.status(500).send(err)
+  Booking.find(mongoose.Types.ObjectId(req.params.booking))
+  .exec((err, booking) => {
+    if (err) {
+        return res.status(500).send(err);
       }
+    let newDamage = new Damage({
+      description: req.body.description,
+      loggedAt: new Date(),
+      booking: booking._id,
+      car: booking.car
+    });
+    newDamage
+      .save()
+      .then((damage) => {
+        res.status(200).send(damage)
+      })
+      .catch((err) => {
+        if (err.name === 'ValidationError'){
+          res.status(400).send(err);
+        } else {
+          res.status(500).send(err)
+        }
+      })
     })
 }
 

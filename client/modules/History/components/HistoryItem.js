@@ -54,6 +54,18 @@ class HistoryItem extends Component {
     }
   }
 
+  renderDamages(bs){
+    if(bs.car.damages.legth>0){
+      return(
+        <div className="float-right">
+            <Link to={`/damages/${bs.car._id}`}>
+              <Button className={stylesMain.buttons} color="danger" size="lg">!</Button>
+            </Link>
+         </div>
+      )
+    } else return null;
+  }
+
   render() {
     const bs = this.props.data;
     return (
@@ -62,25 +74,16 @@ class HistoryItem extends Component {
             {this.renderHeader(bs)}
           </CardHeader>
           <CardBody>
-            <Col>
-              Booking Start: {moment(bs.startsAt).format('MMMM Do YYYY, h:mm a')}
-            </Col>
-            <Col>
-              Booking End: {moment(bs.endsAt).format('MMMM Do YYYY, h:mm a')}
-            </Col>
-            <Col>
-              Registration: {bs.car.make} {bs.car.model}
-            </Col>
-            <Col>
-              Vehicle Type: {bs.car.vehicleType.name}
-            </Col>
-            <Col>
-              Vehicle Location: {bs.car.location.name}
-            </Col>
-            <Col>
-              Hire Cost: WIP
-            </Col>
-            {this.renderAddDamage(bs)}
+            {this.renderDamages(bs)}
+            <CardText>
+              Booking Start: {moment(bs.startsAt).format('MMMM Do YYYY, h:mm a')} <br/>
+              Booking End: {moment(bs.endsAt).format('MMMM Do YYYY, h:mm a')} <br/>
+              Registration: {bs.car.make} {bs.car.model} <br/>
+              Vehicle Type: {bs.car.vehicleType.name} <br/>
+              Vehicle Location: {bs.car.location.name} <br/>
+              Hire Cost: WIP <br/>
+              {this.renderAddDamage(bs)}
+            </CardText>
           </CardBody>
         </div>
     )
