@@ -45,6 +45,7 @@ describe("Booking controller", () => {
     user.email = "bookingUser@gmail.com";
     user.mobile = "0499999999";
     user.password = "98765";
+    user.isAccountConfirmed =true;
 
     const location = new Location();
 
@@ -75,23 +76,23 @@ describe("Booking controller", () => {
     car.movements.car = car;
 
     try {
-      const savedAddress = await address.save();
+      const savedAddress = await address.save().catch(err => {console.log(err)});
       user.address = savedAddress;
-      const savedUser = await user.save();
+      const savedUser = await user.save().catch(err => {console.log(err)});
 
-      const savedCoordinate = await coordinate.save();
-      const savedCarType = await typeSmall.save();
+      const savedCoordinate = await coordinate.save().catch(err => {console.log(err)});
+      const savedCarType = await typeSmall.save().catch(err => {console.log(err)});
       location.coordinates = savedCoordinate;
-      const savedLocation = await location.save();
+      const savedLocation = await location.save().catch(err => {console.log(err)});
 
-      const savedCar = await car.save();
+      const savedCar = await car.save().catch(err => {console.log(err)});
 
       //Movement Block
       const movements = new Movement();
       movements.car = savedCar;
       movements.coordinates = location.coordinates;
 
-      const savedMovements = await movements.save();
+      const savedMovements = await movements.save().catch(err => {console.log(err)});
 
       savedCar.movements = savedMovements;
 
@@ -141,7 +142,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret); 
     request(app)
-      .post("/api/booking")
+      .post("/api/booking/")
       .set("Authorization", "Bearer " + encodedToken)
       .send()
       .then(response => {
@@ -169,7 +170,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking")
+      .post("/api/booking/")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -185,10 +186,10 @@ describe("Booking controller", () => {
   });
 
   test("it should return 200 all fields are present", async done => {
-    const badLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
+    const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
     try {
-      license = await badLicense.save();
-      testUser.license = badLicense;
+      license = await workingLicense.save();
+      testUser.license = await workingLicense.save();
       const user = await testUser.save();
       let token = {
         sub: testUser._id,
