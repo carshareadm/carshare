@@ -2,6 +2,7 @@ import User from "../../models/user";
 import Address from "../../models/address";
 import License from "../../models/license";
 import Booking from "../../models/booking";
+import Damage from "../../models/damage";
 import Car from "../../models/car";
 
 import mongoose from 'mongoose';
@@ -133,15 +134,23 @@ const getMyBookings = function(req, res){
   Booking.find({
     user: mongoose.Types.ObjectId(req.userId),
   }).populate({
-      path:'car', populate: ['vehicleType', 'location', 'damages'],
+      path:'car', populate: ['vehicleType', 'location'],
     })
-  .populate('damage')
     .exec((err, bookings) =>{
       if(err){
         res.status(500).send(err);
-      } else {
-        res.status(200).send(bookings);
       }
+
+      Promise.all(bookings.map((booking, n) =>
+        Damage
+          .find({ car: booking.car._id })
+          .exec()
+          .then(damages => {
+            console.log("found damages for car", damages, booking.car)
+            booking.car.damages = damages;
+            return booking;
+          })
+      )).then(bs => res.status(200).send(bs));
     });
 };
 
