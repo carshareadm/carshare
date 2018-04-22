@@ -5,7 +5,7 @@ import Car from "./models/car";
 import ConfirmationCode from "./models/confirmationCode";
 import Coordinate from "./models/coordinate";
 import CreditCard from "./models/creditCard";
-import DamageReport from "./models/damageReport";
+import Damage from "./models/damage";
 import Enquiry from "./models/enquiry";
 import Image from "./models/image";
 import License from "./models/license";

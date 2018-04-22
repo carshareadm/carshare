@@ -26,7 +26,7 @@ const carSchema = new Schema({
   disabled: { type: "Boolean", required: true, default: false },
   damages:[{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "DamageReport"
+    ref: "Damage"
   }]
 });
 

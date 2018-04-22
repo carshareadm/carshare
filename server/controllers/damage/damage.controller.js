@@ -1,4 +1,4 @@
-import Damage from '../../models/damageReport';
+import Damage from '../../models/damage';
 import Booking from '../../models/booking';
 import mongoose from 'mongoose';
 

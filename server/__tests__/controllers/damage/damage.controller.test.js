@@ -91,7 +91,7 @@ describe("Damage controller", () => {
 
 
 	test("Add damage", async () => {
-		const response = await request(app).post(`/api/damage/${booking1._id}/createDamage`).send({description: "Scrathc"});
+		const response = await request(app).post(`/api/damage/${booking1._id}/createDamage`).send({description: "Scratch"});
 		const body = response.body;
 		console.log(response.text);
 		expect(response.statusCode).toBe(200);
