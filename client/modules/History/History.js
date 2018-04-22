@@ -55,7 +55,9 @@ export class History extends Component {
 			<div className={stylesMain.body}>
 				<Container>
 					<Row>
+					<Col>
 						{this.state.bookings.map(b => <HistoryItem key={b._id} data={b} />)}
+					</Col>
 					</Row>
 				</Container>
 			</div>

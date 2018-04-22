@@ -12,12 +12,13 @@ const getCars = function(req, res) {
     'disabled': false, // cars that arent disabled
   };
   Car.find(filter).
-    populate('vehicleType').
-    populate({
+    populate('vehicleType')
+    .populate({
       path: 'location',
       match: {disabled: false},
       populate: {path: 'coordinates'},
     })
+    .populate('damages')
     .exec((err, cars) => {
       if (err) {
         res.status(500).send(err);

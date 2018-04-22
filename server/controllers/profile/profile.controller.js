@@ -133,8 +133,9 @@ const getMyBookings = function(req, res){
   Booking.find({
     user: mongoose.Types.ObjectId(req.userId),
   }).populate({
-      path:'car', populate: ['vehicleType', 'location'],
+      path:'car', populate: ['vehicleType', 'location', 'damages'],
     })
+  .populate('damage')
     .exec((err, bookings) =>{
       if(err){
         res.status(500).send(err);

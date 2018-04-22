@@ -1,9 +1,19 @@
 // test Profile controller
 import { Mockgoose } from "mockgoose-fix";
 import mongoose from "mongoose";
+import moment from 'moment';
+
 import User from "../../../models/user";
 import License from "../../../models/license";
 import Address from "../../../models/address";
+import Car from '../../../models/car';
+import VehicleType from '../../../models/vehicleType';
+import Movement from '../../../models/movement';
+import Coordinate from '../../../models/coordinate';
+import Location from '../../../models/location';
+import Booking from '../../../models/booking';
+import Damage from '../../../models/damage';
+
 const config = require("../../../config");
 const DateUtils = require("../../../util/date.helper");
 const jwt = require("jwt-simple");
@@ -67,7 +77,7 @@ describe("Profile controller", () => {
   });
 
   afterEach(done => {
-    Promise.all([User, License, Address].map(k => k.remove({})))
+    Promise.all([User, License, Address, Car, VehicleType, Movement, Coordinate, Location, Booking, Damage].map(k => k.remove({})))
       .then(() => done())
       .catch(e => done(e));
   });
@@ -345,4 +355,63 @@ describe("Profile controller", () => {
         done();
       });
   });
+
+  // Test for history bookings
+  test.only("Should display user's bookings", async (done) => {
+    var coordinate = new Coordinate();
+    coordinate.latitude = "-37.669012";
+    coordinate.longitude = "144.841027";
+    await coordinate.save();
+
+    var vehicleType = new VehicleType();
+    vehicleType.name = "small"
+    vehicleType.hourlyRate = 7;
+    await vehicleType.save();
+
+    var location = new Location();
+    location.name = "Melbourne Airport";
+    location.coordinates = coordinate;
+    location.disabled = false;
+    await location.save();
+
+    var car1 = new Car();
+    car1.rego = 'AAA111';
+    car1.make = "AudiA"
+    car1.model = "TT";
+    car1.colour = "white";
+    car1.year = "2018";
+    car1.seats = "4";
+    car1.doors = "2";
+    car1.disabled = false;
+    car1.vehicleType = vehicleType;
+    car1.location = location;
+    await car1.save();
+
+    var movements = new Movement();
+    movements.car = car1;
+    movements.coordinates = location.coordinates;
+    await movements.save();
+
+    var booking1 = new Booking();
+    booking1.unlockCode = "ABSDE";
+    booking1.startsAt = new Date(moment().startOf('week').add(5, 'h').format());
+    booking1.endsAt = new Date(moment().startOf('week').add(7, 'h').format());
+    booking1.car = car1;
+    booking1.user = testUser;
+    await booking1.save();
+
+    var damage1 = new Damage();
+    damage1.description = "Front scratch";
+    damage1.loggedAt = new Date(moment().format());
+    damage1.booking = booking1;
+    damage1.car = car1;
+    await damage1.save();
+
+    const jwt = getToken();
+    const response = await request(app).get("/api/profile/bookings").set("Authorization", "Bearer " + jwt);
+    const body = response.body;
+    console.log(response.text);
+    expect(response.statusCode).toBe(200);
+    done();
+  })
 });
