@@ -36,7 +36,6 @@ export class FileUploader extends Component {
       fileSelected: false,
       isLoading: false,
       errorMessage: '',
-      licenceNotice: '',
     };
 
     this.onDismiss = this.onDismiss.bind(this);
@@ -50,9 +49,6 @@ export class FileUploader extends Component {
     this.setState({errorMessage: msg});
   }
 
-  setLicenseNotice() {
-        this.setState({licenceNotice: 'License image changes will be processed by ShaCar staff shortly.'})
-  }
 
   handleInputClick(e) {
     document.getElementById('file-upload').click();
@@ -75,7 +71,6 @@ export class FileUploader extends Component {
 
   handleUpload() {
     this.setLoading(true);
-    this.setLicenseNotice();
     fileService.getPresignedUploadKey(this.state.selectedFileText)
       .then(res => {
         this.setLoading(false);
@@ -165,7 +160,6 @@ export class FileUploader extends Component {
           </InputGroupAddon>              
         </InputGroup>
         {load}
-        <h4 className={stylesMain.h4}>{this.state.licenceNotice}</h4>
       </div>
     );
   }
