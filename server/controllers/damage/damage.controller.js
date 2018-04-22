@@ -12,7 +12,8 @@ const createDamage = function(req, res){
       description: req.body.description,
       loggedAt: new Date(),
       booking: booking._id,
-      car: booking.car
+      car: booking.car,
+      image: req.body.image
     });
     newDamage
       .save()
