@@ -23,7 +23,7 @@ class HistoryItem extends Component {
   checkTheDate(bs){
     if (moment().isBetween(moment(bs.startsAt), moment(bs.endsAt))){
       return "current"
-    } else if (moment(bs.startsAt).isAfter(moment().add(1, 'd'))){
+    } else if (moment(bs.startsAt).isAfter(moment().add(1, 'hours'))){
       return "future"
     } else {
       return "past"
