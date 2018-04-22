@@ -87,6 +87,14 @@ componentDidMount() {
 	.catch(err => {
 		console.log(err);
 	});
+	http.client()
+	.post("/booking/")
+	.then(res => {
+		console.log(res.status);
+	})
+	.catch(err => {
+		console.log(err);
+	});
 }	
 
 mapCarToModel(car) {
