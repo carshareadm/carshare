@@ -1,8 +1,9 @@
 import Damage from '../../models/damageReport';
+import Booking from '../../models/booking';
 import mongoose from 'mongoose';
 
 const createDamage = function(req, res){
-  Booking.find(mongoose.Types.ObjectId(req.params.booking))
+  Booking.findOne(mongoose.Types.ObjectId(req.params.booking))
   .exec((err, booking) => {
     if (err) {
         return res.status(500).send(err);
@@ -19,11 +20,7 @@ const createDamage = function(req, res){
         res.status(200).send(damage)
       })
       .catch((err) => {
-        if (err.name === 'ValidationError'){
-          res.status(400).send(err);
-        } else {
           res.status(500).send(err)
-        }
       })
     })
 }
