@@ -14,6 +14,9 @@ import {
   Container,
   Row,
   Col,
+  Form,
+  Alert,
+  FormFeedback,
 } from "reactstrap";
 import * as http from "../../util/http";
 
@@ -26,6 +29,7 @@ const storage = require("../../util/persistedStorage");
 import styles from "./Booking.css";
 import TimeTable from "./components/TimeTable";
 
+const nonDigit = /[^0-9]/g;
 //Booking component class
 export class Booking extends Component {
   intervalNum = 15;
@@ -36,6 +40,7 @@ export class Booking extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ccv: "",
       carid: "",
       userid: "",
       selectedCar: {},
@@ -45,12 +50,16 @@ export class Booking extends Component {
       selectedCar: false,
       loggedIn: false,
       booked: false,
+      ccvConfirmed: false,
+      successAlertOpen: false,
+      failAlertOpen: false,
 
       validated: true,
 
       touched: {
         startDate: false,
         endDate: false,
+        ccv: false,
       },
     };
     this.isFormInvalid = this.isFormInvalid.bind(this);
@@ -72,6 +81,8 @@ export class Booking extends Component {
     endDate: "a date and time after start time is required",
   };
 
+  errors = {};
+
   componentDidMount() {
     const token = storage.get(storage.Keys.JWT);
     if (token) {
@@ -86,15 +97,6 @@ export class Booking extends Component {
       .get("/cars")
       .then(res => {
         this.mapCarToModel(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    http
-      .client()
-      .post("/booking/")
-      .then(res => {
-        console.log(res.status);
       })
       .catch(err => {
         console.log(err);
@@ -122,7 +124,9 @@ export class Booking extends Component {
   validate() {
     // true means invalid, so our conditions got reversed
     const errs = {
-      startDate: this.startTime.isAfter(this.state.startDate),
+      // Placeholder ccv validation. 
+      ccv: this.state.ccv.length>4,
+      startDate: moment(this.startTime).isSameOrAfter(this.state.endDate),
       endDate:
         this.state.startDate === this.state.endDate ||
         this.state.startDate.isAfter(this.state.endDate),
@@ -142,9 +146,18 @@ export class Booking extends Component {
     this.setState({ endDate: date });
   }
 
+  handleCcvChange = (evt) => {
+    this.setState({ ccv: evt.target.value });
+  }
+
+  handleCcvConfirmation(evt) {
+    this.setState({ ccvConfirmed: true });
+  }
+
   handleBooking(evt) {
     evt.preventDefault();
     if (this.isFormInvalid()) {
+      this.setState({ failAlertOpen: true });
       return;
     } else {
       http
@@ -156,10 +169,11 @@ export class Booking extends Component {
           endAt: this.state.endDate,
         })
         .then(res => {
-          console.log(res);
           this.setState({ booked: true });
+          this.setState({ successAlertOpen: true });
         })
         .catch(err => console.log(err));
+        this.setState({ failAlertOpen: true });
     }
   }
 
@@ -185,7 +199,8 @@ export class Booking extends Component {
     if (!this.props.location.query.carid) return this.goback();
     else {
       if (!this.state.loggedIn) return this.register();
-      if (this.state.booked) return this.booked();
+      if (this.state.ccvConfirmed) return this.booked();
+      if (this.state.booked) return this.cvvPrompt();
       if (!this.state.selectedCar._id) return <span>Loading...</span>;
       return this.bookingFrm();
     }
@@ -212,6 +227,51 @@ export class Booking extends Component {
       </div>
     );
   }
+
+  dismissSuccess() {
+    this.setState({successAlertOpen: false});
+  }
+
+  dismissFail() {
+    this.setState({ failAlertOpen: false });
+  }
+
+  cvvPrompt() {
+    return (
+      <div className={styles.body}>
+        <h1 className={styles.title}>CVV Confirmation</h1>
+        <Form onSubmit={this.handleCcvConfirmation.bind(this)}>
+        <FormGroup>
+                <Label for="ccv">Please confirm your credit card CVV</Label>
+                <Input
+                  type="text"
+                  name="ccv"
+                  id="ccv"
+                  placeholder="CVV"
+                  className={
+                    "form-control " + this.isError("ccv")
+                      ? "is-invalid"
+                      : ""
+                  }
+                  value={this.state.ccv}
+                  onBlur={() => this.handleBlur("ccv")}
+                  onChange={this.handleCcvChange.bind(this)}/>
+                <FormFeedback>
+                  A valid CVV is required.
+                </FormFeedback>
+              </FormGroup>
+              <Button
+                outline
+                color="success"
+                className={styles.wideBtn}
+              >
+                Confirm
+              </Button>
+              </Form>
+      </div>
+    );
+  }
+
   booked() {
     return (
       <div className={styles.body}>
@@ -226,7 +286,11 @@ export class Booking extends Component {
 
   bookingFrm() {
     this.errors = this.validate();
-    const isDisabled = this.isFormInvalid();
+    /*
+    Placeholder. isDisabled will be reviewed later to improve implementation
+    and enable the book button on based on information from the timetable
+    */
+   const isDisabled = this.isFormInvalid();
     // Here goes our page
     return (
       <Container className={styles.body}>
@@ -235,8 +299,23 @@ export class Booking extends Component {
             <h1 className={styles.title}>Booking</h1>
           </Col>
         </Row>
-        <form onSubmit={this.handleBooking.bind(this)}>
+        <Form onSubmit={this.handleBooking.bind(this)}>
+        <Alert
+              color="success"
+              isOpen={this.state.successAlertOpen}
+              toggle={this.dismissSuccess.bind(this)}
+            >
+              Thank you, your booking was made successfully.
+            </Alert>
+            <Alert
+              color="danger"
+              isOpen={this.state.failAlertOpen}
+              toggle={this.dismissFail.bind(this)}
+            >
+              Sorry, please update your booking time and try again. 
+            </Alert>
           <Row>
+            
             <Col sm="12" md="6">
               <hr />
               <Card>
@@ -314,8 +393,7 @@ export class Booking extends Component {
           <Row>
             <Col>
               <Button
-                //							disabled={this.state.validated ? true : false}
-                disabled={false}
+                disabled={this.isDisabled}
                 outline
                 color="success"
                 className={styles.wideBtn}
@@ -324,7 +402,7 @@ export class Booking extends Component {
               </Button>
             </Col>
           </Row>
-        </form>
+        </Form>
       </Container>
     );
   }
