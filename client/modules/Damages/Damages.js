@@ -48,11 +48,9 @@ export class Damages extends Component {
 	          image:this.state.image
 	        })
 		    .then(res => {
-		        console.log(res);
 		        this.setState({ message:"Thank you for your report!" });
 		    })
 		    .catch(err => {
-		        console.log(err);
 		        this.setState({ message:err });
 		    })
   	}
@@ -64,8 +62,6 @@ export class Damages extends Component {
 	}
 
   	handleImageUploaded(img){
-  		console.log("Images ", img)
-  		console.log("Images id ", img._id)
   		this.setState({
   			image:img._id
   		})

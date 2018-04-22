@@ -16,7 +16,7 @@ const bookingSchema = new Schema({
     ref: 'User',
     required: true,
   },
-  damage: [{
+  damages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Damage',
   }],

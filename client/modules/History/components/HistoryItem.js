@@ -55,9 +55,7 @@ class HistoryItem extends Component {
   }
 
   renderDamages(bs){
-    console.log("Enter renderDamages");
-    console.log(bs.car.damages.legth);
-    if(bs.car.damages.legth>0){
+    if(bs.car.damages.length>0){
       return(
         <div className="float-right">
             <Link to={`/damages/${bs.car._id}`}>

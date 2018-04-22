@@ -357,7 +357,7 @@ describe("Profile controller", () => {
   });
 
   // Test for history bookings
-  test.only("Should display user's bookings", async (done) => {
+  test("Should display user's bookings", async (done) => {
     var coordinate = new Coordinate();
     coordinate.latitude = "-37.669012";
     coordinate.longitude = "144.841027";
@@ -410,7 +410,6 @@ describe("Profile controller", () => {
     const jwt = getToken();
     const response = await request(app).get("/api/profile/bookings").set("Authorization", "Bearer " + jwt);
     const body = response.body;
-    console.log(response.text);
     expect(response.statusCode).toBe(200);
     done();
   })
