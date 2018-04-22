@@ -133,20 +133,20 @@ const updateMyProfile = function(req, res) {
 const getMyBookings = function(req, res){
   Booking.find({
     user: mongoose.Types.ObjectId(req.userId),
-  }).populate({
+  }).sort({ startsAt: -1 })
+    .populate({
       path:'car', populate: ['vehicleType', 'location'],
     })
     .exec((err, bookings) =>{
       if(err){
         res.status(500).send(err);
       }
-
+      // Make sure the damages are returned
       Promise.all(bookings.map((booking, n) =>
         Damage
           .find({ car: booking.car._id })
           .exec()
           .then(damages => {
-            console.log("found damages for car", damages, booking.car)
             booking.car.damages = damages;
             return booking;
           })
