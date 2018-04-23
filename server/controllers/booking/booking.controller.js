@@ -87,13 +87,28 @@ const createBooking = function(req, res) {
                         var checkFour = moment(endAt).isSame(compEnd);
                         var checkFive = moment(startAt).isSame(compStart);
                         var checkSix = moment(startAt).isSame(compEnd);
+                        var checkSeven = moment(compStart).isBetween(
+                          startAt,
+                          endAt,
+                          null,
+                          "()"
+                        );
+                        var checkEight = moment(compEnd).isBetween(
+                          startAt,
+                          endAt,
+                          null,
+                          "()"
+                        );
+                        // Checks to be reviewed in next sprint to be more elegant
                         if (
                           checkOne ||
                           checkTwo ||
                           checkThree ||
                           checkFour ||
                           checkFive ||
-                          checkSix
+                          checkSix ||
+                          checkSeven ||
+                          checkEight
                         ) {
                           //Sets alreadyBooked flag to true
                           alreadyBooked = true;
