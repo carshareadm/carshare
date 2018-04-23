@@ -32,10 +32,10 @@ import TimeTable from "./components/TimeTable";
 const nonDigit = /[^0-9]/g;
 //Booking component class
 export class Booking extends Component {
-  intervalNum = 15;
+  intervalNum = 60;
   intervalUnit = "minutes";
 
-  startTime = moment().add(2 * this.intervalNum, this.intervalUnit);
+  startTime = moment().startOf('hour').add(2 * this.intervalNum, this.intervalUnit);
 
   constructor(props) {
     super(props);
@@ -73,11 +73,7 @@ export class Booking extends Component {
 
   errorMsgs = {
     startDate:
-      "a valid date and time at least " +
-      2 * this.intervalNum +
-      " " +
-      this.intervalUnit +
-      " in the future is required",
+      "a valid date and time at least 1 hour in the future is required",
     endDate: "a date and time after start time is required",
   };
 
