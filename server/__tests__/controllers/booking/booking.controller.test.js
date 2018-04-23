@@ -185,6 +185,88 @@ describe("Booking controller", () => {
     }
   });
 
+  test("it should return 400 all fields are present but booking is in the middle", async done => {
+    const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
+    try {
+      license = await workingLicense.save();
+      testUser.license = await workingLicense.save();
+      const testBooking = new Booking();
+      testBooking.car = testCar._id;
+      testBooking.startsAt = moment().add(1, 'hour');
+      testBooking.endsAt = moment().add(3, 'hour');
+      testBooking.user = testUser._id;
+      testBooking.unlockCode = "123456";
+      testBooking.disabled = false;
+      await testBooking.save();
+      const user = await testUser.save();
+      let token = {
+        sub: testUser._id,
+        email: testUser.email,
+        isAdmin: false,
+        exp: DateUtils.getDateInSeconds(
+          DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
+        ),
+      };
+      const encodedToken = jwt.encode(token, config.jwt.secret);    
+    request(app)
+      .post("/api/booking")
+      .set("Authorization", "Bearer " + encodedToken)
+      .send({
+        userid: testUser._id,
+        car: testCar._id,
+        startAt: moment(),
+        endAt: moment().add(1, 'day'),
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(400);
+        done();
+      });
+    } catch (e) {
+      done(e);
+    }
+  });
+
+  test("it should return 400 all fields are present but booking exist", async done => {
+    const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
+    try {
+      license = await workingLicense.save();
+      testUser.license = await workingLicense.save();
+      const testBooking = new Booking();
+      testBooking.car = testCar._id;
+      testBooking.startsAt = moment();
+      testBooking.endsAt = moment().add(1, 'day');
+      testBooking.user = testUser._id;
+      testBooking.unlockCode = "123456";
+      testBooking.disabled = false;
+      await testBooking.save();
+      const user = await testUser.save();
+      let token = {
+        sub: testUser._id,
+        email: testUser.email,
+        isAdmin: false,
+        exp: DateUtils.getDateInSeconds(
+          DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
+        ),
+      };
+      const encodedToken = jwt.encode(token, config.jwt.secret);    
+    request(app)
+      .post("/api/booking")
+      .set("Authorization", "Bearer " + encodedToken)
+      .send({
+        userid: testUser._id,
+        car: testCar._id,
+        startAt: moment(),
+        endAt: moment().add(1, 'day'),
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(400);
+        done();
+      });
+    } catch (e) {
+      done(e);
+    }
+  });
+
   test("it should return 200 all fields are present", async done => {
     const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
     try {

@@ -13,7 +13,7 @@ const createDamage = function(req, res){
       loggedAt: new Date(),
       booking: booking._id,
       car: booking.car,
-      image: req.body.image
+      image: req.body.image,
     });
     newDamage
       .save()
@@ -45,5 +45,5 @@ const showDamage = function(req, res){
 
 module.exports = {
   createDamage: createDamage,
-  showDamage: showDamage
+  showDamage: showDamage,
 }

@@ -21,6 +21,8 @@ const bookingSchema = new Schema({
     ref: 'Damage',
   }],
   disabled: { type: "Boolean", required: true, default: false },
+  totalCost: { type: mongoose.Schema.Types.Number},
 });
+
 
 module.exports = mongoose.model('Booking', bookingSchema);
