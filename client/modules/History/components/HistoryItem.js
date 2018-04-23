@@ -21,9 +21,12 @@ import styles from './HistoryItem.css'
 class HistoryItem extends Component {
 
   checkTheDate(bs){
+    console.log("checkTheDate");
+    console.log(bs.startsAt);
+    console.log(bs.endsAt);
     if (moment().isBetween(moment(bs.startsAt), moment(bs.endsAt))){
       return "current"
-    } else if (moment(bs.startsAt).isAfter(moment().add(1, 'hours'))){
+    } else if (moment(bs.startsAt).isAfter(moment())){
       return "future"
     } else {
       return "past"
