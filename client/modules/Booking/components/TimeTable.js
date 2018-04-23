@@ -57,7 +57,7 @@ export class TimeTable extends Component {
 		return(
 			<tr key={h}>
 				<th scope="row">{h}</th>
-				{days.map(d => <td key={d+h}>{this.checkBooking(d, h) ? "X" : " "}</td>)}
+				{days.map(d => <td key={d+h}>{this.checkBooking(d, h) ?  " " : "✓"}</td>)}
 			</tr>
 		)
 	}
@@ -90,7 +90,7 @@ export class TimeTable extends Component {
 				<h3>Vehicle availability</h3>
 				<div className={styles.weekBlock}>
 					<Button color="primary" className={styles.buttonL} onClick={this.weekBackward}> &larr; </Button>
-						This Week
+					Week Commencing {this.state.time.format('MMMM Do YYYY')}
 					<Button color="primary" className={styles.buttonR} onClick={this.weekForward}> &rarr; </Button>
 				</div>
 				<Table>
