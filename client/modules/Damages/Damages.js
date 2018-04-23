@@ -24,8 +24,8 @@ import Loading from '../Loading/Loading';
 import * as http from "../../util/http";
 import * as validator from "validator";
 
-import styles from './Damages.css'
-import stylesMain from '../../main.css'
+import styles from './Damages.css';
+import stylesMain from '../../main.css';
 
 export class Damages extends Component {
 
@@ -34,7 +34,7 @@ export class Damages extends Component {
 	    this.state = {
 	      descr: "",
 	      image: "",
-	      message: ""
+	      message: "",
 	    };
   	}
 
@@ -44,26 +44,26 @@ export class Damages extends Component {
 	    http
 	        .client()
 	        .post(`/damage/${this.props.location.query.bookingId}/createDamage`, {
-	          description:this.state.descr,
-	          image:this.state.image
+	          description: this.state.descr,
+	          image: this.state.image,
 	        })
 		    .then(res => {
-		        this.setState({ message:"Thank you for your report!" });
+		        this.setState({ message: "Thank you for your report!" });
 		    })
 		    .catch(err => {
-		        this.setState({ message:err });
+		        this.setState({ message: err });
 		    })
   	}
 
 	handleInputChange(event){
 	  	this.setState({
-	  		descr:event.target.value
+	  		descr: event.target.value,
 	  	});
 	}
 
   	handleImageUploaded(img){
   		this.setState({
-  			image:img._id
+  			image: img._id,
   		})
   	}
 
