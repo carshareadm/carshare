@@ -3,6 +3,7 @@ import car from "../../models/car";
 import User from "../../models/user";
 
 import moment from "moment";
+import mongoose from 'mongoose';
 
 const codeGenerator = require("../../util/code.generator");
 
@@ -28,7 +29,7 @@ const createBooking = function(req, res) {
         // Unauthorised if unable to find current user
         res.status(401).send();
       } else {
-        car.findById(carid).exec((carErr, vehicle) => {
+        car.findById(carid).populate('vehicleType').exec((carErr, vehicle) => {
           if (carErr) {
             res.status(500).send(carErr);
           } else if (!vehicle) {
@@ -42,11 +43,14 @@ const createBooking = function(req, res) {
             newBooking.user = selecteduser._id;
             newBooking.unlockCode = codeGenerator.generate();
             newBooking.disabled = false;
+            var hours = moment.duration(moment(endAt, 'YYYY/MM/DD HH:mm')
+            .diff(moment(startAt, 'YYYY/MM/DD HH:mm'))).asHours();
+            newBooking.totalCost =  hours*vehicle.vehicleType.hourlyRate;
             let alreadyBooked = false;
 
             var validateErrs = newBooking.validateSync();
             if (validateErrs) {
-              res.status(500).send(errs);
+              res.status(500).send(validateErrs);
             } else {
               Booking.find({ car: req.body.car, disabled: false }).exec(
                 (err, bookings) => {
