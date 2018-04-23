@@ -35,7 +35,8 @@ export class Booking extends Component {
   intervalNum = 60;
   intervalUnit = "minutes";
 
-  startTime = moment().startOf('hour').add(2 * this.intervalNum, this.intervalUnit);
+  startTime = moment().startOf('hour').add(1,'hours');
+  endTime = moment().startOf('hour').add(2,'hours');
 
   constructor(props) {
     super(props);
@@ -46,7 +47,7 @@ export class Booking extends Component {
       selectedCar: {},
       selectedLocation: {},
       startDate: this.startTime,
-      endDate: this.startTime,
+      endDate: this.endTime,
       selectedCar: false,
       loggedIn: false,
       booked: false,

@@ -49,14 +49,12 @@ const parseBookings = function(booking, pStart, pEnd){
 const getTimes = function(req, res) {
   // To allow for weeklly display and switch, we take Start period and End period from URL
   let startsAt;
-  let endsAt;
-  if(req.query.start && req.query.end){
+  if(req.query.start){
     startsAt = moment(req.query.start);
-    endsAt =  moment(req.query.end);
   } else {
     startsAt = moment().startOf("week");
-    endsAt =  moment().endOf("week");
   }
+  let endsAt = moment(startsAt).endOf("week");
   //Book ID also comes from the URL
   Booking.find({
       startsAt:{$lt:endsAt.toDate()}, 
