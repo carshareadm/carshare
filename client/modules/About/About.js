@@ -22,8 +22,7 @@ export class About extends Component {
 					We make driving as simple as ShaCar.<br/><br/>
 				</p>
 				<p><Link to="/register">Register today to join us.</Link><br/><br/>
-				Click here to see our wide range of cars and locations.(link to display cars / location)
-
+				Click the link to see our wide range of <Link to="/cars">Cars</Link> and <Link to="/locations">Locations</Link>.
 				</p>
 	        </div>
 	    );
