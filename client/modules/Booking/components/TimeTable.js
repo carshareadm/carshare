@@ -33,13 +33,20 @@ export class TimeTable extends Component {
 
 	constructor(props){
 		super(props);
+		this.weekBackward = this.weekBackward.bind(this);
+		this.weekForward = this.weekForward.bind(this);
 		this.state = {
 			times:[],
+			time:moment().startOf('week'),
 		}
 	}
-	
+
 	componentDidMount(){
-		http.client().get(`/cars/${this.props.data._id}/times`).then(res => {
+		this.loadData(this.state.time);
+	}
+	
+	loadData(time){
+		http.client().get(`/cars/${this.props.data._id}/times?start=${time.toISOString()}`).then(res => {
 			this.setState({
 				times: res.data,
 			})
@@ -61,14 +68,30 @@ export class TimeTable extends Component {
 		});
 	}
 
+	weekBackward(){
+		const newTime = this.state.time.subtract(1,"weeks");
+		this.setState({
+			time: newTime
+		});
+		this.loadData(newTime);
+	}
+
+	weekForward(){
+		const newTime = this.state.time.add(1,"weeks");
+		this.setState({
+			time: newTime
+		});
+		this.loadData(newTime);
+	}
+
 	render(){
 		return(
 			<div className={styles.tableContainer}>	
 				<h3>Vehicle availability</h3>
 				<div className={styles.weekBlock}>
-					<Button color="primary" className={styles.buttonL}> &larr; </Button>
+					<Button color="primary" className={styles.buttonL} onClick={this.weekBackward}> &larr; </Button>
 						This Week
-					<Button color="primary" className={styles.buttonR}> &rarr; </Button>
+					<Button color="primary" className={styles.buttonR} onClick={this.weekForward}> &rarr; </Button>
 				</div>
 				<Table>
 					<thead>
