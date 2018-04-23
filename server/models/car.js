@@ -26,8 +26,8 @@ const carSchema = new Schema({
   disabled: { type: "Boolean", required: true, default: false },
   damages:[{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Damage"
-  }]
+    ref: "Damage",
+  }],
 });
 
 module.exports = mongoose.model("Car", carSchema);

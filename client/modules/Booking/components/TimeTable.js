@@ -20,12 +20,12 @@ import * as http from "../../../util/http";
 import moment from 'moment';
 
 import stylesMain from '../../../main.css';
-import styles from './TimeTable.css'
+import styles from './TimeTable.css';
 
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const hours = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00',
-'13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+'13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
 
 
 //Cars component class
@@ -57,7 +57,7 @@ export class TimeTable extends Component {
 		return(
 			<tr key={h}>
 				<th scope="row">{h}</th>
-				{days.map(d => <td key={d+h}>{this.checkBooking(d, h) ? "X" : " "}</td>)}
+				{days.map(d => <td key={d+h}>{this.checkBooking(d, h) ?  " " : "✓"}</td>)}
 			</tr>
 		)
 	}
@@ -71,7 +71,7 @@ export class TimeTable extends Component {
 	weekBackward(){
 		const newTime = this.state.time.subtract(1,"weeks");
 		this.setState({
-			time: newTime
+			time: newTime,
 		});
 		this.loadData(newTime);
 	}
@@ -79,7 +79,7 @@ export class TimeTable extends Component {
 	weekForward(){
 		const newTime = this.state.time.add(1,"weeks");
 		this.setState({
-			time: newTime
+			time: newTime,
 		});
 		this.loadData(newTime);
 	}
@@ -90,7 +90,7 @@ export class TimeTable extends Component {
 				<h3>Vehicle availability</h3>
 				<div className={styles.weekBlock}>
 					<Button color="primary" className={styles.buttonL} onClick={this.weekBackward}> &larr; </Button>
-						This Week
+					Week Commencing {this.state.time.format('MMMM Do YYYY')}
 					<Button color="primary" className={styles.buttonR} onClick={this.weekForward}> &rarr; </Button>
 				</div>
 				<Table>

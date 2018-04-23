@@ -18,7 +18,7 @@ const damageSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Image',
   },
-  disabled: { type: "Boolean", required: true, default: false }
+  disabled: { type: "Boolean", required: true, default: false },
 });
 
 module.exports = mongoose.model('Damage', damageSchema);
