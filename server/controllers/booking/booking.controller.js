@@ -3,7 +3,6 @@ import car from "../../models/car";
 import User from "../../models/user";
 
 import moment from "moment";
-import mongoose from 'mongoose';
 
 const codeGenerator = require("../../util/code.generator");
 
