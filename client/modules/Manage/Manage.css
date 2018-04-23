@@ -1,99 +1,45 @@
-.body {
-	padding: 2em;
-	background-color: rgb(226, 226, 226);
-  }
-  
-  .title {
-	font-size: 26pt;
-	color: green;
-	margin-bottom: 1em;
-  }
-  
-  .h4 {
-	color: green;
-	font-size: 1rem;
-  }
-  
-  .wideBtn {
-	width: 100%;
-	text-align: right !important;
-  }
-  
-  .form {
-	padding: none !important;
-  }
-  
-  .phoneNum{
-	  font-size:20pt;
-	  color: green;
-  }
-  
-  .regNote{
-  visibility: visible;
-	  font-size:20pt;
-	  color: green;
-  }
-
-  .title{
-    font-size:26pt;
-    color: green;
+.linkCol {
+    text-align:center;
+    color: white;
 }
 
-.subtitle{
-    margin-top: 0.3em;
-    width: 90%;
-    background-color: rgb(198, 198, 198);
-    text-align: center;
-    color: rgb(76,157,38);
-    font-size: 24px;
-    padding-bottom: 0.3em;
- }
- 
-.questiontitle{
-    margin-top: 0.3em;
-    margin-bottom: 0.3em;
-    margin-left: 0.3em;
+.linkCol a {
+    border: 1px solid white;
+    display: block;
+    padding: 10px;    
+    position: relative;
+    margin-bottom: 15px;
 }
 
-.body{
-	  padding: 2em;
-    padding-top: 3em;
-    background-color: rgb(226, 226, 226);
+.linkCol a:link,
+.linkCol a:visited,
+.linkCol a:hover,
+.linkCol a:active {
+    text-decoration: none;
+    color: white;
 }
 
-.innerLi{
-	margin-left: 3em;
-	margin-bottom: 1em;
+.linkCol a:hover {
+    background: rgba(0,0,0,0.3);
 }
 
-p{
-	padding: 0.5em;
+.linkCol a img {
+    height: 51px;
+    display: block;
+    position: relative;
+    margin: 0 auto 10px auto;
 }
 
-.faqItem{
-    width: 90%;
-    background-color: white;
-    text-align: center;
-    padding: 1em;
-    border:1px solid rgb(198, 198, 198);
-    margin-bottom: 1em;
-}
-
-
-.faqItem h3{
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.faqItem div{
-    text-align: left;
+.linkTxt {
+    position: relative;
     font-size: 18px;
+    margin: 0 auto;
 }
 
-ol{
-    margin-left: 0.5em;
+.noBg {
+    background: transparent;
 }
 
-li{
-    margin-left: 0.5em !important;
+.noBgTitle {
+    color: white;
 }

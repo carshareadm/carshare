@@ -17,10 +17,19 @@ import Cars from './modules/Cars/Cars';
 import History from './modules/History/History';
 import Damages from './modules/Damages/Damages';
 import { Profile } from './modules/Profile/Profile';
-import { Login } from './modules/Login/Login';
+import LoginForm from './modules/Login/LoginForm';
 
 import {Manage} from './modules/Manage/Manage';
+import {BookingsAdm} from './modules/Manage/Bookings/BookingsAdm';
+import {CarsAdm} from './modules/Manage/Cars/CarsAdm';
+import {LocationsAdm} from './modules/Manage/Locations/LocationsAdm';
+import {UsersAdm} from './modules/Manage/Users/UsersAdm';
+
 import PaymentDetails from './modules/PaymentDetails/PaymentDetails';
+import Unauthorised from './modules/Unauthorised/Unauthorised';
+
+import requireAuth from  './infrastructure/requireAuth';
+import requireAdminAuth from  './infrastructure/requireAdminAuth';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -37,19 +46,26 @@ if (process.env.NODE_ENV !== 'production') {
 export default (
 	<Route path="/" component={Layout}>
 		<IndexRoute component={Home} />
+		<Route path="about" component={About} />
 		<Route path="faq" component={Faq} />
 		<Route path="terms" component={TermsAndConditions} />
 		<Route path="contact" component={Contact} />
 		<Route path="register" component={Registration} />
-		<Route path="about" component={About} />
-		<Route path="booking" component={Booking} />
-		<Route path="manage" component={Manage} />
+		<Route path="login" component={LoginForm} />
 		<Route path="cars" component={Cars} />
-    	<Route path="locations" component={Locations}/>
-		<Route path="profile" component={Profile} />
-		<Route path="history" component={History} />
-		<Route path="login" component={Login} />
-    	<Route path='paymentDetails' component={PaymentDetails} />
-    	<Route path='damage' component={Damages} />
+		<Route path="locations" component={Locations}/>
+		<Route path="booking" component={requireAuth(Booking)} />
+		<Route path="history" component={requireAuth(History)} />
+		<Route path='paymentDetails' component={requireAuth(PaymentDetails)} />
+		<Route path="profile" component={requireAuth(Profile)} />
+                <Route path='damage' component={requireAuth(Damages)} />
+		{/* admin pages */}
+		<Route path="manage" component={requireAdminAuth(Manage)} />
+		<Route path="manage/bookings" component={requireAdminAuth(BookingsAdm)} />
+		<Route path="manage/cars" component={requireAdminAuth(CarsAdm)} />
+		<Route path="manage/locations" component={requireAdminAuth(LocationsAdm)} />
+		<Route path="manage/users" component={requireAdminAuth(UsersAdm)} />
+		
+		<Route path='unauthorised' component={Unauthorised} />
 	</Route>
 );

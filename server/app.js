@@ -119,7 +119,7 @@ const renderError = err => {
 };
 
 app.use('/*',
-  (req, res) => res.send(renderFullPage('', { app: {} }))
+  (req, res) => res.send(renderFullPage('', { auth: {loggedIn: false, isAdmin: false} }))
 );
 
 module.exports = app;

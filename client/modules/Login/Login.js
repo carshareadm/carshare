@@ -1,6 +1,14 @@
 //Import react
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {
+  setLoggedIn,
+  setLoggedOut,
+  setAdmin,
+} from '../../infrastructure/AuthActions';
+
 import styles from "./Login.css";
 import arrows from "../Layout/angle-double-right.svg.png";
 
@@ -16,10 +24,9 @@ import {
 } from "reactstrap";
 
 import * as http from "../../util/http";
+import TokenUtils from '../../util/token.utils';
 
 var validator = require("validator");
-
-const storage = require("../../util/persistedStorage");
 
 //Create a component class
 
@@ -29,8 +36,6 @@ export class Login extends Component {
     this.state = {
       email: "",
       password1: "",
-      LoggedIn: false,
-
       touched: { email: false },
     };
     this.isFormInvalid = this.isFormInvalid.bind(this);
@@ -55,10 +60,6 @@ export class Login extends Component {
     return errs;
   }
 
-  componentDidMount() {
-    if (storage.get(storage.Keys.JWT)) this.setState({ loggedIn: true });
-  }
-
   handleBlur(field) {
     this.setState({
       touched: Object.assign({}, this.state.touched, { [field]: true }),
@@ -73,7 +74,7 @@ export class Login extends Component {
     this.setState({ password1: evt.target.value });
   };
 
-  handleSubmit(evt) {
+  handleSubmit = (evt) => {
     evt.preventDefault();
     if (this.isFormInvalid()) {
       return;
@@ -85,8 +86,11 @@ export class Login extends Component {
           password: this.state.password1,
         })
         .then(res => {
-          storage.set(storage.Keys.JWT, res.data.token);
-          this.setState({ LoggedIn: true });
+          TokenUtils.setToken(res.data.token);
+          const adm = TokenUtils.isAdmin(TokenUtils.token());
+          console.log(this);
+          this.props.setLoggedIn();
+          this.props.setAdmin(adm);
         })
         .catch(err => {
           console.log(err);
@@ -120,8 +124,9 @@ export class Login extends Component {
   }
 
   render() {
-    return this.state.LoggedIn ? this.registered() : this.LoginFrm();
+    return this.props.loggedIn ? this.registered() : this.LoginFrm();
   }
+
   registered() {
     return (
       <div className={styles.body}>
@@ -133,6 +138,7 @@ export class Login extends Component {
       </div>
     );
   }
+
   LoginFrm() {
     this.errors = this.validate();
     const isDisabled = this.isFormInvalid();
@@ -174,7 +180,7 @@ export class Login extends Component {
                   {this.renderLabel("password", "password")}
                   <Input
                     name="password"
-                    id="password"
+                    id="password_1"
                     type="password"
                     placeholder="Enter Password"
                     value={this.state.password1}
@@ -205,4 +211,23 @@ export class Login extends Component {
   }
 }
 
-export default Login;
+// redux mapping stuff
+// Login.propTypes = {
+//   loggedIn: PropTypes.bool.isRequired,
+// };
+
+const mapStateToProps = (state) => {
+  console.log('state', state);
+  return {
+    loggedIn: state.auth.loggedIn,
+  };
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  //dispatch,
+  setLoggedIn,
+  setLoggedOut,
+  setAdmin,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
