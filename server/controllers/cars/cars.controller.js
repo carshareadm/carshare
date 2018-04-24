@@ -9,13 +9,13 @@ import moment from 'moment';
 
 const getCars = function(req, res) {
   const filter = {
-    'disabled': false, // cars that arent disabled
+    'isDisabled': false, // cars that arent disabled
   };
   Car.find(filter).
     populate('vehicleType')
     .populate({
       path: 'location',
-      match: {disabled: false},
+      match: {isDisabled: false},
       populate: {path: 'coordinates'},
     })
     .populate('damages')
@@ -98,7 +98,7 @@ const getCarsForType = function(req, res){
       vehicleType: vt,
     };
     if (!req.isAdmin) {
-      carQry.disabled = false;
+      carQry.isDisabled = false;
     }
     Car.find(carQry).populate('vehicleType').exec((err, car) => {
       if(err){

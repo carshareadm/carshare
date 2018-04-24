@@ -21,9 +21,9 @@ const isAuthenticatedGuard = function (req, res, next) {
   User.findById(payload.sub, function(err, user){
     if (!user){
       return res.status(401).send({error: 'No User'});
-    } else if (user.disabled === true) {
+    } else if (user.isDisabled === true) {
       return res.status(401).send({error: 'User disabled'});
-    } else if (user.blockedByAdmin === true) {
+    } else if (user.isBlockedByAdmin === true) {
       return res.status(401).send({error: 'User has ben blocked by admin'});
     } else {
       req.userId = user._id;

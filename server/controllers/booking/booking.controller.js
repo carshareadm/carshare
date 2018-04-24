@@ -46,7 +46,6 @@ const createBooking = function(req, res) {
         newBooking.endsAt = endAt.toString();
         newBooking.user = selectedUser._id;
         newBooking.unlockCode = codeGenerator.generate();
-        newBooking.disabled = false;
 
         var hours = moment
           .duration(
@@ -65,7 +64,7 @@ const createBooking = function(req, res) {
         }
         Booking.find({
           $and: [
-            { car: req.body.car, disabled: false },
+            { car: req.body.car, isDisabled: false },
             {
               $or: [
                 {

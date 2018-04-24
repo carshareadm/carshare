@@ -18,8 +18,8 @@ exports.register = function(req, res) {
   user.password = password;
   user.isAdmin = false;
   user.isAccountConfirmed = false;
-  user.disabled = false;
-  user.blockedByAdmin = false;
+  user.isDisabled = false;
+  user.isBlockedByAdmin = false;
 
   var errs = user.validateSync();
 
@@ -28,43 +28,38 @@ exports.register = function(req, res) {
   } else {
     let userLicense = new License();
     userLicense.licenseNumber = licensenum;
-    userLicense.disabled = false;
     userLicense.approvedByAdmin = false;
-    var licenseerrs = userLicense.validateSync();
+    var licenseErrs = userLicense.validateSync();
 
-    if (licenseerrs) {
-      res.status(400).send(licenseerrs);
-    } else {
-      userLicense.save((licenseerr, usrlicense) => {
-        if (licenseerr) {
-          res.status(500).send(licenseerr);
-        } else {
-          user.license = userLicense;
-          User.findOne({ email: user.email }).exec((error, exist) => {
-            if (exist) {
-              res.status(400).send();
-            } else {
-              user.save((err, saved) => {
-                if (err) {
-                  res.status(500).send(err);
-                } else {
-                  let token = {
-                    sub: saved._id,
-                    email: saved.email,
-                    isAdmin: saved.isAdmin,
-                    exp: DateUtils.getDateInSeconds(
-                      DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
-                    ),
-                  };
-
-                  const encodedToken = jwt.encode(token, config.jwt.secret);
-                  res.status(200).send({ token: encodedToken });
-                }
-              });
-            }
-          });
-        }
-      });
+    if (licenseErrs) {
+      return res.status(400).send(licenseErrs);
     }
+    userLicense.save((licenseerr, usrlicense) => {
+      if (licenseerr) {
+        return res.status(500).send(licenseerr);
+      }
+      user.license = userLicense;
+      User.findOne({ email: user.email }).exec((error, exist) => {
+        if (exist) {
+          return res.status(400).send();
+        }
+        user.save((err, saved) => {
+          if (err) {
+            return res.status(500).send(err);
+          }
+          let token = {
+            sub: saved._id,
+            email: saved.email,
+            isAdmin: saved.isAdmin,
+            exp: DateUtils.getDateInSeconds(
+              DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
+            ),
+          };
+
+          const encodedToken = jwt.encode(token, config.jwt.secret);
+          return res.status(200).send({ token: encodedToken });
+        });
+      });
+    });
   }
 };

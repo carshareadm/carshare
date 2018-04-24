@@ -1,7 +1,11 @@
 import * as storage from './persistedStorage';
 
+const jwt = () => {
+  return storage.get(storage.Keys.JWT);
+};
+
 const token = () => {
-  const t = storage.get(storage.Keys.JWT);
+  const t = jwt();
   return !t ? null : JSON.parse(atob(t.split('.')[1]));
 };
 
@@ -25,6 +29,7 @@ const clearToken = () => {
 };
 
 module.exports = {
+  jwt: jwt,
   token: token,
   isExpired: isExpired,
   isAdmin: isAdmin,

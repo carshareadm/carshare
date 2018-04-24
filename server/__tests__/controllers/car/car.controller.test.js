@@ -25,43 +25,46 @@ describe("Car controller", () => {
 		await mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
 	})
 
-	beforeEach(done => {
-		car1 = new Car();
-		car1.rego = 'AAA111';
-		car1.make = "AudiA"
-		car1.model = "TT";
-		car1.colour = "white";
-		car1.year = "2018";
-		car1.seats = "4";
-		car1.doors = "2";
-		car1.disabled = false;
+	beforeEach(async done => {
+		try {
+			car1 = new Car();
+			car1.rego = 'AAA111';
+			car1.make = "AudiA"
+			car1.model = "TT";
+			car1.colour = "white";
+			car1.year = "2018";
+			car1.seats = "4";
+			car1.doors = "2";
+			car1.isDisabled = false;
+	
+			var coordinate = new Coordinate();
+			coordinate.latitude = "-37.669012";
+			coordinate.longitude = "144.841027";
+	
+			var location = new Location();
+			location.name = "Melbourne Airport";
+			location.coordinates = coordinate;
+			location.isDisabled = false;
+			car1.location = location;
+			
+			var movements = new Movement();
+			movements.car = car1;
+			movements.coordinates = location.coordinates;
+	
+			vehicleType = new VehicleType();
+			vehicleType.name = "small"
+			vehicleType.hourlyRate = 7;
+			car1.vehicleType = vehicleType;
 
-		var coordinate = new Coordinate();
-		coordinate.latitude = "-37.669012";
-		coordinate.longitude = "144.841027";
+			let s = await coordinate.save();
+			s = await location.save();
+			s = await vehicleType.save();
+			s = await car1.save();
 
-		var location = new Location();
-		location.name = "Melbourne Airport";
-		location.coordinates = coordinate;
-		location.disabled = false;
-		car1.location = location;
-		
-		var movements = new Movement();
-		movements.car = car1;
-		movements.coordinates = location.coordinates;
-
-		vehicleType = new VehicleType();
-		vehicleType.name = "small"
-		vehicleType.hourlyRate = 7;
-		car1.vehicleType = vehicleType;
-
-		coordinate.save()
-			.then(() => location.save())
-			.then(() => vehicleType.save())
-			.then(() => movements.save())
-			.then(() => car1.save())
-			.then(() => done())
-			.catch(err => done(err))
+			done();
+		} catch(e) {
+			done(e);
+		}
 	})
 
 
@@ -78,7 +81,7 @@ describe("Car controller", () => {
 
 	describe("Disabled path", () => {
 		test("Request all cars, disabled car", async () => {
-			car1.disabled = true;
+			car1.isDisabled = true;
 			car1 = await car1.save();
 			const response = await request(app).get("/api/cars")
 			expect(response.statusCode).toBe(200);
@@ -86,7 +89,7 @@ describe("Car controller", () => {
 		})
 
 		test("Request all cars, disabled location", async () => {
-			car1.location.disabled = true;
+			car1.location.isDisabled = true;
 			const loc = await car1.location.save();
 			car1.location = loc;
 			car1 = await car1.save();

@@ -19,7 +19,7 @@ const isAbleToMakeBookingGuard = async (req, res, next) => {
     if (!user.license.image) { 
       return res.status(401).send({error: 'License photo not uploaded'});
     }
-    if (user.license.disabled === true) { 
+    if (user.license.isDisabled === true) { 
       return res.status(401).send({error: 'License disabled'});
     }
     if (user.license.approvedByAdmin === false) { 

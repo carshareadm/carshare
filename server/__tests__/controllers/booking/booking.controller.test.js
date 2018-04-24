@@ -54,7 +54,7 @@ describe("Booking controller", () => {
     coordinate.longitude = "151.179428";
 
     location.name = "Sydney Airport";
-    location.disabled = false;
+    location.isDisabled = false;
 
     const typeSmall = new VehicleType();
     typeSmall.name = "small";
@@ -70,7 +70,7 @@ describe("Booking controller", () => {
     car.seats = "5";
     car.doors = "3";
     car.vehicleType = typeSmall;
-    car.disabled = false;
+    car.isDisabled = false;
     car.location = location;
     car.movements = new Movement();
     car.movements.car = car;
@@ -121,7 +121,7 @@ describe("Booking controller", () => {
     const l = new License();
     l.licenseNumber = number;
     l.image = image;
-    l.disabled = disabled;
+    l.isDisabled = disabled;
     l.approvedByAdmin = approved;
     return l;
   };
@@ -196,7 +196,7 @@ describe("Booking controller", () => {
       testBooking.endsAt = moment().add(3, 'hour');
       testBooking.user = testUser._id;
       testBooking.unlockCode = "123456";
-      testBooking.disabled = false;
+      testBooking.isDisabled = false;
       await testBooking.save();
       const user = await testUser.save();
       let token = {
@@ -237,7 +237,7 @@ describe("Booking controller", () => {
       testBooking.endsAt = moment().add(1, 'day');
       testBooking.user = testUser._id;
       testBooking.unlockCode = "123456";
-      testBooking.disabled = false;
+      testBooking.isDisabled = false;
       await testBooking.save();
       const user = await testUser.save();
       let token = {
