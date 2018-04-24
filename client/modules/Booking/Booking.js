@@ -16,7 +16,7 @@ import {
   Col,
   Form,
   Alert,
-  FormFeedback,
+  FormFeedback
 } from "reactstrap";
 import * as http from "../../util/http";
 
@@ -35,8 +35,12 @@ export class Booking extends Component {
   intervalNum = 60;
   intervalUnit = "minutes";
 
-  startTime = moment().startOf('hour').add(1,'hours');
-  endTime = moment().startOf('hour').add(2,'hours');
+  startTime = moment()
+    .startOf("hour")
+    .add(1, "hours");
+  endTime = moment()
+    .startOf("hour")
+    .add(2, "hours");
 
   constructor(props) {
     super(props);
@@ -60,8 +64,8 @@ export class Booking extends Component {
       touched: {
         startDate: false,
         endDate: false,
-        ccv: false,
-      },
+        ccv: false
+      }
     };
     this.isFormInvalid = this.isFormInvalid.bind(this);
   }
@@ -69,13 +73,13 @@ export class Booking extends Component {
 
   labels = {
     startDate: "Start Time",
-    endDate: "End Time",
+    endDate: "End Time"
   };
 
   errorMsgs = {
     startDate:
       "a valid date and time at least 1 hour in the future is required",
-    endDate: "a date and time after start time is required",
+    endDate: "a date and time after start time is required"
   };
 
   errors = {};
@@ -85,7 +89,7 @@ export class Booking extends Component {
     if (token) {
       this.setState({
         loggedIn: true,
-        userid: JSON.parse(atob(token.split(".")[1]))["sub"],
+        userid: JSON.parse(atob(token.split(".")[1]))["sub"]
       });
     }
     this.setState({ carid: this.props.location.query.carid });
@@ -106,7 +110,7 @@ export class Booking extends Component {
       if (element._id == this.props.location.query.carid) {
         this.setState({
           selectedCar: element,
-          selectedLocation: element.location,
+          selectedLocation: element.location
         });
       }
     });
@@ -114,19 +118,19 @@ export class Booking extends Component {
 
   handleBlur(field) {
     this.setState({
-      touched: Object.assign({}, this.state.touched, { [field]: true }),
+      touched: Object.assign({}, this.state.touched, { [field]: true })
     });
   }
 
   validate() {
     // true means invalid, so our conditions got reversed
     const errs = {
-      // Placeholder ccv validation. 
-      ccv: this.state.ccv.length>4,
+      // Placeholder ccv validation.
+      ccv: this.state.ccv.length > 4,
       startDate: moment(this.startTime).isSameOrAfter(this.state.endDate),
       endDate:
         this.state.startDate === this.state.endDate ||
-        this.state.startDate.isAfter(this.state.endDate),
+        this.state.startDate.isAfter(this.state.endDate)
     };
     return errs;
   }
@@ -143,11 +147,12 @@ export class Booking extends Component {
     this.setState({ endDate: date });
   }
 
-  handleCcvChange = (evt) => {
+  handleCcvChange = evt => {
     this.setState({ ccv: evt.target.value });
-  }
+  };
 
   handleCcvConfirmation(evt) {
+    evt.preventDefault();
     this.setState({ ccvConfirmed: true });
   }
 
@@ -163,14 +168,14 @@ export class Booking extends Component {
           userid: this.state.userid,
           car: this.state.carid,
           startAt: this.state.startDate,
-          endAt: this.state.endDate,
+          endAt: this.state.endDate
         })
         .then(res => {
           this.setState({ booked: true });
           this.setState({ successAlertOpen: true });
         })
         .catch(err => console.log(err));
-        this.setState({ failAlertOpen: true });
+      this.setState({ failAlertOpen: true });
     }
   }
 
@@ -226,11 +231,16 @@ export class Booking extends Component {
   }
 
   dismissSuccess() {
-    this.setState({successAlertOpen: false});
+    this.setState({ successAlertOpen: false });
   }
 
   dismissFail() {
     this.setState({ failAlertOpen: false });
+  }
+
+  handleTimeChange(evt) {
+    evt.preventDefault();
+    console.log(evt.target.value);
   }
 
   cvvPrompt() {
@@ -238,46 +248,80 @@ export class Booking extends Component {
       <div className={styles.body}>
         <h1 className={styles.title}>CVV Confirmation</h1>
         <Form onSubmit={this.handleCcvConfirmation.bind(this)}>
-        <FormGroup>
-                <Label for="ccv">Please confirm your credit card CVV</Label>
-                <Input
-                  type="text"
-                  name="ccv"
-                  id="ccv"
-                  placeholder="CVV"
-                  className={
-                    "form-control " + this.isError("ccv")
-                      ? "is-invalid"
-                      : ""
-                  }
-                  value={this.state.ccv}
-                  onBlur={() => this.handleBlur("ccv")}
-                  onChange={this.handleCcvChange.bind(this)}/>
-                <FormFeedback>
-                  A valid CVV is required.
-                </FormFeedback>
-              </FormGroup>
-              <Button
-                outline
-                color="success"
-                className={styles.wideBtn}
-              >
-                Confirm
-              </Button>
-              </Form>
+          <FormGroup>
+            <Label for="ccv">Please confirm your credit card CVV</Label>
+            <Input
+              type="text"
+              name="ccv"
+              id="ccv"
+              placeholder="CVV"
+              className={
+                "form-control " + this.isError("ccv") ? "is-invalid" : ""
+              }
+              value={this.state.ccv}
+              onBlur={() => this.handleBlur("ccv")}
+              onChange={this.handleCcvChange.bind(this)}
+            />
+            <FormFeedback>A valid CVV is required.</FormFeedback>
+          </FormGroup>
+          <Button outline color="success" className={styles.wideBtn}>
+            Confirm
+          </Button>
+        </Form>
       </div>
     );
   }
 
   booked() {
     return (
-      <div className={styles.body}>
+      <Container className={styles.body}>
         <h1 className={styles.title}>Booking success</h1>
-        <p>
-          <Link to="/">Click here to return home</Link>
-          <br />
-        </p>
-      </div>
+        <Row>
+          <Col sm="12" md="6">
+            <hr />
+            <Card>
+              <CardHeader tag="h5">
+                {this.state.selectedCar.year} {this.state.selectedCar.make}{" "}
+                {this.state.selectedCar.model} ({this.state.selectedCar.colour}){" "}
+                <br />
+                <span className="text-muted">
+                  {this.state.selectedLocation.name}
+                </span>
+              </CardHeader>
+              <CardBody>
+                <CardText>
+                  Vehicle type: {this.state.selectedCar.vehicleType.name},{" "}
+                  {this.state.selectedCar.doors} doors<br />
+                  Seats: {this.state.selectedCar.seats}
+                  <br />
+                  Hourly rate: ${this.state.selectedCar.vehicleType.hourlyRate.toFixed(
+                    2
+                  )}
+                  <br />
+                  Registration: {this.state.selectedCar.rego}
+                </CardText>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col sm="12" md="6">
+            <hr />
+            <Card>
+              <CardHeader tag="h5">
+                Vehicle Booked from <br />
+                <span className="text-muted">(Placeholder)</span>
+              </CardHeader>
+              <CardBody>
+                <CardText>Booking Cost</CardText>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Link to="/">Click here to return home</Link>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
@@ -287,7 +331,7 @@ export class Booking extends Component {
     Placeholder. isDisabled will be reviewed later to improve implementation
     and enable the book button on based on information from the timetable
     */
-   const isDisabled = this.isFormInvalid();
+    const isDisabled = this.isFormInvalid();
     // Here goes our page
     return (
       <Container className={styles.body}>
@@ -296,99 +340,98 @@ export class Booking extends Component {
             <h1 className={styles.title}>Booking</h1>
           </Col>
         </Row>
-        <Form onSubmit={this.handleBooking.bind(this)}>
         <Alert
-              color="success"
-              isOpen={this.state.successAlertOpen}
-              toggle={this.dismissSuccess.bind(this)}
-            >
-              Thank you, your booking was made successfully.
-            </Alert>
-            <Alert
-              color="danger"
-              isOpen={this.state.failAlertOpen}
-              toggle={this.dismissFail.bind(this)}
-            >
-              Sorry, please update your booking time and try again. 
-            </Alert>
-          <Row>
-            
-            <Col sm="12" md="6">
-              <hr />
-              <Card>
-                <CardHeader tag="h5">
-                  {this.state.selectedCar.year} {this.state.selectedCar.make}{" "}
-                  {this.state.selectedCar.model} ({
-                    this.state.selectedCar.colour
-                  }) <br />
-                  <span className="text-muted">
-                    {this.state.selectedLocation.name}
-                  </span>
-                </CardHeader>
-                <CardBody>
-                  <CardText>
-                    Vehicle type: {this.state.selectedCar.vehicleType.name},{" "}
-                    {this.state.selectedCar.doors} doors<br />
-                    Seats: {this.state.selectedCar.seats}
-                    <br />
-                    Hourly rate: ${this.state.selectedCar.vehicleType.hourlyRate.toFixed(
-                      2
-                    )}
-                    <br />
-                    Registration: {this.state.selectedCar.rego}
-                  </CardText>
-                </CardBody>
-              </Card>
+          color="success"
+          isOpen={this.state.successAlertOpen}
+          toggle={this.dismissSuccess.bind(this)}
+        >
+          Thank you, your booking was made successfully.
+        </Alert>
+        <Alert
+          color="danger"
+          isOpen={this.state.failAlertOpen}
+          toggle={this.dismissFail.bind(this)}
+        >
+          Sorry, please update your booking time and try again.
+        </Alert>
+        <Row>
+          <Col sm="12" md="6">
+            <hr />
+            <Card>
+              <CardHeader tag="h5">
+                {this.state.selectedCar.year} {this.state.selectedCar.make}{" "}
+                {this.state.selectedCar.model} ({this.state.selectedCar.colour}){" "}
+                <br />
+                <span className="text-muted">
+                  {this.state.selectedLocation.name}
+                </span>
+              </CardHeader>
+              <CardBody>
+                <CardText>
+                  Vehicle type: {this.state.selectedCar.vehicleType.name},{" "}
+                  {this.state.selectedCar.doors} doors<br />
+                  Seats: {this.state.selectedCar.seats}
+                  <br />
+                  Hourly rate: ${this.state.selectedCar.vehicleType.hourlyRate.toFixed(
+                    2
+                  )}
+                  <br />
+                  Registration: {this.state.selectedCar.rego}
+                </CardText>
+              </CardBody>
+            </Card>
+            <Form onSubmit={this.handleTimeChange.bind(this)}>
               <TimeTable
                 key={this.state.selectedCar._id}
                 data={this.state.selectedCar}
+                onRef={ref => (this.child = ref)}
               />
-            </Col>
-            <Col sm="12" md="6">
-              <hr />
-              <h4 className={styles.h4}>Booking Form</h4>
-              <FormGroup>
-                {this.renderLabel("startDate", "startDate")}
-                <DatePicker
-                  className={
-                    "form-control " + this.isError("startDate")
-                      ? "is-invalid"
-                      : ""
-                  }
-                  selected={this.state.startDate}
-                  onChange={this.handleStartDateChange.bind(this)}
-                  showTimeSelect
-                  minDate={this.startTime}
-                  timeFormat="HH:mm"
-                  timeIntervals={this.intervalNum}
-                  dateFormat="LLL"
-                  onBlur={() => this.handleBlur("startDate")}
-                  timeCaption="time"
-                />
-              </FormGroup>
-              <FormGroup>
-                {this.renderLabel("endDate", "endDate")}
-                <DatePicker
-                  className={
-                    "form-control " + this.isError("endDate")
-                      ? "is-invalid"
-                      : ""
-                  }
-                  selected={this.state.endDate}
-                  onChange={this.handleEndDateChange.bind(this)}
-                  showTimeSelect
-                  minDate={this.startTime}
-                  timeFormat="HH:mm"
-                  timeIntervals={this.intervalNum}
-                  dateFormat="LLL"
-                  onBlur={() => this.handleBlur("endDate")}
-                  timeCaption="time"
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Form>
+          </Col>
+          <Col sm="12" md="6">
+            <hr />
+            <h4 className={styles.h4}>Booking Form</h4>
+            <FormGroup>
+              {this.renderLabel("startDate", "startDate")}
+              <DatePicker
+                className={
+                  "form-control " + this.isError("startDate")
+                    ? "is-invalid"
+                    : ""
+                }
+                selected={this.state.startDate}
+                onChange={this.handleStartDateChange.bind(this)}
+                showTimeSelect
+                minDate={this.startTime}
+                timeFormat="HH:mm"
+                timeIntervals={this.intervalNum}
+                dateFormat="LLL"
+                onBlur={() => this.handleBlur("startDate")}
+                timeCaption="time"
+              />
+            </FormGroup>
+            <FormGroup>
+              {this.renderLabel("endDate", "endDate")}
+              <DatePicker
+                className={
+                  "form-control " + this.isError("endDate") ? "is-invalid" : ""
+                }
+                selected={this.state.endDate}
+                onChange={this.handleEndDateChange.bind(this)}
+                showTimeSelect
+                minDate={this.startTime}
+                timeFormat="HH:mm"
+                timeIntervals={this.intervalNum}
+                dateFormat="LLL"
+                onBlur={() => this.handleBlur("endDate")}
+                timeCaption="time"
+              />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form onSubmit={this.handleBooking.bind(this)}>
               <Button
                 disabled={this.isDisabled}
                 outline
@@ -397,9 +440,9 @@ export class Booking extends Component {
               >
                 Book
               </Button>
-            </Col>
-          </Row>
-        </Form>
+            </Form>
+          </Col>
+        </Row>
       </Container>
     );
   }
