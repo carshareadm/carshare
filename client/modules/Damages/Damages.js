@@ -73,7 +73,8 @@ export class Damages extends Component {
   				<FormGroup>
 	            <Label htmlFor="descr">Description *</Label>
 	            <Input
-	              type="text"
+	              type="textarea"
+	              rows="5"
 	              name="descr"
 	              id="descr"
 	              placeholder="Describe the damage"
@@ -85,11 +86,11 @@ export class Damages extends Component {
 	            </FormFeedback>
 	        </FormGroup>
 	         <Button
+	         	className={styles.button}
 	            type="submit"
 	            disabled={this.state.descr==""}
 	            outline
 	            color="success"
-	            size="lg"
 	            block
 	          >
 	            Submit
@@ -100,10 +101,14 @@ export class Damages extends Component {
 
   	displayForm(){
   		return(
-			<Form className="novalidate" onSubmit={this.handleSubmit.bind(this)}>
+			<div>
+			<p><strong>Please Report Damage</strong><br/>
+            			Please upload a photo of the damage and describe the details in the provided space.</p>
+			<Form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
 			<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
 	        {this.state.image? this.displayDescrForm() : null}
 	    </Form>
+	    </div>
   		)
   	}
 
@@ -111,8 +116,9 @@ export class Damages extends Component {
   		return(
   			<div>
 	  			<div className={styles.damageMessage}>{this.state.message}</div>
+	  			<br/>
 	  			<Link to={"/history"}>
-	              <Button className={stylesMain.buttons} color="primary" size="lg">Back to History</Button>
+	              <Button className={styles.button} color="success">Back to History</Button>
 	            </Link>
             </div>
   		)
@@ -120,11 +126,11 @@ export class Damages extends Component {
 
 	render() {
 		return (
-			<div className={stylesMain.body}>
+			<div className={styles.body}>
 				<Container>
 					<Row>
 					<Col>
-						<h4>Damage Report</h4>
+						<h1 className={stylesMain.title}>Damage Report</h1>
 						{this.state.message ? this.displayMessage() : this.displayForm()}
 			        </Col>
 					</Row>
