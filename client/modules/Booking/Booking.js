@@ -163,6 +163,11 @@ export class Booking extends Component {
     this.setState({ ccvConfirmed: true });
   }
 
+  handleTimeChange(evt) {
+    evt.preventDefault();
+    console.log(evt.target);
+  }
+
   handleBooking(evt) {
     evt.preventDefault();
     if (this.isFormInvalid()) {
@@ -389,6 +394,7 @@ export class Booking extends Component {
                 </CardText>
               </CardBody>
             </Card>
+            <Form onSubmit={this.handleTimeChange.bind(this)}>
               <TimeTable
                 key={this.state.selectedCar._id}
                 data={this.state.selectedCar}
@@ -396,6 +402,7 @@ export class Booking extends Component {
                 //Attempt at callback function
                 func={this.returnTime}
               />
+            </Form>
           </Col>
           <Col sm="12" md="6">
             <hr />

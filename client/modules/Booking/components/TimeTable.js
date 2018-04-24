@@ -131,13 +131,15 @@ export class TimeTable extends Component {
       <tr key={h}>
         <th scope="row">{h}</th>
         {this.state.days.map(d => {
+	/*
     var clickHandler = (event => {
           this.onItemClickHandler(moment(d).add(h.substring(0,2),'h'));
-      });
+	  });
+	*/
    return (
          <td key={d + h}>
              {this.checkBooking(moment(d).format("ddd"), h) ? " " : 
-              <Button onClick={clickHandler} data={moment(d).add(h.substring(0,2),'h')}>✓</Button>}
+              <Button data={moment(d).add(h.substring(0,2),'h')}>✓</Button>}
          </td>
        );
 	 }
