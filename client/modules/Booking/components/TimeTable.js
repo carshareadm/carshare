@@ -72,14 +72,17 @@ export class TimeTable extends Component {
     .add(5, "d");
   sat = moment()
     .startOf("week")
-    .add(6, "d");
+	.add(6, "d");
+  selected= moment()
+  .startOf("hour")
+  .add(1, "hours");
+	
 
   constructor(props) {
     super(props);
     this.weekBackward = this.weekBackward.bind(this);
     this.weekForward = this.weekForward.bind(this);
     this.state = {
-		selected: '',
       times: [],
       time: moment().startOf("week"),
       days: [
@@ -114,16 +117,33 @@ export class TimeTable extends Component {
       });
   }
 
+  /*
+  Attempt at callback function
+  Appears to be called but can not change value
+  */
+
+  onItemClickHandler(itemName) {
+	this.props.func(itemName);
+  }
+
   renderHour(h) {
     return (
       <tr key={h}>
         <th scope="row">{h}</th>
-        {this.state.days.map(d => (
-          <td key={d + h}>
-              {this.checkBooking(moment(d).format("ddd"), h) ? " " : 
-			  <Button value={moment(d).add(h.substring(0,2),'h')}>✓</Button>}
-          </td>
-        ))}
+        {this.state.days.map(d => {
+    var clickHandler = (event => {
+        return event => {
+          this.onItemClickHandler(moment(d).add(h.substring(0,2),'h'));
+        };
+      })(d);
+   return (
+         <td key={d + h}>
+             {this.checkBooking(moment(d).format("ddd"), h) ? " " : 
+              <Button onClick={clickHandler}>✓</Button>}
+         </td>
+       );
+	 }
+)}
       </tr>
     );
   }

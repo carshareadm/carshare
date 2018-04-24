@@ -43,6 +43,10 @@ export class Booking extends Component {
     .startOf("hour")
     .add(2, "hours");
 
+  startDate=moment()
+  .startOf("hour")
+  .add(1, "hours");
+
   constructor(props) {
     super(props);
     this.state = {
@@ -142,6 +146,7 @@ export class Booking extends Component {
   }
 
   handleStartDateChange(date) {
+    this.startDate=moment(date);
     this.setState({ startDate: date });
   }
 
@@ -241,11 +246,6 @@ export class Booking extends Component {
     this.setState({ failAlertOpen: false });
   }
 
-  handleTimeChange(evt) {
-    evt.preventDefault();
-    console.log(evt.target.value);
-  }
-
   cvvPrompt() {
     return (
       <Container className={styles.body}>
@@ -307,7 +307,7 @@ export class Booking extends Component {
             <hr />
             <Card>
               <CardHeader tag="h5">
-                Vehicle Booked from <br />
+                Booked from <br />
                 <span className="text-muted">{" "+this.state.startDate.format("MMMM Do YYYY HH:mm").toString()+" "}</span>
                 to
                 <span className="text-muted">{" "+this.state.endDate.format("MMMM Do YYYY HH:mm").toString()+" "}</span>
@@ -325,6 +325,13 @@ export class Booking extends Component {
         </Row>
       </Container>
     );
+  }
+
+  //Attempt at callback function
+  //results in read only error
+  returnTime(time)
+  {
+    this.startDate=moment(time);
   }
 
   bookingFrm() {
@@ -382,13 +389,13 @@ export class Booking extends Component {
                 </CardText>
               </CardBody>
             </Card>
-            <Form onSubmit={this.handleTimeChange.bind(this)}>
               <TimeTable
                 key={this.state.selectedCar._id}
                 data={this.state.selectedCar}
                 onRef={ref => (this.child = ref)}
+                //Attempt at callback function
+                func={this.returnTime}
               />
-            </Form>
           </Col>
           <Col sm="12" md="6">
             <hr />
@@ -401,7 +408,7 @@ export class Booking extends Component {
                     ? "is-invalid"
                     : ""
                 }
-                selected={this.state.startDate}
+                selected={this.startDate}
                 onChange={this.handleStartDateChange.bind(this)}
                 showTimeSelect
                 minDate={this.startTime}
