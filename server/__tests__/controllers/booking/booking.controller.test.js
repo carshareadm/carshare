@@ -293,6 +293,8 @@ describe("Booking controller", () => {
       })
       .then(response => {
         expect(response.statusCode).toBe(200);
+        const body = response.body;
+        expect(Object.keys(body)).toContain('totalCost');
         done();
       });
     } catch (e) {
