@@ -15,7 +15,7 @@ import {
   Container,
   Row,
   Table,
-  Col
+  Col,
 } from "reactstrap";
 import * as http from "../../../util/http";
 import moment from "moment";
@@ -49,7 +49,7 @@ const hours = [
   "20:00",
   "21:00",
   "22:00",
-  "23:00"
+  "23:00",
 ];
 
 //Cars component class
@@ -90,7 +90,7 @@ export class TimeTable extends Component {
         this.thu,
         this.fri,
         this.sat,
-      ]
+      ],
     };
   }
 
@@ -109,7 +109,7 @@ export class TimeTable extends Component {
       .get(`/cars/${this.props.data._id}/times?start=${time.toISOString()}`)
       .then(res => {
         this.setState({
-          times: res.data
+          times: res.data,
         });
       });
   }
@@ -144,7 +144,7 @@ export class TimeTable extends Component {
     this.fri = this.fri.subtract(1, "weeks");
     this.sat = this.sat.subtract(1, "weeks");
     this.setState({
-      time: newTime
+      time: newTime,
     });
     this.time = this.state.time;
     this.loadData(newTime);
@@ -160,7 +160,7 @@ export class TimeTable extends Component {
     this.fri = this.fri.add(1, "weeks");
     this.sat = this.sat.add(1, "weeks");
     this.setState({
-      time: newTime
+      time: newTime,
     });
     this.time = this.state.time;
     this.loadData(newTime);

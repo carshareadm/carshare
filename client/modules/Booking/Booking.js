@@ -16,7 +16,8 @@ import {
   Col,
   Form,
   Alert,
-  FormFeedback
+  FormFeedback,
+  Tooltip,
 } from "reactstrap";
 import * as http from "../../util/http";
 
@@ -58,14 +59,15 @@ export class Booking extends Component {
       ccvConfirmed: false,
       successAlertOpen: false,
       failAlertOpen: false,
+      cost: 0,
 
       validated: true,
 
       touched: {
         startDate: false,
         endDate: false,
-        ccv: false
-      }
+        ccv: false,
+      },
     };
     this.isFormInvalid = this.isFormInvalid.bind(this);
   }
@@ -73,13 +75,13 @@ export class Booking extends Component {
 
   labels = {
     startDate: "Start Time",
-    endDate: "End Time"
+    endDate: "End Time",
   };
 
   errorMsgs = {
     startDate:
       "a valid date and time at least 1 hour in the future is required",
-    endDate: "a date and time after start time is required"
+    endDate: "a date and time after start time is required",
   };
 
   errors = {};
@@ -89,7 +91,7 @@ export class Booking extends Component {
     if (token) {
       this.setState({
         loggedIn: true,
-        userid: JSON.parse(atob(token.split(".")[1]))["sub"]
+        userid: JSON.parse(atob(token.split(".")[1]))["sub"],
       });
     }
     this.setState({ carid: this.props.location.query.carid });
@@ -110,7 +112,7 @@ export class Booking extends Component {
       if (element._id == this.props.location.query.carid) {
         this.setState({
           selectedCar: element,
-          selectedLocation: element.location
+          selectedLocation: element.location,
         });
       }
     });
@@ -118,7 +120,7 @@ export class Booking extends Component {
 
   handleBlur(field) {
     this.setState({
-      touched: Object.assign({}, this.state.touched, { [field]: true })
+      touched: Object.assign({}, this.state.touched, { [field]: true }),
     });
   }
 
@@ -126,11 +128,11 @@ export class Booking extends Component {
     // true means invalid, so our conditions got reversed
     const errs = {
       // Placeholder ccv validation.
-      ccv: this.state.ccv.length > 4,
+//    ccv: this.state.ccv.length > 4,
       startDate: moment(this.startTime).isSameOrAfter(this.state.endDate),
       endDate:
         this.state.startDate === this.state.endDate ||
-        this.state.startDate.isAfter(this.state.endDate)
+        this.state.startDate.isAfter(this.state.endDate),
     };
     return errs;
   }
@@ -168,9 +170,10 @@ export class Booking extends Component {
           userid: this.state.userid,
           car: this.state.carid,
           startAt: this.state.startDate,
-          endAt: this.state.endDate
+          endAt: this.state.endDate,
         })
         .then(res => {
+          this.setState({ cost: res.data.totalCost });
           this.setState({ booked: true });
           this.setState({ successAlertOpen: true });
         })
@@ -201,10 +204,10 @@ export class Booking extends Component {
     if (!this.props.location.query.carid) return this.goback();
     else {
       if (!this.state.loggedIn) return this.register();
-      if (this.state.ccvConfirmed) return this.booked();
-      if (this.state.booked) return this.cvvPrompt();
-      if (!this.state.selectedCar._id) return <span>Loading...</span>;
-      return this.bookingFrm();
+      else if (this.state.ccvConfirmed) return this.booked();
+      else if (this.state.booked && !this.state.ccvConfirmed) return this.cvvPrompt();
+      else if (!this.state.selectedCar._id) return <span>Loading...</span>;
+      else return this.bookingFrm();
     }
   }
   register() {
@@ -245,7 +248,7 @@ export class Booking extends Component {
 
   cvvPrompt() {
     return (
-      <div className={styles.body}>
+      <Container className={styles.body}>
         <h1 className={styles.title}>CVV Confirmation</h1>
         <Form onSubmit={this.handleCcvConfirmation.bind(this)}>
           <FormGroup>
@@ -255,9 +258,6 @@ export class Booking extends Component {
               name="ccv"
               id="ccv"
               placeholder="CVV"
-              className={
-                "form-control " + this.isError("ccv") ? "is-invalid" : ""
-              }
               value={this.state.ccv}
               onBlur={() => this.handleBlur("ccv")}
               onChange={this.handleCcvChange.bind(this)}
@@ -268,7 +268,7 @@ export class Booking extends Component {
             Confirm
           </Button>
         </Form>
-      </div>
+      </Container>
     );
   }
 
@@ -308,10 +308,12 @@ export class Booking extends Component {
             <Card>
               <CardHeader tag="h5">
                 Vehicle Booked from <br />
-                <span className="text-muted">(Placeholder)</span>
+                <span className="text-muted">{" "+this.state.startDate.format("MMMM Do YYYY HH:mm").toString()+" "}</span>
+                to
+                <span className="text-muted">{" "+this.state.endDate.format("MMMM Do YYYY HH:mm").toString()+" "}</span>
               </CardHeader>
               <CardBody>
-                <CardText>Booking Cost</CardText>
+                <CardText>Booking Cost : ${this.state.cost}</CardText>
               </CardBody>
             </Card>
           </Col>
