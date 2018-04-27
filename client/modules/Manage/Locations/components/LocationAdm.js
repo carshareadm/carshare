@@ -16,7 +16,7 @@ import Loading from '../../../Loading/Loading';
 import * as manageSvc from "../../../../services/manage.service";
 import stylesMain from '../../../../main.css';
 
-export class CarAdm extends Component {
+export class LocationAdm extends Component {
 
   yearOptions = [];
 
@@ -27,26 +27,15 @@ export class CarAdm extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      car: {...this.props.car},
+      location: {...this.props.location},
       isTouched: {
-        rego: false,
-        make: false,
-        model: false,
-        year: false,
+        name: false,
         isDisabled: false,
-        colour: false,
-        seats: false,
-        doors: false,
-        vehicleType: false,
-        location: false,
+        latitude: false,
+        longitude: false,
       },
       dropdownsOpen: {
         isDisabled: false,
-        year: false,
-        seats: false,
-        doors: false,
-        location: false,
-        vehicleType: false,
       },
     }
 
@@ -59,44 +48,33 @@ export class CarAdm extends Component {
   }
   
   labels = {
-    rego: 'Rego',
-    make: 'Make',
-    model: 'Model',
-    year: 'Year',
+    name: 'Name',
+    latitude: 'Latitude',
+    longitude: 'Longitude',
     isDisabled: 'Active State',
-    colour: 'Colour',
-    seats: 'Seats',
-    doors: 'Doors',
-    vehicleType: 'Type',
-    location: 'Location',
   };
 
   errors = {};
 
   errorMsgs = {
-    rego: 'is required',
-    make: 'is required',
-    model: 'is required',
-    year: 'is required',
-    isDisabled: 'Active State',
-    colour: 'is required',
-    seats: 'is required',
-    doors: 'is required',
-    vehicleType: 'is required',
-    location: 'is required',
+    name: 'is required',
+    latitude: 'must be between -90 and 90',
+    longitude: 'must be between -180 and 180',
   };
+
+  isLatitudeInvalid(lat) {
+    return isNaN(lat) || +lat < -90 || +lat > 90;
+  }
+  
+  isLongitudeInvalid(lng) {
+    return isNaN(lng) || +lng < -180 || +lng > 180;
+  }
 
   validate() {
     const errs = {
-      rego: this.state.car.rego.length < 1,
-      make: this.state.car.make.length < 1,
-      model: this.state.car.model.length < 1,
-      year: this.state.car.year < this.minYear || this.state.year > this.maxYear,      
-      colour: this.state.car.colour.length < 1,
-      seats: this.state.car.seats < Math.min(...this.seatsOptions) || this.state.car.seats > Math.max(...this.seatsOptions),
-      doors: this.state.car.doors < Math.min(...this.doorsOptions)|| this.state.car.doors > Math.max(...this.doorsOptions),
-      vehicleType: this.state.car.vehicleType._id.length < 1,
-      location: this.state.car.location._id.length < 1,
+      name: this.state.location.name.length < 1,
+      latitude: this.isLatitudeInvalid(this.state.location.coordinates.latitude),
+      longitude: this.isLongitudeInvalid(this.state.location.coordinates.longitude),
     };
     return errs;
   }
@@ -124,22 +102,25 @@ export class CarAdm extends Component {
     });
   }
 
-  handleInputChange(evt)
+  handleInputChange(field, isCoord, evt)
   {
-    let field = evt.target.id;
-    let value = evt.target.value
+    let value = evt.target.value;
+    let loc = {...this.state.location};
+    if (isCoord) {
+      loc = {...loc, coordinates: { [field]: value }};
+    } else {
+      loc = {...loc, [field]: value };
+    }
+
     this.setState({
-      car: { ...this.state.car, [field]: value },
+      location: loc,
       isTouched: { ...this.state.isTouched, [field]: true },
     });
   }
 
-  componentDidMount() {
-
-  }
-
-  renderTextFormGroup(field) {
+  renderTextFormGroup(field, isCoord) {
     const placeholder = this.labels[field];
+    const value = isCoord ? this.state.location.coordinates[field] : this.state.location[field];
     return (
       <FormGroup>
         {this.renderLabel(field, field)}
@@ -149,9 +130,9 @@ export class CarAdm extends Component {
           id={field}
           placeholder={placeholder}
           className={this.isError(field) ? 'is-invalid' : ''}
-          onChange={this.handleInputChange.bind(this)}
+          onChange={(e) => this.handleInputChange(field, isCoord, e)}
           onBlur={() => this.handleBlur(field)}
-          value={this.state.car[field]}
+          value={value}
         />
       </FormGroup>
     );
@@ -165,35 +146,17 @@ export class CarAdm extends Component {
 
   ddOnSelect(field, value, evt) {
     this.setState({
-      car: {...this.state.car, [field]: value},
+      location: {...this.state.location, [field]: value},
       isTouched: {...this.state.isTouched, [field]: true},
       dropdownsOpen: {...this.state.dropdownsOpen, [field]: false},
-
     });
-  }
-
-  renderDropdownFormGroup(field, options) {
-
-    const opts = options.map(m => (<DropdownItem key={m} onClick={(e) => this.ddOnSelect(field, m, e)}>{m}</DropdownItem>));
-    const text = this.state.car[field];
-    return (
-      <FormGroup>
-          {this.renderLabel(field, field)} <br />
-          <ButtonDropdown isOpen={this.state.dropdownsOpen[field]} toggle={(e) => this.toggleDropDown(field, e)}>            
-            <DropdownToggle caret size="sm">{text}</DropdownToggle>
-            <DropdownMenu>
-              {opts}
-            </DropdownMenu>
-          </ButtonDropdown>          
-      </FormGroup>
-    );
   }
 
   disabledDropDown() {
     const field = 'isDisabled';
     const active = 'ACTIVE';
     const disabled = 'INACTIVE';
-    const text = this.state.car.isDisabled ? disabled : active;
+    const text = this.state.location.isDisabled ? disabled : active;
     
     const opts = [
       {state: false, text: active},
@@ -213,33 +176,14 @@ export class CarAdm extends Component {
     );
   }
 
-  renderObjectDropDown(field, options) {
-    const opts = options.map(m => (
-        <DropdownItem key={m._id} onClick={(e) => this.ddOnSelect(field, m, e)}>{m.name}</DropdownItem>
-      )
-    );
-    const text = this.state.car[field] ? this.state.car[field].name : `Select ${this.labels[field]}`;
-    return (
-      <FormGroup>
-          {this.renderLabel(field, field)} <br />
-          <ButtonDropdown isOpen={this.state.dropdownsOpen[field]} toggle={(e) => this.toggleDropDown(field, e)}>            
-            <DropdownToggle caret size="sm">{text}</DropdownToggle>
-            <DropdownMenu>
-              {opts}
-            </DropdownMenu>
-          </ButtonDropdown>          
-      </FormGroup>
-    );
-  }
-
   submit(evt) {
     evt.preventDefault()
     this.setLoading(true);
 
-    manageSvc.cars.updateCar(this.state.car)
+    manageSvc.locations.updateLocation(this.state.location)
     .then(result => {
       this.setLoading(false);
-      this.props.onSaved(this.state.car);
+      this.props.onSaved(this.state.location);
     })
     .catch(e => {
       this.setLoading(false);
@@ -266,23 +210,16 @@ export class CarAdm extends Component {
       <Row>
         {loading}
         <Col xs="12" md="6">
-          <img width="100%" src="" />
-          <h5>image and uploader goes in here</h5>
+          
+          <h5>Google Maps goes here</h5>
 
         </Col>
         <Col xs="12" md="6">
           {this.disabledDropDown()}
-          {this.renderTextFormGroup('rego')}
-          {this.renderTextFormGroup('make')}
-          {this.renderTextFormGroup('model')}
-          {this.renderObjectDropDown('vehicleType', this.props.vehicleTypes)}
-          {this.renderTextFormGroup('colour')}
-          {this.renderDropdownFormGroup('year', this.yearOptions)}
-          {this.renderDropdownFormGroup('seats', this.seatsOptions)}
-          {this.renderDropdownFormGroup('doors', this.doorsOptions)}
-
-          {this.renderObjectDropDown('location', this.props.locations)}
-
+          {this.renderTextFormGroup('name', false)}
+          {this.renderTextFormGroup('latitude', true)}
+          {this.renderTextFormGroup('longitude', true)}
+          
           {this.saveButton(formIsDisabled)}
         </Col>
       </Row>
@@ -290,11 +227,9 @@ export class CarAdm extends Component {
   }
 }
 
-CarAdm.propTypes = {
-  car: PropTypes.object.isRequired,
-  locations: PropTypes.array.isRequired,
-  vehicleTypes: PropTypes.array.isRequired,
+LocationAdm.propTypes = {
+  location: PropTypes.object.isRequired,
   onSaved: PropTypes.func.isRequired,
 };
 
-export default CarAdm;
+export default LocationAdm;

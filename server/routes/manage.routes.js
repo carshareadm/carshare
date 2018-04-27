@@ -13,5 +13,6 @@ router.put("/cars/:carId", isAuthenticatedGuard, isAdminGuard, cars.update);
 router.get("/vehicletypes", isAuthenticatedGuard, isAdminGuard, vehicleTypes.getAll);
 
 router.get("/locations", isAuthenticatedGuard, isAdminGuard, locations.getAll);
+router.put("/locations/:locationId", isAuthenticatedGuard, isAdminGuard, locations.update);
 
 module.exports = router;

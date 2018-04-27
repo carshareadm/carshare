@@ -26,8 +26,15 @@ const getAllLocations = () => {
   .get(`/manage/locations`);
 };
 
+const updateLocation = (location) => {
+  return http
+  .client()
+  .put(`/manage/locations/${location._id}`, location);
+};
+
 const locations = {
   getAll: getAllLocations,
+  updateLocation: updateLocation,
 };
 // end - manage locations
 
