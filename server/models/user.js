@@ -51,9 +51,8 @@ const userSchema = new Schema({
       ref: "ConfirmationCode",
     },
   ],
-  disabled: { type: "Boolean", required: true, default: false },
-  blockedByAdmin: { type: "Boolean", required: true, default: false },
-  
+  isDisabled: { type: "Boolean", required: true, default: false },
+  isBlockedByAdmin: { type: "Boolean", required: true, default: false },  
 });
 
 // example of presave and compare password from

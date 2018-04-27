@@ -10,7 +10,7 @@ const creditCardSchema = new Schema({
   nameOnCard: { type: 'String', required: true, trim: true },
   expiryMonth: { type: 'Number', required: true, min: 1, max: 12 },
   expiryYear: { type: 'Number', required: true, min: 2018 },
-  disabled: { type: "Boolean", required: true, default: false },
+  isDisabled: { type: "Boolean", required: true, default: false },
 });
 
 /**

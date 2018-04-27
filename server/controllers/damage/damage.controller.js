@@ -28,7 +28,7 @@ const createDamage = function(req, res){
 
 const showDamage = function(req, res){
   const filter = {
-    'disabled': false, // damages that arent disabled
+    'isDisabled': false, // damages that arent disabled
   };
   Damage.find(filter)
     .populate('booking')

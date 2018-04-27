@@ -65,6 +65,8 @@ const paymentDetails = require('./routes/paymentDetails.routes');
 const contact = require('./routes/contact.routes');
 const confirm = require('./routes/confirm.routes');
 const damage = require('./routes/damage.routes');
+const manage = require('./routes/manage.routes');
+
 app.use('/api/account', account);
 app.use('/api/profile', profile);
 app.use('/api/cars', cars);
@@ -75,6 +77,7 @@ app.use('/api/paymentDetails', paymentDetails);
 app.use('/api/confirm', confirm);
 app.use('/api/contact', contact);
 app.use('/api/damage', damage);
+app.use('/api/manage', manage);
 app.use('/api/*', (req, res) => { res.status(404).send("Not found"); });
 
 // Render Initial HTML

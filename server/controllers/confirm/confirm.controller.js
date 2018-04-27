@@ -7,36 +7,29 @@ export const verifyCode = (req, res) => {
   const codeType = req.body.codeType;
 
   if (codeTypeEnum.indexOf(codeType) < 0) {
-    res.status(400).send('Invalid code type: ' + codeType);
+    return res.status(400).send('Invalid code type: ' + codeType);
   }
-  else {
-    ConfirmationCode.findOne({
-      user: req.userId,
-      codeType: codeType,
-      code: code,
-    }).populate('user')
-    .exec((err, confirmationCode) => {
-      if (err || !confirmationCode) {
-        res.status(404).send('Code not found');
+  ConfirmationCode.findOne({
+    user: req.userId,
+    codeType: codeType,
+    code: code,
+  }).populate('user')
+  .exec((err, confirmationCode) => {
+    if (err || !confirmationCode) {
+      return res.status(404).send('Code not found');
+    }
+    const now = new Date();
+      if (now > confirmationCode.expiresAt) {
+        return res.status(400).send('Code has expired');
+      }
+      if (codeType === codeTypeEnum[0]) {
+        confirmationCode.user.isAccountConfirmed = true;
+        confirmationCode.user.save()
+          .then(() => res.status(200).send())
+          .catch(e => res.status(500).send(e));
       }
       else {
-        const now = new Date();
-        if (now > confirmationCode.expiresAt) {
-          res.status(400).send('Code has expired');
-        }
-        else {
-          if (codeType === codeTypeEnum[0]) {
-            confirmationCode.user.isAccountConfirmed = true;
-            confirmationCode.user.save()
-              .then(() => res.status(200).send())
-              .catch(e => res.status(500).send(e));
-          }
-          else {
-            res.status(200).send()
-          }
-        }
+        return res.status(200).send()
       }
-    });
-  }
-
+  });
 };
