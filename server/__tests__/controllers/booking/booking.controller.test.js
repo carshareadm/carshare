@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import User from "../../../models/user";
 import License from "../../../models/license";
 import Address from "../../../models/address";
+import Offer from "../../../models/offer";
 import Booking from "../../../models/booking";
 import Car from "../../../models/car";
 import VehicleType from "../../../models/vehicleType";
@@ -25,6 +26,7 @@ let testUser = null;
 let testAddress = null;
 let testCar = null;
 let license = null;
+let testOffer = null; 
 
 describe("Booking controller", () => {
   beforeAll(async () => {
@@ -75,6 +77,11 @@ describe("Booking controller", () => {
     car.movements = new Movement();
     car.movements.car = car;
 
+    const discount = new Offer();
+    discount.offerCode = "1234";
+    discount.expiresAt = DateUtils.addHours(new Date(), 1);
+    discount.isDisabled = false;
+
     try {
       const savedAddress = await address.save().catch(err => {console.log(err)});
       user.address = savedAddress;
@@ -96,10 +103,14 @@ describe("Booking controller", () => {
 
       savedCar.movements = savedMovements;
 
+      const savedOffer = await discount.save().catch(err => {console.log(err)});
+
       testCar = savedCar;
 
       testAddress = savedAddress;
       testUser = savedUser;
+      testOffer = savedOffer;
+
       done();
     } catch (e) {
       done(e);
@@ -107,7 +118,7 @@ describe("Booking controller", () => {
   });
 
   afterEach(done => {
-    Promise.all([User, License, Address, Location, Coordinate, VehicleType, Movement, Car].map(k => k.remove({})))
+    Promise.all([User, License, Address, Location, Coordinate, VehicleType, Movement, Car, Offer].map(k => k.remove({})))
       .then(() => done())
       .catch(e => done(e));
   });
@@ -290,6 +301,78 @@ describe("Booking controller", () => {
         car: testCar._id,
         startAt: moment(),
         endAt: moment().add(1, 'day'),
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        const body = response.body;
+        expect(Object.keys(body)).toContain('totalCost');
+        done();
+      });
+    } catch (e) {
+      done(e);
+    }
+  });
+
+  test("it should return 400 if offer is sent but invalid", async done => {
+    const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
+    try {
+      license = await workingLicense.save();
+      testUser.license = await workingLicense.save();
+      const user = await testUser.save();
+      const savedOffer = await testOffer.save().catch(err => {console.log(err)});
+      let token = {
+        sub: testUser._id,
+        email: testUser.email,
+        isAdmin: false,
+        exp: DateUtils.getDateInSeconds(
+          DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
+        ),
+      };
+      const encodedToken = jwt.encode(token, config.jwt.secret);    
+    request(app)
+      .post("/api/booking")
+      .set("Authorization", "Bearer " + encodedToken)
+      .send({
+        userid: testUser._id,
+        car: testCar._id,
+        startAt: moment(),
+        endAt: moment().add(1, 'day'),
+        code: "test",
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(400);
+        done();
+      });
+    } catch (e) {
+      done(e);
+    }
+  });
+
+  test("it should return 200 if offer is sent and valid", async done => {
+    const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
+    try {
+      license = await workingLicense.save();
+      testUser.license = await workingLicense.save();
+      const user = await testUser.save();
+      const savedOffer = await testOffer.save().catch(err => {console.log(err)});
+      let token = {
+        sub: testUser._id,
+        email: testUser.email,
+        isAdmin: false,
+        exp: DateUtils.getDateInSeconds(
+          DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
+        ),
+      };
+      const encodedToken = jwt.encode(token, config.jwt.secret);    
+    request(app)
+      .post("/api/booking")
+      .set("Authorization", "Bearer " + encodedToken)
+      .send({
+        userid: testUser._id,
+        car: testCar._id,
+        startAt: moment(),
+        endAt: moment().add(1, 'day'),
+        code: savedOffer.offerCode,
       })
       .then(response => {
         expect(response.statusCode).toBe(200);
