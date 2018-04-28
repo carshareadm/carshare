@@ -1,0 +1,45 @@
+.home {
+  background-color: rgb(41, 97, 31); 
+  width: 100%;
+}
+
+.banner {
+  min-width: 100%;
+  min-height: 400px;
+  position: relative;
+}
+
+
+.bannerText {
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem;
+  color: rgb(76, 157, 38);
+  font-size: 1.5rem;
+  font-style: italic;
+  text-align: center;
+  position: relative;
+  margin-top: 150px;
+  width: inherit;
+}
+
+
+.title{
+    font-size:26pt;
+    color: green;
+    margin-bottom: 1em;
+}
+
+.body{
+  padding: 2em;
+  padding-top: 3em;
+  background-color: rgb(226, 226, 226);
+}
+
+
+
+.separator{
+  height: 10px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  background-color: rgb(76, 157, 38);
+}
