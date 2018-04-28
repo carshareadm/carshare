@@ -2,6 +2,8 @@ import Damage from '../../models/damage';
 import Booking from '../../models/booking';
 import mongoose from 'mongoose';
 
+const s3Helper = require('../../util/aws.helper');
+
 const createDamage = function(req, res){
   Booking.findOne(mongoose.Types.ObjectId(req.params.booking))
   .exec((err, booking) => {
@@ -15,7 +17,7 @@ const createDamage = function(req, res){
       car: booking.car
     });
     if(req.body.image){
-      newDamage.image= req.body.image
+      newDamage.image = req.body.image
     }
     newDamage
       .save()
@@ -34,14 +36,21 @@ const showDamage = function(req, res){
     'car': mongoose.Types.ObjectId(req.params.carId)
   };
   Damage.find(filter)
-    .sort({ startsAt: -1 })
+    .sort({ loggedAt: -1 })
+    .populate('image')
     .populate('booking')
     .populate('car')
     .exec((err, damages) => {
       if (err) {
         res.status(500).send(err);
       } else {
-        res.status(200).send(damages);
+        const dmg = damages.map((d) => {
+          if(d.image){
+            d.imageUrl = s3Helper.getDownloadSignedUrl(d.image.filename);
+          }
+          return d;
+        })
+        res.status(200).send(dmg);
       }
     });
 }

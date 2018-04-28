@@ -19,6 +19,11 @@ import stylesMain from '../../../main.css';
 // component class
 class DamageItem extends Component {
 
+  renderImage(dm) {
+    if(dm.imageUrl && dm.imageUrl.length>0) {
+      return (<img src={dm.imageUrl} />);
+    }
+  }
 
   render() {
     const dm = this.props.data;
@@ -30,7 +35,7 @@ class DamageItem extends Component {
           </CardHeader>
           <CardBody>
             <CardText>
-				<p>Placehplder for the image</p>
+				{this.renderImage(dm)}
 				<p>{dm.description}</p>
             </CardText>
           </CardBody>

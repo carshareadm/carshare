@@ -18,6 +18,7 @@ const damageSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Image',
   },
+  imageUrl: { type: 'String', trim: true },
   isDisabled: { type: "Boolean", required: true, default: false },
 });
 
