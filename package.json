@@ -62,6 +62,7 @@
     "r7insight_node": "^1.8.1",
     "react": "^15.1.0",
     "react-bootstrap-table": "^4.3.1",
+    "react-bootstrap-typeahead": "^3.1.1",
     "react-datepicker": "^1.4.1",
     "react-dom": "^15.1.0",
     "react-geolocated": "^2.3.0",
@@ -140,7 +141,7 @@
     "webpack-manifest-plugin": "^1.0.1"
   },
   "engines": {
-    "node": ">=4"
+    "node": "8.9.x"
   },
   "nyc": {
     "include": [

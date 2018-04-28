@@ -23,7 +23,7 @@ const carSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Movement",
   }],
-  disabled: { type: "Boolean", required: true, default: false },
+  isDisabled: { type: "Boolean", required: true, default: false },
   damages:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Damage",

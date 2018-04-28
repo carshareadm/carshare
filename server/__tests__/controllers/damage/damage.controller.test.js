@@ -34,7 +34,7 @@ describe("Damage controller", () => {
 		car1.year = "2018";
 		car1.seats = "4";
 		car1.doors = "2";
-		car1.disabled = false;
+		car1.isDisabled = false;
 
 		var coordinate = new Coordinate();
 		coordinate.latitude = "-37.669012";
@@ -43,7 +43,7 @@ describe("Damage controller", () => {
 		var location = new Location();
 		location.name = "Melbourne Airport";
 		location.coordinates = coordinate;
-		location.disabled = false;
+		location.isDisabled = false;
 		car1.location = location;
 		
 		var movements = new Movement();

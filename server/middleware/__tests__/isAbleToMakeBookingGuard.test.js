@@ -19,7 +19,7 @@ const setLicense = (number, image, disabled, approved) => {
   const l = new License();
   l.licenseNumber = number;
   l.image = image;
-  l.disabled = disabled;
+  l.isDisabled = disabled;
   l.approvedByAdmin = approved;
   return l;
 };

@@ -1,6 +1,7 @@
 import Booking from "../../models/booking";
 import Car from "../../models/car";
 import User from "../../models/user";
+import Offer from "../../models/offer";
 
 import moment from "moment";
 
@@ -16,6 +17,7 @@ const createBooking = function(req, res) {
     //Bad Request if not all fields are present
     return res.status(400).send("invalid request params");
   }
+
   const startAt = req.body.startAt;
   const endAt = req.body.endAt;
   const carId = req.body.car;
@@ -46,7 +48,6 @@ const createBooking = function(req, res) {
         newBooking.endsAt = endAt.toString();
         newBooking.user = selectedUser._id;
         newBooking.unlockCode = codeGenerator.generate();
-        newBooking.disabled = false;
 
         var hours = moment
           .duration(
@@ -57,15 +58,13 @@ const createBooking = function(req, res) {
           .asHours();
         newBooking.totalCost = hours * vehicle.vehicleType.hourlyRate;
 
-        let alreadyBooked = false;
-
         var validateErrs = newBooking.validateSync();
         if (validateErrs) {
           return res.status(500).send(validateErrs);
         }
         Booking.find({
           $and: [
-            { car: req.body.car, disabled: false },
+            { car: req.body.car, isDisabled: false },
             {
               $or: [
                 {
@@ -93,18 +92,55 @@ const createBooking = function(req, res) {
           if (err) {
             return res.status(500).send(err);
           }
-          if (bookings.length > 0) {
+          else if (bookings.length > 0) {
             return res
               .status(400)
               .send("Booking would clash with existing booking");
           }
-          newBooking.save((err, booking) => {
-            if (err) {
-              return res.status(500).send(err);
-            } else {
-              return res.status(200).send(booking._id);
-            }
-          });
+          // Offer validation is part of offer controller and applied by the apply button at booking
+          else if (typeof req.body.code!=="undefined")
+          {
+            // FindOne as Offer Codes are set as unique
+            Offer.findOne({ offerCode: req.body.code, isDisabled: false }).exec((offerErr, discount) => {
+              console.log(discount);
+              if (offerErr) {
+                console.log(offerErr);
+                return res.status(500).send(offerErr);
+              }
+              if (!discount) {
+                return res.status(400).send("invalid offer code");
+              } else {
+                newBooking.offer = discount._id;
+                //Multiplier applied first
+                if (discount.multiplier) {
+                  newBooking.totalCost =
+                    (1 - discount.multiplier) * newBooking.totalCost;
+                }
+                if (discount.oneOffValue) {
+                  newBooking.totalCost =
+                    newBooking.totalCost - discount.oneOffValue;
+                }
+                newBooking.save((err, booking) => {
+                  if (err) {
+                    return res.status(500).send(err);
+                  } else {
+                    return res.status(200).send(booking);
+                  }
+                });
+              }
+            });
+          }
+          else
+          {
+            newBooking.save((err, booking) => {
+              if (err) {
+                return res.status(500).send(err);
+              } else {
+                return res.status(200).send(booking);
+              }
+            });
+          }
+          
         });
       });
   });

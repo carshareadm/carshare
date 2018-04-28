@@ -371,7 +371,7 @@ describe("Profile controller", () => {
     var location = new Location();
     location.name = "Melbourne Airport";
     location.coordinates = coordinate;
-    location.disabled = false;
+    location.isDisabled = false;
     await location.save();
 
     var car1 = new Car();
@@ -382,7 +382,7 @@ describe("Profile controller", () => {
     car1.year = "2018";
     car1.seats = "4";
     car1.doors = "2";
-    car1.disabled = false;
+    car1.isDisabled = false;
     car1.vehicleType = vehicleType;
     car1.location = location;
     await car1.save();

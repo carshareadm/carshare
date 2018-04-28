@@ -20,8 +20,13 @@ const bookingSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Damage',
   }],
-  disabled: { type: "Boolean", required: true, default: false },
+  isDisabled: { type: "Boolean", required: true, default: false },
   totalCost: { type: mongoose.Schema.Types.Number},
+  //To aid tracking what code was used with the booking
+  offer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Offer',
+  },
 });
 
 
