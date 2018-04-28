@@ -18,6 +18,7 @@ import History from './modules/History/History';
 import Damages from './modules/Damages/Damages';
 import { Profile } from './modules/Profile/Profile';
 import LoginForm from './modules/Login/LoginForm';
+import Specials from './modules/Specials/Specials';
 
 import {Manage} from './modules/Manage/Manage';
 import {BookingsAdm} from './modules/Manage/Bookings/BookingsAdm';
@@ -54,6 +55,7 @@ export default (
 		<Route path="login" component={LoginForm} />
 		<Route path="cars" component={Cars} />
 		<Route path="locations" component={Locations}/>
+		<Route path="specials" component={Specials} />
 		<Route path="booking" component={requireAuth(Booking)} />
 		<Route path="history" component={requireAuth(History)} />
 		<Route path='paymentDetails' component={requireAuth(PaymentDetails)} />
