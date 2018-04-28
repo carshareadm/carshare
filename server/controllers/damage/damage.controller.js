@@ -28,7 +28,8 @@ const createDamage = function(req, res){
 
 const showDamage = function(req, res){
   const filter = {
-    'isDisabled': false, // damages that arent disabled
+    'disabled': false, // damages that arent disabled
+    'car': mongoose.Types.ObjectId(req.params.carId)
   };
   Damage.find(filter)
     .populate('booking')
@@ -37,8 +38,7 @@ const showDamage = function(req, res){
       if (err) {
         res.status(500).send(err);
       } else {
-        const filtered = damages.filter(f => f.car !== null);
-        res.status(200).send(filtered);
+        res.status(200).send(damages);
       }
     });
 }

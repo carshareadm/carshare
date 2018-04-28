@@ -38,7 +38,6 @@ export class Damages extends Component {
 	    };
   	}
 
-
   	handleSubmit(event){
 	    event.preventDefault();
 	    http
