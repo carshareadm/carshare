@@ -12,9 +12,11 @@ const createDamage = function(req, res){
       description: req.body.description,
       loggedAt: new Date(),
       booking: booking._id,
-      car: booking.car,
-      image: req.body.image,
+      car: booking.car
     });
+    if(req.body.image){
+      newDamage.image= req.body.image
+    }
     newDamage
       .save()
       .then((damage) => {
@@ -28,10 +30,11 @@ const createDamage = function(req, res){
 
 const showDamage = function(req, res){
   const filter = {
-    'disabled': false, // damages that arent disabled
+    'isDisabled': false, // damages that arent disabled
     'car': mongoose.Types.ObjectId(req.params.carId)
   };
   Damage.find(filter)
+    .sort({ startsAt: -1 })
     .populate('booking')
     .populate('car')
     .exec((err, damages) => {

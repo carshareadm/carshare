@@ -56,9 +56,13 @@ export class Damage extends Component {
 						<Col>
 							<h3>Damages reported for this car</h3>
 						</Col>
+					</Row>
+						{this.state.damages.map(b => <DamageItem key={b._id} data={b} />)}
+					<Row>
 						<Col>
-							{console.log(this.state.damages)}
-							{this.state.damages.map(b => <DamageItem key={b._id} data={b} />)}
+						    <Link to={`/history`}>
+             					<Button className={stylesMain.buttons} size="lg">Back to your Bookings</Button>
+             				</Link>
 						</Col>
 					</Row>
 				</Container>

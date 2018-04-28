@@ -66,10 +66,15 @@ export class Damages extends Component {
   		})
   	}
 
-  	displayDescrForm(){
+
+  	displayForm(){
   		return(
-  			<div>
-  				<FormGroup>
+			<div>
+			<p><strong>Please Report Damage</strong><br/>
+            			Please upload a photo of the damage and describe the details in the provided space.</p>
+			<Form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
+			<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
+	         <FormGroup>
 	            <Label htmlFor="descr">Description *</Label>
 	            <Input
 	              type="textarea"
@@ -81,7 +86,7 @@ export class Damages extends Component {
 	              onChange={this.handleInputChange.bind(this)}
 	            />
 	            <FormFeedback>
-	              A  description address is required.
+	              A  description is required.
 	            </FormFeedback>
 	        </FormGroup>
 	         <Button
@@ -94,18 +99,6 @@ export class Damages extends Component {
 	          >
 	            Submit
 	          </Button>
-  			</div>
-  		)
-  	}
-
-  	displayForm(){
-  		return(
-			<div>
-			<p><strong>Please Report Damage</strong><br/>
-            			Please upload a photo of the damage and describe the details in the provided space.</p>
-			<Form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
-			<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
-	        {this.state.image? this.displayDescrForm() : null}
 	    </Form>
 	    </div>
   		)
@@ -130,7 +123,7 @@ export class Damages extends Component {
 					<Row>
 					<Col>
 						<h1 className={stylesMain.title}>Damage Report</h1>
-						{this.state.message ? this.displayMessage() : this.displayForm()}
+						{!this.state.message ? this.displayForm() : this.displayMessage()}
 			        </Col>
 					</Row>
 				</Container>

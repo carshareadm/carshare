@@ -23,7 +23,8 @@ class DamageItem extends Component {
   render() {
     const dm = this.props.data;
     return (
-        <div>
+    	<Row>
+        <Col>
           <CardHeader>
             Damage reported {moment(dm.loggedAt).format('LLL')}
           </CardHeader>
@@ -33,7 +34,8 @@ class DamageItem extends Component {
 				<p>{dm.description}</p>
             </CardText>
           </CardBody>
-        </div>
+        </Col>
+        </Row>
     )
   }
 }
