@@ -40,7 +40,9 @@ class Car extends Component {
             <br/>
             <p>Location - <span className={stylesMain.h4}>{car.location}</span></p>
             <br/>
-            <p>$ {car.Cost} per hour</p>
+            <p>$ <span className={stylesMain.h4}>{car.vehicleType.hourlyRate.toFixed(
+                    2
+                  )} per hour</span></p>
           </CardBody>
             <Link to={"/booking?carid="+car._id}>
               <Button className={stylesMain.buttons +" "+ styles.button}>Book</Button>

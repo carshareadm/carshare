@@ -19,6 +19,7 @@ import Damages from './modules/Damages/Damages';
 import { Profile } from './modules/Profile/Profile';
 import LoginForm from './modules/Login/LoginForm';
 import Specials from './modules/Specials/Specials';
+import Emergency from './modules/Emergency/Emergency';
 
 import {Manage} from './modules/Manage/Manage';
 import {BookingsAdm} from './modules/Manage/Bookings/BookingsAdm';
@@ -54,6 +55,7 @@ export default (
 		<Route path="register" component={Registration} />
 		<Route path="login" component={LoginForm} />
 		<Route path="cars" component={Cars} />
+		<Route path="emergency" component={Emergency} />
 		<Route path="locations" component={Locations}/>
 		<Route path="specials" component={Specials} />
 		<Route path="booking" component={requireAuth(Booking)} />
