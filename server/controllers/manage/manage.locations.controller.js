@@ -11,7 +11,7 @@ export const getAll = async (req, res) => {
       return res.status(200).send(locs);
   } catch(e) {
     logger.err(e);
-    return res.status(500).semd(e);
+    return res.status(500).send(e);
   }
 };
 
@@ -23,7 +23,7 @@ export const update = async (req, res) => {
       .exec();
     
     if (location === null) {
-      return res.status(404).send('Car not found');
+      return res.status(404).send('Location not found');
     }
 
     let coords = new Coordinates();

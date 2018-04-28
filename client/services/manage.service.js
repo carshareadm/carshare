@@ -38,6 +38,38 @@ const locations = {
 };
 // end - manage locations
 
+// manage users
+const getAllUsers = () => {
+  return http
+  .client()
+  .get(`/manage/users`);
+};
+
+const updateUser = (user) => {
+  return http
+  .client()
+  .put(`/manage/users/${user._id}`, user);
+};
+
+const users = {
+  getAll: getAllUsers,
+  updateUser: updateUser,
+};
+// end - manage locations
+
+// license
+const getLicense = (id) => {
+  return http
+  .client()
+  .get(`/license/${id}`);
+};
+
+const licenses = {
+  getById: getLicense,
+};
+
+// end - license
+
 // manage vehicleTypes
 const getAllVehicleTypes = () => {
   return http
@@ -53,5 +85,7 @@ const vehicleTypes = {
 module.exports = {
   cars: cars,
   locations: locations,
+  users: users,
+  licenses: licenses,
   vehicleTypes: vehicleTypes,
 };

@@ -65,3 +65,17 @@ body {
 .input-group .rbt {
 	width: 230px !important;
 }
+
+.flex1 {
+	flex: 1;
+}
+
+.imgContainer {
+  text-align: center;
+  background: rgba(0,0,0,0.3);
+}
+
+.imgContainer img {
+  max-width:100%;
+  max-height:200px;
+}
