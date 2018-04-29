@@ -16,6 +16,8 @@ export const getById = (req, res) => {
               const data = {
                 id: license.id,
                 licenseNumber: license.licenseNumber,
+                approvedByAdmin: license.approvedByAdmin,
+                isDisabled: license.isDisabled,
               };
               if (license.image) {
                 try{

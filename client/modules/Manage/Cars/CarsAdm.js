@@ -94,15 +94,16 @@ export class CarsAdm extends Component {
           <Col>
             <h1 className={stylesMain.title}>Manage Cars</h1>
             <div className="input-group">
-              <Typeahead
-                ref="typeahead"
-                align="left"
-                placeholder="Search for car..."
-                onChange={(e) => this.handleCarSelected(e)}
-                labelKey={option => `${option.make} ${option.model} ${option.rego}`}
-                options={this.state.cars}
-                filterBy={['make', 'model', 'rego']}
-              />              
+              <div className={stylesMain.flex1}>
+                <Typeahead
+                  ref="typeahead"
+                  placeholder="Search for car..."
+                  onChange={(e) => this.handleCarSelected(e)}
+                  labelKey={option => `${option.make} ${option.model} ${option.rego}`}
+                  options={this.state.cars}
+                  filterBy={['make', 'model', 'rego']}
+                />
+              </div>
               <div className="input-group-append">
                 <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
               </div>

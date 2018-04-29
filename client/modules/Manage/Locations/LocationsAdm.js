@@ -65,22 +65,22 @@ export class LocationsAdm extends Component {
           <Col>
             <h1 className={stylesMain.title}>Manage Locations</h1>
             <div className="input-group">
-              <Typeahead
-                ref="typeahead"
-                align="left"
-                placeholder="Search for location..."
-                onChange={(e) => this.handleLocationSelected(e)}
-                labelKey={option => `${option.name}`}
-                options={this.state.locations}
-                filterBy={['name']}
-              />              
+              <div className={stylesMain.flex1}>
+                <Typeahead
+                  ref="typeahead"
+                  placeholder="Search for location..."
+                  onChange={(e) => this.handleLocationSelected(e)}
+                  labelKey={option => `${option.name}`}
+                  options={this.state.locations}
+                  filterBy={['name']}
+                />
+              </div>     
               <div className="input-group-append">
                 <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
               </div>
             </div>
             <hr />
           </Col>
-
         </Row>
         {this.selectedLocationForm()}
       </div>
