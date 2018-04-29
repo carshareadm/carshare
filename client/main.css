@@ -57,6 +57,11 @@ body {
   font-size: 20pt;
 }
 
+.phoneNum{
+    font-size:20pt;
+    color: green;
+}
+
 .buttons {
   background-color: rgb(76, 157, 38) !important;
   border: solid rgb(76, 157, 38) 1px !important;
@@ -64,6 +69,17 @@ body {
 
 .input-group .rbt {
 	width: 230px !important;
+}
+
+.button1 {
+  margin-right: 1em;
+  margin-bottom: 1em;
+  background-color: rgb(226,226,226) !important;
+  color: rgb(76, 157, 38) !important;
+  padding-bottom: 50px;
+  min-width: 170px;
+  border-radius: 0 !important;
+  text-align: right !important;
 }
 
 .flex1 {
