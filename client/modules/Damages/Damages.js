@@ -31,13 +31,15 @@ export class Damages extends Component {
 
 	constructor(props){
 	    super(props);
+	    this.setFromVisible = this.setFromVisible.bind(this)
+	    this.displayFormText = this.displayFormText.bind(this)
 	    this.state = {
 	      descr: "",
 	      image: "",
 	      message: "",
+	      form: false
 	    };
   	}
-
 
   	handleSubmit(event){
 	    event.preventDefault();
@@ -62,42 +64,51 @@ export class Damages extends Component {
 	}
 
   	handleImageUploaded(img){
+  		console.log(img);
   		this.setState({
   			image: img._id,
+  			form : true
   		})
   	}
 
-  	displayDescrForm(){
-  		return(
+  	setFromVisible(){
+  		this.setState({
+  			form : true
+  		})
+  	}
+
+  	displayFormText(){
+  		return (
   			<div>
-  				<FormGroup>
-	            <Label htmlFor="descr">Description *</Label>
-	            <Input
-	              type="textarea"
-	              rows="5"
-	              name="descr"
-	              id="descr"
-	              placeholder="Describe the damage"
-	              value={this.state.description}
-	              onChange={this.handleInputChange.bind(this)}
-	            />
-	            <FormFeedback>
-	              A  description address is required.
-	            </FormFeedback>
-	        </FormGroup>
-	         <Button
-	         	className={styles.button}
-	            type="submit"
-	            disabled={this.state.descr==""}
-	            outline
-	            color="success"
-	            block
-	          >
-	            Submit
-	          </Button>
+	  			<FormGroup>
+		            <Label htmlFor="descr">Description *</Label>
+		            <Input
+		              type="textarea"
+		              rows="5"
+		              name="descr"
+		              id="descr"
+		              placeholder="Describe the damage"
+		              value={this.state.description}
+		              onChange={this.handleInputChange.bind(this)}
+		            />
+		            <FormFeedback>
+		              A  description is required.
+		            </FormFeedback>
+		        </FormGroup>
+		         <Button
+		         	className={styles.button}
+		            type="submit"
+		            disabled={this.state.descr==""}
+		            outline
+		            color="success"
+		            block
+		          >
+		            Submit
+		          </Button>
   			</div>
   		)
   	}
+
 
   	displayForm(){
   		return(
@@ -105,8 +116,11 @@ export class Damages extends Component {
 			<p><strong>Please Report Damage</strong><br/>
             			Please upload a photo of the damage and describe the details in the provided space.</p>
 			<Form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
+			
 			<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
-	        {this.state.image? this.displayDescrForm() : null}
+			
+			<Button className={styles.button} onClick={this.setFromVisible} color="success">Skip Image Uploading</Button>
+			{this.state.form? this.displayFormText() : null}
 	    </Form>
 	    </div>
   		)
@@ -131,7 +145,7 @@ export class Damages extends Component {
 					<Row>
 					<Col>
 						<h1 className={stylesMain.title}>Damage Report</h1>
-						{this.state.message ? this.displayMessage() : this.displayForm()}
+						{!this.state.message ? this.displayForm() : this.displayMessage()}
 			        </Col>
 					</Row>
 				</Container>

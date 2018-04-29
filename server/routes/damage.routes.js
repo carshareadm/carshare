@@ -4,6 +4,6 @@ var router = express.Router();
 
 
 router.post('/:booking/createDamage', damage.createDamage);
-router.get('/:booking/showDamage', damage.showDamage);
+router.get('/:carId/showDamage', damage.showDamage);
 
 module.exports = router;
