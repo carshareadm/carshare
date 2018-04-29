@@ -11,7 +11,7 @@ export const getAll = async (req, res) => {
       return res.status(200).send(cars);
   } catch(e) {
     logger.err(e);
-    return res.status(500).semd(e);
+    return res.status(500).send(e);
   }
 };
 
