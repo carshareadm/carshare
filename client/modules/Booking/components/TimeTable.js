@@ -82,6 +82,7 @@ export class TimeTable extends Component {
     super(props);
     this.weekBackward = this.weekBackward.bind(this);
     this.weekForward = this.weekForward.bind(this);
+    this.onCellClick = this.onCellClick.bind(this);
     this.state = {
       times: [],
       time: moment().startOf("week"),
@@ -99,12 +100,8 @@ export class TimeTable extends Component {
 
   componentDidMount() {
     this.loadData(this.state.time);
-    this.props.onRef(this);
   }
 
-  componentWillUnmount() {
-    this.props.onRef(undefined);
-  }
 
   loadData(time) {
     http
@@ -122,34 +119,28 @@ export class TimeTable extends Component {
   Appears to be called but can not change value
   */
 
-  onItemClickHandler(itemName) {
-	this.props.func(itemName);
+  onCellClick(event) {
+    event.preventDefault();
+    this.props.setStart(moment(event.target.dataset.date));
+  }
+
+  renderCell(day, hour){
+     return (
+      this.checkBooking(moment(day).format("ddd"), hour) ?
+        " " : 
+        <Button onClick={this.onCellClick} data-date={moment(day).add(hour.substring(0,2),'h').format()}>✓</Button>
+    )
   }
 
   renderHour(h) {
     return (
       <tr key={h}>
         <th scope="row">{h}</th>
-        {this.state.days.map(d => {
-	/*
-    var clickHandler = (event => {
-          this.onItemClickHandler(moment(d).add(h.substring(0,2),'h'));
-	  });
-	*/
-   return (
-         <td key={d + h}>
-             {this.checkBooking(moment(d).format("ddd"), h) ? " " : 
-              <Button 
-              //Disabled for now, working on implementation
-              disabled 
-              data={moment(d).add(h.substring(0,2),'h')}>✓</Button>}
-         </td>
-       );
-	 }
-)}
+        {this.state.days.map(d => (<td key={d + h}>{this.renderCell(d, h)}</td>))}
       </tr>
     );
   }
+
 
   checkBooking(d, h) {
     return this.state.times.find(t => {
