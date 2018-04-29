@@ -74,6 +74,7 @@ export class Booking extends Component {
       },
     };
     this.isFormInvalid = this.isFormInvalid.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
   }
   //Set up variables for Msgs
 
@@ -134,9 +135,7 @@ export class Booking extends Component {
       // Placeholder ccv validation.
 //    ccv: this.state.ccv.length > 4,
       startDate: moment(this.startTime).isSameOrAfter(this.state.endDate),
-      endDate:
-        this.state.startDate === this.state.endDate ||
-        this.state.startDate.isAfter(this.state.endDate),
+      endDate: this.state.startDate.isSameOrAfter(this.state.endDate),
     };
     return errs;
   }
@@ -146,8 +145,10 @@ export class Booking extends Component {
   }
 
   handleStartDateChange(date) {
-    this.startDate=moment(date);
-    this.setState({ startDate: date });
+    this.setState({ 
+      startDate: moment(date),
+      endDate: moment(date).add(2, "h")
+    });
   }
 
   handleEndDateChange(date) {
@@ -327,13 +328,6 @@ export class Booking extends Component {
     );
   }
 
-  //Attempt at callback function
-  //results in read only error
-  returnTime(time)
-  {
-    this.startDate=moment(time);
-  }
-
   bookingFrm() {
     this.errors = this.validate();
     /*
@@ -389,13 +383,6 @@ export class Booking extends Component {
                 </CardText>
               </CardBody>
             </Card>
-            {
-              //Display for now, no ability to update time right now
-            }
-              <TimeTable
-                key={this.state.selectedCar._id}
-                data={this.state.selectedCar}
-              />
           </Col>
           <Col sm="12" md="6">
             <hr />
@@ -408,8 +395,8 @@ export class Booking extends Component {
                     ? "is-invalid"
                     : ""
                 }
-                selected={this.startDate}
-                onChange={this.handleStartDateChange.bind(this)}
+                selected={this.state.startDate}
+                onChange={this.handleStartDateChange}
                 showTimeSelect
                 minDate={this.startTime}
                 timeFormat="HH:mm"
@@ -437,11 +424,21 @@ export class Booking extends Component {
               />
             </FormGroup>
           </Col>
+          <Col md="12" md="6">
+            {
+              //Display for now, no ability to update time right now
+            }
+            <TimeTable
+                key={this.state.selectedCar._id}
+                data={this.state.selectedCar}
+                setStart={this.handleStartDateChange}
+              />
+          </Col>
         </Row>
         <Row>
           <Col>
-            <Form onSubmit={this.handleBooking.bind(this)}>
-              <Button
+              <Button 
+                onClick={this.handleBooking.bind(this)}
                 disabled={this.isDisabled}
                 outline
                 color="success"
@@ -449,7 +446,6 @@ export class Booking extends Component {
               >
                 Book
               </Button>
-            </Form>
           </Col>
         </Row>
       </Container>
