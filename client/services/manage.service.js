@@ -50,8 +50,28 @@ const vehicleTypes = {
 };
 // end - manage vehicleTypes
 
+// manage users methods
+const updateUser = (user) => {
+  return http
+  .client()
+  .put(`/manage/users/${user._id}`, user);
+};
+
+const getAllUsers = () => {
+  return http
+  .client()
+  .get(`/manage/users`);
+};
+
+const users = {
+  updateUser: updateUser,
+  getAll: getAllUsers,
+};
+// end - manage cars
+
 module.exports = {
   cars: cars,
   locations: locations,
   vehicleTypes: vehicleTypes,
+  users: users,
 };
