@@ -16,21 +16,47 @@ import manageSvc from "../../../services/manage.service";
 import stylesMain from '../../../main.css';
 
 export class UsersAdm extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       users: [],
       selectedUser: null,
+      locations: [],
+      vehicleTypes: [],
     };
   }
 
   componentDidMount() {
     this.getUsers();
+    this.getLocations();
+    this.getVehicleTypes();
   }
 
   getUsers() {
     manageSvc.users.getAll()
-      .then(res => this.setState({users: res.data}))
+      .then(res => {
+        let tmp = null;
+        if (this.state.selectedUser) {
+          tmp = res.data.find(f => f._id === this.state.selectedUser._id);          
+        }
+        this.setState({
+          users: res.data,
+          selectedUser: tmp,
+        });
+      })
+      .catch(e => console.log(e));
+  }
+
+  getLocations() {
+    manageSvc.locations.getAll()
+      .then(res => this.setState({locations: res.data}))
+      .catch(e => console.log(e));
+  }
+
+  getVehicleTypes() {
+    manageSvc.vehicleTypes.getAll()
+      .then(res => this.setState({vehicleTypes: res.data}))
       .catch(e => console.log(e));
   }
 
@@ -39,7 +65,7 @@ export class UsersAdm extends Component {
     this.setState({selectedUser: evt[0]});
   }
 
-  handleSaved(saveUser) {
+  handleSaved(savedUser) {
     this.getUsers();
   }
 
@@ -49,7 +75,9 @@ export class UsersAdm extends Component {
       ? '' 
       : <UserAdm
           onSaved={this.handleSaved.bind(this)}
-          user={this.state.selectedUser} />
+          user={this.state.selectedUser}
+          vehicleTypes={this.state.vehicleTypes}
+          locations={this.state.locations}/>
     );
   }
 
@@ -59,6 +87,7 @@ export class UsersAdm extends Component {
   }
 
   render() {
+    const c = this.state.users.map(c => (<li>{c.make}</li>))
     return (
       <div className={stylesMain.body}>
         <Row>
@@ -70,9 +99,9 @@ export class UsersAdm extends Component {
                 align="left"
                 placeholder="Search for user..."
                 onChange={(e) => this.handleUserSelected(e)}
-                labelKey={option => `${option.name}`}
+                labelKey={option => `${option.email}`}
                 options={this.state.users}
-                filterBy={['name']}
+                
               />              
               <div className="input-group-append">
                 <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
@@ -80,7 +109,6 @@ export class UsersAdm extends Component {
             </div>
             <hr />
           </Col>
-
         </Row>
         {this.selectedUserForm()}
       </div>

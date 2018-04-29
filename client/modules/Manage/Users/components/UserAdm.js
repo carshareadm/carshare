@@ -20,22 +20,39 @@ export class UserAdm extends Component {
 
   yearOptions = [];
 
-  seatsOptions = [2, 3, 4, 5, 6, 7, 8];
+  stateOptions = ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"];
   doorsOptions = [2, 3, 4, 5];
 
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      location: {...this.props.location},
+      user: {...this.props.user},
       isTouched: {
-        name: false,
+        email: false,
+        mobile: false,
         isDisabled: false,
-        latitude: false,
-        longitude: false,
+        isAccountConfirmed: false,
+        isBlockedByAdmin: false,
+        isAdm: false,
+        model: false,
+        year: false,
+        colour: false,
+        seats: false,
+        doors: false,
+        vehicleType: false,
+        location: false,
       },
       dropdownsOpen: {
         isDisabled: false,
+        isAccountConfirmed: false,
+        isBlockedByAdmin: false,
+        isAdm: false,
+        year: false,
+        seats: false,
+        doors: false,
+        location: false,
+        vehicleType: false,
       },
     }
 
@@ -48,33 +65,32 @@ export class UserAdm extends Component {
   }
   
   labels = {
-    name: 'Name',
-    latitude: 'Latitude',
-    longitude: 'Longitude',
-    isDisabled: 'Active State',
+    email: 'Email',
+    mobile: 'Mobile',
+    isDisabled: 'Disabled',
+    isAccountConfirmed: 'Confirmed',
+    isBlockedByAdmin: 'Blocked',
+    isAdmin: 'Admin Access',
+    state: 'State',
   };
 
   errors = {};
 
   errorMsgs = {
-    name: 'is required',
-    latitude: 'must be between -90 and 90',
-    longitude: 'must be between -180 and 180',
+    email: 'is required',
+    mobile: 'is required',
+    isDisabled: '',
+    isAccountConfirmed: '',
+    isBlockedByAdmin: '',
+    isAdmin: '',
+    state: 'is required',
   };
 
-  isLatitudeInvalid(lat) {
-    return isNaN(lat) || +lat < -90 || +lat > 90;
-  }
-  
-  isLongitudeInvalid(lng) {
-    return isNaN(lng) || +lng < -180 || +lng > 180;
-  }
-
   validate() {
+    // Placeholder validation for now
     const errs = {
-      name: this.state.location.name.length < 1,
-      latitude: this.isLatitudeInvalid(this.state.location.coordinates.latitude),
-      longitude: this.isLongitudeInvalid(this.state.location.coordinates.longitude),
+      email: this.state.user.email.length < 1,
+      mobile: this.state.user.mobile.length < 1,
     };
     return errs;
   }
@@ -102,25 +118,22 @@ export class UserAdm extends Component {
     });
   }
 
-  handleInputChange(field, isCoord, evt)
+  handleInputChange(evt)
   {
-    let value = evt.target.value;
-    let loc = {...this.state.location};
-    if (isCoord) {
-      loc = {...loc, coordinates: { [field]: value }};
-    } else {
-      loc = {...loc, [field]: value };
-    }
-
+    let field = evt.target.id;
+    let value = evt.target.value
     this.setState({
-      location: loc,
+      user: { ...this.state.user, [field]: value },
       isTouched: { ...this.state.isTouched, [field]: true },
     });
   }
 
-  renderTextFormGroup(field, isCoord) {
+  componentDidMount() {
+
+  }
+
+  renderTextFormGroup(field) {
     const placeholder = this.labels[field];
-    const value = isCoord ? this.state.location.coordinates[field] : this.state.location[field];
     return (
       <FormGroup>
         {this.renderLabel(field, field)}
@@ -130,9 +143,9 @@ export class UserAdm extends Component {
           id={field}
           placeholder={placeholder}
           className={this.isError(field) ? 'is-invalid' : ''}
-          onChange={(e) => this.handleInputChange(field, isCoord, e)}
+          onChange={this.handleInputChange.bind(this)}
           onBlur={() => this.handleBlur(field)}
-          value={value}
+          value={this.state.user[field]}
         />
       </FormGroup>
     );
@@ -146,17 +159,43 @@ export class UserAdm extends Component {
 
   ddOnSelect(field, value, evt) {
     this.setState({
-      location: {...this.state.location, [field]: value},
+      user: {...this.state.user, [field]: value},
       isTouched: {...this.state.isTouched, [field]: true},
       dropdownsOpen: {...this.state.dropdownsOpen, [field]: false},
+
     });
   }
 
-  disabledDropDown() {
-    const field = 'isDisabled';
-    const active = 'ACTIVE';
-    const disabled = 'INACTIVE';
-    const text = this.state.location.isDisabled ? disabled : active;
+  renderDropdownFormGroup(field, options, isAddress) {
+
+    const opts = options.map(m => (<DropdownItem key={m} onClick={(e) => this.ddOnSelect(field, m, e)}>{m}</DropdownItem>));
+    var text = '';
+    console.log(this.state.user);
+    if(isAddress){
+      text = this.state.user.address[field];
+    }
+    else
+    {
+      text = this.state.user[field];
+    }
+    return (
+      <FormGroup>
+          {this.renderLabel(field, field)} <br />
+          <ButtonDropdown isOpen={this.state.dropdownsOpen[field]} toggle={(e) => this.toggleDropDown(field, e)}>            
+            <DropdownToggle caret size="sm">{text}</DropdownToggle>
+            <DropdownMenu>
+              {opts}
+            </DropdownMenu>
+          </ButtonDropdown>          
+      </FormGroup>
+    );
+  }
+
+  //tf - True False drop down
+  tfDropDown(field, check) {
+    const active = 'No';
+    const disabled = 'Yes';
+    const text = check ? disabled : active;
     
     const opts = [
       {state: false, text: active},
@@ -176,14 +215,33 @@ export class UserAdm extends Component {
     );
   }
 
+  renderObjectDropDown(field, options) {
+    const opts = options.map(m => (
+        <DropdownItem key={m._id} onClick={(e) => this.ddOnSelect(field, m, e)}>{m.name}</DropdownItem>
+      )
+    );
+    const text = this.state.user[field] ? this.state.user[field].email : `Select ${this.labels[field]}`;
+    return (
+      <FormGroup>
+          {this.renderLabel(field, field)} <br />
+          <ButtonDropdown isOpen={this.state.dropdownsOpen[field]} toggle={(e) => this.toggleDropDown(field, e)}>            
+            <DropdownToggle caret size="sm">{text}</DropdownToggle>
+            <DropdownMenu>
+              {opts}
+            </DropdownMenu>
+          </ButtonDropdown>          
+      </FormGroup>
+    );
+  }
+
   submit(evt) {
     evt.preventDefault()
     this.setLoading(true);
 
-    manageSvc.locations.updateLocation(this.state.location)
+    manageSvc.users.updateUser(this.state.user)
     .then(result => {
       this.setLoading(false);
-      this.props.onSaved(this.state.location);
+      this.props.onSaved(this.state.user);
     })
     .catch(e => {
       this.setLoading(false);
@@ -210,21 +268,35 @@ export class UserAdm extends Component {
       <Row>
         {loading}
         <Col xs="12" md="6">
-          
-          <h5>Google Maps goes here</h5>
-
+          {this.renderTextFormGroup('email')}
+          {this.renderTextFormGroup('mobile')}
+          {this.tfDropDown('isAccountConfirmed', this.state.user.isAccountConfirmed)}
+          {this.tfDropDown('isAdmin', this.state.user.isAdmin)}
         </Col>
         <Col xs="12" md="6">
-          {this.disabledDropDown()}
-          {this.renderTextFormGroup('name', false)}
-          {this.renderTextFormGroup('latitude', true)}
-          {this.renderTextFormGroup('longitude', true)}
-          
+          {this.tfDropDown('isDisabled', this.state.user.isDisabled)}
+          {this.tfDropDown('isBlockedByAdmin', this.state.user.isBlockedByAdmin)}
+          {this.renderTextFormGroup('model')}
+          {this.renderObjectDropDown('vehicleType', this.props.vehicleTypes, false)}
+          {this.renderTextFormGroup('colour')}
+          {this.renderDropdownFormGroup('year', this.yearOptions, false)}
+          {this.renderDropdownFormGroup('state', this.stateOptions, true)}
+          {this.renderDropdownFormGroup('doors', this.doorsOptions, false)}
+
+          {this.renderObjectDropDown('location', this.props.locations)}
+
           {this.saveButton(formIsDisabled)}
         </Col>
       </Row>
     );
   }
 }
+
+UserAdm.propTypes = {
+  user: PropTypes.object.isRequired,
+  locations: PropTypes.array.isRequired,
+  vehicleTypes: PropTypes.array.isRequired,
+  onSaved: PropTypes.func.isRequired,
+};
 
 export default UserAdm;
