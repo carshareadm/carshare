@@ -2,6 +2,8 @@ import Damage from '../../models/damage';
 import Booking from '../../models/booking';
 import mongoose from 'mongoose';
 
+const s3Helper = require('../../util/aws.helper');
+
 const createDamage = function(req, res){
   Booking.findOne(mongoose.Types.ObjectId(req.params.booking))
   .exec((err, booking) => {
@@ -12,9 +14,11 @@ const createDamage = function(req, res){
       description: req.body.description,
       loggedAt: new Date(),
       booking: booking._id,
-      car: booking.car,
-      image: req.body.image,
+      car: booking.car
     });
+    if(req.body.image){
+      newDamage.image = req.body.image
+    }
     newDamage
       .save()
       .then((damage) => {
@@ -29,16 +33,24 @@ const createDamage = function(req, res){
 const showDamage = function(req, res){
   const filter = {
     'isDisabled': false, // damages that arent disabled
+    'car': mongoose.Types.ObjectId(req.params.carId)
   };
   Damage.find(filter)
+    .sort({ loggedAt: -1 })
+    .populate('image')
     .populate('booking')
     .populate('car')
     .exec((err, damages) => {
       if (err) {
         res.status(500).send(err);
       } else {
-        const filtered = damages.filter(f => f.car !== null);
-        res.status(200).send(filtered);
+        const dmg = damages.map((d) => {
+          if(d.image){
+            d.imageUrl = s3Helper.getDownloadSignedUrl(d.image.filename);
+          }
+          return d;
+        })
+        res.status(200).send(dmg);
       }
     });
 }

@@ -9,6 +9,7 @@ import Coordinate from '../../../models/coordinate';
 import Location from '../../../models/location';
 import Booking from '../../../models/booking';
 import User from '../../../models/user';
+import Damage from '../../../models/damage';
 
 const mockgoose = new Mockgoose(mongoose);
 const app = require("../../../app");
@@ -98,8 +99,23 @@ describe("Damage controller", () => {
 	})
 
 	test("Display damage", async () => {
-		const response = await request(app).get(`/api/damage/${booking1._id}/showDamage`);
+		const damage = new Damage();
+		damage.description = "Some description";
+      	damage.booking = booking1;
+      	damage.car = car1;
+      	await damage.save()
+
+		const response = await request(app).get(`/api/damage/${booking1.car._id}/showDamage`);
 		const body = response.body;
 		expect(response.statusCode).toBe(200);
+		expect(response.body.length).toBe(1);
+		expect(response.body[0]._id).toMatch(damage._id.toString());	
+	})
+
+	test("Damage list is empty when there are no damages logged", async () => {
+		const response = await request(app).get(`/api/damage/000dbc9e71f9254e32b96000/showDamage`);
+		const body = response.body;
+		expect(response.statusCode).toBe(200);
+		expect(response.body.length).toBe(0);
 	})
 })
