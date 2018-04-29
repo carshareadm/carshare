@@ -98,6 +98,8 @@ export class Header extends Component{
 					<li className={active(this.context.router, "/terms", true)}><Link to="/terms" onClick={this.burgerToggle}>Terms and Conditions</Link></li>
 					<li className={active(this.context.router, "/contact", true)}><Link to="/contact" onClick={this.burgerToggle}>Contact Us</Link></li>
 					<li className={active(this.context.router, "/about", true)}><Link to="/about" onClick={this.burgerToggle}>About Us</Link></li>
+			    	<li className={active(this.context.router, "/specials", true)}><Link to="/specials" onClick={this.burgerToggle}>Special Offers</Link></li>
+					<li className={active(this.context.router, "/emergency", true)}><Link to="/emergency" onClick={this.burgerToggle}>Emergency Contact</Link></li>
 			    {adm}
 					{this.props.loggedIn ? '' : <li className={active(this.context.router, "/login", true)}><Link to="/login" onClick={this.burgerToggle}>Login</Link></li>
 					}
