@@ -116,9 +116,10 @@ export class Damages extends Component {
 			<p><strong>Please Report Damage</strong><br/>
             			Please upload a photo of the damage and describe the details in the provided space.</p>
 			<Form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
-			
-			<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
-			
+				<FileUploader
+					onFileUploaded={this.handleImageUploaded.bind(this)}
+					isPublic={false} />
+				
 			<Button className={styles.button} onClick={this.setFormVisible} color="success">Skip Image Uploading</Button>
 			{this.state.form? this.displayFormText() : null}
 	    </Form>

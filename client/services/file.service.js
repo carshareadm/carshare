@@ -1,7 +1,7 @@
 import * as http from '../util/http';
 
-export const getPresignedUploadKey = (fileName) => {
-  return http.client().post('images/presigned', { filename: fileName});
+export const getPresignedUploadKey = (fileName, isPublic) => {
+  return http.client().post('images/presigned', { filename: fileName, isPublic: isPublic});
 };
 
 export const uploadToStorage = (file, s3UploadPolicy) => {
@@ -19,6 +19,6 @@ export const uploadToStorage = (file, s3UploadPolicy) => {
   return http.clientNoAuthHeader(headers).post(s3UploadPolicy.url, formData);
 };
 
-export const saveImageToShaCarDb = (filename) => {
-  return http.client().post('images/', {filename: filename});
+export const saveImageToShaCarDb = (filename, isPublic) => {
+  return http.client().post('images/', {filename: filename, isPublic: isPublic});
 };

@@ -13,6 +13,7 @@ var router = express.Router();
 
 router.get("/cars", isAuthenticatedGuard, isAdminGuard, cars.getAll);
 router.put("/cars/:carId", isAuthenticatedGuard, isAdminGuard, cars.update);
+router.put("/cars/:carId/image/:imageId", isAuthenticatedGuard, isAdminGuard, cars.updateImage);
 
 router.get("/damages", isAuthenticatedGuard, isAdminGuard, damages.getAll);
 router.put("/damages/:damageId", isAuthenticatedGuard, isAdminGuard, damages.update);

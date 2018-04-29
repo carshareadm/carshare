@@ -15,7 +15,6 @@ export const getImageById = function(req, res) {
     }
     else {
       try {
-        // TODO: vet user for allowed access to image
         const url = signedUrl(image.fileName);
         res.status(200).send({imageUrl: url});
       } catch(e) {

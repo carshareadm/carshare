@@ -14,6 +14,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
+    unsafeCache: true,
     modules: [
       'client',
       'node_modules',
