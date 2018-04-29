@@ -18,7 +18,7 @@ import {
 
 import Gallery from './components/Gallery'
 import styles from './Specials.css'
-import stylesMain from "../../main.css";
+import stylesMain from "../../main.css"
 
 //Create a component class
 export class Specials extends Component {

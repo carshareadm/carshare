@@ -13,7 +13,8 @@ import {
 } from "reactstrap";
 import * as http from "../../util/http";
 import * as validator from "validator";
-import styles from './Contact.css'
+import styles from "./Contact.css";
+import stylesMain from "../../main.css";
 
 const reset = {
   emailFrom: '',
@@ -114,7 +115,7 @@ class Contact extends Component
     // Here goes our page
     return (
       <div className={styles.body}>
-          <h1 className={styles.title}>Contact Us</h1>
+          <h1 className={stylesMain.title}>Contact Us</h1>
         <Row noGutters>
           <Col xs="12" md="6" className="px-3">
             <p><strong>Need Help?</strong><br/>
@@ -124,14 +125,14 @@ class Contact extends Component
             <p><strong>Customer Services</strong><br />
             Services available 7am - 7pm</p>
 
-            <p className={styles.phoneNum}>1300 000 123</p>
+            <p className={stylesMain.phoneNum}>Ph: 1300 000 123</p>
 
             <p><strong>ShaCar Office Address:</strong><br />
             1 Flinders St,<br />
             Melbourne, Victoria</p>
           </Col>
           <Col xs="12" md="6" className="px-3">
-            <p><strong>Contact Form</strong><br /></p>
+            <h4 className={stylesMain.h4}>Contact Form</h4><br />
             <Form
               className="novalidate"
               onSubmit={this.handleSubmit.bind(this)}
@@ -187,11 +188,13 @@ class Contact extends Component
               </FormGroup>
 
               <Button
+              className={
+                stylesMain.button1
+              }
                 type="submit"
                 disabled={isDisabled}
                 outline
                 color="success"
-                size="lg"
                 block
               >
                 Submit
