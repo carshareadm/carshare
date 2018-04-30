@@ -102,32 +102,30 @@ const createBooking = function(req, res) {
           {
             // FindOne as Offer Codes are set as unique
             Offer.findOne({ offerCode: req.body.code, isDisabled: false }).exec((offerErr, discount) => {
-              console.log(discount);
               if (offerErr) {
                 console.log(offerErr);
                 return res.status(500).send(offerErr);
               }
-              if (!discount) {
-                return res.status(400).send("invalid offer code");
-              } else {
+              if (discount) {
+              
                 newBooking.offer = discount._id;
                 //Multiplier applied first
                 if (discount.multiplier) {
                   newBooking.totalCost =
-                    (1 - discount.multiplier) * newBooking.totalCost;
+                    (100 - discount.multiplier)/100 * newBooking.totalCost;
                 }
                 if (discount.oneOffValue) {
                   newBooking.totalCost =
                     newBooking.totalCost - discount.oneOffValue;
                 }
-                newBooking.save((err, booking) => {
-                  if (err) {
-                    return res.status(500).send(err);
-                  } else {
-                    return res.status(200).send(booking);
-                  }
-                });
               }
+              newBooking.save((err, booking) => {
+                if (err) {
+                  return res.status(500).send(err);
+                } else {
+                  return res.status(200).send(booking);
+                }
+              });
             });
           }
           else

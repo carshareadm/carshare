@@ -14,3 +14,10 @@
 .buttonR{
 	float: right;
 }
+
+.buttonAvail
+{
+	width: 25px;
+	height: 25px;
+	font-size: 1rem;
+}

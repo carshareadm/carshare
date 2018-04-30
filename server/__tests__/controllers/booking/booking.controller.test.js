@@ -81,6 +81,7 @@ describe("Booking controller", () => {
     discount.offerCode = "1234";
     discount.expiresAt = DateUtils.addHours(new Date(), 1);
     discount.isDisabled = false;
+    discount.oneOffValue = 10;
 
     try {
       const savedAddress = await address.save().catch(err => {console.log(err)});
@@ -313,7 +314,7 @@ describe("Booking controller", () => {
     }
   });
 
-  test("it should return 400 if offer is sent but invalid", async done => {
+  test("it should return 200 if offer is sent but invalid", async done => {
     const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
     try {
       license = await workingLicense.save();
@@ -340,7 +341,8 @@ describe("Booking controller", () => {
         code: "test",
       })
       .then(response => {
-        expect(response.statusCode).toBe(400);
+        // Booking is still created without discount
+        expect(response.statusCode).toBe(200);
         done();
       });
     } catch (e) {
@@ -376,6 +378,8 @@ describe("Booking controller", () => {
       })
       .then(response => {
         expect(response.statusCode).toBe(200);
+        //24 (hours) * 7 (hourly rate) - 10 (discount)
+        expect(response.body.totalCost).toBe(158);
         done();
       });
     } catch (e) {
