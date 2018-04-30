@@ -128,7 +128,7 @@ export class TimeTable extends Component {
      return (
       this.checkBooking(moment(day).format("ddd"), hour) ?
         " " : 
-        <Button onClick={this.onCellClick} data-date={moment(day).add(hour.substring(0,2),'h').format()}>✓</Button>
+        <Button className={styles.buttonAvail} onClick={this.onCellClick} data-date={moment(day).add(hour.substring(0,2),'h').format()}>✓</Button>
     )
   }
 
@@ -203,7 +203,7 @@ export class TimeTable extends Component {
             &rarr;{" "}
           </Button>
         </div>
-        <Table>
+        <Table responsive>
           <thead>
             <tr>
               <th> </th>

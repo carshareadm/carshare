@@ -51,19 +51,24 @@ export class Booking extends Component {
     super(props);
     this.state = {
       ccv: "",
+      offerCode: "",
       carid: "",
       userid: "",
-      selectedCar: {},
+      
       selectedLocation: {},
       startDate: this.startTime,
       endDate: this.endTime,
-      selectedCar: false,
       loggedIn: false,
+      selectedCar: {},
       booked: false,
       ccvConfirmed: false,
       successAlertOpen: false,
       failAlertOpen: false,
       cost: 0,
+      alert:{
+        couponSuccess: false,
+        couponError: false,
+      },
 
       validated: true,
 
@@ -159,6 +164,11 @@ export class Booking extends Component {
     this.setState({ ccv: evt.target.value });
   };
 
+  handleOfferCode = evt => {
+    this.setState({ offerCode: evt.target.value });
+  };
+
+
   handleCcvConfirmation(evt) {
     evt.preventDefault();
     this.setState({ ccvConfirmed: true });
@@ -177,6 +187,7 @@ export class Booking extends Component {
           car: this.state.carid,
           startAt: this.state.startDate,
           endAt: this.state.endDate,
+          code: this.state.offerCode,
         })
         .then(res => {
           this.setState({ cost: res.data.totalCost });
@@ -245,6 +256,10 @@ export class Booking extends Component {
 
   dismissFail() {
     this.setState({ failAlertOpen: false });
+  }
+
+  dismissAlert(field, evt) {
+    this.setState({ alert,[field]: false });
   }
 
   cvvPrompt() {
@@ -423,11 +438,35 @@ export class Booking extends Component {
                 timeCaption="time"
               />
             </FormGroup>
+            <FormGroup>
+              <Alert
+                color="success"
+                isOpen={this.state.alert['couponSuccess']}
+                toggle={(e) => this.dismissAlert('couponSuccess', e)}
+              >
+                Coupon Applied.
+              </Alert>
+              <Alert
+                color="danger"
+                isOpen={this.state.alert['couponError']}
+                toggle={(e) => this.dismissAlert('couponError', e)}
+              >
+                Coupon invalid or expired.
+              </Alert>
+              {this.renderLabel("offerCode", "offerCode")}
+              <Input
+                  type="text"
+                  name="offerCode"
+                  id="offerCode"
+                  placeholder="Offer Code"
+                  className={this.isError('offerCode') ? 'is-invalid' : ''}
+                  onChange={this.handleOfferCode.bind(this)}
+                  onBlur={() => this.handleBlur('offerCode')}
+                  value={this.state.offerCode}
+                />
+            </FormGroup>
           </Col>
           <Col md="12" md="6">
-            {
-              //Display for now, no ability to update time right now
-            }
             <TimeTable
                 key={this.state.selectedCar._id}
                 data={this.state.selectedCar}
