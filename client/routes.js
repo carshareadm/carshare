@@ -25,6 +25,7 @@ import Emergency from './modules/Emergency/Emergency';
 import {Manage} from './modules/Manage/Manage';
 import {BookingsAdm} from './modules/Manage/Bookings/BookingsAdm';
 import {CarsAdm} from './modules/Manage/Cars/CarsAdm';
+import {DamagesAdm} from './modules/Manage/Damages/DamagesAdm';
 import {LocationsAdm} from './modules/Manage/Locations/LocationsAdm';
 import {UsersAdm} from './modules/Manage/Users/UsersAdm';
 import {OffersAdm} from './modules/Manage/Offer/OffersAdm'
@@ -71,6 +72,7 @@ export default (
 		<Route path="manage/bookings" component={requireAdminAuth(BookingsAdm)} />
 		<Route path="manage/cars" component={requireAdminAuth(CarsAdm)} />
 		<Route path="manage/offers" component={requireAdminAuth(OffersAdm)} />
+		<Route path="manage/damages" component={requireAdminAuth(DamagesAdm)} />
 		<Route path="manage/locations" component={requireAdminAuth(LocationsAdm)} />
 		<Route path="manage/users" component={requireAdminAuth(UsersAdm)} />
 		

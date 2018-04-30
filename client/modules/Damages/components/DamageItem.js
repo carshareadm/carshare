@@ -37,6 +37,7 @@ class DamageItem extends Component {
             <CardText>
 				{this.renderImage(dm)}
 				<p>{dm.description}</p>
+        {this.props.button}
             </CardText>
           </CardBody>
         </Col>

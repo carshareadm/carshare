@@ -19,6 +19,26 @@ const cars = {
 };
 // end - manage cars
 
+// manage damages
+const getAllDamages = (carid) => {
+  return http
+  .client()
+  .get(`/manage/damages?carId=${carid || ''}`);
+};
+
+const updateDamage = (damageid) => {
+  return http
+  .client()
+  .put(`/manage/damages/${damageid}`, {});
+};
+
+const damages = {
+  getAll: getAllDamages,
+  updateDamage: updateDamage,
+};
+
+// end - manage damages
+
 // manage locations
 const getAllLocations = () => {
   return http
@@ -128,4 +148,5 @@ module.exports = {
   vehicleTypes: vehicleTypes,
   bookings: bookings,
   offers: offers,
+  damages: damages,
 };
