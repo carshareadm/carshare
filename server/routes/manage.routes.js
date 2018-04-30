@@ -3,6 +3,7 @@ const locations = require("../controllers/manage/manage.locations.controller");
 const users = require("../controllers/manage/manage.users.controller");
 const bookings = require("../controllers/manage/manage.bookings.controller");
 const offers = require("../controllers/manage/manage.offers.controller");
+const damages = require("../controllers/manage/manage.damages.controller");
 const vehicleTypes = require("../controllers/manage/manage.vehicleTypes.controller");
 const isAuthenticatedGuard = require("../middleware/isAuthenticatedGuard");
 const isAdminGuard = require("../middleware/isAdminGuard");
@@ -12,6 +13,9 @@ var router = express.Router();
 
 router.get("/cars", isAuthenticatedGuard, isAdminGuard, cars.getAll);
 router.put("/cars/:carId", isAuthenticatedGuard, isAdminGuard, cars.update);
+
+router.get("/damages", isAuthenticatedGuard, isAdminGuard, damages.getAll);
+router.put("/damages/:damageId", isAuthenticatedGuard, isAdminGuard, damages.update);
 
 router.get("/vehicletypes", isAuthenticatedGuard, isAdminGuard, vehicleTypes.getAll);
 
