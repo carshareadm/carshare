@@ -82,10 +82,50 @@ const vehicleTypes = {
 };
 // end - manage vehicleTypes
 
+// manage bookings methods
+const updateBooking = (booking) => {
+  return http
+  .client()
+  .put(`/manage/bookings/${booking._id}`, booking);
+};
+
+const getAllBookings = () => {
+  return http
+  .client()
+  .get(`/manage/bookings`);
+};
+
+const bookings = {
+  updateBooking: updateBooking,
+  getAll: getAllBookings,
+};
+// end - manage bookings
+
+// manage offers methods
+const updateOffer = (offer) => {
+  return http
+  .client()
+  .put(`/manage/offers/${offer._id}`, offer);
+};
+
+const getAllOffers = () => {
+  return http
+  .client()
+  .get(`/manage/offers`);
+};
+
+const offers = {
+  updateOffer: updateOffer,
+  getAll: getAllOffers,
+};
+// end - manage offers
+
 module.exports = {
   cars: cars,
   locations: locations,
   users: users,
   licenses: licenses,
   vehicleTypes: vehicleTypes,
+  bookings: bookings,
+  offers: offers,
 };

@@ -147,7 +147,7 @@ export class Booking extends Component {
   handleStartDateChange(date) {
     this.setState({ 
       startDate: moment(date),
-      endDate: moment(date).add(2, "h")
+      endDate: moment(date).add(2, "h"),
     });
   }
 

@@ -80,7 +80,7 @@ describe("Manage Users", () => {
     let token = {
       sub: testAdmin._id,
       email: testAdmin.email,
-      isAdmin: false,
+      isAdmin: true,
       exp: DateUtils.getDateInSeconds(
         DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
       ),
