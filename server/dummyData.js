@@ -12,7 +12,10 @@ import License from "./models/license";
 import Location from "./models/location";
 import Movement from "./models/movement";
 import User from "./models/user";
+import Offer from "./models/offer";
 import VehicleType from "./models/vehicleType";
+
+import moment from "moment";
 
 module.exports = function() {
   console.log("DB: Start loading seed data");
@@ -560,6 +563,75 @@ module.exports = function() {
             }
           });
         }
+      });
+    }
+  });
+
+  //Dummy Offer data
+  let offerCodeOne = "10Percent";
+  Offer.findOne({ offerCode: offerCodeOne }, (error, offer) => {
+    if (!offer) {
+      let offerOne = new Offer();
+      offerOne.offerCode = offerCodeOne;
+      // Multiplier for % off
+      offerOne.multiplier = 10;
+      // oneOffValue for $ off
+      //oneOffValue
+      offerOne.isDisabled = false;
+      offerOne.expiresAt = moment().add(3, "d");
+      offerOne.save().catch(e => {
+        console.log(e);
+      });
+    }
+  });
+
+  let offerCodeTwo = "June5$";
+  Offer.findOne({ offerCode: offerCodeTwo }, (error, offer) => {
+    if (!offer) {
+      let offerTwo = new Offer();
+      offerTwo.offerCode = offerCodeTwo;
+      // Multiplier for % off
+      //offerTwo.multiplier = 10;
+      // oneOffValue for $ off
+      offerTwo.oneOffValue = 5;
+      offerTwo.isDisabled = false;
+      offerTwo.expiresAt = moment().add(3, "d");
+      offerTwo.save().catch(e => {
+        console.log(e);
+      });
+    }
+  });
+
+  let offerCodeThree = "Expired";
+  Offer.findOne({ offerCode: offerCodeThree }, (error, offer) => {
+    if (!offer) {
+      let offerThree = new Offer();
+      offerThree.offerCode = offerCodeThree;
+      // Multiplier for % off
+      //offerThree.multiplier = 10;
+      // oneOffValue for $ off
+      offerThree.oneOffValue = 5;
+      offerThree.isDisabled = false;
+      offerThree.expiresAt = moment().subtract(1, "d");
+      offerThree.save().catch(e => {
+        console.log(e);
+      });
+    }
+  });
+
+  let offerCodeFour = "Disabled";
+  Offer.findOne({ offerCode: offerCodeFour }, (error, offer) => {
+    if (!offer) {
+      let offerFour = new Offer();
+      offerFour.offerCode = offerCodeFour;
+      // Multiplier for % off
+      //offerFour.multiplier = 10;
+      // oneOffValue for $ off
+      offerFour.oneOffValue = 5;
+      offerFour.isDisabled = true;
+      offerFour.expiresAt = moment().add(200, "d");
+      offerFour.save().catch(e => {
+        console.log(e);
       });
     }
   });
