@@ -15,6 +15,7 @@ import * as http from "../../util/http";
 import * as validator from "validator";
 import styles from "./Contact.css";
 import stylesMain from "../../main.css";
+import arrows from "../Layout/angle-double-right.svg.png";
 
 const reset = {
   emailFrom: '',
@@ -186,16 +187,13 @@ class Contact extends Component
                   Message is required.
                 </FormFeedback>
               </FormGroup>
-
+              <img className={stylesMain.btnarrows1} src={arrows} />
               <Button
-              className={
-                stylesMain.button1
-              }
+              className={stylesMain.wideBtn1}
                 type="submit"
                 disabled={isDisabled}
                 outline
                 color="success"
-                block
               >
                 Submit
               </Button>

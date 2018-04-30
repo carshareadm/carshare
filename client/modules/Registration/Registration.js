@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import styles from "./Registration.css";
+import stylesMain from "../../main.css";
 import arrows from "../Layout/angle-double-right.svg.png";
 
 import {
@@ -199,27 +200,28 @@ export class Registration extends Component {
     const isDisabled = this.isFormInvalid();
 
     return (
-      <div className={styles.body}>
+      <div className={stylesMain.body}>
         <Container>
           <Row />
           <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
             <Row>
               <Col>
-                <h1 className={styles.title}>Registration</h1>
+                <h1 className={stylesMain.title}>Registration</h1>
               </Col>
             </Row>
             <Row>
               <Col xs="12" sm="6">
-                <h4 className={styles.h4}>Problems with registration?</h4>
+                <h4 className={stylesMain.h4}>Problems with registration?</h4>
                 <p>
                   Please contact us via the telephone numbers listed below or
                   the <Link to="/contact">contact page</Link>.
                 </p>
-                <h4 className={styles.h4}>Customer Services</h4>
+                <h4 className={stylesMain.h4}>Customer Services</h4>
                 <p>Services available 7am - 7pm</p>
-                <p className={styles.phoneNum}>1300 000 123</p>
+                <p className={stylesMain.phoneNum}>Ph: 1300 000 123</p>
               </Col>
               <Col xs="12" sm="6">
+              <h4 className={stylesMain.h4}>Registration Form</h4>
                 <FormGroup>
                   {this.renderLabel("email", "email")}
                   <Input
@@ -295,12 +297,12 @@ export class Registration extends Component {
             <Row>
               <Col xs="12" sm="6" />
               <Col xs="12" sm="6">
-                <img className={styles.btnarrows} src={arrows} />
+                <img className={stylesMain.btnarrows} src={arrows} />
                 <Button
                   disabled={isDisabled}
                   outline
                   color="success"
-                  className={styles.wideBtn}
+                  className={stylesMain.wideBtn}
                 >
                   Register
                 </Button>
