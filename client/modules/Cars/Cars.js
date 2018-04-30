@@ -95,6 +95,21 @@ export class Cars extends Component {
                 " " +
                 styles.button +
                 " " +
+                this.buttonStyle("sports")
+              }
+              color="primary"
+              size="lg"
+              data-type="sports"
+              onClick={this.setType}
+            >
+              Sports Vehicle
+            </Button>
+            <Button
+              className={
+                stylesMain.buttons +
+                " " +
+                styles.button +
+                " " +
                 this.buttonStyle("luxury")
               }
               color="primary"
@@ -136,6 +151,21 @@ export class Cars extends Component {
               onClick={this.setType}
             >
               Small Vehicle
+            </Button>
+            <Button
+              className={
+                stylesMain.buttons +
+                " " +
+                styles.button +
+                " " +
+                this.buttonStyle("sports")
+              }
+              color="primary"
+              size="lg"
+              data-type="sports"
+              onClick={this.setType}
+            >
+              Sports Vehicle
             </Button>
             <Button
               className={
