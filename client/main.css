@@ -71,15 +71,49 @@ body {
 	width: 230px !important;
 }
 
-.button1 {
-  margin-right: 1em;
-  margin-bottom: 1em;
-  background-color: rgb(226,226,226) !important;
-  color: rgb(76, 157, 38) !important;
-  padding-bottom: 50px;
-  min-width: 170px;
-  border-radius: 0 !important;
+/*
+  CSS v1 for contact page button allignment with dialoge after press
+*/
+.wideBtn1 {
+ width: 95%;
   text-align: right !important;
+  border-radius: 0 !important;
+  position: absolute;
+  left: 2.5%;
+  margin-right: 1em;
+
+}
+
+.btnarrows1{
+	opacity: 0.5;
+	width: 50px;
+	height: 50px;
+	position: relative;
+	left:20px;
+	bottom:4px;
+  object-fit: cover;
+  display:inline-block;
+}
+
+.wideBtn {
+  width: 95%;
+  text-align: right !important;
+  border-radius: 0 !important;
+  position: absolute;
+  bottom: 8px;
+  left: 2.5%;
+  margin-right: 1em;
+}
+
+.btnarrows{
+	opacity: 0.5;
+	width: 50px;
+	height: 50px;
+	position: relative;
+	left:20px;
+	bottom:1px;
+  object-fit: cover;
+  display:inline-block;
 }
 
 .flex1 {
