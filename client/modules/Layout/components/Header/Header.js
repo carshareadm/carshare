@@ -18,7 +18,7 @@ const tokenUtils = require('../../../../util/token.utils');
 
 //Helper to set the header active
 function active(router, path, indexOnly){
-	return router.isActive(path, indexOnly)? styles.active : null; 
+	return router.isActive(path, indexOnly)? styles.active : null;
 }
 
 export class Header extends Component{
@@ -42,26 +42,26 @@ export class Header extends Component{
 	}
 
 	componentWillMount() {
-		this.checkAuth();	
+		this.checkAuth();
 	}
 
 	checkAuth() {
 		const token = tokenUtils.token();
 		if(token) {
 			if (!tokenUtils.isExpired(token)) {
-				this.setState({	
+				this.setState({
 					loggedIn: true,
 					isAdm: tokenUtils.isAdmin(token),
 				});
 			} else {
-				this.setState({	
+				this.setState({
 					loggedIn: false,
 					isAdm: false,
 				});
 				storage.remove(storage.Keys.JWT);
 			}
 		} else {
-			this.setState({	
+			this.setState({
 				loggedIn: false,
 				isAdm: false,
 			});
@@ -78,9 +78,10 @@ export class Header extends Component{
 				<li className={active(this.context.router, "/manage/locations", true)}><Link to="/manage/locations" onClick={this.burgerToggle}>Manage Locations</Link></li>
 				<li className={active(this.context.router, "/manage/users", true)}><Link to="/manage/users" onClick={this.burgerToggle}>Manage Users</Link></li>
 				<li className={active(this.context.router, "/manage/offers", true)}><Link to="/manage/offers" onClick={this.burgerToggle}>Manage Offers</Link></li>
+        <li className={active(this.context.router, "/manage/enquiries", true)}><Link to="/manage/enquiries" onClick={this.burgerToggle}>Manage Enquiries</Link></li>
 			</div>
-				
-			
+
+
 		);
 	}
 
@@ -132,8 +133,8 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-		loggedIn: state.auth.loggedIn,		
-		isAdmin: state.auth.isAdmin,		
+		loggedIn: state.auth.loggedIn,
+		isAdmin: state.auth.isAdmin,
   };
 };
 

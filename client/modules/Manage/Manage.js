@@ -28,6 +28,7 @@ import i_booking from '../images/i_booking.png';
 import i_car from '../images/i_car.png';
 import i_chart from '../images/i_chart.png';
 import i_pin from '../images/i_pin.png';
+import i_enquiry from '../images/i_enquiry.png';
 
 //Manage component class
 export class Manage extends Component {
@@ -97,13 +98,19 @@ export class Manage extends Component {
 								<span className={styles.linkTxt}>Users</span>
 							</Link>
 						</Col>
+            <Col xs="6" sm="4" md="3" className={styles.linkCol}>
+							<Link to="/manage/enquiries">
+                <img src={i_enquiry} />
+								<span className={styles.linkTxt}>Enquiries</span>
+							</Link>
+						</Col>
             {/* <Col xs="6" sm="4" md="3" className={styles.linkCol}>
 							<Link to="/manage/bookings">
 								<img src={i_booking} />
 								<h4>Bookings</h4>
 							</Link>
 						</Col> */}
-          </Row>          
+          </Row>
         </Container>
       </div>
     );

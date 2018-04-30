@@ -1,29 +1,39 @@
 import Enquiry from '../../models/enquiry';
+import * as email from '../../util/email.helper';
 
-const addEnquiry = function(req, res)
+export async function addEnquiry(req, res)
 {
-  let newEnquiry = new Enquiry({
+  const newEnquiry = new Enquiry({
     emailFrom: req.body.emailFrom,
     name: req.body.name,
     message: req.body.message,
     priority: req.body.priority,
   });
 
-  newEnquiry
-    .save()
-    .then((enquiry) => {
-      res.status(200).send(enquiry)
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError')
-      {
-        res.status(400).send(err);
-      } else {
-        res.status(500).send(err)
-      }
-    })
-}
+  try
+  {
+    const savedEnquiry = await newEnquiry.save();
+    const emailFrom = savedEnquiry.emailFrom;
+    const message = savedEnquiry.message;
+    const name = savedEnquiry.name;
 
-module.exports = {
-  addEnquiry: addEnquiry,
+    try {
+      await email.sendEnquiryCopyEmails(savedEnquiry);
+    } catch (e) {
+      console.log(e);
+    }
+    return res.status(200).send(savedEnquiry)
+  }
+  catch (e)
+  {
+    console.log(e);
+    if (e.name === 'ValidationError')
+    {
+      return res.status(400).send(e);
+    }
+    else
+    {
+      return res.status(500).send(e)
+    }
+  }
 }

@@ -240,7 +240,7 @@ class PaymentDetails extends Component
         <Row noGutters>
           <Col>
             <Form
-              className="novalidate"
+              noValidate
               onSubmit={this.handleSubmit.bind(this)}>
               <FormGroup>
                 <Label for="oldCard">Existing Credit Card</Label>

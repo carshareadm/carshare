@@ -135,14 +135,14 @@ class Contact extends Component
           <Col xs="12" md="6" className="px-3">
             <h4 className={stylesMain.h4}>Contact Form</h4>
             <Form
-              className="novalidate"
+              noValidate
               onSubmit={this.handleSubmit.bind(this)}
             >
 
               <FormGroup>
                 <Label htmlFor="emailFrom" className={stylesMain.label}>Email *</Label>
                 <Input
-                  type="text"
+                  type="email"
                   name="emailFrom"
                   id="emailFrom"
                   placeholder="Email"

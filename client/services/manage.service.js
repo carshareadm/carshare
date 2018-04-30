@@ -162,6 +162,25 @@ const offers = {
 };
 // end - manage offers
 
+// manage enquiries methods
+const getEnquiries = () => {
+  return http
+  .client()
+  .get('/manage/enquiries');
+};
+
+const updateEnquiry = (enquiry) => {
+  return http
+  .client()
+  .put(`/manage/enquiries/${enquiry._id}`, enquiry)
+};
+
+const enquiries = {
+  getEnquiries: getEnquiries,
+  updateEnquiry: updateEnquiry,
+}
+// end - manage enquiries
+
 module.exports = {
   cars: cars,
   locations: locations,
@@ -171,4 +190,5 @@ module.exports = {
   bookings: bookings,
   offers: offers,
   damages: damages,
+  enquiries: enquiries,
 };
