@@ -144,7 +144,7 @@ describe("Manage Damages", () => {
   		const otherDamage = new Damage({
   			description: "boom",
   			booking: mongoose.Types.ObjectId("00043de80d0fc97688ff1999"),
-  			car: mongoose.Types.ObjectId("00043de80d0fc97688ff1000")
+  			car: mongoose.Types.ObjectId("00043de80d0fc97688ff1000"),
   		})
   		await otherDamage.save()
 

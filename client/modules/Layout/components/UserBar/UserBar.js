@@ -1,16 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import router, { Link, Redirect } from "react-router";
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import {
   setLoggedIn,
   setLoggedOut,
   setAdmin,
-} from '../../../../infrastructure/AuthActions';
+} from "../../../../infrastructure/AuthActions";
 
 import * as http from "../../../../util/http";
 import * as storage from "../../../../util/persistedStorage";
-import TokenUtils from '../../../../util/token.utils';
+import TokenUtils from "../../../../util/token.utils";
 
 import {
   Button,
@@ -27,7 +27,6 @@ import {
 import styles from "./UserBar.css";
 
 export class UserBar extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -42,11 +41,7 @@ export class UserBar extends Component {
     this.executeLogin = this.executeLogin.bind(this);
   }
 
-  componentDidMount() {
-    // if (window.localStorage.getItem("JWT")) {
-    //   this.setState({ loggedIn: true });
-    // }
-  }
+  componentDidMount() {}
 
   formToggle() {
     this.setState({
@@ -74,9 +69,9 @@ export class UserBar extends Component {
               </ButtonGroup>
               <ButtonGroup>
                 <Link className={styles.barItem_link} to="/history">
-                <Button className={styles.buttons} color="primary" size="sm">
-                  History
-                </Button>
+                  <Button className={styles.buttons} color="primary" size="sm">
+                    History
+                  </Button>
                 </Link>
                 &nbsp;
               </ButtonGroup>
@@ -136,58 +131,61 @@ export class UserBar extends Component {
             </span>
           )}
         </h4>
-        <Form inline style={{ display: this.state.formIsVisible ? "block" : "none" }}
-          onSubmit={this.executeLogin}>
-        
-        <Row>
-        <FormGroup> 
-        <Col xs="8" sm="4"/>
-          <Col className={styles.logincol}>
-          <Label className={styles.labels} htmlFor="login">
-              Email
-              <Input type="text" name="login" id="login" />
-              </Label>
-          </Col>
-          </FormGroup>
-          <FormGroup>
-          <Col>
-            <Label className={styles.labels} htmlFor="password">
-              Password
-            <Input
-                    name="password"
-                    id="password"
-                    type="password"
-                    placeholder="Enter Password"
-                    value={this.state.password1}
-                    onChange={this.handlePassword1Change.bind(this)}
-                    required
-                  />
-                  </Label>
-            </Col>
-            </FormGroup>
+        <Row style={{ display: this.state.formIsVisible ? "block" : "none" }}>
+          <br />
+          <Col xs={{ size: 8, offset: 2 }}
+               md={{ size: 6, offset: 3 }}
+               lg={{ size: 4, offset: 4 }}>
             <FormGroup>
-            <Col>
-            <Button className={styles.buttons} color="primary" size="sm">
-              Log in
-            </Button>
+                <Input type="text" name="login" id="login" placeholder="Enter Email"/>
+            </FormGroup>
           </Col>
-          </FormGroup>
+          <Col xs={{ size: 8, offset: 2 }}
+               md={{ size: 6, offset: 3 }}
+               lg={{ size: 4, offset: 4 }}>
+            <FormGroup>
+                <Input
+                  name="password"
+                  id="password"
+                  type="password"
+                  placeholder="Enter Password"
+                  value={this.state.password1}
+                  onChange={this.handlePassword1Change.bind(this)}
+                  required
+                />
+            </FormGroup>
+          </Col>
+          <Col xs={{ size: 8, offset: 2 }}
+               md={{ size: 6, offset: 3 }}
+               lg={{ size: 4, offset: 4 }}>
+            <FormGroup>
+              <Button
+                onClick={this.executeLogin}
+                className={styles.buttons}
+                color="primary"
+                size="sm"
+              >
+                Log in
+              </Button>
+            </FormGroup>
+          </Col>
         </Row>
-        </Form>
       </div>
     );
   }
 
   renderRedirect() {
-    return (<Redirect to="/login" />);
+    return <Redirect to="/login" />;
   }
 
   render() {
-    return this.state.redirectToHome ? this.renderRedirect()
-    : this.props.loggedIn ? this.loggedInBar() : this.loginFrm();
+    return this.state.redirectToHome
+      ? this.renderRedirect()
+      : this.props.loggedIn
+        ? this.loggedInBar()
+        : this.loginFrm();
   }
 }
-
 
 // Acces to router to show the active page
 UserBar.contextTypes = {
@@ -199,17 +197,21 @@ UserBar.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     loggedIn: state.auth.loggedIn,
   };
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  //dispatch,
-  setLoggedIn,
-  setLoggedOut,
-  setAdmin,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      //dispatch,
+      setLoggedIn,
+      setLoggedOut,
+      setAdmin,
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserBar);

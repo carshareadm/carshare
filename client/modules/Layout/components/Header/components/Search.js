@@ -11,14 +11,14 @@ class Search extends Component {
           google.search.cse.element.render(
           {
             div: "searchbox-content",
-            tag: 'search'
+            tag: 'search',
          });
        } else {
            google.setOnLoadCallback(function() {
               google.search.cse.element.render(
               {
                 div: "searchbox-content",
-                tag: 'search'
+                tag: 'search',
               });
            }, true);
    		}
@@ -26,7 +26,7 @@ class Search extends Component {
 
 	window.__gcse = {
 	  parsetags: 'explicit',
-	  callback: myCallback
+	  callback: myCallback,
 	};
 
 

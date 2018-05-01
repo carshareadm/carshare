@@ -59,7 +59,7 @@ export class DamagesAdm extends Component {
   handleCarSelected(selections){
     const selectedID = selections[0] ? selections[0]._id : null;
     this.setState({
-      selectedCar: selectedID
+      selectedCar: selectedID,
     });
     this.getDamages(selectedID)
   }
