@@ -5,11 +5,12 @@
   margin: auto;
   background-color: rgb(41, 97, 31); 
   min-height: 100vh;
-  /*padding-bottom: calc(100%);*/
+	/*padding-bottom: calc(100%);*/
+	z-index: 1;
 
 }
 
-.backgrounds{
+.backgrounds {
 	background-color: rgb(41, 97, 31); 
 }
 

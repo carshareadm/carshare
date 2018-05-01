@@ -14,7 +14,7 @@ const createDamage = function(req, res){
       description: req.body.description,
       loggedAt: new Date(),
       booking: booking._id,
-      car: booking.car
+      car: booking.car,
     });
     if(req.body.image){
       newDamage.image = req.body.image
@@ -33,7 +33,7 @@ const createDamage = function(req, res){
 const showDamage = function(req, res){
   const filter = {
     'isDisabled': false, // damages that arent disabled
-    'car': mongoose.Types.ObjectId(req.params.carId)
+    'car': mongoose.Types.ObjectId(req.params.carId),
   };
   Damage.find(filter)
     .sort({ loggedAt: -1 })

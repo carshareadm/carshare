@@ -1,13 +1,13 @@
 //Import react
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import {
   setLoggedIn,
   setLoggedOut,
   setAdmin,
-} from '../../infrastructure/AuthActions';
+} from "../../infrastructure/AuthActions";
 
 import styles from "./Login.css";
 import arrows from "../Layout/angle-double-right.svg.png";
@@ -24,7 +24,7 @@ import {
 } from "reactstrap";
 
 import * as http from "../../util/http";
-import TokenUtils from '../../util/token.utils';
+import TokenUtils from "../../util/token.utils";
 
 var validator = require("validator");
 
@@ -74,7 +74,7 @@ export class Login extends Component {
     this.setState({ password1: evt.target.value });
   };
 
-  handleSubmit = (evt) => {
+  handleSubmit = evt => {
     evt.preventDefault();
     if (this.isFormInvalid()) {
       return;
@@ -96,7 +96,7 @@ export class Login extends Component {
           console.log(err);
         });
     }
-  }
+  };
 
   isFormInvalid() {
     return Object.keys(this.errors).some(x => this.errors[x] === true);
@@ -153,15 +153,17 @@ export class Login extends Component {
               </Col>
             </Row>
             <Row>
-              <Col xs="12" sm="6">
+              <Col xs={{ size: 12 }} md={{ size: 8 }} lg={{ size: 6 }}>
                 <img className={styles.btnarrows} src={arrows} />
                 <Link to="/register">
-                  <Button outline color="success" className={styles.regBtn}>
+                  <Button type="button" outline color="success" className={styles.regBtn}>
                     Register
                   </Button>
                 </Link>
               </Col>
-              <Col xs="12" sm="6">
+            </Row>
+            <Row>
+              <Col xs={{ size: 12 }} md={{ size: 8 }} lg={{ size: 6 }}>
                 <FormGroup>
                   {this.renderLabel("email", "email")}
                   <Input
@@ -191,8 +193,7 @@ export class Login extends Component {
               </Col>
             </Row>
             <Row>
-              <Col xs="12" sm="6" />
-              <Col xs="12" sm="6">
+              <Col xs={{ size: 12 }} md={{ size: 8 }} lg={{ size: 6 }}>
                 <img className={styles.btnarrows} src={arrows} />
                 <Button
                   disabled={isDisabled}
@@ -216,18 +217,22 @@ export class Login extends Component {
 //   loggedIn: PropTypes.bool.isRequired,
 // };
 
-const mapStateToProps = (state) => {
-  console.log('state', state);
+const mapStateToProps = state => {
+  console.log("state", state);
   return {
     loggedIn: state.auth.loggedIn,
   };
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  //dispatch,
-  setLoggedIn,
-  setLoggedOut,
-  setAdmin,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      //dispatch,
+      setLoggedIn,
+      setLoggedOut,
+      setAdmin,
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

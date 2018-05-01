@@ -31,13 +31,13 @@ export class Damages extends Component {
 
 	constructor(props){
 	    super(props);
-	    this.setFromVisible = this.setFromVisible.bind(this)
+	    this.setFromVisible = this.setFormVisible.bind(this)
 	    this.displayFormText = this.displayFormText.bind(this)
 	    this.state = {
 	      descr: "",
 	      image: "",
 	      message: "",
-	      form: false
+	      form: false,
 	    };
   	}
 
@@ -67,13 +67,13 @@ export class Damages extends Component {
   		console.log(img);
   		this.setState({
   			image: img._id,
-  			form : true
+  			form : true,
   		})
   	}
 
-  	setFromVisible(){
+  	setFormVisible(){
   		this.setState({
-  			form : true
+  			form : true,
   		})
   	}
 
@@ -119,7 +119,7 @@ export class Damages extends Component {
 			
 			<FileUploader onFileUploaded={this.handleImageUploaded.bind(this)}></FileUploader>
 			
-			<Button className={styles.button} onClick={this.setFromVisible} color="success">Skip Image Uploading</Button>
+			<Button className={styles.button} onClick={this.setFormVisible} color="success">Skip Image Uploading</Button>
 			{this.state.form? this.displayFormText() : null}
 	    </Form>
 	    </div>

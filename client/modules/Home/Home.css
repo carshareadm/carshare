@@ -42,7 +42,7 @@
   position: absolute;
   padding: 0.5rem;
   border-top: 3px solid rgb(76, 157, 38);
-  z-index: 999;
+  z-index: 2;
   width: 100%;
 }
 
