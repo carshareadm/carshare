@@ -195,6 +195,27 @@ export class Booking extends Component {
     this.setState({ offerCode: evt.target.value });
   };
 
+  handleOfferSubmit(evt)
+  {
+    evt.preventDefault();
+    //Require backend offer validation function
+    if(this.state.offerCode)
+    {
+      http
+        .client()
+        .post("/offer/", {
+          code: this.state.offerCode,
+        })
+        .then(res => {
+          this.sendAlert('couponSuccess');
+        })
+        .catch(err => {
+          console.log(err)
+          this.sendAlert('couponError');
+        });
+    }
+  };
+
 
   handleCcvConfirmation(evt) {
     evt.preventDefault();
@@ -490,6 +511,9 @@ export class Booking extends Component {
                   onBlur={() => this.handleBlur('offerCode')}
                   value={this.state.offerCode}
                 />
+                <Button onClick={(e) => this.handleOfferSubmit(e)}>
+                  Apply Offer Code
+                </Button>
             </FormGroup>
             <p>Booking Price : $ {this.state.expectedCost}</p>
           </Col>
