@@ -47,6 +47,8 @@ export class Booking extends Component {
   .startOf("hour")
   .add(1, "hours");
 
+  tmpCost=0;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -62,12 +64,12 @@ export class Booking extends Component {
       selectedCar: {},
       booked: false,
       ccvConfirmed: false,
-      successAlertOpen: false,
-      failAlertOpen: false,
       cost: 0,
+      expectedCost: 0,
       alert:{
         couponSuccess: false,
         couponError: false,
+        bookingError: false,
       },
 
       validated: true,
@@ -154,10 +156,35 @@ export class Booking extends Component {
       startDate: moment(date),
       endDate: moment(date).add(2, "h"),
     });
+    this.expectedCostCal(date, 0);  
   }
 
   handleEndDateChange(date) {
     this.setState({ endDate: date });
+    this.expectedCostCal(0, date);      
+  }
+
+  expectedCostCal(start, end)
+  {
+    var hours ='';
+    if(start==0)
+     start=this.state.startDate;
+    if(end==0)
+     end=this.state.endDate;
+
+    hours = moment
+          .duration(
+            moment(end, "YYYY/MM/DD HH:mm").diff(
+              moment(start, "YYYY/MM/DD HH:mm")
+            )
+          )
+          .asHours();
+    this.tmpCost=
+      hours*this.state.selectedCar.vehicleType.hourlyRate;
+    if(this.tmpCost>0)
+    {
+      this.setState({expectedCost: this.tmpCost});
+    }
   }
 
   handleCcvChange = evt => {
@@ -177,7 +204,7 @@ export class Booking extends Component {
   handleBooking(evt) {
     evt.preventDefault();
     if (this.isFormInvalid()) {
-      this.setState({ failAlertOpen: true });
+      this.sendAlert('bookingError');
       return;
     } else {
       http
@@ -192,10 +219,11 @@ export class Booking extends Component {
         .then(res => {
           this.setState({ cost: res.data.totalCost });
           this.setState({ booked: true });
-          this.setState({ successAlertOpen: true });
         })
-        .catch(err => console.log(err));
-      this.setState({ failAlertOpen: true });
+        .catch(err => {
+          console.log(err)
+          this.sendAlert('bookingError');
+        });
     }
   }
 
@@ -250,16 +278,24 @@ export class Booking extends Component {
     );
   }
 
-  dismissSuccess() {
-    this.setState({ successAlertOpen: false });
-  }
+  sendAlert(field) {
+    const alert = this.state.alert;
+    alert[field] = true;
 
-  dismissFail() {
-    this.setState({ failAlertOpen: false });
+    // update state
+    this.setState({
+        alert,
+    });
   }
 
   dismissAlert(field, evt) {
-    this.setState({ alert,[field]: false });
+    const alert = this.state.alert;
+    alert[field] = false;
+
+    // update state
+    this.setState({
+        alert,
+    });
   }
 
   cvvPrompt() {
@@ -345,12 +381,9 @@ export class Booking extends Component {
 
   bookingFrm() {
     this.errors = this.validate();
-    /*
-    Placeholder. isDisabled will be reviewed later to improve implementation
-    and enable the book button on based on information from the timetable
-    */
+    
     const isDisabled = this.isFormInvalid();
-    // Here goes our page
+
     return (
       <Container className={styles.body}>
         <Row>
@@ -359,16 +392,9 @@ export class Booking extends Component {
           </Col>
         </Row>
         <Alert
-          color="success"
-          isOpen={this.state.successAlertOpen}
-          toggle={this.dismissSuccess.bind(this)}
-        >
-          Thank you, your booking was made successfully.
-        </Alert>
-        <Alert
           color="danger"
-          isOpen={this.state.failAlertOpen}
-          toggle={this.dismissFail.bind(this)}
+          isOpen={this.state.alert.bookingError}
+          toggle={(e) => this.dismissAlert('bookingError', e)}
         >
           Sorry, please update your booking time and try again.
         </Alert>
@@ -441,14 +467,14 @@ export class Booking extends Component {
             <FormGroup>
               <Alert
                 color="success"
-                isOpen={this.state.alert['couponSuccess']}
+                isOpen={this.state.alert.couponSuccess}
                 toggle={(e) => this.dismissAlert('couponSuccess', e)}
               >
                 Coupon Applied.
               </Alert>
               <Alert
                 color="danger"
-                isOpen={this.state.alert['couponError']}
+                isOpen={this.state.alert.couponError}
                 toggle={(e) => this.dismissAlert('couponError', e)}
               >
                 Coupon invalid or expired.
@@ -465,6 +491,7 @@ export class Booking extends Component {
                   value={this.state.offerCode}
                 />
             </FormGroup>
+            <p>Booking Price : $ {this.state.expectedCost}</p>
           </Col>
           <Col md="12" md="6">
             <TimeTable
