@@ -103,7 +103,6 @@ const createBooking = function(req, res) {
             // FindOne as Offer Codes are set as unique
             Offer.findOne({ offerCode: req.body.code, isDisabled: false }).exec((offerErr, discount) => {
               if (offerErr) {
-                console.log(offerErr);
                 return res.status(500).send(offerErr);
               }
               if (discount) {

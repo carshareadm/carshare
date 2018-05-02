@@ -71,7 +71,7 @@ export class FileUploader extends Component {
 
   handleUpload() {
     this.setLoading(true);
-    fileService.getPresignedUploadKey(this.state.selectedFileText)
+    fileService.getPresignedUploadKey(this.state.selectedFileText, this.props.isPublic)
       .then(res => {
         this.setLoading(false);
         this.uploadToS3(res.data);
@@ -99,7 +99,7 @@ export class FileUploader extends Component {
     
     postToShaCar(filename) {
       this.setLoading(true);
-      fileService.saveImageToShaCarDb(filename)
+      fileService.saveImageToShaCarDb(filename, this.props.isPublic)
       .then(res => {
         this.setLoading(false);
         this.props.onFileUploaded(res.data);        
@@ -165,7 +165,8 @@ export class FileUploader extends Component {
   }
 }
 FileUploader.propTypes = {
-  onFileUploaded: React.PropTypes.func,
+  onFileUploaded: PropTypes.func.isRequired,
+  isPublic: PropTypes.bool.isRequired,
 };
 
 export default FileUploader;

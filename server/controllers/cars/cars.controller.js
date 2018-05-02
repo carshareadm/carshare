@@ -6,13 +6,17 @@ import Booking from "../../models/booking";
 import mongoose from 'mongoose';
 import moment from 'moment';
 
+import * as s3Helper from '../../util/aws.helper';
+import logger from '../../util/logger';
+
 
 const getCars = function(req, res) {
   const filter = {
     'isDisabled': false, // cars that arent disabled
   };
-  Car.find(filter).
-    populate('vehicleType')
+  Car.find(filter)
+    .populate('vehicleType')
+    .populate('image')
     .populate({
       path: 'location',
       match: {isDisabled: false},
@@ -78,7 +82,7 @@ const getTimes = function(req, res) {
 const getCar = function(req, res) {
   Car.find({
     _id:mongoose.Types.ObjectId(req.params.carId),
-  }).exec((err, car) => {
+  }).populate('location image vehicleType').exec((err, car) => {
     if(err){
       res.status(500).send(err);
     } else {
@@ -111,9 +115,45 @@ const getCarsForType = function(req, res){
 
 }
 
+const getCarImage = async (req, res) => {
+  const carId = req.params.carId;
+
+  try{
+    const car = await Car.findById(carId)
+    .populate('image')
+    .exec();
+
+    if (!car) {
+      return res.status(500).send('Car not found');
+    }
+
+    if (!car.image) {
+      return res.status(404).send('Car Image not found');
+    }
+
+    try {
+      const url = s3Helper.getDownloadSignedUrl(car.image.filename);
+      return res.status(200).send({imageUrl: url});
+    } catch(e) {
+      logger.err(e);
+      return res.status(500).send(e);
+    }
+
+  } catch(e) {
+    logger.err(e);
+    return res.status(500).send(e);
+  }
+};
+
+const updateCarImage = async (req, res) => {
+
+};
+
 module.exports = {
   getCars: getCars,
   getTimes: getTimes,
   getCar: getCar,
   getCarsForType: getCarsForType,
+  getCarImage: getCarImage,
+  updateCarImage: updateCarImage,
 };

@@ -1,14 +1,22 @@
 import Cars from '../../models/car';
+import Images from '../../models/image';
 import logger from '../../util/logger';
 
 
 export const getAll = async (req, res) => {
   try {
     const cars = await Cars.find({})
-      .populate('location vehicleType')
+      .populate('vehicleType image')
+      .populate({
+        path: 'location',
+        match: {isDisabled: false},
+        populate: {path: 'coordinates'},
+      })
       .exec();
 
-      return res.status(200).send(cars);
+      // get virtual publicUrl
+      const mapped = cars.map(m => m.toObject());
+      return res.status(200).send(mapped);
   } catch(e) {
     logger.err(e);
     return res.status(500).send(e);
@@ -17,12 +25,11 @@ export const getAll = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const car = await Cars.findById(req.params.carId).exec();
-    
+    const car = await Cars.findById(req.params.carId).exec();    
     if (car === null) {
       return res.status(404).send('Car not found');
     }
-    
+
     car.rego = req.body.rego;
     car.make = req.body.make;
     car.model = req.body.model;
@@ -35,7 +42,30 @@ export const update = async (req, res) => {
     car.isDisabled = req.body.isDisabled;
     
     const saved = await car.save();
-    return res.status(200).send(saved);
+    return res.status(200).send(saved.toObject());
+
+  } catch(e) {
+    logger.err(e);
+    return res.status(500).send(e);
+  }
+};
+
+export const updateImage = async (req, res) => {
+  try {
+    const car = await Cars.findById(req.params.carId).exec();    
+    if (car === null) {
+      return res.status(404).send('Car not found');
+    }
+
+    const img = await Images.findById(req.params.imageId).exec();
+    if (!img) {
+      return res.status(404).send('Image not found');
+    }
+
+    car.image = img;
+    
+    const saved = await car.save();
+    return res.status(200).send(saved.toObject());
 
   } catch(e) {
     logger.err(e);

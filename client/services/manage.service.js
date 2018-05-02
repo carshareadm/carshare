@@ -13,9 +13,16 @@ const getAllCars = () => {
   .get(`/manage/cars`);
 };
 
+const updateCarImage = (car, image) => {
+  return http
+  .client()
+  .put(`/manage/cars/${car._id}/image/${image._id}`, car, image);
+};
+
 const cars = {
   updateCar: updateCar,
   getAll: getAllCars,
+  updateCarImage: updateCarImage,
 };
 // end - manage cars
 

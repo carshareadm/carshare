@@ -13,6 +13,8 @@ import {
 } from "reactstrap";
 
 import Loading from '../../../Loading/Loading';
+import CarImage from './CarImage';
+import FileUploader from '../../../FileUploader/FileUploader';
 import * as manageSvc from "../../../../services/manage.service";
 import stylesMain from '../../../../main.css';
 
@@ -28,6 +30,7 @@ export class CarAdm extends Component {
     this.state = {
       isLoading: false,
       car: {...this.props.car},
+      carImage: this.props.car.image && this.props.car.image.publicUrl ? this.props.car.image.publicUrl : '',
       isTouched: {
         rego: false,
         make: false,
@@ -258,16 +261,37 @@ export class CarAdm extends Component {
     this.setState({isLoading: isLoading})
   }
 
+  async onImageUploaded(evt) {
+    try{
+      const updated = await manageSvc.cars.updateCarImage(this.state.car, evt)
+      console.log('post image updated', updated)
+      await this.setState({
+        ...this.state,
+        carImage: updated.data.image.publicUrl,
+      })
+      this.props.onSaved();
+    }
+    catch(e) {
+      console.log(e);
+    }
+  }
+
   render() {
     this.errors = this.validate();
     const formIsDisabled = this.isFormInvalid();
     const loading = this.state.isLoading ? <Loading /> : '';
+    const imgUrl = this.state.carImage
+
+    console.log(imgUrl)
+
     return (
       <Row>
         {loading}
         <Col xs="12" md="6">
-          <img width="100%" src="" />
-          <h5>image and uploader goes in here</h5>
+          <CarImage key={imgUrl} imageUrl={imgUrl} />
+          <FileUploader
+            onFileUploaded={this.onImageUploaded.bind(this)}
+            isPublic={true} />
 
         </Col>
         <Col xs="12" md="6">

@@ -348,7 +348,9 @@ export class Profile extends Component {
               <div className={styles.imgContainer}>
                 {this.renderImage()}
               </div>
-              <FileUploader onFileUploaded={this.handleLicenseUploaded.bind(this)}></FileUploader>
+              <FileUploader
+                onFileUploaded={this.handleLicenseUploaded.bind(this)}
+                isPublic={false} />
             <h4 className={stylesMain.h4}>License image changes will be processed by ShaCar staff shortly.</h4>
             <hr />
             <Link
