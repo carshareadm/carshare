@@ -8,8 +8,6 @@ import serverConfig from "./config";
 
 import mongoose from "mongoose";
 
-import * as s3Helper from './util/aws.helper';
-
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise;
 
@@ -22,8 +20,6 @@ const mongoOptions = {
   // If not connected, return errors immediately rather than waiting for reconnect
   bufferMaxEntries: 0,
 };
-
-logger.info('Starting shacar ' + process.env.NODE_ENV + '...')
 
 if (process.env.NODE_ENV !== 'production') {
   const expressSwagger = require('express-swagger-generator')(app);
@@ -48,9 +44,15 @@ if (process.env.NODE_ENV !== 'production') {
   };
   logger.info({message: 'setting up swagger with options', options: swaggerOptions});
   expressSwagger(swaggerOptions);
-
+  
 }
 
+const html = require('./app.html');
+app.use('/', (req, res, next) => {
+  return res.status(200).send(html.renderFullPage('',{}));
+})
+
+logger.info('Starting shacar ' + process.env.NODE_ENV + '...')
 logger.info('connecting to mongodb...');
 mongoose.connect(serverConfig.mongoURL, mongoOptions, error => {
   if (error) {
