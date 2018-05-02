@@ -59,6 +59,7 @@ const account = require('./routes/account.routes');
 const profile = require('./routes/profile.routes');
 const cars = require('./routes/cars.routes');
 const booking = require('./routes/booking.routes');
+const offer = require('./routes/offer.routes');
 const images = require('./routes/images.routes');
 const license = require('./routes/license.routes');
 const paymentDetails = require('./routes/paymentDetails.routes');
@@ -67,10 +68,12 @@ const confirm = require('./routes/confirm.routes');
 const damage = require('./routes/damage.routes');
 const manage = require('./routes/manage.routes');
 
+
 app.use('/api/account', account);
 app.use('/api/profile', profile);
 app.use('/api/cars', cars);
 app.use('/api/booking', booking);
+app.use('/api/offer', offer);
 app.use('/api/images', images);
 app.use('/api/license', license);
 app.use('/api/paymentDetails', paymentDetails);

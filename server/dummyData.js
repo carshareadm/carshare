@@ -655,4 +655,7 @@ module.exports = function() {
   Booking.count({}, (err, count) => {
     console.log("Number of seeded bookings        : ", count, "...");
   });
+  Offer.count({}, (err, count) => {
+    console.log("Number of seeded offers        : ", count, "...");
+  });
 };

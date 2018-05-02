@@ -52,16 +52,13 @@ export class Booking extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ccv: "",
-      offerCode: "",
       carid: "",
       userid: "",
-      
+      selectedCar: {},
       selectedLocation: {},
       startDate: this.startTime,
       endDate: this.endTime,
       loggedIn: false,
-      selectedCar: {},
       booked: false,
       ccvConfirmed: false,
       cost: 0,
@@ -71,6 +68,11 @@ export class Booking extends Component {
         couponError: false,
         bookingError: false,
       },
+      input:{
+        ccv: "",
+        offerCode: "",
+      },
+      discount: {},
 
       validated: true,
 
@@ -140,7 +142,7 @@ export class Booking extends Component {
     // true means invalid, so our conditions got reversed
     const errs = {
       // Placeholder ccv validation.
-//    ccv: this.state.ccv.length > 4,
+//    ccv: this.state.input.ccv.length > 4,
       startDate: moment(this.startTime).isSameOrAfter(this.state.endDate),
       endDate: this.state.startDate.isSameOrAfter(this.state.endDate),
     };
@@ -156,21 +158,23 @@ export class Booking extends Component {
       startDate: moment(date),
       endDate: moment(date).add(2, "h"),
     });
-    this.expectedCostCal(date, 0);  
+    this.expectedCostCal(date, 0, 0);  
   }
 
   handleEndDateChange(date) {
     this.setState({ endDate: date });
-    this.expectedCostCal(0, date);      
+    this.expectedCostCal(0, date, 0);      
   }
 
-  expectedCostCal(start, end)
+  expectedCostCal(start, end, discount)
   {
     var hours ='';
     if(start==0)
-     start=this.state.startDate;
+      start=this.state.startDate;
     if(end==0)
-     end=this.state.endDate;
+      end=this.state.endDate;
+    if(discount==0)
+      discount=this.state.discount;
 
     hours = moment
           .duration(
@@ -181,32 +185,39 @@ export class Booking extends Component {
           .asHours();
     this.tmpCost=
       hours*this.state.selectedCar.vehicleType.hourlyRate;
+    if(discount.multiplier)
+      this.tmpCost=(100-discount.multiplier)/100*this.tmpCost;
+    if(discount.oneOffValue)
+      this.tmpCost=this.tmpCost-discount.oneOffValue;
     if(this.tmpCost>0)
     {
       this.setState({expectedCost: this.tmpCost});
     }
   }
 
-  handleCcvChange = evt => {
-    this.setState({ ccv: evt.target.value });
-  };
-
-  handleOfferCode = evt => {
-    this.setState({ offerCode: evt.target.value });
-  };
+  handleInput(evt, field)
+  {
+    this.setState({
+      input: Object.assign({}, this.state.input, { [field]: evt.target.value }),
+    });
+  }
 
   handleOfferSubmit(evt)
   {
     evt.preventDefault();
     //Require backend offer validation function
-    if(this.state.offerCode)
+    console.log(this.state.input.offerCode);
+    if(this.state.input.offerCode)
     {
       http
         .client()
         .post("/offer/", {
-          code: this.state.offerCode,
+          code: this.state.input.offerCode,
         })
         .then(res => {
+          this.setState({
+            discount: res.data});
+          this.expectedCostCal(0, 0, res.data);
           this.sendAlert('couponSuccess');
         })
         .catch(err => {
@@ -235,7 +246,7 @@ export class Booking extends Component {
           car: this.state.carid,
           startAt: this.state.startDate,
           endAt: this.state.endDate,
-          code: this.state.offerCode,
+          code: this.state.input.offerCode,
         })
         .then(res => {
           this.setState({ cost: res.data.totalCost });
@@ -300,22 +311,14 @@ export class Booking extends Component {
   }
 
   sendAlert(field) {
-    const alert = this.state.alert;
-    alert[field] = true;
-
-    // update state
     this.setState({
-        alert,
+      alert: Object.assign({}, this.state.alert, { [field]: true }),
     });
   }
 
   dismissAlert(field, evt) {
-    const alert = this.state.alert;
-    alert[field] = false;
-
-    // update state
     this.setState({
-        alert,
+      alert: Object.assign({}, this.state.alert, { [field]: false }),
     });
   }
 
@@ -331,9 +334,9 @@ export class Booking extends Component {
               name="ccv"
               id="ccv"
               placeholder="CVV"
-              value={this.state.ccv}
+              value={this.state.input.ccv}
               onBlur={() => this.handleBlur("ccv")}
-              onChange={this.handleCcvChange.bind(this)}
+              onChange={(e) => this.handleInput(e,'ccv')}
             />
             <FormFeedback>A valid CVV is required.</FormFeedback>
           </FormGroup>
@@ -507,9 +510,9 @@ export class Booking extends Component {
                   id="offerCode"
                   placeholder="Offer Code"
                   className={this.isError('offerCode') ? 'is-invalid' : ''}
-                  onChange={this.handleOfferCode.bind(this)}
+                  onChange={(e) => this.handleInput(e,'offerCode')}
                   onBlur={() => this.handleBlur('offerCode')}
-                  value={this.state.offerCode}
+                  value={this.state.input.offerCode}
                 />
                 <Button onClick={(e) => this.handleOfferSubmit(e)}>
                   Apply Offer Code

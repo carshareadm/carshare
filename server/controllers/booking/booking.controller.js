@@ -144,19 +144,33 @@ const createBooking = function(req, res) {
 };
 
 const cancelBooking = function(req, res) {
-  const startsAt = req.body.startsAt;
-  const endsAt = req.body.endsAt;
+  if (typeof req.body.bookingid === "undefined" || 
+      typeof req.body.userid === "undefined") {
+    //Bad Request if no bookingid
+    return res.status(400).send("invalid request params");
+  }
 
-  Booking.find({ startsAt: startsAt }, { endsAt: endsAt })
-    // Placeholder, should look for booking belonging to current user
-    .exec((err, bookings) => {
+  const bookingId = req.body.bookingid;
+  const userId = req.body.userid;
+
+  Booking.findById(bookingId)
+    .exec((err, booking) => {
       if (err) {
         res.status(500).send(err);
-      } else if (!bookings) {
+      } else if (!booking) {
         res.status(404).send();
       } else {
+        if(booking.user!=userId)
+        {
+          // Not a booking belonging to the user
+          res.status(401).send();
+        }
+        else
+        {
         // update booking
+        // Set cancellation flag?
         res.status(200);
+        }
       }
     });
 };
@@ -174,13 +188,33 @@ const getBooking = function(req, res) {
 };
 
 const changeBooking = function(req, res) {
-  Booking.find()
-    // Placeholder, should look for booking belonging to current user
+  if (
+    typeof req.body.userid === "undefined" ||
+    typeof req.body.startAt === "undefined" ||
+    typeof req.body.endAt === "undefined" ||
+    typeof req.body.car === "undefined" ||
+    typeof req.body.bookingid === "undefined"
+  ) {
+    //Bad Request if not all fields are present
+    return res.status(400).send("invalid request params");
+  }
+
+  const startAt = req.body.startAt;
+  const endAt = req.body.endAt;
+  const carId = req.body.car;
+  const userId = req.body.userid;
+  const bookingId = req.body.bookingid;
+
+  Booking.findById(bookingId)
     .exec((err, bookings) => {
       if (err) {
         res.status(500).send(err);
+      } else if (!bookings) {
+        res.status(404).send();
       } else {
-        res.status(200).send(bookings);
+        // update booking
+        // Update changes
+        res.status(200);
       }
     });
 };
