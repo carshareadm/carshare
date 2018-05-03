@@ -43,34 +43,36 @@ export class Booking extends Component {
     .startOf("hour")
     .add(2, "hours");
 
-  startDate=moment()
-  .startOf("hour")
-  .add(1, "hours");
+  startDate = moment()
+    .startOf("hour")
+    .add(1, "hours");
 
-  tmpCost=0;
+  tmpCost = 0;
 
   constructor(props) {
     super(props);
     this.state = {
-      ccv: "",
-      offerCode: "",
       carid: "",
       userid: "",
-      
+      selectedCar: {},
       selectedLocation: {},
       startDate: this.startTime,
       endDate: this.endTime,
       loggedIn: false,
-      selectedCar: {},
       booked: false,
       ccvConfirmed: false,
       cost: 0,
       expectedCost: 0,
-      alert:{
+      alert: {
         couponSuccess: false,
         couponError: false,
         bookingError: false,
       },
+      input: {
+        ccv: "",
+        offerCode: "",
+      },
+      discount: {},
 
       validated: true,
 
@@ -140,7 +142,7 @@ export class Booking extends Component {
     // true means invalid, so our conditions got reversed
     const errs = {
       // Placeholder ccv validation.
-//    ccv: this.state.ccv.length > 4,
+      //    ccv: this.state.input.ccv.length > 4,
       startDate: moment(this.startTime).isSameOrAfter(this.state.endDate),
       endDate: this.state.startDate.isSameOrAfter(this.state.endDate),
     };
@@ -152,70 +154,70 @@ export class Booking extends Component {
   }
 
   handleStartDateChange(date) {
-    this.setState({ 
+    this.setState({
       startDate: moment(date),
       endDate: moment(date).add(2, "h"),
     });
-    this.expectedCostCal(date, 0);  
+    this.expectedCostCal(date, 0, 0);
   }
 
   handleEndDateChange(date) {
     this.setState({ endDate: date });
-    this.expectedCostCal(0, date);      
+    this.expectedCostCal(0, date, 0);
   }
 
-  expectedCostCal(start, end)
-  {
-    var hours ='';
-    if(start==0)
-     start=this.state.startDate;
-    if(end==0)
-     end=this.state.endDate;
+  expectedCostCal(start, end, discount) {
+    var hours = "";
+    if (start == 0) start = this.state.startDate;
+    if (end == 0) end = this.state.endDate;
+    if (discount == 0) discount = this.state.discount;
 
     hours = moment
-          .duration(
-            moment(end, "YYYY/MM/DD HH:mm").diff(
-              moment(start, "YYYY/MM/DD HH:mm")
-            )
-          )
-          .asHours();
-    this.tmpCost=
-      hours*this.state.selectedCar.vehicleType.hourlyRate;
-    if(this.tmpCost>0)
-    {
-      this.setState({expectedCost: this.tmpCost});
+      .duration(
+        moment(end, "YYYY/MM/DD HH:mm").diff(moment(start, "YYYY/MM/DD HH:mm"))
+      )
+      .asHours();
+    this.tmpCost = hours * this.state.selectedCar.vehicleType.hourlyRate;
+    if (discount.multiplier) {
+      this.tmpCost = (100 - discount.multiplier) / 100 * this.tmpCost;
+    }
+    if (discount.oneOffValue) {
+      this.tmpCost = this.tmpCost - discount.oneOffValue;
+    }
+    if (this.tmpCost > 0) {
+      this.setState({ expectedCost: this.tmpCost });
     }
   }
 
-  handleCcvChange = evt => {
-    this.setState({ ccv: evt.target.value });
-  };
+  handleInput(evt, field) {
+    this.setState({
+      input: Object.assign({}, this.state.input, { [field]: evt.target.value }),
+    });
+  }
 
-  handleOfferCode = evt => {
-    this.setState({ offerCode: evt.target.value });
-  };
-
-  handleOfferSubmit(evt)
-  {
+  handleOfferSubmit(evt) {
     evt.preventDefault();
     //Require backend offer validation function
-    if(this.state.offerCode)
-    {
+    console.log(this.state.input.offerCode);
+    if (this.state.input.offerCode) {
       http
         .client()
         .post("/offer/", {
-          code: this.state.offerCode,
+          code: this.state.input.offerCode,
         })
         .then(res => {
-          this.sendAlert('couponSuccess');
+          this.setState({
+            discount: res.data,
+          });
+          this.expectedCostCal(0, 0, res.data);
+          this.sendAlert("couponSuccess");
         })
         .catch(err => {
-          console.log(err)
-          this.sendAlert('couponError');
+          console.log(err);
+          this.sendAlert("couponError");
         });
     }
-  };
-
+  }
 
   handleCcvConfirmation(evt) {
     evt.preventDefault();
@@ -225,7 +227,7 @@ export class Booking extends Component {
   handleBooking(evt) {
     evt.preventDefault();
     if (this.isFormInvalid()) {
-      this.sendAlert('bookingError');
+      this.sendAlert("bookingError");
       return;
     } else {
       http
@@ -235,15 +237,15 @@ export class Booking extends Component {
           car: this.state.carid,
           startAt: this.state.startDate,
           endAt: this.state.endDate,
-          code: this.state.offerCode,
+          code: this.state.input.offerCode,
         })
         .then(res => {
           this.setState({ cost: res.data.totalCost });
           this.setState({ booked: true });
         })
         .catch(err => {
-          console.log(err)
-          this.sendAlert('bookingError');
+          console.log(err);
+          this.sendAlert("bookingError");
         });
     }
   }
@@ -271,7 +273,8 @@ export class Booking extends Component {
     else {
       if (!this.state.loggedIn) return this.register();
       else if (this.state.ccvConfirmed) return this.booked();
-      else if (this.state.booked && !this.state.ccvConfirmed) return this.cvvPrompt();
+      else if (this.state.booked && !this.state.ccvConfirmed)
+        return this.cvvPrompt();
       else if (!this.state.selectedCar._id) return <span>Loading...</span>;
       else return this.bookingFrm();
     }
@@ -300,22 +303,14 @@ export class Booking extends Component {
   }
 
   sendAlert(field) {
-    const alert = this.state.alert;
-    alert[field] = true;
-
-    // update state
     this.setState({
-        alert,
+      alert: Object.assign({}, this.state.alert, { [field]: true }),
     });
   }
 
   dismissAlert(field, evt) {
-    const alert = this.state.alert;
-    alert[field] = false;
-
-    // update state
     this.setState({
-        alert,
+      alert: Object.assign({}, this.state.alert, { [field]: false }),
     });
   }
 
@@ -331,9 +326,9 @@ export class Booking extends Component {
               name="ccv"
               id="ccv"
               placeholder="CVV"
-              value={this.state.ccv}
+              value={this.state.input.ccv}
               onBlur={() => this.handleBlur("ccv")}
-              onChange={this.handleCcvChange.bind(this)}
+              onChange={e => this.handleInput(e, "ccv")}
             />
             <FormFeedback>A valid CVV is required.</FormFeedback>
           </FormGroup>
@@ -381,9 +376,19 @@ export class Booking extends Component {
             <Card>
               <CardHeader tag="h5">
                 Booked from <br />
-                <span className="text-muted">{" "+this.state.startDate.format("MMMM Do YYYY HH:mm").toString()+" "}</span>
+                <span className="text-muted">
+                  {" " +
+                    this.state.startDate
+                      .format("MMMM Do YYYY HH:mm")
+                      .toString() +
+                    " "}
+                </span>
                 to
-                <span className="text-muted">{" "+this.state.endDate.format("MMMM Do YYYY HH:mm").toString()+" "}</span>
+                <span className="text-muted">
+                  {" " +
+                    this.state.endDate.format("MMMM Do YYYY HH:mm").toString() +
+                    " "}
+                </span>
               </CardHeader>
               <CardBody>
                 <CardText>Booking Cost : ${this.state.cost}</CardText>
@@ -402,7 +407,7 @@ export class Booking extends Component {
 
   bookingFrm() {
     this.errors = this.validate();
-    
+
     const isDisabled = this.isFormInvalid();
 
     return (
@@ -415,7 +420,7 @@ export class Booking extends Component {
         <Alert
           color="danger"
           isOpen={this.state.alert.bookingError}
-          toggle={(e) => this.dismissAlert('bookingError', e)}
+          toggle={e => this.dismissAlert("bookingError", e)}
         >
           Sorry, please update your booking time and try again.
         </Alert>
@@ -489,53 +494,53 @@ export class Booking extends Component {
               <Alert
                 color="success"
                 isOpen={this.state.alert.couponSuccess}
-                toggle={(e) => this.dismissAlert('couponSuccess', e)}
+                toggle={e => this.dismissAlert("couponSuccess", e)}
               >
                 Coupon Applied.
               </Alert>
               <Alert
                 color="danger"
                 isOpen={this.state.alert.couponError}
-                toggle={(e) => this.dismissAlert('couponError', e)}
+                toggle={e => this.dismissAlert("couponError", e)}
               >
                 Coupon invalid or expired.
               </Alert>
               {this.renderLabel("offerCode", "offerCode")}
               <Input
-                  type="text"
-                  name="offerCode"
-                  id="offerCode"
-                  placeholder="Offer Code"
-                  className={this.isError('offerCode') ? 'is-invalid' : ''}
-                  onChange={this.handleOfferCode.bind(this)}
-                  onBlur={() => this.handleBlur('offerCode')}
-                  value={this.state.offerCode}
-                />
-                <Button onClick={(e) => this.handleOfferSubmit(e)}>
-                  Apply Offer Code
-                </Button>
+                type="text"
+                name="offerCode"
+                id="offerCode"
+                placeholder="Offer Code"
+                className={this.isError("offerCode") ? "is-invalid" : ""}
+                onChange={e => this.handleInput(e, "offerCode")}
+                onBlur={() => this.handleBlur("offerCode")}
+                value={this.state.input.offerCode}
+              />
+              <Button onClick={e => this.handleOfferSubmit(e)}>
+                Apply Offer Code
+              </Button>
             </FormGroup>
             <p>Booking Price : $ {this.state.expectedCost}</p>
           </Col>
           <Col md="12" md="6">
             <TimeTable
-                key={this.state.selectedCar._id}
-                data={this.state.selectedCar}
-                setStart={this.handleStartDateChange}
-              />
+              key={this.state.selectedCar._id}
+              data={this.state.selectedCar}
+              setStart={this.handleStartDateChange}
+            />
           </Col>
         </Row>
         <Row>
           <Col>
-              <Button 
-                onClick={this.handleBooking.bind(this)}
-                disabled={this.isDisabled}
-                outline
-                color="success"
-                className={styles.wideBtn}
-              >
-                Book
-              </Button>
+            <Button
+              onClick={this.handleBooking.bind(this)}
+              disabled={this.isDisabled}
+              outline
+              color="success"
+              className={styles.wideBtn}
+            >
+              Book
+            </Button>
           </Col>
         </Row>
       </Container>
