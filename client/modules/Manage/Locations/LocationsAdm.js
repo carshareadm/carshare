@@ -21,6 +21,7 @@ export class LocationsAdm extends Component {
     this.state = {
       locations: [],
       selectedLocation: null,
+      isCreatingLocation: false,
     };
   }
 
@@ -39,8 +40,21 @@ export class LocationsAdm extends Component {
     this.setState({selectedLocation: evt[0]});
   }
 
-  handleSaved(saveLocation) {
+  async handleSaved(saveLocation) {
+    if (this.state.isCreatingLocation) {
+      await this.isCreating(false);
+      this.addSavedLocation(saveLocation);
+    }
     this.getLocations();
+  }
+
+  addSavedLocation(location) {
+    const locs = [...this.state.locations];
+    locs.push(location);
+    this.setState({
+      ...this.state,
+      locations: locs,
+    })
   }
 
   selectedLocationForm() {
@@ -49,7 +63,8 @@ export class LocationsAdm extends Component {
       ? '' 
       : <LocationAdm
           onSaved={this.handleSaved.bind(this)}
-          location={this.state.selectedLocation} />
+          location={this.state.selectedLocation}
+          isCreating={this.state.isCreatingLocation} />
     );
   }
 
@@ -58,28 +73,75 @@ export class LocationsAdm extends Component {
     this.setState({selectedLocation: null});
   }
 
+  async isCreating(isCreating) {
+    const newLoc = {
+      name: '',
+      coordinates: {
+        latitude: '-26.12954906860235',
+        longitude: '134.12109375',
+      },
+      isDisabled: false,
+    };
+
+    if (isCreating && this.state.selectedLocation) {
+      await this.setState({
+        ...this.state,
+        selectedLocation: null,
+      });
+    }
+
+    this.setState({
+      ...this.state,
+      isCreatingLocation: isCreating,
+      selectedLocation: isCreating ? newLoc : null,
+    });
+  }
+
+  addOrCancelBtn() {
+    return this.state.isCreatingLocation
+    ? <Button
+        className={stylesMain.addNewBtn}
+        size="sm"
+        color="link"
+        onClick={(e) => this.isCreating(false)}>&times; Cancel</Button>
+    : <Button
+        className={stylesMain.addNewBtn}
+        size="sm"
+        color="link"
+        onClick={(e) => this.isCreating(true)}>&#43; Add New</Button>
+  }
+
+  typeahead() {
+    return this.state.isCreatingLocation
+    ? ''
+    : (
+      <div className="input-group">
+        <div className={stylesMain.flex1}>
+          <Typeahead
+            ref="typeahead"
+            placeholder="Search for location..."
+            onChange={(e) => this.handleLocationSelected(e)}
+            labelKey={option => `${option.name}`}
+            options={this.state.locations}
+            filterBy={['name']}
+          />
+        </div>     
+        <div className="input-group-append">
+          <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className={stylesMain.body}>
         <Row>
           <Col>
             <h1 className={stylesMain.title}>Manage Locations</h1>
-            <div className="input-group">
-              <div className={stylesMain.flex1}>
-                <Typeahead
-                  ref="typeahead"
-                  placeholder="Search for location..."
-                  onChange={(e) => this.handleLocationSelected(e)}
-                  labelKey={option => `${option.name}`}
-                  options={this.state.locations}
-                  filterBy={['name']}
-                />
-              </div>     
-              <div className="input-group-append">
-                <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
-              </div>
-            </div>
-            <hr />
+            {this.addOrCancelBtn()}
+            {this.typeahead()}
+            <hr className={stylesMain.clearBoth} />
           </Col>
         </Row>
         {this.selectedLocationForm()}

@@ -59,9 +59,16 @@ const updateLocation = (location) => {
   .put(`/manage/locations/${location._id}`, location);
 };
 
+const newLocation = (location) => {
+  return http
+  .client()
+  .post(`/manage/locations`, location);
+};
+
 const locations = {
   getAll: getAllLocations,
   updateLocation: updateLocation,
+  newLocation: newLocation,
 };
 // end - manage locations
 

@@ -21,6 +21,7 @@ router.put("/damages/:damageId", isAuthenticatedGuard, isAdminGuard, damages.upd
 router.get("/vehicletypes", isAuthenticatedGuard, isAdminGuard, vehicleTypes.getAll);
 
 router.get("/locations", isAuthenticatedGuard, isAdminGuard, locations.getAll);
+router.post("/locations", isAuthenticatedGuard, isAdminGuard, locations.create);
 router.put("/locations/:locationId", isAuthenticatedGuard, isAdminGuard, locations.update);
 
 router.get("/users", isAuthenticatedGuard, isAdminGuard, users.getAll);

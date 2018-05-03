@@ -31,7 +31,7 @@ router.post("/register", register.register);
  * @route POST /account/login
  * @group account
  * @param {LoginModel.model} loginModel.body.required - user creds
- * @returns {string} 200 - todo: JWT
+ * @returns {string} 200 - with a JWT
  * @returns {Error} 401 - authentication issues
  */
 router.post("/login", login.login);

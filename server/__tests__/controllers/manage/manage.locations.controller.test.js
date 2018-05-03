@@ -114,4 +114,92 @@ describe("Manage Locations", () => {
       done(e);
     }
   });
+
+  describe('POST new Location', () => {
+    test("fail null coordinates", async done => {
+      try {      
+        const newLoc = {
+          name: 'newloc',
+          isDisabled: false,
+          coordinates: null,
+        }
+        const encodedToken = token(); 
+        const response = await request(app)
+          .post(`/api/manage/locations`)
+          .set("Authorization", "Bearer " + encodedToken)
+          .send(newLoc);        
+        expect(response.statusCode).toBe(400);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+    
+    test("fail invalid coordinates", async done => {
+      try {      
+        const newLoc = {
+          name: 'newloc',
+          isDisabled: false,
+          coordinates: {
+            latitude: '-91',
+            longitude: '181',
+          },
+        }
+        const encodedToken = token(); 
+        const response = await request(app)
+          .post(`/api/manage/locations`)
+          .set("Authorization", "Bearer " + encodedToken)
+          .send(newLoc);        
+        expect(response.statusCode).toBe(400);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+  
+    test("fail location validation", async done => {
+      try {      
+        const newLoc = {
+          name: null,
+          isDisabled: false,
+          coordinates: {
+            latitude: '0',
+            longitude: '0',
+          },
+        }
+        const encodedToken = token(); 
+        const response = await request(app)
+          .post(`/api/manage/locations`)
+          .set("Authorization", "Bearer " + encodedToken)
+          .send(newLoc);        
+        expect(response.statusCode).toBe(400);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    test("success", async done => {
+      try {      
+        const newLoc = {
+          name: 'new loc',
+          isDisabled: false,
+          coordinates: {
+            latitude: '0',
+            longitude: '0',
+          },
+        }
+        const encodedToken = token(); 
+        const response = await request(app)
+          .post(`/api/manage/locations`)
+          .set("Authorization", "Bearer " + encodedToken)
+          .send(newLoc);        
+        expect(response.statusCode).toBe(200);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+  });
 });
