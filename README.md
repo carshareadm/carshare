@@ -6,7 +6,7 @@ Project bootstrapped with the MERN.io starter project
 
 hosted in heroku - visit it at https://shacar.herokuapp.com/
 
-Swagger API documentation available when running the ap in dev mode at http;//localhost:8000/api-docs
+Swagger API documentation available when running the app in dev mode at http://localhost:8000/api-docs
 
 Make sure that mongoDb is installed prior to running the project.
 
