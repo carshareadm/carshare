@@ -13,8 +13,10 @@ import {
 } from "reactstrap";
 
 import Loading from '../../../Loading/Loading';
+import MapContainer from './MapContainer';
 import * as manageSvc from "../../../../services/manage.service";
 import stylesMain from '../../../../main.css';
+import styles from './LocationAdm.css';
 
 export class LocationAdm extends Component {
 
@@ -28,6 +30,7 @@ export class LocationAdm extends Component {
     this.state = {
       isLoading: false,
       location: {...this.props.location},
+      isCreating: this.props.isCreating,
       isTouched: {
         name: false,
         isDisabled: false,
@@ -39,6 +42,7 @@ export class LocationAdm extends Component {
       },
     }
 
+    this.onMapClicked = this.onMapClicked.bind(this);
 
     const minYear = 2000;
     const maxYear = (new Date()).getFullYear();
@@ -180,7 +184,11 @@ export class LocationAdm extends Component {
     evt.preventDefault()
     this.setLoading(true);
 
-    manageSvc.locations.updateLocation(this.state.location)
+    const updateAction = this.state.isCreating
+    ? manageSvc.locations.newLocation(this.state.location)
+    : manageSvc.locations.updateLocation(this.state.location)
+
+    updateAction
     .then(result => {
       this.setLoading(false);
       this.props.onSaved(this.state.location);
@@ -202,27 +210,65 @@ export class LocationAdm extends Component {
     this.setState({isLoading: isLoading})
   }
 
+  onMapClicked(latlng) {
+    const lat = latlng.lat(),
+          lng = latlng.lng();
+    this.setState({
+      ...this.state,
+      location: {
+        ...this.state.location,
+        coordinates: {
+          latitude: `${lat}`,
+          longitude: `${lng}`,
+        },
+      },
+    });
+  }
+
   render() {
     this.errors = this.validate();
     const formIsDisabled = this.isFormInvalid();
     const loading = this.state.isLoading ? <Loading /> : '';
-    return (
-      <Row>
-        {loading}
-        <Col xs="12" md="6">
-          
-          <h5>Google Maps goes here</h5>
+    const coords = this.state.location.coordinates;
+    const zoom = this.state.isCreating ? 4: 15;
 
-        </Col>
-        <Col xs="12" md="6">
-          {this.disabledDropDown()}
-          {this.renderTextFormGroup('name', false)}
-          {this.renderTextFormGroup('latitude', true)}
-          {this.renderTextFormGroup('longitude', true)}
-          
-          {this.saveButton(formIsDisabled)}
-        </Col>
-      </Row>
+    const header = this.state.isCreating
+    ? <h3 className={stylesMain.subtitle}>Add Location</h3>
+    : '';
+
+    return (
+      <div>
+        <Row>
+          <Col>
+            {loading}
+            {header}          
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" md="6">
+            <div className={styles.mapStyle}>
+              <MapContainer 
+                center={{
+                  lat: parseFloat(coords.latitude),
+                  lng: parseFloat(coords.longitude),
+                }}
+                zoom={zoom}
+                onMapClicked={this.onMapClicked}
+              />
+            </div>
+            
+
+          </Col>
+          <Col xs="12" md="6">
+            {this.disabledDropDown()}
+            {this.renderTextFormGroup('name', false)}
+            {this.renderTextFormGroup('latitude', true)}
+            {this.renderTextFormGroup('longitude', true)}
+            
+            {this.saveButton(formIsDisabled)}
+          </Col>
+        </Row>
+      </div>
     );
   }
 }
@@ -230,6 +276,7 @@ export class LocationAdm extends Component {
 LocationAdm.propTypes = {
   location: PropTypes.object.isRequired,
   onSaved: PropTypes.func.isRequired,
+  isCreating: PropTypes.bool.isRequired,
 };
 
 export default LocationAdm;
