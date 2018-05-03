@@ -8,5 +8,6 @@ router.post("/", isAuthenticatedGuard, isAbleToMakeBookingGuard, booking.createB
 router.post("/cancel", isAuthenticatedGuard, booking.cancelBooking);
 router.get("/get", isAuthenticatedGuard, booking.getBooking);
 router.post("/change", isAuthenticatedGuard, booking.changeBooking);
+router.post("/extend", isAuthenticatedGuard, booking.extendBooking);
 
 module.exports = router;

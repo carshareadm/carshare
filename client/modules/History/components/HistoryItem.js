@@ -17,8 +17,17 @@ import {
 import stylesMain from '../../../main.css';
 import styles from './HistoryItem.css'
 
+import * as http from "../../../util/http";
+
 // component class
 class HistoryItem extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isVisible: true,
+    };
+  }
 
   checkTheDate(bs){
     console.log("checkTheDate");
@@ -69,29 +78,80 @@ class HistoryItem extends Component {
     } else return null;
   }
 
+  renderCancel(bs){
+    let booking = this.checkTheDate(bs);
+    if(booking=="future"){
+      return(
+      <Button onClick={e => this.handleCancel(e, bs._id)}>Cancel</Button>
+      );
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+  handleCancel(evt, id) {
+    evt.preventDefault();
+    console.log(id+" user: "+this.props.usr);
+    if (id) {
+      http
+        .client()
+        .post("/booking/cancel", {
+          bookingid: id,
+          userid: this.props.usr,
+        })
+        .then(res => {
+          //Clear existing alert with opposite message
+          this.props.clearAlert('cancelError');
+          this.props.sendAlert('cancelSuccess');
+          this.setState({isVisible:false});
+        })
+        .catch(err => {
+          console.log(err);
+          //Clear existing alert with opposite message
+          this.props.clearAlert('cancelSuccess');
+          this.props.sendAlert('cancelError');
+        });
+    }
+  }
+
   render() {
     const bs = this.props.data;
-    return (
+
+    return(
+      
+      this.state.isVisible ?  
         <div>
-          <CardHeader>
-            {this.renderHeader(bs)}
-          </CardHeader>
-          <CardBody>
-            {this.renderDamages(bs)}
-            <CardText>
-              Booking Start: {moment(bs.startsAt).format('MMMM Do YYYY, h:mm a')} <br/>
-              Booking End: {moment(bs.endsAt).format('MMMM Do YYYY, h:mm a')} <br/>
-              Registration: {bs.car.make} {bs.car.model} <br/>
-              Vehicle Type: {bs.car.vehicleType.name} <br/>
-              Vehicle Location: {bs.car.location.name} <br/>
-              Hire Cost: WIP <br/>
-              {this.renderAddDamage(bs)}
-            </CardText>
-          </CardBody>
-        </div>
+            <CardHeader>
+              {this.renderHeader(bs)}
+            </CardHeader>
+            <CardBody>
+              {this.renderDamages(bs)}
+              <CardText>
+                Booking Start: {moment(bs.startsAt).format('MMMM Do YYYY, h:mm a')} <br/>
+                Booking End: {moment(bs.endsAt).format('MMMM Do YYYY, h:mm a')} <br/>
+                Registration: {bs.car.make} {bs.car.model} <br/>
+                Vehicle Type: {bs.car.vehicleType.name} <br/>
+                Vehicle Location: {bs.car.location.name} <br/>
+                Hire Cost: {bs.totalCost} <br/>
+                {this.renderCancel(bs)}
+                {this.renderAddDamage(bs)}
+              </CardText>
+            </CardBody>
+          </div>
+          : null
     )
   }
 }
+
+
+HistoryItem.propTypes = {
+  data: PropTypes.object.isRequired,
+  usr: PropTypes.string.isRequired,
+  sendAlert: PropTypes.func.isRequired,
+  clearAlert: PropTypes.func.isRequired,
+};
 
 export default HistoryItem;
 
