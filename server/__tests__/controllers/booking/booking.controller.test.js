@@ -390,8 +390,6 @@ describe("Booking controller", () => {
     }
   });
 
-//Extension test block
-
   test("it should return 200 if time is available for extension", async done => {
     const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
     try {
@@ -432,7 +430,5 @@ describe("Booking controller", () => {
       done(e);
     }
   });
-
-//Cancellation test block
 
 });
