@@ -92,7 +92,7 @@ const getCar = function(req, res) {
 }
 
 const getCarsForType = function(req, res){
-  VehicleType.find({name: req.params.VehicleName})
+  VehicleType.find({name: req.params.VehicleName})  
   .exec((err, vt) => {
     if (err) {
       res.status(500).send(err);
@@ -104,7 +104,16 @@ const getCarsForType = function(req, res){
     if (!req.isAdmin) {
       carQry.isDisabled = false;
     }
-    Car.find(carQry).populate('vehicleType').exec((err, car) => {
+    Car.find(carQry)
+    .populate('vehicleType')
+    .populate('image')
+    .populate({
+      path: 'location',
+      match: {isDisabled: false},
+      populate: {path: 'coordinates'},
+    })
+    .populate('damages')
+    .exec((err, car) => {
       if(err){
         res.status(500).send(err);
       } else {
@@ -145,15 +154,10 @@ const getCarImage = async (req, res) => {
   }
 };
 
-const updateCarImage = async (req, res) => {
-
-};
-
 module.exports = {
   getCars: getCars,
   getTimes: getTimes,
   getCar: getCar,
   getCarsForType: getCarsForType,
   getCarImage: getCarImage,
-  updateCarImage: updateCarImage,
 };

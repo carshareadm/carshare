@@ -24,6 +24,7 @@ export class CarsAdm extends Component {
       selectedCar: null,
       locations: [],
       vehicleTypes: [],
+      isCreating: false,
     };
   }
 
@@ -65,8 +66,21 @@ export class CarsAdm extends Component {
     this.setState({selectedCar: evt[0]});
   }
 
-  handleSaved(savedCar) {
+  async handleSaved(savedCar) {
+    if (this.state.isCreating) {
+      await this.isCreating(false);
+      this.addSaved(savedCar);
+    }
     this.getCars();
+  }
+
+  addSaved(savedCar) {
+    const cars = [...this.state.cars];
+    cars.push(savedCar);
+    this.setState({
+      ...this.state,
+      cars: cars,
+    })
   }
 
   selectedCarForm() {
@@ -77,7 +91,8 @@ export class CarsAdm extends Component {
           onSaved={this.handleSaved.bind(this)}
           car={this.state.selectedCar}
           vehicleTypes={this.state.vehicleTypes}
-          locations={this.state.locations}/>
+          locations={this.state.locations}
+          isCreating={this.state.isCreating} />
     );
   }
 
@@ -86,29 +101,80 @@ export class CarsAdm extends Component {
     this.setState({selectedCar: null});
   }
 
+  async isCreating(isCreating) {
+    const newCar = {
+      rego: '',
+      make: '',
+      model: '',
+      colour: '',
+      year: 2000,
+      seats: 0,
+      doors: 0,
+      isDisabled: false,
+      vehicleType: {},
+      location: {},
+      image: {},
+    };
+
+    if (isCreating && this.state.selectedCar) {
+      await this.setState({
+        ...this.state,
+        selectedCar: null,
+      });
+    }
+
+    this.setState({
+      ...this.state,
+      isCreating: isCreating,
+      selectedCar: isCreating ? newCar : null,
+    });
+  }
+
+  addOrCancelBtn() {
+    return this.state.isCreating
+    ? <Button
+        className={stylesMain.addNewBtn}
+        size="sm"
+        color="link"
+        onClick={(e) => this.isCreating(false)}>&times; Cancel</Button>
+    : <Button
+        className={stylesMain.addNewBtn}
+        size="sm"
+        color="link"
+        onClick={(e) => this.isCreating(true)}>&#43; Add New</Button>
+  }
+
+  typeahead() {
+    return this.state.isCreating
+    ? ''
+    : (
+      <div className="input-group">
+        <div className={stylesMain.flex1}>
+          <Typeahead
+            ref="typeahead"
+            placeholder="Search for car..."
+            onChange={(e) => this.handleCarSelected(e)}
+            labelKey={option => `${option.make} ${option.model} ${option.rego}`}
+            options={this.state.cars}
+            filterBy={['make', 'model', 'rego']}
+          />
+        </div>
+        <div className="input-group-append">
+          <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const c = this.state.cars.map(c => (<li>{c.make}</li>))
     return (
       <div className={stylesMain.body}>
         <Row>
           <Col>
             <h1 className={stylesMain.title}>Manage Cars</h1>
-            <div className="input-group">
-              <div className={stylesMain.flex1}>
-                <Typeahead
-                  ref="typeahead"
-                  placeholder="Search for car..."
-                  onChange={(e) => this.handleCarSelected(e)}
-                  labelKey={option => `${option.make} ${option.model} ${option.rego}`}
-                  options={this.state.cars}
-                  filterBy={['make', 'model', 'rego']}
-                />
-              </div>
-              <div className="input-group-append">
-                <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
-              </div>
-            </div>
-            <hr />
+            {this.addOrCancelBtn()}
+            {this.typeahead()}
+            <hr className={stylesMain.clearBoth} />
           </Col>
         </Row>
         {this.selectedCarForm()}

@@ -13,5 +13,6 @@ imageSchema.virtual('publicUrl').get(function() {
 });
 
 imageSchema.set('toObject', { virtuals: true });
+imageSchema.set('toJSON', { virtuals: true });
 
 module.exports = mongoose.model('Image', imageSchema);

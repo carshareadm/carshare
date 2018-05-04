@@ -135,4 +135,58 @@ describe("Manage Cars", () => {
       done(e);
     }
   });
+
+  describe('POST Manage Cars', () => {
+    test("fail car validation", async done => {
+      try {
+        const car = {};
+        //car.rego = "TEST01";
+        //car.make = "Hyundai";
+        car.model = "Getz";
+        car.colour = "white";
+        car.year = "2017";
+        car.seats = "5";
+        car.doors = "3";
+        car.vehicleType = testCar.vehicleType;
+        car.isDisabled = false;
+        car.location = testCar.location;
+
+        const encodedToken = token(); 
+        const response = await request(app)
+          .post("/api/manage/cars")
+          .set("Authorization", "Bearer " + encodedToken)
+          .send(car);
+        expect(response.statusCode).toBe(400);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    test("success", async done => {
+      try {
+        const car = {};
+        car.rego = "TEST01";
+        car.make = "Hyundai";
+        car.model = "Getz";
+        car.colour = "white";
+        car.year = "2017";
+        car.seats = "5";
+        car.doors = "3";
+        car.vehicleType = testCar.vehicleType;
+        car.isDisabled = false;
+        car.location = testCar.location;
+
+        const encodedToken = token(); 
+        const response = await request(app)
+          .post("/api/manage/cars")
+          .set("Authorization", "Bearer " + encodedToken)
+          .send(car);        
+        expect(response.statusCode).toBe(200);        
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+  });
 });
