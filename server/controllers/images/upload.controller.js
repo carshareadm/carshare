@@ -1,6 +1,6 @@
 const s3Helper = require('../../util/aws.helper');
 const uuidv4 = require('uuid/v4');
-const logger = require('../../util/logger');
+import * as logger from '../../util/logger';
 const Image = require('../../models/image');
 
 

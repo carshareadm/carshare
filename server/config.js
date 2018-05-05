@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 // adds config vars in .env file to process.env
 const env = dotenv.config();
 
+
+
 const config = {
   mongoURL: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/carshare',
   port: process.env.PORT || 8000,
@@ -11,9 +13,10 @@ const config = {
     secret: process.env.JWT_SECRET || 'jegS3sh6v2bOuJQNhetCOi3WEWZzcZVcQXaht6xA7SV5HC1c18DWaWegkyHzdzo',
     lifetimeInHours: process.env.JWT_LIFETIME_HOURS || 1,  
   },
-  insightOps: {
-    token: process.env.LOGGING_TOKEN || "c3700183-0984-45a0-9a58-2766945adade", 
-    region: process.env.LOGGING_REGION ||  'us',
+  loggly: {
+    token: process.env.LOGGING_TOKEN || "ebfe2909-08cd-4500-bbd9-22049a5934e9",
+    subdomain: process.env.LOGGLY_SUBDOMAIN ||  'shacar',
+    tags: process.env.LOGGLY_TAGS || ["NodeJS"],
   },
   twilio: {
     // default values are the Twilio TEST account values and TEST phone number

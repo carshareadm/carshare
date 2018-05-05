@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 import moment from 'moment';
 
 import * as s3Helper from '../../util/aws.helper';
-import logger from '../../util/logger';
+import * as logger from '../../util/logger';
 
 
 const getCars = function(req, res) {

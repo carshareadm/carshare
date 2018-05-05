@@ -1,5 +1,5 @@
 import Offers from '../../models/offer';
-import logger from '../../util/logger';
+import * as logger from '../../util/logger';
 
 import moment from 'moment'
 

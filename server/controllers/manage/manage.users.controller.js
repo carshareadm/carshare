@@ -1,5 +1,5 @@
 import Users from '../../models/user';
-import logger from '../../util/logger';
+import * as logger from '../../util/logger';
 
 
 export const getAll = async (req, res) => {

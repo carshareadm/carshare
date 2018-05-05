@@ -1,5 +1,5 @@
 import Bookings from '../../models/booking';
-import logger from '../../util/logger';
+import * as logger from '../../util/logger';
 
 
 export const getAll = async (req, res) => {
