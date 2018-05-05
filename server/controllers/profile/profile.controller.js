@@ -7,6 +7,8 @@ import Car from "../../models/car";
 
 import mongoose from 'mongoose';
 
+import * as logger from '../../util/logger';
+
 const getMyProfile = function(req, res) {
   User.findById(req.userId)
     .populate("-confirmationCodes -__v")
@@ -154,8 +156,33 @@ const getMyBookings = function(req, res){
     });
 };
 
+const deleteMyAccount = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).exec();
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    const now = new Date();
+    const deletedAt = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    user.isDisabled = true;
+    user.email = `self_deleted_${deletedAt}_${user.email}`;
+
+    const saved = await user.save();
+
+    const bulkCancel = await Booking.update({user: req.userId}, {isDisabled: true}, {multi: true}).exec();
+
+    return res.status(200).send(saved);
+  }
+  catch(e) {
+    logger.err(e);
+    return res.status(500).send(e);
+  }
+};
+
 module.exports = {
   getMyProfile: getMyProfile,
   updateMyProfile: updateMyProfile,
   bookings: getMyBookings,
+  deleteMyAccount: deleteMyAccount,
 };

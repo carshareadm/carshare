@@ -18,6 +18,7 @@ import History from './modules/History/History';
 import Damages from './modules/Damages/Damages';
 import Damage from './modules/Damages/Damage';
 import { Profile } from './modules/Profile/Profile';
+import { DeleteProfileForm } from './modules/Profile/components/DeleteProfileForm';
 import LoginForm from './modules/Login/LoginForm';
 import Specials from './modules/Specials/Specials';
 import Emergency from './modules/Emergency/Emergency';
@@ -65,8 +66,9 @@ export default (
 		<Route path="history" component={requireAuth(History)} />
 		<Route path='paymentDetails' component={requireAuth(PaymentDetails)} />
 		<Route path="profile" component={requireAuth(Profile)} />
+		<Route path="profile/delete" component={requireAuth(DeleteProfileForm)} />
 		<Route path='damages/:carId' component={requireAuth(Damage)} />
-        <Route path='damage' component={requireAuth(Damages)} />
+		<Route path='damage' component={requireAuth(Damages)} />
 		{/* admin pages */}
 		<Route path="manage" component={requireAdminAuth(Manage)} />
 		<Route path="manage/bookings" component={requireAdminAuth(BookingsAdm)} />

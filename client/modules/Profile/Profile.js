@@ -281,7 +281,8 @@ export class Profile extends Component {
       deliveryMethod: by,
       confirmed: false,
     };
-    this.setIsLoading(true, `Requesting a confirmation code via ${by}`);    confirmService.requestConfirmationCode(by, confirmService.CodeTypes.ACCOUNT_UPDATE)
+    this.setIsLoading(true, `Requesting a confirmation code via ${by}`);
+    confirmService.requestConfirmationCode(by, confirmService.CodeTypes.ACCOUNT_UPDATE)
     .then(() => {
       this.setIsLoading(false, '');
       this.setState({codes: codes});
@@ -509,6 +510,13 @@ export class Profile extends Component {
             </Col>
           </Row>
         </form>
+
+        <Row>
+          <Col>
+            <hr />
+            <Link to="/profile/delete">Delete my account</Link>
+          </Col>
+        </Row>
       </Container>
     </div>
   );
