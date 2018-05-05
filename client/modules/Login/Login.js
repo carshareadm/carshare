@@ -10,6 +10,7 @@ import {
 } from "../../infrastructure/AuthActions";
 
 import styles from "./Login.css";
+import stylesMain from "../../main.css";
 import arrows from "../Layout/angle-double-right.svg.png";
 
 import {
@@ -111,7 +112,7 @@ export class Login extends Component {
       );
     }
     return (
-      <Label htmlFor={labelFor} className={styles.label}>
+      <Label htmlFor={labelFor} className={stylesMain.label}>
         {this.labels[key]}
       </Label>
     );
@@ -129,8 +130,8 @@ export class Login extends Component {
 
   registered() {
     return (
-      <div className={styles.body}>
-        <h1 className={styles.title}>Registered</h1>
+      <div className={stylesMain.body}>
+        <h1 className={stylesMain.title}>Registered</h1>
         <p>
           <Link to="/profile">Click here to go to user profile</Link>
           <br />
@@ -144,19 +145,19 @@ export class Login extends Component {
     const isDisabled = this.isFormInvalid();
 
     return (
-      <div className={styles.body}>
+      <div className={stylesMain.body}>
         <Container>
-          <form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
+          <form className={stylesMain.form} onSubmit={this.handleSubmit.bind(this)}>
             <Row>
               <Col>
-                <h1 className={styles.title}>Login</h1>
+                <h1 className={stylesMain.title}>Login</h1>
               </Col>
             </Row>
             <Row>
               <Col xs={{ size: 12 }} md={{ size: 8 }} lg={{ size: 6 }}>
-                <img className={styles.btnarrows} src={arrows} />
+                <img className={stylesMain.btnarrows} src={arrows} />
                 <Link to="/register">
-                  <Button type="button" outline color="success" className={styles.regBtn}>
+                  <Button type="button" outline color="success" className={stylesMain.wideBtn}>
                     Register
                   </Button>
                 </Link>
@@ -194,12 +195,12 @@ export class Login extends Component {
             </Row>
             <Row>
               <Col xs={{ size: 12 }} md={{ size: 8 }} lg={{ size: 6 }}>
-                <img className={styles.btnarrows} src={arrows} />
+                <img className={stylesMain.btnarrows} src={arrows} />
                 <Button
                   disabled={isDisabled}
                   outline
                   color="success"
-                  className={styles.loginBtn}
+                  className={stylesMain.wideBtn}
                 >
                   Login
                 </Button>

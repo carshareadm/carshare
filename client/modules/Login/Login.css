@@ -1,45 +1,4 @@
-.body {
-  padding: 2em;
-  background-color: rgb(226, 226, 226);
-}
 
-.title {
-  font-size: 26pt;
-  color: green;
-  margin-bottom: 1em;
-}
-
-.h4 {
-  color: green;
-  font-size: 1rem;
-}
-
-.loginBtn {
-  width: 95%;
-  text-align: right !important;
-  border-radius: 0 !important;
-  position: absolute;
-  bottom: 6px;
-  left: 2.5%;
-}
-
-.regBtn {
-  width: 95%;
-  text-align: right !important;
-  border-radius: 0 !important;
-  position: absolute;
-  top: 6px;
-  left: 2.5%;
-}
-
-.form {
-  padding: none !important;
-}
-
-.phoneNum {
-  font-size: 20pt;
-  color: green;
-}
 
 .regNote {
   visibility: visible;
@@ -47,18 +6,4 @@
   color: green;
 }
 
-.label {
-  padding: none;
-  color: grey;
-}
 
-.btnarrows {
-  opacity: 0.5;
-  width: 50px;
-  height: 50px;
-  position: relative;
-  left: 20px;
-  object-fit: cover;
-  display: inline-block;
-  z-index: 2;
-}
