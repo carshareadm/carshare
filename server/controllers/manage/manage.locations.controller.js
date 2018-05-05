@@ -1,6 +1,6 @@
 import Location from '../../models/location';
 import Coordinates from '../../models/coordinate';
-import logger from '../../util/logger';
+import * as logger from '../../util/logger';
 
 
 export const getAll = async (req, res) => {

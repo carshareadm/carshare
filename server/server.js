@@ -3,7 +3,7 @@ import 'babel-polyfill';
 const app = require("./app");
 
 const dummyData = require("./dummyData");
-const logger = require('./util/logger');
+import * as logger from'./util/logger';
 import serverConfig from "./config";
 
 import mongoose from "mongoose";

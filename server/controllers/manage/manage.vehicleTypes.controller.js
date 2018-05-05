@@ -1,5 +1,5 @@
 import VehicleTypes from '../../models/vehicleType';
-import logger from '../../util/logger';
+import * as logger from '../../util/logger';
 
 export const getAll = async (req, res) => {
   try {
