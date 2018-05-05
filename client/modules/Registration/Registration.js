@@ -155,7 +155,7 @@ export class Registration extends Component {
       );
     }
     return (
-      <Label htmlFor={labelFor} className={styles.label}>
+      <Label htmlFor={labelFor} className={stylesMain.label}>
         {this.labels[key]}
       </Label>
     );
@@ -190,7 +190,7 @@ export class Registration extends Component {
   confirmed() {
     return(
       <div className={styles.body}>
-              <h1 className={styles.title}>Registered</h1>
+              <h1 className={stylesMain.title}>Registered</h1>
               <p><Link to="/profile">Click here to go to user profile</Link><br /></p>
       </div>);
   }

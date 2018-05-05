@@ -62,10 +62,18 @@ body {
     color: green;
 }
 
+
 .buttons {
   background-color: rgb(76, 157, 38) !important;
   border: solid rgb(76, 157, 38) 1px !important;
 }
+
+ .buttonsSquare {
+  background-color: rgb(76, 157, 38) !important;
+  border: solid rgb(76, 157, 38) 1px !important;
+  min-width: 170px;
+  border-radius: 0 !important;
+  }
 
 .input-group .rbt {
 	width: 230px !important;
@@ -93,6 +101,7 @@ body {
 	bottom:4px;
   object-fit: cover;
   display:inline-block;
+    z-index: 2;
 }
 
 .wideBtn {
@@ -114,6 +123,7 @@ body {
 	bottom:1px;
   object-fit: cover;
   display:inline-block;
+  z-index: 2;
 }
 
 .flex1 {
@@ -137,4 +147,14 @@ body {
 
 .clearBoth {
   clear: both;
+}
+
+.label
+{
+  padding: none;
+  color: grey;
+}
+
+.form {
+  padding: none !important;
 }

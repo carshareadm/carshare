@@ -128,7 +128,7 @@ export class Confirmation extends Component {
 
           <Row>
             <Col>
-              <Button outline color="primary" onClick={this.handleSubmit.bind(this)}>Submit</Button>
+              <Button className={stylesMain.buttonsSquare} onClick={this.handleSubmit.bind(this)}>Submit</Button>
             </Col>
           </Row>
           {this.state.isSubmitting ? load : ''}

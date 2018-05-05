@@ -115,16 +115,16 @@ class Contact extends Component
       this.state.failAlertOpen;
     // Here goes our page
     return (
-      <div className={styles.body}>
+      <div className={stylesMain.body}>
           <h1 className={stylesMain.title}>Contact Us</h1>
         <Row noGutters>
           <Col xs="12" md="6" className="px-3">
-            <p><strong>Need Help?</strong><br/>
-            Please contact us via the telephone number below or
+            <h4 className={stylesMain.h4}>Need Help?</h4>
+            <p>Contact us via the telephone number below or
             use the contact form.</p>
 
-            <p><strong>Customer Services</strong><br />
-            Services available 7am - 7pm</p>
+            <h4 className={stylesMain.h4}>Customer Services</h4>
+            <p>Services available 7am - 7pm</p>
 
             <p className={stylesMain.phoneNum}>Ph: 1300 000 123</p>
 
@@ -133,14 +133,14 @@ class Contact extends Component
             Melbourne, Victoria</p>
           </Col>
           <Col xs="12" md="6" className="px-3">
-            <h4 className={stylesMain.h4}>Contact Form</h4><br />
+            <h4 className={stylesMain.h4}>Contact Form</h4>
             <Form
               className="novalidate"
               onSubmit={this.handleSubmit.bind(this)}
             >
 
               <FormGroup>
-                <Label htmlFor="emailFrom">Email *</Label>
+                <Label htmlFor="emailFrom" className={stylesMain.label}>Email *</Label>
                 <Input
                   type="text"
                   name="emailFrom"
@@ -156,7 +156,7 @@ class Contact extends Component
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="name">Name *</Label>
+                <Label htmlFor="name" className={stylesMain.label}>Name *</Label>
                 <Input
                   type="text"
                   name="name"
@@ -172,7 +172,7 @@ class Contact extends Component
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="message">Message *</Label>
+                <Label htmlFor="message" className={stylesMain.label}>Message *</Label>
                 <Input
                   type="textarea"
                   rows="5"
