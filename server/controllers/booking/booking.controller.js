@@ -58,6 +58,9 @@ const createBooking = function(req, res) {
           .asHours();
         newBooking.totalCost = hours * vehicle.vehicleType.hourlyRate;
 
+        //Add one hour buffer
+        var bufferEndTime = moment(endAt).add(1,'h');
+
         var validateErrs = newBooking.validateSync();
         if (validateErrs) {
           return res.status(500).send(validateErrs);
@@ -70,19 +73,19 @@ const createBooking = function(req, res) {
                 {
                   $and: [
                     { startsAt: { $gte: newBooking.startsAt } },
-                    { startsAt: { $lte: newBooking.endsAt } },
+                    { startsAt: { $lte: bufferEndTime } },
                   ],
                 },
                 {
                   $and: [
                     { endsAt: { $gte: newBooking.startsAt } },
-                    { endsAt: { $lte: newBooking.endsAt } },
+                    { endsAt: { $lte: bufferEndTime } },
                   ],
                 },
                 {
                   $and: [
                     { startsAt: { $lte: newBooking.startsAt } },
-                    { endsAt: { $gte: newBooking.endsAt } },
+                    { endsAt: { $gte: bufferEndTime } },
                   ],
                 },
               ],
@@ -143,6 +146,117 @@ const createBooking = function(req, res) {
   });
 };
 
+const extendBooking = function(req, res) {
+  if (
+    typeof req.body.bookid === "undefined" ||
+    typeof req.body.endAt === "undefined"
+  ) {
+    //Bad Request if not all fields are present
+    return res.status(400).send("invalid request params");
+  }
+
+  const endAt = req.body.endAt;
+  const bookingId = req.body.bookid;
+  const checkEndTime = moment(endAt).add(1, 'h');
+
+  Booking.findById(bookingId).exec((bookFindErr, foundBook) => {
+    if (bookFindErr) {
+      return res.status(500).send(usrErr);
+    }
+    if (!foundBook) {
+      // Bad Request if booking not found
+      return res.status(400).send();
+    }
+
+    else
+    {
+        Booking.find({
+          $and: [
+            { car: foundBook.car, isDisabled: false },
+            {
+              $or: [
+                {
+                  $and: [
+                    { startsAt: { $gte: foundBook.startsAt } },
+                    { startsAt: { $lte: checkEndTime } },
+                  ],
+                },
+                {
+                  $and: [
+                    { endsAt: { $gte: foundBook.startsAt } },
+                    { endsAt: { $lte: checkEndTime } },
+                  ],
+                },
+                {
+                  $and: [
+                    { startsAt: { $lte: foundBook.startsAt } },
+                    { endsAt: { $gte: checkEndTime } },
+                  ],
+                },
+              ],
+            },
+          ],
+        }).exec((err, bookings) => {
+          console.log(bookings);
+          if (err) {
+            return res.status(500).send(err);
+          }
+          //Should only be one from current booking
+          else if (bookings.length > 1) {
+            return res
+              .status(400)
+              .send("Booking would clash with existing booking");
+          }
+          // Offer validation is part of offer controller and applied by the apply button at booking
+          else if (typeof foundBook.offerCode!=="undefined")
+          {
+            // FindOne as Offer Codes are set as unique
+            Offer.findOne({ offerCode: foundBook.OfferCode, isDisabled: false }).exec((offerErr, discount) => {
+              if (offerErr) {
+                return res.status(500).send(offerErr);
+              }
+              if (discount) {
+              
+                foundBook.offer = discount._id;
+                //Multiplier applied first
+                if (discount.multiplier) {
+                  foundBook.totalCost =
+                    (100 - discount.multiplier)/100 * foundBook.totalCost;
+                }
+                if (discount.oneOffValue) {
+                  foundBook.totalCost =
+                    foundBook.totalCost - discount.oneOffValue;
+                }
+              }
+              foundBook.endsAt=endAt.toString();
+              foundBook.save((err, booking) => {
+                if (err) {
+                  return res.status(500).send(err);
+                } else {
+                  return res.status(200).send(booking);
+                }
+              });
+            });
+          }
+          else
+          {
+            foundBook.endsAt=endAt.toString();
+            foundBook.save((err, booking) => {
+              if (err) {
+                return res.status(500).send(err);
+              } else {
+                return res.status(200).send(booking);
+              }
+            });
+          }
+          
+        });
+    }
+  });
+};
+
+
+
 const cancelBooking = function(req, res) {
   if (typeof req.body.bookingid === "undefined" || 
       typeof req.body.userid === "undefined") {
@@ -165,11 +279,22 @@ const cancelBooking = function(req, res) {
           // Not a booking belonging to the user
           res.status(401).send();
         }
+        else if(moment(booking.startsAt).isAfter(moment()))
+        {
+          // Set isDisabled flag for cancellation
+          booking.isDisabled=true;
+          booking.save((err, booking) => {
+            if (err) {
+              return res.status(500).send(err);
+            } else {
+              return res.status(200).send();
+            }
+          });
+        }
         else
         {
-        // update booking
-        // Set cancellation flag?
-        res.status(200);
+          // Bad Request as booking start time is after current time
+          res.status(400).send();
         }
       }
     });
@@ -214,7 +339,7 @@ const changeBooking = function(req, res) {
       } else {
         // update booking
         // Update changes
-        res.status(200);
+        res.status(200).send();
       }
     });
 };
@@ -224,4 +349,5 @@ module.exports = {
   getBooking: getBooking,
   cancelBooking: cancelBooking,
   changeBooking: changeBooking,
+  extendBooking: extendBooking,
 };

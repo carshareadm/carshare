@@ -27,6 +27,7 @@ let testAddress = null;
 let testCar = null;
 let license = null;
 let testOffer = null; 
+let testBooking = null; 
 
 describe("Booking controller", () => {
   beforeAll(async () => {
@@ -119,7 +120,7 @@ describe("Booking controller", () => {
   });
 
   afterEach(done => {
-    Promise.all([User, License, Address, Location, Coordinate, VehicleType, Movement, Car, Offer].map(k => k.remove({})))
+    Promise.all([User, License, Address, Location, Coordinate, VehicleType, Movement, Car, Offer, Booking].map(k => k.remove({})))
       .then(() => done())
       .catch(e => done(e));
   });
@@ -137,6 +138,8 @@ describe("Booking controller", () => {
     l.approvedByAdmin = approved;
     return l;
   };
+
+  // Booking creation test block
 
   test("it should return 401 if no request body", async done => {
     const badLicense = setLicense("12345", null, false, true);
@@ -386,5 +389,50 @@ describe("Booking controller", () => {
       done(e);
     }
   });
+
+//Extension test block
+
+  test("it should return 200 if time is available for extension", async done => {
+    const workingLicense = setLicense("12345", "5ac8c98c09eeea0911468934", false, true);
+    try {
+      license = await workingLicense.save();
+      testUser.license = await workingLicense.save();
+      const user = await testUser.save();
+      const savedOffer = await testOffer.save().catch(err => {console.log(err)});
+      testBooking = new Booking();
+      testBooking.user = testUser._id;
+      testBooking.car = testCar._id;
+      testBooking.startsAt = moment();
+      testBooking.endsAt = moment().add(1, 'day');
+      testBooking.offerCode = savedOffer.offerCode;
+      testBooking.isDisabled=false;
+      testBooking.unlockCode = "123456";
+      const savedBooking = await testBooking.save().catch(err => {console.log(err)});
+      let token = {
+        sub: testUser._id,
+        email: testUser.email,
+        isAdmin: false,
+        exp: DateUtils.getDateInSeconds(
+          DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
+        ),
+      };
+      const encodedToken = jwt.encode(token, config.jwt.secret);    
+    request(app)
+      .post("/api/booking/extend")
+      .set("Authorization", "Bearer " + encodedToken)
+      .send({
+        bookid: testBooking._id,
+        endAt: moment().add(2, 'd'),
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+    } catch (e) {
+      done(e);
+    }
+  });
+
+//Cancellation test block
 
 });
