@@ -55,8 +55,9 @@ export class FileUploader extends Component {
   }
 
   handleFileSelected(e) {
+    const target = e.target || e.srcEelment; // for edge/IE
     this.setState({
-      selectedFileText: e.target.files[0].name,
+      selectedFileText: target.files[0].name,
       fileSelected: true,
     });
   }

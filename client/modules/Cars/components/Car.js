@@ -14,18 +14,24 @@ import {
   CardText,
 } from 'reactstrap';
 
+import CarImage from '../../Manage/Cars/components/CarImage';
 import stylesMain from '../../../main.css';
 import styles from './Car.css'
 
 // component class
 class Car extends Component {
+  image(car) {
+    return car.image
+    ? <CarImage imageUrl={car.image.publicUrl} />
+    : <img className={styles.carImage} src={carPlaceholder} />;
+  }
 
   render() {
     const car = this.props.data;
     return (
         <Col xs="12" sm="6">
           <CardHeader>
-            <img className={styles.carImage} src={carPlaceholder} />
+            {this.image(car)}
           </CardHeader>
           
           <div className={styles.separator}></div>
@@ -38,7 +44,7 @@ class Car extends Component {
             <p>Doors - <span className={stylesMain.h4}>{car.doors}</span></p>
             <p>Colour - <span className={stylesMain.h4}>{car.colour}</span></p>
             <br/>
-            <p>Location - <span className={stylesMain.h4}>{car.location}</span></p>
+            <p>Location - <span className={stylesMain.h4}>{car.location.name}</span></p>
             <br/>
             <p>$ <span className={stylesMain.h4}>{car.vehicleType.hourlyRate.toFixed(
                     2

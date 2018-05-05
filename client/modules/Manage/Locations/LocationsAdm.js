@@ -21,7 +21,7 @@ export class LocationsAdm extends Component {
     this.state = {
       locations: [],
       selectedLocation: null,
-      isCreatingLocation: false,
+      isCreating: false,
     };
   }
 
@@ -41,7 +41,7 @@ export class LocationsAdm extends Component {
   }
 
   async handleSaved(saveLocation) {
-    if (this.state.isCreatingLocation) {
+    if (this.state.isCreating) {
       await this.isCreating(false);
       this.addSavedLocation(saveLocation);
     }
@@ -64,7 +64,7 @@ export class LocationsAdm extends Component {
       : <LocationAdm
           onSaved={this.handleSaved.bind(this)}
           location={this.state.selectedLocation}
-          isCreating={this.state.isCreatingLocation} />
+          isCreating={this.state.isCreating} />
     );
   }
 
@@ -92,13 +92,13 @@ export class LocationsAdm extends Component {
 
     this.setState({
       ...this.state,
-      isCreatingLocation: isCreating,
+      isCreating: isCreating,
       selectedLocation: isCreating ? newLoc : null,
     });
   }
 
   addOrCancelBtn() {
-    return this.state.isCreatingLocation
+    return this.state.isCreating
     ? <Button
         className={stylesMain.addNewBtn}
         size="sm"
@@ -112,7 +112,7 @@ export class LocationsAdm extends Component {
   }
 
   typeahead() {
-    return this.state.isCreatingLocation
+    return this.state.isCreating
     ? ''
     : (
       <div className="input-group">

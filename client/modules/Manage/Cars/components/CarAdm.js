@@ -30,6 +30,7 @@ export class CarAdm extends Component {
     this.state = {
       isLoading: false,
       car: {...this.props.car},
+      isCreating: this.props.isCreating,
       carImage: this.props.car.image && this.props.car.image.publicUrl ? this.props.car.image.publicUrl : '',
       isTouched: {
         rego: false,
@@ -92,14 +93,14 @@ export class CarAdm extends Component {
   validate() {
     const errs = {
       rego: this.state.car.rego.length < 1,
-      make: this.state.car.make.length < 1,
       model: this.state.car.model.length < 1,
-      year: this.state.car.year < this.minYear || this.state.year > this.maxYear,      
+      make: this.state.car.make.length < 1,
       colour: this.state.car.colour.length < 1,
+      year: this.state.car.year < this.minYear || this.state.year > this.maxYear,      
       seats: this.state.car.seats < Math.min(...this.seatsOptions) || this.state.car.seats > Math.max(...this.seatsOptions),
       doors: this.state.car.doors < Math.min(...this.doorsOptions)|| this.state.car.doors > Math.max(...this.doorsOptions),
-      vehicleType: this.state.car.vehicleType._id.length < 1,
-      location: this.state.car.location._id.length < 1,
+      vehicleType: this.state.car.vehicleType._id && this.state.car.vehicleType._id.length < 1,
+      location: this.state.car.location._id && this.state.car.location._id.length < 1,
     };
     return errs;
   }
@@ -135,10 +136,6 @@ export class CarAdm extends Component {
       car: { ...this.state.car, [field]: value },
       isTouched: { ...this.state.isTouched, [field]: true },
     });
-  }
-
-  componentDidMount() {
-
   }
 
   renderTextFormGroup(field) {
@@ -239,10 +236,14 @@ export class CarAdm extends Component {
     evt.preventDefault()
     this.setLoading(true);
 
-    manageSvc.cars.updateCar(this.state.car)
-    .then(result => {
+    const updateAction = this.state.isCreating
+    ? manageSvc.cars.createCar(this.state.car)
+    : manageSvc.cars.updateCar(this.state.car)
+
+    updateAction
+    .then(async result => {
       this.setLoading(false);
-      this.props.onSaved(this.state.car);
+      this.props.onSaved(result.data);
     })
     .catch(e => {
       this.setLoading(false);
@@ -261,15 +262,26 @@ export class CarAdm extends Component {
     this.setState({isLoading: isLoading})
   }
 
+  saveImageToCar(car, img) {
+    return manageSvc.cars.updateCarImage(this.state.car, img);
+  }
+
   async onImageUploaded(evt) {
     try{
-      const updated = await manageSvc.cars.updateCarImage(this.state.car, evt)
-      console.log('post image updated', updated)
-      await this.setState({
-        ...this.state,
-        carImage: updated.data.image.publicUrl,
-      })
-      this.props.onSaved();
+      if (!this.state.isCreating) {
+        const updated = await this.saveImageToCar(this.state.car, evt);
+        await this.setState({
+          ...this.state,
+          carImage: updated.data.image.publicUrl,
+        })
+        this.props.onSaved();
+      } else {
+        await this.setState({
+          ...this.state,
+          car: {...this.state.car, image: evt},
+          carImage: evt.publicUrl,
+        });
+      }
     }
     catch(e) {
       console.log(e);
@@ -282,34 +294,43 @@ export class CarAdm extends Component {
     const loading = this.state.isLoading ? <Loading /> : '';
     const imgUrl = this.state.carImage
 
-    console.log(imgUrl)
+    const header = this.state.isCreating
+    ? <h3 className={stylesMain.subtitle}>Add Car</h3>
+    : '';
 
     return (
-      <Row>
-        {loading}
-        <Col xs="12" md="6">
-          <CarImage key={imgUrl} imageUrl={imgUrl} />
-          <FileUploader
-            onFileUploaded={this.onImageUploaded.bind(this)}
-            isPublic={true} />
+      <div>
+        <Row>
+          <Col>
+            {loading}
+            {header}          
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" md="6">
+            <CarImage key={imgUrl} imageUrl={imgUrl} />
+            <FileUploader
+              onFileUploaded={this.onImageUploaded.bind(this)}
+              isPublic={true} />
 
-        </Col>
-        <Col xs="12" md="6">
-          {this.disabledDropDown()}
-          {this.renderTextFormGroup('rego')}
-          {this.renderTextFormGroup('make')}
-          {this.renderTextFormGroup('model')}
-          {this.renderObjectDropDown('vehicleType', this.props.vehicleTypes)}
-          {this.renderTextFormGroup('colour')}
-          {this.renderDropdownFormGroup('year', this.yearOptions)}
-          {this.renderDropdownFormGroup('seats', this.seatsOptions)}
-          {this.renderDropdownFormGroup('doors', this.doorsOptions)}
+          </Col>
+          <Col xs="12" md="6">
+            {this.disabledDropDown()}
+            {this.renderTextFormGroup('rego')}
+            {this.renderTextFormGroup('make')}
+            {this.renderTextFormGroup('model')}
+            {this.renderObjectDropDown('vehicleType', this.props.vehicleTypes)}
+            {this.renderTextFormGroup('colour')}
+            {this.renderDropdownFormGroup('year', this.yearOptions)}
+            {this.renderDropdownFormGroup('seats', this.seatsOptions)}
+            {this.renderDropdownFormGroup('doors', this.doorsOptions)}
 
-          {this.renderObjectDropDown('location', this.props.locations)}
+            {this.renderObjectDropDown('location', this.props.locations)}
 
-          {this.saveButton(formIsDisabled)}
-        </Col>
-      </Row>
+            {this.saveButton(formIsDisabled)}
+          </Col>
+        </Row>
+      </div>      
     );
   }
 }
@@ -319,6 +340,7 @@ CarAdm.propTypes = {
   locations: PropTypes.array.isRequired,
   vehicleTypes: PropTypes.array.isRequired,
   onSaved: PropTypes.func.isRequired,
+  isCreating: PropTypes.bool.isRequired,
 };
 
 export default CarAdm;

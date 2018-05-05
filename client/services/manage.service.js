@@ -14,15 +14,23 @@ const getAllCars = () => {
 };
 
 const updateCarImage = (car, image) => {
+  console.log(car,image);
   return http
   .client()
   .put(`/manage/cars/${car._id}/image/${image._id}`, car, image);
+};
+
+const createCar = (car) => {
+  return http
+  .client()
+  .post(`/manage/cars`, car);
 };
 
 const cars = {
   updateCar: updateCar,
   getAll: getAllCars,
   updateCarImage: updateCarImage,
+  createCar: createCar,
 };
 // end - manage cars
 

@@ -20,11 +20,6 @@ import styles from './LocationAdm.css';
 
 export class LocationAdm extends Component {
 
-  yearOptions = [];
-
-  seatsOptions = [2, 3, 4, 5, 6, 7, 8];
-  doorsOptions = [2, 3, 4, 5];
-
   constructor(props) {
     super(props);
     this.state = {
@@ -43,12 +38,6 @@ export class LocationAdm extends Component {
     }
 
     this.onMapClicked = this.onMapClicked.bind(this);
-
-    const minYear = 2000;
-    const maxYear = (new Date()).getFullYear();
-    for(var i = minYear; i < maxYear; i++) {
-      this.yearOptions.push(i);
-    }
   }
   
   labels = {

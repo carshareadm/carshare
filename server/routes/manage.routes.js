@@ -12,6 +12,7 @@ var express = require("express");
 var router = express.Router();
 
 router.get("/cars", isAuthenticatedGuard, isAdminGuard, cars.getAll);
+router.post("/cars", isAuthenticatedGuard, isAdminGuard, cars.create);
 router.put("/cars/:carId", isAuthenticatedGuard, isAdminGuard, cars.update);
 router.put("/cars/:carId/image/:imageId", isAuthenticatedGuard, isAdminGuard, cars.updateImage);
 
