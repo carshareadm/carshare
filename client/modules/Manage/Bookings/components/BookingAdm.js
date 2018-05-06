@@ -42,6 +42,7 @@ export class BookingAdm extends Component {
       dropdownsOpen: {
         isDisabled: false,
       },
+      placeholderOffer: "",
     }
   }
   
@@ -51,6 +52,7 @@ export class BookingAdm extends Component {
     startsAt: 'Start Time',
     endsAt: 'End Time',
     unlockCode: 'Unlock Code',
+    offer: 'Offer Code',
     isDisabled: 'Booking Status',
   };
 
@@ -62,6 +64,7 @@ export class BookingAdm extends Component {
     startsAt: 'a valid date and time at least 1 hour in the future is required',
     endsAt: 'a date and time after start time is required',
     unlockCode: 'is required',
+    offer: '',
     isDisabled: '',
   };
 
@@ -108,7 +111,10 @@ export class BookingAdm extends Component {
   }
 
   componentDidMount() {
-    
+    if(typeof this.state.booking.offer!=="undefined")
+    {
+      this.setState({placeholderOffer: this.state.booking.offer.offerCode});
+    }
   }
 
   renderTextFormGroup(field) {
@@ -190,6 +196,7 @@ export class BookingAdm extends Component {
     evt.preventDefault()
     this.setLoading(true);
 
+    console.log(this.state.booking);
     manageSvc.bookings.updateBooking(this.state.booking)
     .then(result => {
       this.setLoading(false);
@@ -204,7 +211,7 @@ export class BookingAdm extends Component {
 
   clearSearch() {
     this.refs.typeahead.getInstance().clear();
-    this.setState({selectedBooking: null});
+    this.state.booking.offer=null;
   }
 
   saveButton(isDisabled) {
@@ -304,7 +311,7 @@ export class BookingAdm extends Component {
                 />
           </FormGroup>
           {this.renderTextFormGroup('unlockCode')}
-
+          {this.renderLabel('offer', 'offer')}
           <FormGroup>
           <div className="input-group">
             <div className={stylesMain.flex1}>
@@ -321,7 +328,6 @@ export class BookingAdm extends Component {
                 <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
             </div>
           </div>
-          {this.renderLabel('offer', 'offer')}
           </FormGroup>       
 
           {this.renderDateFormGroup('startsAt',this.props.booking.startsAt)}

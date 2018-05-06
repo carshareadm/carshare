@@ -125,6 +125,9 @@ export class BookingsAdm extends Component {
   clearSearch() {
     this.refs.typeahead.getInstance().clear();
     this.setState({selectedBooking: null});
+    // Close any opened alert when selection is cleared
+    this.dismissError();
+    this.dismissSuccess();
   }
 
   dismissSuccess() {
