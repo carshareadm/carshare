@@ -24,6 +24,10 @@ export class Confirmation extends Component {
   requestingCodeMsg = "Please wait while we SMS a new code to your mobile..."
   loadingMsg = '';
 
+  DELETE = 'Delete';
+  REGISTER = 'Register';
+  ACCOUNT_UPDATE = 'AccountUpdate';
+
   internalServerError = 'An error occured. Please try again';
 
   constructor(props) {
@@ -50,7 +54,7 @@ export class Confirmation extends Component {
       this.loadingMsg = this.verifyingCodeMsg;
       this.setSubmitting(true);
       console.log(this.state.code, this.props.codeType);
-      confirmSvc.confirmWithCode(this.state.code, this.props.codeType)
+      confirmSvc.confirmWithCode(this.state.code, this.getCodeType())
         .then(() => {
           this.setSubmitting(false);
           this.props.onCodeConfirmed();
@@ -70,11 +74,16 @@ export class Confirmation extends Component {
     }
   }
 
+  getCodeType() {
+    return this.props.codeType === this.DELETE ? this.ACCOUNT_UPDATE : this.props.codeType;
+  }
+
   handleRequestNewCode(event) {
     this.loadingMsg = this.requestingCodeMsg;
     this.setSubmitting(true);
-    confirmSvc.requestConfirmationCode(this.props.verificationMethod, this.props.codeType)
-    .then(() => this,this.setSubmitting(false))
+
+    confirmSvc.requestConfirmationCode(this.props.verificationMethod, this.getCodeType())
+    .then(() => this.setSubmitting(false))
     .catch(e => {
       this.setSubmitting(false);
       this.handleError(e.response);
@@ -98,6 +107,11 @@ export class Confirmation extends Component {
   render() {
     const load = (<Loading msg={this.loadingMsg}></Loading>);
     const alert = this.alert();
+    const codeType = this.props.codeType === this.REGISTER
+    ? 'registration'
+    : this.props.codeType === this.DELETE
+    ? 'DELETION'
+    : 'update';
     return (
       <div className={stylesMain.body}>
         <Container>
@@ -110,7 +124,7 @@ export class Confirmation extends Component {
           <Row>
             <Col>
               A confirmation code has been sent via SMS to your mobile number. 
-              Please enter it below to confirm your account {this.props.codeType === 'Register' ? 'registration' : 'update'}
+              Please enter it below to confirm your account {codeType}
             </Col>
           </Row>
           <Row>

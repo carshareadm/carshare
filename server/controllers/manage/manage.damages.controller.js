@@ -1,6 +1,6 @@
 import Cars from '../../models/car';
 import Damage from '../../models/damage';
-import logger from '../../util/logger';
+import * as logger from '../../util/logger';
 import mongoose from 'mongoose';
 
 const s3Helper = require('../../util/aws.helper');
@@ -26,7 +26,7 @@ export const getAll = async (req, res) => {
     })
     res.status(200).send(dmg);
   } catch(e) {
-    // logger.err(e);
+    logger.err(e);
     return res.status(500).send(e);
   }
 };
@@ -40,7 +40,7 @@ export const update = async (req, res) => {
     await damage.save();
     return res.status(200).send(damage);
   } catch(e) {
-    //logger.err(e);
+    logger.err(e);
     return res.status(500).send(e);
   }
 };
