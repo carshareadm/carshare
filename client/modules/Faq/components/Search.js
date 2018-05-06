@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 
 // Import Style
-import stylesMain from '../../../../../main.css';
+import stylesMain from '../../../main.css';
 
 function setupGoogleSearch(callback) {
     window.__gcse = {
@@ -51,7 +51,7 @@ class Search extends Component {
 
   render() {
     return(
-      <div id="searchbox-content" style={{ backgroundColor: 'blue' }} className="content">
+      <div id="searchbox-content" style={{ width: '90%' }} className="content">
         <div className="gcse-search" 
             data-resultsWrapperClass="gcse-results-wrapper"
             data-resultsUrl="http://www.google.com" 

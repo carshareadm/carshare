@@ -2,6 +2,24 @@
 import React, { Component, PropTypes } from 'react'; 
 
 import styles from './Faq.css'
+import stylesMain from '../../main.css';
+import Search from './components/Search'
+
+import {
+  Button,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Container,
+  Row,
+  Col,
+  Alert,
+} from "reactstrap";
 
 //Additional component. May be moved to the separate component file later
 class FaqItem extends Component{
@@ -37,13 +55,19 @@ export class Faq extends Component {
   	render() {
 	    // Here goes our page 
 	    return (
-	        <div className={styles.body}>
-	        	<div className="row no-gutters">
+	        <div className={stylesMain.body}>
+        	<Container>
+          	<Row>
+            	<Col xs="12" sm="6">
 	        		<h1 className={styles.title}>FAQ</h1>
-	        	</div>
-	        	<div className="row no-gutters">
-		        	<div className="col-xs-12 col-md-6">
-			        	<h3 className={styles.subtitle}>Registration</h3>
+	        	</Col>
+	        	<Col xs="12" sm="6">
+	        		<Search />
+	        	</Col>
+	        </Row>
+	        <Row>
+		    	<Col xs="12" sm="6">
+			      	<h3 className={styles.subtitle}>Registration</h3>
 				        <FaqItem question="How to use ShaCar?">
 				        	<div>
 								<ol>
@@ -149,8 +173,8 @@ export class Faq extends Component {
 				        	</div>
 			        	</FaqItem>
 						<br />
-					</div>	
-					<div className="col-xs-12 col-md-6">
+				</Col>	
+				<Col xs="12" sm="6">
 			        	<h3 className={styles.subtitle}>Using a car</h3>
 			        	<FaqItem question="How to start my booking?">
 				        	<div>
@@ -206,9 +230,10 @@ export class Faq extends Component {
 				        	</div>
 			        	</FaqItem>						
 						<br />
-					</div>
-				</div>
-	        </div>
+				</Col>
+				</Row>
+	        </Container>
+	     	</div>
 	    );
   }
 }

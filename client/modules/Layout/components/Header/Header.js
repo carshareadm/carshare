@@ -14,7 +14,6 @@ import logo from './Logo-ongray.png.png'
 
 const storage = require('../../../../util/persistedStorage');
 const tokenUtils = require('../../../../util/token.utils');
-import Search from './components/Search';
 
 
 //Helper to set the header active
@@ -103,7 +102,6 @@ export class Header extends Component{
 					<li className={active(this.context.router, "/about", true)}><Link to="/about" onClick={this.burgerToggle}>About Us</Link></li>
 			    	<li className={active(this.context.router, "/specials", true)}><Link to="/specials" onClick={this.burgerToggle}>Special Offers</Link></li>
 					<li className={active(this.context.router, "/emergency", true)}><Link to="/emergency" onClick={this.burgerToggle}>Emergency Contact</Link></li>
-					<Search />
 			    {adm}
 					{this.props.loggedIn ? '' : <li className={active(this.context.router, "/login", true)}><Link to="/login" onClick={this.burgerToggle}>Login</Link></li>
 					}
