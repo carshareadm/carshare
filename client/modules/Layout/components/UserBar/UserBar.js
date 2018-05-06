@@ -27,7 +27,6 @@ import {
 
 // Import Style
 import styles from "./UserBar.css";
-import Search from './components/Search';
 
 export class UserBar extends Component {
   constructor(props) {
