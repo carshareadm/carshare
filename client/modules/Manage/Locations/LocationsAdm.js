@@ -137,8 +137,13 @@ export class LocationsAdm extends Component {
     return (
       <div className={stylesMain.body}>
         <Row>
-          <Col>
+          <Col lg="12">
             <h1 className={stylesMain.title}>Manage Locations</h1>
+          </Col>
+          <Col lg="12">
+            <p>You can add a new location or edit existing locations bu selecting them from the list.</p>
+          </Col>
+          <Col lg="12">
             {this.addOrCancelBtn()}
             {this.typeahead()}
             <hr className={stylesMain.clearBoth} />

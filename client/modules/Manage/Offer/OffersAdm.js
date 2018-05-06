@@ -99,8 +99,13 @@ export class OffersAdm extends Component {
     return (
       <div className={stylesMain.body}>
         <Row>
-          <Col>
+          <Col lg="12">
             <h1 className={stylesMain.title}>Manage Offers</h1>
+          </Col>
+          <Col lg="12">
+            <p>To manage offers select an offer and edit it. To hide an offer set its status to inactive</p>
+          </Col>
+          <Col lg="12">
             <div className="input-group">
               <div className={stylesMain.flex1}>
                 <Typeahead

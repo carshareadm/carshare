@@ -68,7 +68,7 @@ export class Manage extends Component {
       <div className={bodyClasses}>
         <Container>
           <Row>
-            <Col>
+            <Col lg="12">
               <h1 className={titleClasses}>Management Console</h1>
             </Col>
           </Row>
