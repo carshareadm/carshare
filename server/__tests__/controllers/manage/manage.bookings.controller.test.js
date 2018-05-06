@@ -3,6 +3,7 @@ import { Mockgoose } from "mockgoose-fix";
 import mongoose from "mongoose";
 import Booking from "../../../models/booking";
 import User from "../../../models/user";
+import Offer from "../../../models/offer";
 import Car from "../../../models/car";
 import VehicleType from "../../../models/vehicleType";
 import Coordinate from "../../../models/coordinate";
@@ -21,6 +22,7 @@ const request = require("supertest");
 let testUser = null;
 let testCar = null;
 let testBooking = null;
+let testOffer = null;
 
 describe("Manage Bookings", () => {
   beforeAll(async () => {
@@ -70,6 +72,12 @@ describe("Manage Bookings", () => {
     booking.endsAt = moment().add(1, 'd');
     booking.isDisabled = false;
 
+    var newOffer = new Offer();
+    newOffer.offerCode = "123";
+    newOffer.expiresAt = moment().add(20, 'd');
+    newOffer.isDisabled = false;
+    newOffer.multiplier =10;
+
     try {      
       const savedUser = await user.save().catch(err => {console.log(err)});
 
@@ -84,7 +92,9 @@ describe("Manage Bookings", () => {
       booking.user = savedCar;
 
       const savedBooking = await booking.save().catch(err => {console.log(err)});
+      const savedOffer = await newOffer.save().catch(err => {console.log(err)});;
 
+      testOffer = savedOffer;
       testBooking = savedBooking;
       testCar = savedCar;
       testUser = savedUser;
@@ -95,7 +105,7 @@ describe("Manage Bookings", () => {
   });
 
   afterEach(done => {
-    Promise.all([User, Location, Coordinate, VehicleType, Car, Booking].map(k => k.remove({})))
+    Promise.all([User, Location, Coordinate, VehicleType, Car, Booking, Offer].map(k => k.remove({})))
       .then(() => done())
       .catch(e => done(e));
   });
@@ -145,6 +155,25 @@ describe("Manage Bookings", () => {
         .send(testBooking);        
       expect(response.statusCode).toBe(200);
       expect(response.body.isDisabled).toBe(true);
+      done();
+    } catch (e) {
+      done(e);
+    }
+  });
+
+  test("add offer to booking", async done => {
+    try {      
+      testBooking.isDisabled = true;
+      testBooking.car = await testCar.save();
+      testBooking.offer = await testOffer.save();
+      const encodedToken = token(); 
+      const response = await request(app)
+        .put(`/api/manage/bookings/${testBooking._id.toString()}`)
+        .set("Authorization", "Bearer " + encodedToken)
+        .send(testBooking);        
+      expect(response.statusCode).toBe(200);
+      expect(response.body.isDisabled).toBe(true);
+      expect(response.body.totalCost).toBeCloseTo(151.2);
       done();
     } catch (e) {
       done(e);
