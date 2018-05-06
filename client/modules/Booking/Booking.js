@@ -202,7 +202,7 @@ export class Booking extends Component {
     if (this.state.input.offerCode) {
       http
         .client()
-        .post("/offer/", {
+        .put("/offer/", {
           code: this.state.input.offerCode,
         })
         .then(res => {
@@ -232,7 +232,7 @@ export class Booking extends Component {
     } else {
       http
         .client()
-        .post("/booking/", {
+        .put("/booking/", {
           userid: this.state.userid,
           car: this.state.carid,
           startAt: this.state.startDate,
@@ -268,17 +268,6 @@ export class Booking extends Component {
     return <Label htmlFor={labelFor}>{this.labels[key]}</Label>;
   }
 
-  render() {
-    if (!this.props.location.query.carid) return this.goback();
-    else {
-      if (!this.state.loggedIn) return this.register();
-      else if (this.state.ccvConfirmed) return this.booked();
-      else if (this.state.booked && !this.state.ccvConfirmed)
-        return this.cvvPrompt();
-      else if (!this.state.selectedCar._id) return <span>Loading...</span>;
-      else return this.bookingFrm();
-    }
-  }
   register() {
     return (
       <div className={styles.body}>
@@ -545,6 +534,18 @@ export class Booking extends Component {
         </Row>
       </Container>
     );
+  }
+
+  render() {
+    if (!this.props.location.query.carid) return this.goback();
+    else {
+      if (!this.state.loggedIn) return this.register();
+      else if (this.state.ccvConfirmed) return this.booked();
+      else if (this.state.booked && !this.state.ccvConfirmed)
+        return this.cvvPrompt();
+      else if (!this.state.selectedCar._id) return <span>Loading...</span>;
+      else return this.bookingFrm();
+    }
   }
 }
 

@@ -4,6 +4,6 @@ const isAbleToMakeBookingGuard = require('../middleware/isAbleToMakeBookingGuard
 var express = require("express");
 var router = express.Router();
 
-router.post("/", isAuthenticatedGuard, isAbleToMakeBookingGuard, offer.validateOffer);
+router.put("/", isAuthenticatedGuard, isAbleToMakeBookingGuard, offer.validateOffer);
 
 module.exports = router;

@@ -157,7 +157,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret); 
     request(app)
-      .post("/api/booking/")
+      .put("/api/booking/")
       .set("Authorization", "Bearer " + encodedToken)
       .send()
       .then(response => {
@@ -185,7 +185,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking/")
+      .put("/api/booking/")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -224,7 +224,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking")
+      .put("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -265,7 +265,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking")
+      .put("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -298,7 +298,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking")
+      .put("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -334,7 +334,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking")
+      .put("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -370,7 +370,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking")
+      .put("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -395,6 +395,7 @@ describe("Booking controller", () => {
     try {
       license = await workingLicense.save();
       testUser.license = await workingLicense.save();
+      const newEnd = moment().add(2, 'd');
       const user = await testUser.save();
       const savedOffer = await testOffer.save().catch(err => {console.log(err)});
       testBooking = new Booking();
@@ -416,14 +417,15 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/booking/extend")
+      .put("/api/booking/extend")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         bookid: testBooking._id,
-        endAt: moment().add(2, 'd'),
+        endAt: newEnd,
       })
       .then(response => {
         expect(response.statusCode).toBe(200);
+        expect(moment(response.body.endsAt).format("YYYY/MM/DD HH:mm")).toBe(moment(newEnd).format("YYYY/MM/DD HH:mm"));
         done();
       });
     } catch (e) {

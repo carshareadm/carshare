@@ -12,6 +12,7 @@ import Contact from './modules/Contact/Contact';
 import Registration from './modules/Registration/Registration';
 import About from './modules/About/About';
 import Booking from './modules/Booking/Booking';
+import {Extension} from './modules/Booking/Extension';
 import Locations from './modules/Locations/Locations';
 import Cars from './modules/Cars/Cars';
 import History from './modules/History/History';
@@ -66,6 +67,7 @@ export default (
 		<Route path="specials" component={Specials} />
         <Route path='search' component={SearchResults} />
 		<Route path="booking" component={requireAuth(Booking)} />
+		<Route path="booking/:extend" component={requireAuth(Extension)} />
 		<Route path="history" component={requireAuth(History)} />
 		<Route path='paymentDetails' component={requireAuth(PaymentDetails)} />
 		<Route path="profile" component={requireAuth(Profile)} />

@@ -80,7 +80,7 @@ describe("Offer controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret); 
     request(app)
-      .post("/api/offer/")
+      .put("/api/offer/")
       .set("Authorization", "Bearer " + encodedToken)
       .send()
       .then(response => {
@@ -106,15 +106,13 @@ describe("Offer controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .post("/api/offer")
+      .put("/api/offer")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         code: savedOffer.offerCode,
       })
       .then(response => {
         expect(response.statusCode).toBe(200);
-        //24 (hours) * 7 (hourly rate) - 10 (discount)
-        //expect(response.body.totalCost).toBe(158);
         done();
       });
     } catch (e) {

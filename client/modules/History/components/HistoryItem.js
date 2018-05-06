@@ -122,11 +122,10 @@ class HistoryItem extends Component {
 
   handleCancel(evt, id) {
     evt.preventDefault();
-    console.log(id+" user: "+this.props.usr);
     if (id) {
       http
         .client()
-        .post("/booking/cancel", {
+        .put("/booking/cancel", {
           bookingid: id,
           userid: this.props.usr,
         })
@@ -167,7 +166,8 @@ class HistoryItem extends Component {
                 Vehicle Location: <span className={stylesMain.h4}>{bs.car.location.name} </span><br/>
                 Hire Cost: <span className={stylesMain.h4}>{bs.totalCost} </span><br/>
                 <br/>
-                {this.renderCancel(bs)}
+                {this.renderCancel(bs)}&nbsp;
+                <Link to={"/booking/"+bs._id}><Button outline color="success" className={stylesMain.buttonSquareOutline}>Extend</Button></Link>
                 {this.renderAddDamage(bs)}
                 </BookingItem>
               </CardText>
