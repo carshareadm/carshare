@@ -52,6 +52,13 @@ body {
   font-size: 1rem;
 }
 
+.h5 {
+  padding-top: 0.5em;
+  color: green;
+  font-size: 1rem;
+  font-weight: lighter;
+}
+
 .subtitle {
   color: green;
   font-size: 20pt;
@@ -73,6 +80,21 @@ body {
   border: solid rgb(76, 157, 38) 1px !important;
   min-width: 170px;
   border-radius: 0 !important;
+  }
+
+  .buttonRed {
+  background-color: red !important;
+  min-width: 50px;
+  border-radius: 0 !important;
+  padding: 1em;
+  }
+
+  .buttonSquareOutline{
+  border: solid rgb(76, 157, 38) 1px !important;
+  min-width: 170px;
+  border-radius: 0 !important;
+  background-color: white !important;
+  color: rgb(76, 157, 38) !important;
   }
 
 .input-group .rbt {
@@ -157,4 +179,51 @@ body {
 
 .form {
   padding: none !important;
+}
+
+.bookingsCurrentB {
+  background-color: rgb(63, 157, 47);
+  width: 100%;
+  color: white;
+  margin-top: 0.5em;
+  text-indent: 1em;
+  text-align: left;
+  font-size: 16px;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+.bookingsPastB {
+  background-color: rgb(85, 85, 85);
+  width: 100%;
+  color: white;
+   margin-top: 0.5em;
+  text-indent: 1em;
+  text-align: left;
+  font-size: 16px;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+.bookingsFutureB {
+  background-color: rgb(198, 198, 198);
+  width: 100%;
+  color: white;
+   margin-top: 0.5em;
+  text-indent: 1em;
+  text-align: left;
+  font-size: 16px;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+.bookingItem{
+    background-color: white;
+    text-align: left;
+    padding: 0.6em;
+    border:1px solid rgb(198, 198, 198);
+    margin-bottom: 1em;
+    font-size: 1em;
+    color: rgb(198, 198, 198);
+    font-weight: lighter;
 }

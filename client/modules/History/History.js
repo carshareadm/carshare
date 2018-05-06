@@ -82,6 +82,7 @@ export class History extends Component {
     return (
       <div className={stylesMain.body}>
         <Container>
+          <h1 className={stylesMain.title}>Bookings</h1>
           <Row>
             <Col>
 			<Alert

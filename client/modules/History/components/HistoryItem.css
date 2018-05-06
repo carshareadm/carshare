@@ -1,16 +1,16 @@
-.currentB {
+.bookingsCurrentB {
 	background-color: green;
 	width: 100%;
 	color: white;
 }
 
-.pastB {
+.bookingsPastB {
 	background-color: grey;
 	width: 100%;
 	color: white;
 }
 
-.futureB {
+.bookingsFutureB {
 	background-color: black;
 	width: 100%;
 	color: white;
