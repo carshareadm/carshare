@@ -143,8 +143,11 @@ export class BookingsAdm extends Component {
     return (
       <div className={stylesMain.body}>
         <Row>
-          <Col>
+          <Col lg="12">
             <h1 className={stylesMain.title}>Manage Bookings</h1>
+          </Col>
+          <Col lg="12">
+            <p>After you select a booking, you will be able to edit its times, access code or make it inactive</p>
           </Col>
         </Row>
         <Row>

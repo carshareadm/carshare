@@ -170,8 +170,13 @@ export class CarsAdm extends Component {
     return (
       <div className={stylesMain.body}>
         <Row>
-          <Col>
+          <Col lg="12">
             <h1 className={stylesMain.title}>Manage Cars</h1>
+          </Col>
+          <Col lg="12">
+            <p>You can add a new car to existing location or select and edit any car in the database. To hide a car from users set its status to inactive.</p>
+          </Col>
+          <Col lg="12">
             {this.addOrCancelBtn()}
             {this.typeahead()}
             <hr className={stylesMain.clearBoth} />

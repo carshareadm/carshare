@@ -137,8 +137,11 @@ export class UsersAdm extends Component {
     return (
       <div className={stylesMain.body}>
         <Row>
-          <Col>
+          <Col lg="12">
             <h1 className={stylesMain.title}>Manage Users</h1>
+          </Col>
+          <Col lg="12">
+              <p>You can manage users with Approved and Pending licences. Select users for approval. To ban a user set its status to inactive</p>
           </Col>
         </Row>
         <Row>
