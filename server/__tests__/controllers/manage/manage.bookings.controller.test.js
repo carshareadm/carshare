@@ -22,7 +22,7 @@ let testUser = null;
 let testCar = null;
 let testBooking = null;
 
-describe("Manage Cars", () => {
+describe("Manage Bookings", () => {
   beforeAll(async () => {
     await mongoose.connect("mongodb://localhost/test", {
       useMongoClient: true,
@@ -137,6 +137,7 @@ describe("Manage Cars", () => {
   test("update booking", async done => {
     try {      
       testBooking.isDisabled = true;
+      testBooking.car = await testCar.save();
       const encodedToken = token(); 
       const response = await request(app)
         .put(`/api/manage/bookings/${testBooking._id.toString()}`)

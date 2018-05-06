@@ -1,5 +1,9 @@
 import Bookings from '../../models/booking';
+import Car from "../../models/car";
+import Offer from "../../models/offer";
 import * as logger from '../../util/logger';
+
+import moment from "moment"
 
 
 export const getAll = async (req, res) => {
@@ -31,6 +35,42 @@ export const update = async (req, res) => {
     // No setting offers yet
     //booking.offer = offer._id;
     booking.isDisabled = req.body.isDisabled;
+
+    var hours = moment
+          .duration(
+            moment(booking.endsAt, "YYYY/MM/DD HH:mm").diff(
+              moment(booking.startsAt, "YYYY/MM/DD HH:mm")
+            )
+          )
+          .asHours();
+
+    const vehicle = await Car.findById(req.body.car).populate("vehicleType").exec();
+
+    if (vehicle === null) {
+      return res.status(400).send('No such car');
+    }
+
+    booking.totalCost = hours * vehicle.vehicleType.hourlyRate;
+
+    if (typeof booking.offer!=="undefined")
+          {
+            // FindOne as Offer Codes are set as unique
+            const discount = await Offer.findOne({ offerCode: booking.OfferCode, isDisabled: false }).exec();
+
+            if (discount) {
+
+              booking.offer = discount._id;
+              //Multiplier applied first
+              if (discount.multiplier) {
+                booking.totalCost =
+                  (100 - discount.multiplier)/100 * booking.totalCost;
+              }
+              if (discount.oneOffValue) {
+                booking.totalCost =
+                booking.totalCost - discount.oneOffValue;
+              }
+            }
+          }
     
     const saved = await booking.save();
     return res.status(200).send(saved);

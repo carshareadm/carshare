@@ -108,7 +108,7 @@ export class BookingAdm extends Component {
   }
 
   componentDidMount() {
-
+    
   }
 
   renderTextFormGroup(field) {
@@ -202,6 +202,11 @@ export class BookingAdm extends Component {
     });
   }
 
+  clearSearch() {
+    this.refs.typeahead.getInstance().clear();
+    this.setState({selectedBooking: null});
+  }
+
   saveButton(isDisabled) {
     return isDisabled
       ? <Button color="primary" disabled>Save</Button> 
@@ -284,6 +289,7 @@ export class BookingAdm extends Component {
             </Card>
             </FormGroup>
             {this.disabledDropDown()}
+            {this.renderTextFormGroup('totalCost')}
         </Col>
         <Col xs="12" md="6">
           <FormGroup>
@@ -298,6 +304,26 @@ export class BookingAdm extends Component {
                 />
           </FormGroup>
           {this.renderTextFormGroup('unlockCode')}
+
+          <FormGroup>
+          <div className="input-group">
+            <div className={stylesMain.flex1}>
+            <Typeahead
+                  ref="typeahead"
+                  placeholder={""}
+                  onChange={(e) => this.handletypeHeadSelected('offer', e)}
+                  labelKey={option => `${option.offerCode} - ${option.oneOffValue}$ off - ${option.multiplier}% off`}
+                  options={this.props.offers}
+                  filterBy={['expiresAt']}
+                />
+            </div>
+            <div className="input-group-append">
+                <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
+            </div>
+          </div>
+          {this.renderLabel('offer', 'offer')}
+          </FormGroup>       
+
           {this.renderDateFormGroup('startsAt',this.props.booking.startsAt)}
           {this.renderDateFormGroup('endsAt',this.props.booking.endsAt)}
 
