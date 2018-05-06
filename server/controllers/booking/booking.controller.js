@@ -197,7 +197,7 @@ const extendBooking = function(req, res) {
             },
           ],
         }).exec((err, bookings) => {
-          console.log(bookings);
+
           if (err) {
             return res.status(500).send(err);
           }
@@ -281,6 +281,7 @@ const cancelBooking = function(req, res) {
         }
         else if(moment(booking.startsAt).isAfter(moment()))
         {
+          // update booking
           // Set isDisabled flag for cancellation
           booking.isDisabled=true;
           booking.save((err, booking) => {
@@ -337,6 +338,7 @@ const changeBooking = function(req, res) {
       } else if (!bookings) {
         res.status(404).send();
       } else {
+        res.status(200).send(bookings);
         // update booking
         // Update changes
         res.status(200).send();

@@ -42,6 +42,7 @@ export class BookingAdm extends Component {
       dropdownsOpen: {
         isDisabled: false,
       },
+      placeholderOffer: "",
     }
   }
   
@@ -51,6 +52,7 @@ export class BookingAdm extends Component {
     startsAt: 'Start Time',
     endsAt: 'End Time',
     unlockCode: 'Unlock Code',
+    offer: 'Offer Code',
     isDisabled: 'Booking Status',
   };
 
@@ -62,6 +64,7 @@ export class BookingAdm extends Component {
     startsAt: 'a valid date and time at least 1 hour in the future is required',
     endsAt: 'a date and time after start time is required',
     unlockCode: 'is required',
+    offer: '',
     isDisabled: '',
   };
 
@@ -108,7 +111,11 @@ export class BookingAdm extends Component {
   }
 
   componentDidMount() {
-
+    if(this.state.booking.offer!=null)
+    {
+      var tmp = this.state.booking.offer.offerCode;
+      this.setState({placeholderOffer: tmp});
+    }
   }
 
   renderTextFormGroup(field) {
@@ -202,6 +209,11 @@ export class BookingAdm extends Component {
     });
   }
 
+  clearSearch() {
+    this.refs.typeahead.getInstance().clear();
+    this.state.booking.offer=null;
+  }
+
   saveButton(isDisabled) {
     return isDisabled
       ? <Button color="primary" disabled>Save</Button> 
@@ -265,7 +277,7 @@ export class BookingAdm extends Component {
                   onChange={(e) => this.handletypeHeadSelected('car', e)}
                   labelKey={option => `${option.year} ${option.make} ${option.model} ${option.rego}`}
                   options={this.props.cars}
-                  filterBy={['email']}
+                  filterBy={['rego']}
                 />
           <Card>
               <CardHeader tag="h5">
@@ -284,6 +296,7 @@ export class BookingAdm extends Component {
             </Card>
             </FormGroup>
             {this.disabledDropDown()}
+            {this.renderTextFormGroup('totalCost')}
         </Col>
         <Col xs="12" md="6">
           <FormGroup>
@@ -298,6 +311,25 @@ export class BookingAdm extends Component {
                 />
           </FormGroup>
           {this.renderTextFormGroup('unlockCode')}
+          {this.renderLabel('offer', 'offer')}
+          <FormGroup>
+          <div className="input-group">
+            <div className={stylesMain.flex1}>
+            <Typeahead
+                  ref="typeahead"
+                  placeholder={this.state.placeholderOffer}
+                  onChange={(e) => this.handletypeHeadSelected('offer', e)}
+                  labelKey={option => `${option.offerCode} - ${option.oneOffValue}$ off - ${option.multiplier}% off`}
+                  options={this.props.offers}
+                  filterBy={['expiresAt']}
+                />
+            </div>
+            <div className="input-group-append">
+                <Button className="btn btn-outline-secondary" type="button" onClick={(e) => this.clearSearch()}>Clear</Button>
+            </div>
+          </div>
+          </FormGroup>       
+
           {this.renderDateFormGroup('startsAt',this.props.booking.startsAt)}
           {this.renderDateFormGroup('endsAt',this.props.booking.endsAt)}
 
