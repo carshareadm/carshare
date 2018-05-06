@@ -55,7 +55,7 @@ export const update = async (req, res) => {
     if (typeof booking.offer!=="undefined")
           {
             // FindOne as Offer Codes are set as unique
-            const discount = await Offer.findOne({ offerCode: booking.OfferCode, isDisabled: false }).exec();
+            const discount = await Offer.findOne({ offerCode: booking.offer.offerCode, isDisabled: false }).exec();
 
             if (discount) {
 
