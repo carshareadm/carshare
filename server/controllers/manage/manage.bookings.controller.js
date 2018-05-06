@@ -32,8 +32,7 @@ export const update = async (req, res) => {
     booking.endsAt = req.body.endsAt.toString();
     booking.user = req.body.user;
     booking.unlockCode = req.body.unlockCode;
-    // No setting offers yet
-    //booking.offer = offer._id;
+    booking.offer = req.body.offer;
     booking.isDisabled = req.body.isDisabled;
 
     var hours = moment
@@ -52,22 +51,24 @@ export const update = async (req, res) => {
 
     booking.totalCost = hours * vehicle.vehicleType.hourlyRate;
 
-    if (typeof booking.offer!=="undefined")
+    if (booking.offer)
           {
             // FindOne as Offer Codes are set as unique
-            const discount = await Offer.findOne({ offerCode: booking.offer.offerCode, isDisabled: false }).exec();
+            const discount = await Offer.findById(req.body.offer).exec();
 
             if (discount) {
-
-              booking.offer = discount._id;
-              //Multiplier applied first
-              if (discount.multiplier) {
-                booking.totalCost =
-                  (100 - discount.multiplier)/100 * booking.totalCost;
-              }
-              if (discount.oneOffValue) {
-                booking.totalCost =
-                booking.totalCost - discount.oneOffValue;
+              if(discount.isDisabled==false && moment(discount.expiresAt).isAfter(moment()))
+              {
+                booking.offer = discount._id;
+                //Multiplier applied first
+                if (discount.multiplier) {
+                  booking.totalCost =
+                    (100 - discount.multiplier)/100 * booking.totalCost;
+                }
+                if (discount.oneOffValue) {
+                  booking.totalCost =
+                  booking.totalCost - discount.oneOffValue;
+                }
               }
             }
           }

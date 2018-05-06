@@ -111,9 +111,10 @@ export class BookingAdm extends Component {
   }
 
   componentDidMount() {
-    if(typeof this.state.booking.offer!=="undefined")
+    if(this.state.booking.offer!=null)
     {
-      this.setState({placeholderOffer: this.state.booking.offer.offerCode});
+      var tmp = this.state.booking.offer.offerCode;
+      this.setState({placeholderOffer: tmp});
     }
   }
 
@@ -196,7 +197,6 @@ export class BookingAdm extends Component {
     evt.preventDefault()
     this.setLoading(true);
 
-    console.log(this.state.booking);
     manageSvc.bookings.updateBooking(this.state.booking)
     .then(result => {
       this.setLoading(false);
@@ -317,7 +317,7 @@ export class BookingAdm extends Component {
             <div className={stylesMain.flex1}>
             <Typeahead
                   ref="typeahead"
-                  placeholder={""}
+                  placeholder={this.state.placeholderOffer}
                   onChange={(e) => this.handletypeHeadSelected('offer', e)}
                   labelKey={option => `${option.offerCode} - ${option.oneOffValue}$ off - ${option.multiplier}% off`}
                   options={this.props.offers}
