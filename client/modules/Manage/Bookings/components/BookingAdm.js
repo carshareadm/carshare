@@ -277,7 +277,7 @@ export class BookingAdm extends Component {
                   onChange={(e) => this.handletypeHeadSelected('car', e)}
                   labelKey={option => `${option.year} ${option.make} ${option.model} ${option.rego}`}
                   options={this.props.cars}
-                  filterBy={['email']}
+                  filterBy={['rego']}
                 />
           <Card>
               <CardHeader tag="h5">
