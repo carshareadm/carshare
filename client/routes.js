@@ -22,6 +22,7 @@ import { DeleteProfileForm } from './modules/Profile/components/DeleteProfileFor
 import LoginForm from './modules/Login/LoginForm';
 import Specials from './modules/Specials/Specials';
 import Emergency from './modules/Emergency/Emergency';
+import SearchResults from './modules/SearchResults/SearchResults';
 
 import {Manage} from './modules/Manage/Manage';
 import {BookingsAdm} from './modules/Manage/Bookings/BookingsAdm';
@@ -62,6 +63,7 @@ export default (
 		<Route path="emergency" component={Emergency} />
 		<Route path="locations" component={Locations}/>
 		<Route path="specials" component={Specials} />
+        <Route path='search' component={SearchResults} />
 		<Route path="booking" component={requireAuth(Booking)} />
 		<Route path="history" component={requireAuth(History)} />
 		<Route path='paymentDetails' component={requireAuth(PaymentDetails)} />
