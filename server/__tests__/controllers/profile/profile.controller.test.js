@@ -413,4 +413,16 @@ describe("Profile controller", () => {
     expect(response.statusCode).toBe(200);
     done();
   })
+
+  test("success", async done => {
+    const jwt = getToken();
+    const response = await request(app)
+      .put("/api/profile/delete")
+      .set("Authorization", "Bearer " + jwt)
+      .send();      
+      expect(response.statusCode).toBe(200);
+      expect(response.body.email).toContain("self_deleted");
+      done();
+      
+  });
 });

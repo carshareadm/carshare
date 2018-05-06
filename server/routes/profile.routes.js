@@ -23,5 +23,6 @@ var router = express.Router();
 router.get("/my", isAuthenticatedGuard, profile.getMyProfile);
 router.post("/", isAuthenticatedGuard, profile.updateMyProfile);
 router.get("/bookings", isAuthenticatedGuard, profile.bookings);
+router.put("/delete", isAuthenticatedGuard, profile.deleteMyAccount);
 
 module.exports = router;
