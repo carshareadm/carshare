@@ -197,7 +197,7 @@ const extendBooking = function(req, res) {
             },
           ],
         }).exec((err, bookings) => {
-          console.log(bookings);
+
           if (err) {
             return res.status(500).send(err);
           }
@@ -279,9 +279,9 @@ const cancelBooking = function(req, res) {
           // Not a booking belonging to the user
           res.status(401).send();
         }
-<<<<<<< HEAD
         else if(moment(booking.startsAt).isAfter(moment()))
         {
+          // update booking
           // Set isDisabled flag for cancellation
           booking.isDisabled=true;
           booking.save((err, booking) => {
@@ -296,27 +296,6 @@ const cancelBooking = function(req, res) {
         {
           // Bad Request as booking start time is after current time
           res.status(400).send();
-=======
-<<<<<<< HEAD
-        else
-        {
-        // update booking
-        // Set cancellation flag?
-        res.status(200);
-=======
-        else if(moment(booking.startsAt).isAfter(moment()))
-        {
-          // update booking
-          // Set isDisabled flag for cancellation
-          booking.isDisabled=true;
-          res.status(200).send();
-        }
-        else
-        {
-          // Bad Request as booking start time is after current time
-          res.status(400).send();
->>>>>>> Booking Bend change, added cancellation and extension method. Test added for extension
->>>>>>> Booking Bend change, added cancellation and extension method. Test added for extension
         }
       }
     });
@@ -359,17 +338,10 @@ const changeBooking = function(req, res) {
       } else if (!bookings) {
         res.status(404).send();
       } else {
+        res.status(200).send(bookings);
         // update booking
         // Update changes
-<<<<<<< HEAD
         res.status(200).send();
-=======
-<<<<<<< HEAD
-        res.status(200);
-=======
-        res.status(200).send();
->>>>>>> Booking Bend change, added cancellation and extension method. Test added for extension
->>>>>>> Booking Bend change, added cancellation and extension method. Test added for extension
       }
     });
 };
