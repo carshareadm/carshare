@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import router, { Link, Redirect } from "react-router";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+
 import {
   setLoggedIn,
   setLoggedOut,
@@ -11,6 +12,7 @@ import {
 import * as http from "../../../../util/http";
 import * as storage from "../../../../util/persistedStorage";
 import TokenUtils from "../../../../util/token.utils";
+
 
 import {
   Button,
@@ -53,6 +55,7 @@ export class UserBar extends Component {
     this.setState({ password1: evt.target.value });
   };
 
+
   loggedInBar() {
     return (
       <div className={styles.bar}>
@@ -83,6 +86,7 @@ export class UserBar extends Component {
               </ButtonGroup>
             </ButtonGroup>
           </span>
+          <Search />
         </form>
       </div>
     );
@@ -129,6 +133,7 @@ export class UserBar extends Component {
                 Register
               </Link>
             </span>
+
           )}
         </h4>
         <Row style={{ display: this.state.formIsVisible ? "block" : "none" }}>
