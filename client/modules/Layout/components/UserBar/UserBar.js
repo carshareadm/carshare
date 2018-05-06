@@ -27,7 +27,7 @@ import {
 
 // Import Style
 import styles from "./UserBar.css";
-import Search from '../Header/components/Search';
+import Search from './components/Search';
 
 export class UserBar extends Component {
   constructor(props) {
@@ -84,9 +84,6 @@ export class UserBar extends Component {
                   Log Out
                 </Button>
                 &nbsp;
-              </ButtonGroup>
-              <ButtonGroup>
-              <Search />
               </ButtonGroup>
             </ButtonGroup>
           </span>
