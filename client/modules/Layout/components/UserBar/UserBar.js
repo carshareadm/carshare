@@ -86,7 +86,6 @@ export class UserBar extends Component {
               </ButtonGroup>
             </ButtonGroup>
           </span>
-          <Search />
         </form>
       </div>
     );
