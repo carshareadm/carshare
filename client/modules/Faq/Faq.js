@@ -1,9 +1,12 @@
 //Import react
 import React, { Component, PropTypes } from 'react'; 
+import ReactDOMServer from 'react-dom/server';
+import Fuse from 'fuse.js';
 
 import styles from './Faq.css'
 import stylesMain from '../../main.css';
 import Search from './components/Search'
+
 
 import {
   Button,
@@ -21,54 +24,54 @@ import {
   Alert,
 } from "reactstrap";
 
+let items = [];
+
+const findMatchingItems = (query) => {
+	const texts = items.map(item => ({ question: item.question, text: item.text }));
+	const questions = new Fuse(texts, {
+		keys: ['text', 'question'],
+		id: 'question',
+		distance: 100000,
+		includeScore: true,
+		threshold: 0.01,
+		includeMatches: true,
+		shouldSort: true,
+	}).search(query).reverse();
+
+	return questions;
+}
+
 //Additional component. May be moved to the separate component file later
 class FaqItem extends Component{
-	
-	constructor(props){
-		super(props);
-		this.state = {itemIsVisible:false};
-
-		//Bind the function to the class
-		this.itemToggle = this.itemToggle.bind(this);
-	}
-
-	itemToggle(){
-		this.setState({
-			itemIsVisible: !this.state.itemIsVisible,
-		});
-	}
-
 	render(){
+		items.push({
+			question: this.props.question,
+			children: this.props.children,
+			text: ReactDOMServer.renderToStaticMarkup(this.props.children).replace(/<(?:.|\n)*?>/gm, '')
+		});
+
 		return (
 			<div className={styles.faqItem}>
-	        	<h3 onClick={this.itemToggle}  className={styles.questiontitle}>{this.props.question}</h3> 
-	        	{this.state.itemIsVisible ? this.props.children : null}
+	        	<h3 onClick={() => this.props.selectQuestion(this.props.question)} className={styles.questiontitle}>
+	        		{this.props.question}
+	        	</h3> 
+	        	{this.props.activeQuestion == this.props.question ? this.props.children : null}
 	        </div>
-
 		)
 	}
 }
 
-//Faq component class
-export class Faq extends Component {
-
+class FaqItems extends Component{
   	render() {
+  		// clear the items list to store them again during render
+  		items = [];
+
 	    // Here goes our page 
 	    return (
-	        <div className={stylesMain.body}>
-        	<Container>
-          	<Row>
-            	<Col xs="12" sm="6">
-	        		<h1 className={stylesMain.title}>FAQ</h1>
-	        	</Col>
-	        	<Col xs="12" sm="6">
-	        		<Search />
-	        	</Col>
-	        </Row>
 	        <Row>
 		    	<Col xs="12" sm="6">
 			      	<h3 className={styles.subtitle}>Registration</h3>
-				        <FaqItem question="How to use ShaCar?">
+				        <FaqItem question="How to use ShaCar?" {...this.props}>
 				        	<div>
 								<ol>
 									<li className={styles.innerLi}>
@@ -98,7 +101,7 @@ export class Faq extends Component {
 								</ol>
 				        	</div>
 				        </FaqItem>
-						<FaqItem question="What do I need?">
+						<FaqItem question="What do I need?" {...this.props}>
 				        	<div>
 								<p className={styles.innerLiBold}>The following are required in the registration process:</p>
 								<ul>
@@ -115,7 +118,7 @@ export class Faq extends Component {
 				        </FaqItem>
 				        <br />
 						<h3 className={styles.subtitle}>Booking a car</h3>
-			        	<FaqItem question="How to book a car?">
+			        	<FaqItem question="How to book a car?" {...this.props}>
 				        	<div>
 								<p className={styles.innerLiBold}>To make a booking.</p>
 								<ul>
@@ -134,7 +137,7 @@ export class Faq extends Component {
 
 				        	</div>
 			        	</FaqItem>
-						<FaqItem question="What is the cost?">
+						<FaqItem question="What is the cost?" {...this.props}>
 				        	<div>
 								<p className={styles.innerLiBold}>We charge per hr depending on the vehcilce type.<br/>
 								The cost per hr is listed below:</p>
@@ -176,7 +179,7 @@ export class Faq extends Component {
 				</Col>	
 				<Col xs="12" sm="6">
 			        	<h3 className={styles.subtitle}>Using a car</h3>
-			        	<FaqItem question="How to start my booking?">
+			        	<FaqItem question="How to start my booking?" {...this.props}>
 				        	<div>
 								<p className={styles.innerLiBold}>To starting you booking.</p>
 								<ol>
@@ -195,7 +198,7 @@ export class Faq extends Component {
 									</ol>
 				        	</div>
 			        	</FaqItem>
-						<FaqItem question="How to access a car during booking?">
+						<FaqItem question="How to access a car during booking?" {...this.props}>
 				        	<div>
 								<p className={styles.innerLiBold}>To access the vehicle during your booking</p>
 								<ul>
@@ -211,7 +214,7 @@ export class Faq extends Component {
 									
 				        	</div>
 			        	</FaqItem>
-						<FaqItem question="What do I do when I am finished?">
+						<FaqItem question="What do I do when I am finished?" {...this.props}>
 				        	<div>
 								<p className={styles.innerLiBold}>To end your booking</p>
 								<ol>
@@ -232,10 +235,83 @@ export class Faq extends Component {
 						<br />
 				</Col>
 				</Row>
-	        </Container>
-	     	</div>
 	    );
-  }
+    }
+}
+
+class SearchResults extends Component {
+	renderItem(item) {
+		return (
+			<div key={item.item}>
+	        	<h3>{item.item}</h3> 
+	        	<p>
+	        		<a href="#" onClick={() => this.props.selectQuestion(item.item)}>
+	        			click here to see the full answer
+	        		</a>
+	        	</p>
+	        </div>
+		);
+	}
+	render() {
+		const items = findMatchingItems(this.props.query);
+
+		// render matching items
+		return (
+			<div className={stylesMain.body}>
+				<Container>
+					{items.map(item => this.renderItem(item))}
+				</Container>
+			</div>
+		);
+	}
+}
+
+//Faq component class
+export class Faq extends Component {
+
+	constructor() {
+		super();
+		this.search = this.search.bind(this);
+		this.selectQuestion = this.selectQuestion.bind(this);
+		this.state = {
+			query: "",
+			activeQuestion: ""
+		};
+	}
+
+	search(query) {
+		this.setState({ query, activeQuestion: "" });
+	}
+
+	selectQuestion(activeQuestion) {
+		this.setState({
+			query: "",
+			activeQuestion
+		})
+	}
+
+  	render() {
+  		return (
+  			<div className={stylesMain.body}>
+        	<Container>
+          	<Row>
+            	<Col xs="12" sm="6">
+	        		<h1 className={styles.title}>FAQ</h1>
+	        	</Col>
+	        	<Col xs="12" sm="6">
+	        		<Search query={this.state.query} onSearch={this.search}/>
+	        	</Col>
+	        </Row>
+	        </Container>
+	        {this.state.query.length > 2 ?
+	        	<SearchResults query={this.state.query} selectQuestion={this.selectQuestion} /> :
+	        	<FaqItems
+	        		selectQuestion={this.selectQuestion}
+	        		activeQuestion={this.state.activeQuestion}
+	        	/>}
+	        </div>
+	    )
+  	}
 }
 
 export default Faq;
