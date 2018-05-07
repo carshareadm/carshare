@@ -149,13 +149,15 @@ const createBooking = function(req, res) {
 const extendBooking = function(req, res) {
   if (
     typeof req.body.bookid === "undefined" ||
-    typeof req.body.endAt === "undefined"
+    typeof req.body.endAt === "undefined" ||
+    typeof req.body.startAt === "undefined"
   ) {
     //Bad Request if not all fields are present
     return res.status(400).send("invalid request params");
   }
 
   const endAt = req.body.endAt;
+  const startAt = req.body.startAt;
   const bookingId = req.body.bookid;
   const checkEndTime = moment(req.body.endA).add(1, 'h');
 
@@ -175,7 +177,7 @@ const extendBooking = function(req, res) {
     var hours = moment
     .duration(
             moment(endAt, "YYYY/MM/DD HH:mm").diff(
-            moment(foundBook.startsAt, "YYYY/MM/DD HH:mm")
+            moment(startAt, "YYYY/MM/DD HH:mm")
            )
     ).asHours();
     if (bookFindErr) {

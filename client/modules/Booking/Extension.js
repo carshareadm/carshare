@@ -108,7 +108,6 @@ export class Extension extends Component {
       .get("/booking/"+this.props.params.extend)
       .then(res => {
         this.setState({ booking: res.data });
-        //this.mapCarToModel(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -164,6 +163,7 @@ export class Extension extends Component {
         .put("/booking/extend", {
           bookid: this.state.bookingId,
           endAt: newEnd,
+          startAt: this.state.booking.startsAt,
         })
         .then(res => {
           this.setState({ booking: res.data });
@@ -277,7 +277,8 @@ export class Extension extends Component {
                 </span>
               </CardHeader>
               <CardBody>
-                <CardText>Booking Cost : ${this.state.cost}</CardText>
+                <CardText>Booking Cost : ${this.state.cost.toFixed(
+                    2)}</CardText>
               </CardBody>
             </Card>
           </Col>
@@ -354,7 +355,8 @@ export class Extension extends Component {
               <Button onClick={(e) => this.handleExtend(e, 'minus')}>-1 hour</Button>
             </FormGroup>
             <FormGroup>
-            <p>Booking Price : $ {this.state.booking.totalCost}</p>
+            <p>Booking Price : $ {this.state.booking.totalCost.toFixed(
+                    2)}</p>
             </FormGroup>
           </Col>
         </Row>
