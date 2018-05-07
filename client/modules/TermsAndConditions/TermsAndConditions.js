@@ -2,14 +2,15 @@
 import React, { Component, PropTypes } from "react";
 
 import style from "./TermsAndConditions.css";
+import stylesMain from "../../main.css";
 
 //Create a component class
 export class App extends Component {
   render() {
     // Here goes our page
     return (
-      <div className={style.body}>
-        <h1 className={style.title}>Terms and Conditions</h1>
+      <div className={stylesMain.body}>
+        <h1 className={stylesMain.title}>Terms and Conditions</h1>
         <p>
           <strong>OUR COMMITMENT TO YOU</strong>
         </p>

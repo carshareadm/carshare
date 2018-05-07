@@ -9,8 +9,8 @@ export class App extends Component {
   render() {
     // Here goes our page
     return (
-      <div className={style.body}>
-        <h1 className={style.title}>Emergency</h1>
+      <div className={stylesMain.body}>
+        <h1 className={stylesMain.title}>Emergency</h1>
         <p>
           <strong>What to do if you're in a car accident</strong>
         </p>

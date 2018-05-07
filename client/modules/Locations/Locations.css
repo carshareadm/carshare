@@ -19,6 +19,7 @@
   border: solid rgb(76, 157, 38) 1px !important;
   display: inline-block;
   margin-bottom: 1em !important;
+  border-radius: 0 !important; 
 }
 
 .input{

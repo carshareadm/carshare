@@ -59,7 +59,7 @@ export class Faq extends Component {
         	<Container>
           	<Row>
             	<Col xs="12" sm="6">
-	        		<h1 className={styles.title}>FAQ</h1>
+	        		<h1 className={stylesMain.title}>FAQ</h1>
 	        	</Col>
 	        	<Col xs="12" sm="6">
 	        		<Search />

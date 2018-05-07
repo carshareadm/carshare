@@ -50,18 +50,18 @@ export class Damage extends Component {
 
 	render(){
 		return (
-			<div className={stylesMain.body}>
+			<div className={stylesMain.bodyFullPage}>
 				<Container>
 					<Row>
 						<Col>
-							<h3>Damages reported for this car</h3>
+							<h1 className={stylesMain.title}>Damages reported for this car</h1>
 						</Col>
 					</Row>
 						{this.state.damages.map(b => <DamageItem key={b._id} data={b} />)}
 					<Row>
 						<Col>
 						    <Link to={`/history`}>
-             					<Button className={stylesMain.buttons} size="lg">Back to your Bookings</Button>
+             					<Button className={stylesMain.buttonSquareGreen} size="lg">Back to your Bookings</Button>
              				</Link>
 						</Col>
 					</Row>
