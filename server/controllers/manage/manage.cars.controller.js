@@ -101,6 +101,35 @@ export const create = async (req, res) => {
     const err = {...e};
     logger.err(e);
     return res.status(500).send(err);
-  }
+  }  
+};
+
+export const stats = async (req, res) => {
+  try {
+    const totalCars = await Car.find({})
+      .populate('vehicleType damages location')
+      .exec();
+    const activeCars = totalCars.filter(f => f.isDisabled === false && f.location && f.location.isDisabled === false);
+    const smallActive = activeCars.filter(f => f.vehicleType.name === 'small');
+    const sportsActive = activeCars.filter(f => f.vehicleType.name === 'sports');
+    const luxuryActive = activeCars.filter(f => f.vehicleType.name === 'luxury');
+    const suvActive = activeCars.filter(f => f.vehicleType.name === 'suv');
+    const withDamages = totalCars.filter(f => f.damages && f.damages.length > 0 && f.damages.some(s => s.isDisabled === false));
+    const inactive = totalCars.length - activeCars.length;
   
+    const results = {
+      total: totalCars.length,
+      smallActive: smallActive.length,
+      sportsActive: sportsActive.length,
+      luxuryActive: luxuryActive.length,
+      suvActive: suvActive.length,
+      inactive: inactive.length,
+    }
+
+    return res.status(200).send(results);
+  }
+  catch(e) {
+    logger.err(e);
+    return res.status(500).send(e);
+  }
 };

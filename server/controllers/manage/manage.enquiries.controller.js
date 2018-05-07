@@ -1,6 +1,7 @@
 import Enquiries from '../../models/enquiry';
 import * as email from '../../util/email.helper';
-import logger from '../../util/logger';
+import * as DateUtil from '../../util/date.helper';
+import * as logger from '../../util/logger';
 
 export const getFiltered = async (req, res) => {
   // default filter: enquiries without response datetime stamp
@@ -61,4 +62,30 @@ export const update = async (req, res) => {
     }
   }
 
+};
+
+export const stats = async (req, res) => {
+  try {
+    const totalEnquiries = await Enquiries.find({}).exec();
+    const resolved = totalEnquiries.filter(f => f.responseAt && f.responseAt !== null);
+    const now = new Date();
+    const yesterday = DateUtil.addHours(now, -24);
+    const sevenDaysAgo = DateUtil.addHours(now, -24 * 7);
+    const last24Hours = totalEnquiries.filter(f => f.receivedAt >= yesterday);
+    const last7Days = totalEnquiries.filter(f => f.receivedAt >= sevenDaysAgo);  
+  
+    const results = {
+      total: totalEnquiries.length,
+      resolved: resolved.length,
+      last24Hours: last24Hours.length,
+      last7Days: last7Days.length,
+    }
+
+    return res.status(200).send(results);
+  }
+  catch(e) {
+    console.log(e);
+    logger.err(e);
+    return res.status(500).send(e);
+  }
 };

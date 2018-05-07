@@ -81,3 +81,31 @@ export const update = async (req, res) => {
     return res.status(500).send(e);
   }
 };
+
+export const stats = async (req, res) => {
+  try {
+    const totalBookings = await Bookings.find({}).exec();
+    const cancelledBookings = await Bookings.find({isDisabled: true}).exec();
+    const now = new Date();
+    const upcomingBookings = await Bookings.find({isDisabled: false})
+      .where('startsAt').gt(now)
+      .exec();
+    const inProgressBookings = await Bookings.find({isDisabled: false})
+      .where('startsAt').lt(now)
+      .where('endsAt').gt(now)
+      .exec();
+  
+    const results = {
+      total: totalBookings.length,
+      cancelled: cancelledBookings.length,
+      upcoming: upcomingBookings.length,
+      inProgress: inProgressBookings.length,
+    }
+
+    return res.status(200).send(results);
+  }
+  catch(e) {
+    logger.err(e);
+    return res.status(500).send(e);
+  }
+};

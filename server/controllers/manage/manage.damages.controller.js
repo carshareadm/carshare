@@ -44,3 +44,28 @@ export const update = async (req, res) => {
     return res.status(500).send(e);
   }
 };
+
+export const stats = async (req, res) => {
+  try {
+    const totalDamage = await Damage.find({}).exec();
+    const resolvedDamage = totalDamage.filter(f => f.isDisabled === true);
+    const cars = await Cars.find({})
+      .populate('damages')
+      .exec();
+    const carsUnresolved = cars.filter(f => f.damages && f.damages.some(s => s.isDisabled === false));
+  
+    const results = {
+      allReported: totalDamage.length,
+      resolved: resolvedDamage.length,
+      outstanding: totalDamage.length - resolvedDamage.length,
+      totalDamagedCars: cars.filter(f => f.damages && f.damages.length > 0).length,
+      unresolvedDamagedCars: carsUnresolved.length,
+    }
+
+    return res.status(200).send(results);
+  }
+  catch(e) {
+    logger.err(e);
+    return res.status(500).send(e);
+  }
+};

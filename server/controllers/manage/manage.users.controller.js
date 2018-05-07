@@ -47,3 +47,27 @@ export const update = async (req, res) => {
     return res.status(500).send(e);
   }
 };
+
+export const stats = async (req, res) => {
+  try {
+    const totalUsers = await Users.find({})
+      .populate('license')
+      .exec();
+    const inactive = totalUsers.filter(f => f.isDisabled === true);
+    const admin = totalUsers.filter(f => f.isAdmin === true);
+    const pendingLicense = totalUsers.filter(f => f.license && f.license.image && f.license.approvedByAdmin === false);      
+  
+    const results = {
+      total: totalUsers.length,
+      inactive: inactive.length,
+      nonAdmin: totalUsers.length - admin.length,
+      pendingApproval: pendingLicense.length,
+    }
+
+    return res.status(200).send(results);
+  }
+  catch(e) {
+    logger.err(e);
+    return res.status(500).send(e);
+  }
+};

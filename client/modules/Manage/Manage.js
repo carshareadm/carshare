@@ -20,6 +20,7 @@ import {
   Col,
 } from "reactstrap";
 
+import StatBlock from './Statistics/StatBlock';
 import stylesMain from "../../main.css";
 import styles from "./Manage.css";
 
@@ -29,6 +30,15 @@ import i_car from '../images/i_car.png';
 import i_chart from '../images/i_chart.png';
 import i_pin from '../images/i_pin.png';
 import i_enquiry from '../images/i_enquiry.png';
+
+const stats = [
+  { title: 'Bookings', api: 'bookings', img: i_booking },
+  { title: 'Cars', api: 'cars', img: i_car },
+  { title: 'Damages', api: 'damages', img: i_chart },
+  { title: 'Locations', api: 'locations', img: i_pin },
+  { title: 'Users', api: 'users', img: i_avatar },
+  { title: 'Enquiries', api: 'enquiries', img: i_enquiry },
+];
 
 //Manage component class
 export class Manage extends Component {
@@ -74,42 +84,7 @@ export class Manage extends Component {
             </Col>
           </Row>
           <Row>
-            <Col xs="6" sm="4" md="3" className={styles.linkCol}>
-							<Link to="/manage/bookings">
-								<img src={i_booking} />
-								<span className={styles.linkTxt}>Bookings</span>
-							</Link>
-						</Col>
-            <Col xs="6" sm="4" md="3" className={styles.linkCol}>
-							<Link to="/manage/cars">
-								<img src={i_car} />
-								<span className={styles.linkTxt}>Cars</span>
-							</Link>
-						</Col>
-            <Col xs="6" sm="4" md="3" className={styles.linkCol}>
-							<Link to="/manage/locations">
-								<img src={i_pin} />
-								<span className={styles.linkTxt}>Locations</span>
-							</Link>
-						</Col>
-            <Col xs="6" sm="4" md="3" className={styles.linkCol}>
-							<Link to="/manage/users">
-								<img src={i_avatar} />
-								<span className={styles.linkTxt}>Users</span>
-							</Link>
-						</Col>
-            <Col xs="6" sm="4" md="3" className={styles.linkCol}>
-							<Link to="/manage/enquiries">
-                <img src={i_enquiry} />
-								<span className={styles.linkTxt}>Enquiries</span>
-							</Link>
-						</Col>
-            {/* <Col xs="6" sm="4" md="3" className={styles.linkCol}>
-							<Link to="/manage/bookings">
-								<img src={i_booking} />
-								<h4>Bookings</h4>
-							</Link>
-						</Col> */}
+            {stats.map(m => <StatBlock key={m.title} title={m.title} api={m.api} img={m.img} />)}
           </Row>
         </Container>
       </div>

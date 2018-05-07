@@ -14,22 +14,27 @@ var router = express.Router();
 
 router.get("/cars", isAuthenticatedGuard, isAdminGuard, cars.getAll);
 router.post("/cars", isAuthenticatedGuard, isAdminGuard, cars.create);
+router.get("/cars/stats", isAuthenticatedGuard, isAdminGuard, cars.stats);
 router.put("/cars/:carId", isAuthenticatedGuard, isAdminGuard, cars.update);
 router.put("/cars/:carId/image/:imageId", isAuthenticatedGuard, isAdminGuard, cars.updateImage);
 
 router.get("/damages", isAuthenticatedGuard, isAdminGuard, damages.getAll);
+router.get("/damages/stats", isAuthenticatedGuard, isAdminGuard, damages.stats);
 router.put("/damages/:damageId", isAuthenticatedGuard, isAdminGuard, damages.update);
 
 router.get("/vehicletypes", isAuthenticatedGuard, isAdminGuard, vehicleTypes.getAll);
 
 router.get("/locations", isAuthenticatedGuard, isAdminGuard, locations.getAll);
+router.get("/locations/stats", isAuthenticatedGuard, isAdminGuard, locations.stats);
 router.post("/locations", isAuthenticatedGuard, isAdminGuard, locations.create);
 router.put("/locations/:locationId", isAuthenticatedGuard, isAdminGuard, locations.update);
 
 router.get("/users", isAuthenticatedGuard, isAdminGuard, users.getAll);
+router.get("/users/stats", isAuthenticatedGuard, isAdminGuard, users.stats);
 router.put("/users/:userId", isAuthenticatedGuard, isAdminGuard, users.update);
 
 router.get("/bookings", isAuthenticatedGuard, isAdminGuard, bookings.getAll);
+router.get("/bookings/stats", isAuthenticatedGuard, isAdminGuard, bookings.stats);
 router.put("/bookings/:bookingId", isAuthenticatedGuard, isAdminGuard, bookings.update);
 
 router.get("/offers", isAuthenticatedGuard, isAdminGuard, offers.getAll);
@@ -37,5 +42,7 @@ router.put("/offers/:offerId", isAuthenticatedGuard, isAdminGuard, offers.update
 router.post("/offers", isAuthenticatedGuard, isAdminGuard, offers.add);
 
 router.get("/enquiries", isAuthenticatedGuard, isAdminGuard, enquiries.getFiltered);
+router.get("/enquiries/stats", isAuthenticatedGuard, isAdminGuard, enquiries.stats);
 router.put("/enquiries/:enquiryId", isAuthenticatedGuard, isAdminGuard, enquiries.update);
 module.exports = router;
+

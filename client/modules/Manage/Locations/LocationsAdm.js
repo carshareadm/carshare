@@ -141,7 +141,7 @@ export class LocationsAdm extends Component {
             <h1 className={stylesMain.title}>Manage Locations</h1>
           </Col>
           <Col lg="12">
-            <p>You can add a new location or edit existing locations bu selecting them from the list.</p>
+            <p>You can add a new location or edit existing locations by selecting them from the list.</p>
           </Col>
           <Col lg="12">
             {this.addOrCancelBtn()}

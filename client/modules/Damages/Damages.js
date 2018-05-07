@@ -120,7 +120,7 @@ export class Damages extends Component {
 					onFileUploaded={this.handleImageUploaded.bind(this)}
 					isPublic={false} />
 				
-			<Button className={stylesMain.buttonSquare} onClick={this.setFormVisible} color="success">Skip Image Uploading</Button>
+			<Button className={stylesMain.buttonSquare} onClick={(e) => this.setFormVisible()} color="success">Skip Image Uploading</Button>
 			{this.state.form? this.displayFormText() : null}
 	    </Form>
 	    </div>
