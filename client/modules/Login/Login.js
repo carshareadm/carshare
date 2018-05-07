@@ -130,7 +130,7 @@ export class Login extends Component {
 
   registered() {
     return (
-      <div className={stylesMain.body}>
+      <div className={stylesMain.bodyFullPage}>
         <h1 className={stylesMain.title}>Registered</h1>
         <p>
           <Link to="/profile">Click here to go to user profile</Link>
@@ -145,7 +145,7 @@ export class Login extends Component {
     const isDisabled = this.isFormInvalid();
 
     return (
-      <div className={stylesMain.body}>
+      <div className={stylesMain.bodyFullPage}>
         <Container>
           <form className={stylesMain.form} onSubmit={this.handleSubmit.bind(this)}>
             <Row>

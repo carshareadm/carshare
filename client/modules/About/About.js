@@ -2,7 +2,8 @@
 import React, { Component, PropTypes } from 'react'; 
 import { Link } from 'react-router';
 
-import style from './About.css'
+import style from './About.css';
+import stylesMain from "../../main.css";
 
 //Faq component class
 export class About extends Component {
@@ -10,8 +11,8 @@ export class About extends Component {
   	render() {
 	    // Here goes our page 
 	    return (
-	        <div className={style.body}>
-	        	<h1 className={style.title}>About</h1>
+	        <div className={stylesMain.bodyFullPage}>
+	        	<h1 className={stylesMain.title}>About</h1>
 	        	<p>
 				ShaCar is a Car Share company to help put people in cars. 
 				Reducing the requirement for car ownership for people, reducing costs for our members, also going green where we can. <br/><br/>

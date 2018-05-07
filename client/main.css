@@ -41,6 +41,12 @@ body {
   background-color: rgb(226, 226, 226);
 }
 
+.bodyFullPage {
+  padding: 2em;
+  background-color: rgb(226, 226, 226);
+  min-height: 70vh;
+}
+
 .title {
   font-size: 26pt;
   color: green;
@@ -69,6 +75,10 @@ body {
     color: green;
 }
 
+/*
+  Buttons
+*/
+
 
 .buttons {
   background-color: rgb(76, 157, 38) !important;
@@ -81,6 +91,15 @@ body {
   min-width: 170px;
   border-radius: 0 !important;
   }
+
+  .buttonSquareGreen {
+  margin-right: 1em;
+  margin-bottom: 1em;
+  border-radius: 0 !important; 
+   border: solid rgb(76, 157, 38) 1px !important;
+  background-color: rgb(76, 157, 38) !important;
+  text-align: right !important; 
+}
 
   .buttonRed {
   background-color: red !important;
@@ -181,6 +200,11 @@ body {
   padding: none !important;
 }
 
+.formDamages {
+
+    padding: 2em;
+}
+
 .bookingsCurrentB {
   background-color: rgb(63, 157, 47);
   width: 100%;
@@ -228,3 +252,9 @@ body {
     font-weight: lighter;
 }
 
+.damagemessage{
+    color: green;
+    margin-bottom: 1em;
+    padding-top: 3em;   
+    padding: 2em;
+}

@@ -1,6 +1,7 @@
 .wideBtn {
   width: 100%;
   text-align: right !important;
+   border-radius: 0 !important; 
 }
 
 .form {

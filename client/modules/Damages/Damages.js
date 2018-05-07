@@ -96,7 +96,7 @@ export class Damages extends Component {
 		            </FormFeedback>
 		        </FormGroup>
 		         <Button
-		         	className={styles.button}
+		         	className={stylesMain.buttonSquare}
 		            type="submit"
 		            disabled={this.state.descr==""}
 		            outline
@@ -112,15 +112,15 @@ export class Damages extends Component {
 
   	displayForm(){
   		return(
-			<div>
-			<p><strong>Please Report Damage</strong><br/>
+			<div className={stylesMain.body}>
+			<p><strong>Please Report Damage</strong><p/>
             			Please upload a photo of the damage and describe the details in the provided space.</p>
-			<Form className={styles.form} onSubmit={this.handleSubmit.bind(this)}>
+			<Form className={stylesMain.formDamages} onSubmit={this.handleSubmit.bind(this)}>
 				<FileUploader
 					onFileUploaded={this.handleImageUploaded.bind(this)}
 					isPublic={false} />
 				
-			<Button className={styles.button} onClick={this.setFormVisible} color="success">Skip Image Uploading</Button>
+			<Button className={stylesMain.buttonSquare} onClick={this.setFormVisible} color="success">Skip Image Uploading</Button>
 			{this.state.form? this.displayFormText() : null}
 	    </Form>
 	    </div>
@@ -130,10 +130,10 @@ export class Damages extends Component {
   	displayMessage(){
   		return(
   			<div>
-	  			<div className={styles.damageMessage}>{this.state.message}</div>
+	  			<div className={stylesMain.damageMessage}>{this.state.message}</div>
 	  			<br/>
 	  			<Link to={"/history"}>
-	              <Button className={styles.button} color="success">Back to History</Button>
+	              <Button className={stylesMain.buttonSquare} color="success">Back to History</Button>
 	            </Link>
             </div>
   		)
@@ -141,7 +141,7 @@ export class Damages extends Component {
 
 	render() {
 		return (
-			<div className={styles.body}>
+			<div className={stylesMain.body}>
 				<Container>
 					<Row>
 					<Col>

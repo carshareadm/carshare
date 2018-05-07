@@ -4,32 +4,11 @@
     margin-bottom: 1em;
 }
 
-.body{
-	padding: 2em;
-	padding-top: 3em;
-	background-color: rgb(226, 226, 226);
-	min-height: 70vh;
-}
-
-.form {
-
-  	padding: 2em;
-}
-
 .button {
   margin-right: 1em;
   margin-bottom: 1em;
   border-radius: 0 !important; 
   background-color: rgb(226, 226, 226);
   text-align: right !important; 
-
 }
 
-.damagemessage{
-    color: green;
-    margin-bottom: 1em;
-    padding-top: 3em;  	
-    padding: 2em;
- 
-
-}
