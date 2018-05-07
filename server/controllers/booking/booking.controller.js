@@ -157,9 +157,27 @@ const extendBooking = function(req, res) {
 
   const endAt = req.body.endAt;
   const bookingId = req.body.bookid;
-  const checkEndTime = moment(endAt).add(1, 'h');
+  const checkEndTime = moment(req.body.endA).add(1, 'h');
 
-  Booking.findById(bookingId).exec((bookFindErr, foundBook) => {
+  Booking.findById(bookingId)
+  .populate("car")
+        .populate({
+          path: 'car',
+          match: {isDisabled: false},
+          populate: {path: 'vehicleType'},
+        })
+        .populate({
+          path: 'car',
+          match: {isDisabled: false},
+          populate: {path: 'location'},
+        })
+  .exec((bookFindErr, foundBook) => {
+    var hours = moment
+    .duration(
+            moment(endAt, "YYYY/MM/DD HH:mm").diff(
+            moment(foundBook.startsAt, "YYYY/MM/DD HH:mm")
+           )
+    ).asHours();
     if (bookFindErr) {
       return res.status(500).send(usrErr);
     }
@@ -196,7 +214,10 @@ const extendBooking = function(req, res) {
               ],
             },
           ],
-        }).exec((err, bookings) => {
+        })
+        .exec((err, bookings) => {
+
+          foundBook.totalCost = hours * foundBook.car.vehicleType.hourlyRate;
 
           if (err) {
             return res.status(500).send(err);
@@ -207,11 +228,10 @@ const extendBooking = function(req, res) {
               .status(400)
               .send("Booking would clash with existing booking");
           }
-          // Offer validation is part of offer controller and applied by the apply button at booking
-          else if (typeof foundBook.offerCode!=="undefined")
+          else if (foundBook.offer)
           {
             // FindOne as Offer Codes are set as unique
-            Offer.findOne({ offerCode: foundBook.OfferCode, isDisabled: false }).exec((offerErr, discount) => {
+            Offer.findOne({ _id: foundBook.offer, isDisabled: false }).exec((offerErr, discount) => {
               if (offerErr) {
                 return res.status(500).send(offerErr);
               }
@@ -229,6 +249,7 @@ const extendBooking = function(req, res) {
                 }
               }
               foundBook.endsAt=endAt.toString();
+
               foundBook.save((err, booking) => {
                 if (err) {
                   return res.status(500).send(err);
@@ -302,8 +323,21 @@ const cancelBooking = function(req, res) {
 };
 
 const getBooking = function(req, res) {
-  Booking.find()
-    // Placeholder, should look for booking belonging to current user
+
+  if(req.params.bookingid)
+  {
+    Booking.findById(req.params.bookingid)
+    .populate("car")
+    .populate({
+      path: 'car',
+      match: {isDisabled: false},
+      populate: {path: 'vehicleType'},
+    })
+    .populate({
+      path: 'car',
+      match: {isDisabled: false},
+      populate: {path: 'location'},
+    })
     .exec((err, bookings) => {
       if (err) {
         res.status(500).send(err);
@@ -311,6 +345,11 @@ const getBooking = function(req, res) {
         res.status(200).send(bookings);
       }
     });
+  }
+  else
+  {
+    res.status(400).send();
+  }
 };
 
 const changeBooking = function(req, res) {
