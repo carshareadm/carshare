@@ -5,6 +5,7 @@ const bookings = require("../controllers/manage/manage.bookings.controller");
 const offers = require("../controllers/manage/manage.offers.controller");
 const damages = require("../controllers/manage/manage.damages.controller");
 const vehicleTypes = require("../controllers/manage/manage.vehicleTypes.controller");
+const enquiries = require("../controllers/manage/manage.enquiries.controller.js")
 const isAuthenticatedGuard = require("../middleware/isAuthenticatedGuard");
 const isAdminGuard = require("../middleware/isAdminGuard");
 
@@ -34,4 +35,6 @@ router.put("/bookings/:bookingId", isAuthenticatedGuard, isAdminGuard, bookings.
 router.get("/offers", isAuthenticatedGuard, isAdminGuard, offers.getAll);
 router.put("/offers/:offerId", isAuthenticatedGuard, isAdminGuard, offers.update);
 
+router.get("/enquiries", isAuthenticatedGuard, isAdminGuard, enquiries.getFiltered);
+router.put("/enquiries/:enquiryId", isAuthenticatedGuard, isAdminGuard, enquiries.update);
 module.exports = router;

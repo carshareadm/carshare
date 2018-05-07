@@ -30,7 +30,8 @@ import {CarsAdm} from './modules/Manage/Cars/CarsAdm';
 import {DamagesAdm} from './modules/Manage/Damages/DamagesAdm';
 import {LocationsAdm} from './modules/Manage/Locations/LocationsAdm';
 import {UsersAdm} from './modules/Manage/Users/UsersAdm';
-import {OffersAdm} from './modules/Manage/Offer/OffersAdm'
+import {OffersAdm} from './modules/Manage/Offer/OffersAdm';
+import {EnquiriesAdm} from './modules/Manage/Enquiries/EnquiriesAdm';
 
 import PaymentDetails from './modules/PaymentDetails/PaymentDetails';
 import Unauthorised from './modules/Unauthorised/Unauthorised';
@@ -79,7 +80,8 @@ export default (
 		<Route path="manage/damages" component={requireAdminAuth(DamagesAdm)} />
 		<Route path="manage/locations" component={requireAdminAuth(LocationsAdm)} />
 		<Route path="manage/users" component={requireAdminAuth(UsersAdm)} />
-		
+    <Route path="manage/enquiries" component={requireAdminAuth(EnquiriesAdm)} />
+
 		<Route path='unauthorised' component={Unauthorised} />
 	</Route>
 );
