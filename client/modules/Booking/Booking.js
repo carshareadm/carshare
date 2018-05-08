@@ -380,7 +380,8 @@ export class Booking extends Component {
                 </span>
               </CardHeader>
               <CardBody>
-                <CardText>Booking Cost : ${this.state.cost}</CardText>
+                <CardText>Booking Cost : ${this.state.cost.toFixed(
+                    2)}</CardText>
               </CardBody>
             </Card>
           </Col>

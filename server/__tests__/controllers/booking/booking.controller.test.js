@@ -422,6 +422,7 @@ describe("Booking controller", () => {
       .send({
         bookid: testBooking._id,
         endAt: newEnd,
+        startAt: testBooking.startsAt,
       })
       .then(response => {
         expect(response.statusCode).toBe(200);
