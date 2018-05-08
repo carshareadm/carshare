@@ -54,6 +54,7 @@ export class BookingAdm extends Component {
     unlockCode: 'Unlock Code',
     offer: 'Offer Code',
     isDisabled: 'Booking Status',
+    totalCost: 'Booking Cost',
   };
 
   errors = {};

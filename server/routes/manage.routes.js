@@ -34,6 +34,7 @@ router.put("/bookings/:bookingId", isAuthenticatedGuard, isAdminGuard, bookings.
 
 router.get("/offers", isAuthenticatedGuard, isAdminGuard, offers.getAll);
 router.put("/offers/:offerId", isAuthenticatedGuard, isAdminGuard, offers.update);
+router.post("/offers", isAuthenticatedGuard, isAdminGuard, offers.add);
 
 router.get("/enquiries", isAuthenticatedGuard, isAdminGuard, enquiries.getFiltered);
 router.put("/enquiries/:enquiryId", isAuthenticatedGuard, isAdminGuard, enquiries.update);

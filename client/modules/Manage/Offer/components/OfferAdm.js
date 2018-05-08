@@ -27,6 +27,7 @@ export class OfferAdm extends Component {
     this.state = {
       isLoading: false,
       offer: {...this.props.offer},
+      isCreating: {...this.props.isCreating},
       tmpDate: moment(),
       isTouched: {
         offerCode: false,
@@ -195,7 +196,13 @@ export class OfferAdm extends Component {
     evt.preventDefault()
     this.setLoading(true);
 
-    manageSvc.offers.updateOffer(this.state.offer)
+    const updateAction = this.state.isCreating
+    ? manageSvc.offers.createOffer(this.state.offer)
+    : manageSvc.offers.updateOffer(this.state.offer)
+
+    console.log(this.state.isCreating)
+
+    updateAction
     .then(result => {
       this.setLoading(false);
       this.props.onSaved(this.state.offer);
@@ -247,6 +254,7 @@ OfferAdm.propTypes = {
   offer: PropTypes.object.isRequired,
   onSaved: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
+  isCreating: PropTypes.bool.isRequired,
 };
 
 export default OfferAdm;

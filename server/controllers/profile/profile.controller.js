@@ -134,8 +134,8 @@ const updateMyProfile = function(req, res) {
 
 const getMyBookings = function(req, res){
   Booking.find({
-    user: mongoose.Types.ObjectId(req.userId),
-  }).sort({ startsAt: -1 })
+    user: mongoose.Types.ObjectId(req.userId), isDisabled: false})
+    .sort({ startsAt: -1 })
     .populate({
       path:'car', populate: ['vehicleType', 'location'],
     })

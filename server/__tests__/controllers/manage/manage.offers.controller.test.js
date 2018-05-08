@@ -111,4 +111,26 @@ describe("Manage Offers", () => {
       done(e);
     }
   });
+
+  test("add offer", async done => {
+    try {      
+      const newOffer = new Offer();
+
+      newOffer.offerCode = "NEW123";
+      newOffer.multiplier = 10;
+      newOffer.oneOffValue = 10;
+      newOffer.expiresAt = moment().add(1,'d');
+      newOffer.isDisabled = false;
+      const encodedToken = token(); 
+      const response = await request(app)
+        .post(`/api/manage/offers`)
+        .set("Authorization", "Bearer " + encodedToken)
+        .send(newOffer);        
+      expect(response.statusCode).toBe(200);
+      expect(response.body.offerCode).toBe(newOffer.offerCode);
+      done();
+    } catch (e) {
+      done(e);
+    }
+  });
 });
