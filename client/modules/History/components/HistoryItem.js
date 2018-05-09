@@ -109,7 +109,20 @@ class HistoryItem extends Component {
     let booking = this.checkTheDate(bs);
     if(booking=="future"){
       return(
-      <Button type="button" outline color="success" className={stylesMain.buttonSquareOutline} onClick={e => this.handleCancel(e, bs._id)}>Cancel</Button>
+        <Button type="button" outline color="success" className={stylesMain.buttonSquareOutline} onClick={e => this.handleCancel(e, bs._id)}>Cancel</Button>
+      );
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+  renderExtend(bs){
+    let booking = this.checkTheDate(bs);
+    if(booking=="future" || booking=="current"){
+      return(
+        <Link to={"/booking/"+bs._id}><Button outline color="success" className={stylesMain.buttonSquareOutline}>Extend</Button></Link>
       );
     }
     else
@@ -167,7 +180,7 @@ class HistoryItem extends Component {
                 Hire Cost: <span className={stylesMain.h4}>{bs.totalCost} </span><br/>
                 <br/>
                 {this.renderCancel(bs)}&nbsp;
-                <Link to={"/booking/"+bs._id}><Button outline color="success" className={stylesMain.buttonSquareOutline}>Extend</Button></Link>
+                {this.renderExtend(bs)}
                 {this.renderAddDamage(bs)}
                 </BookingItem>
               </CardText>

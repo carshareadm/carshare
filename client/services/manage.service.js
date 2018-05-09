@@ -156,9 +156,16 @@ const getAllOffers = () => {
   .get(`/manage/offers`);
 };
 
+const createOffer = (offer) => {
+  return http
+  .client()
+  .post(`/manage/offers`, offer);
+};
+
 const offers = {
   updateOffer: updateOffer,
   getAll: getAllOffers,
+  createOffer: createOffer,
 };
 // end - manage offers
 

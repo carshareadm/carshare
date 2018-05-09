@@ -37,3 +37,29 @@ export const update = async (req, res) => {
     return res.status(500).send(e);
   }
 };
+
+export const add = async (req, res) => {
+  try {
+    const offer = new Offers();
+    
+    offer.expiresAt = req.body.expiresAt;
+    offer.offerCode = req.body.offerCode;
+    offer.oneOffValue = req.body.oneOffValue;
+    offer.multiplier = req.body.multiplier;
+    offer.isDisabled = req.body.isDisabled;
+    
+    const errs = offer.validateSync();
+    if (errs) {
+      return res.status(400).send(errs);
+    }
+
+    const saved = await offer.save();
+    return res.status(200).send(saved);
+  } catch(e) {
+    const err = {...e};
+    console.log(e);
+    logger.err(e);
+    return res.status(500).send(err);
+  }
+  
+};

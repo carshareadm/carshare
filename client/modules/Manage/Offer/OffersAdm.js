@@ -26,6 +26,7 @@ export class OffersAdm extends Component {
       selectedOffer: null,
       savedAlertOpen: false,
       errorAlertOpen: false,
+      isCreating: false,
     };
   }
 
@@ -53,11 +54,15 @@ export class OffersAdm extends Component {
   handleOfferSelected(evt) {
     // evt is an array of objects
     this.setState({ selectedOffer: evt[0] });
+    this.setState({ isCreating: false });
   }
 
-  handleSaved(savedOffer) {
+  async handleSaved(savedOffer) {
+    if (this.state.isCreating) {
+      await this.isCreating(false);
+      this.addSaved(savedOffer);
+    }
     this.getOffers();
-    //Dismiss any previous error
     this.dismissError();
     this.setState({ savedAlertOpen: true });
   }
@@ -78,6 +83,7 @@ export class OffersAdm extends Component {
         onSaved={this.handleSaved.bind(this)}
         onError={this.handleError.bind(this)}
         offer={this.state.selectedOffer}
+        isCreating={this.state.isCreating}
       />
     );
   }
@@ -95,6 +101,52 @@ export class OffersAdm extends Component {
     this.setState({ errorAlertOpen: false });
   }
 
+  addSaved(savedOffer) {
+    const offers = [...this.state.offers];
+    offers.push(savedOffer);
+    this.setState({
+      ...this.state,
+      offers: offers,
+    })
+  }
+
+  async isCreating(isCreating) {
+    const newOffer = {
+      expiresAt : moment().format("YYYY-MM-DDTHH:mm:ssZ"),
+      offerCode : '',
+      oneOffValue : '',
+      multiplier : '',
+      isDisabled : false,
+    };
+
+    if (isCreating && this.state.selectedOffer) {
+      await this.setState({
+        ...this.state,
+        selectedOffer: null,
+      });
+    }
+
+    this.setState({
+      ...this.state,
+      isCreating: isCreating,
+      selectedOffer: isCreating ? newOffer : null,
+    });
+  }
+
+  addOrCancelBtn() {
+    return this.state.isCreating
+    ? <Button
+        className={stylesMain.addNewBtn}
+        size="sm"
+        color="link"
+        onClick={(e) => this.isCreating(false)}>&times; Cancel</Button>
+    : <Button
+        className={stylesMain.addNewBtn}
+        size="sm"
+        color="link"
+        onClick={(e) => this.isCreating(true)}>&#43; Add New</Button>
+  }
+
   render() {
     return (
       <div className={stylesMain.body}>
@@ -106,6 +158,7 @@ export class OffersAdm extends Component {
             <p>To manage offers select an offer and edit it. To hide an offer set its status to inactive</p>
           </Col>
           <Col lg="12">
+            {this.addOrCancelBtn()}
             <div className="input-group">
               <div className={stylesMain.flex1}>
                 <Typeahead
