@@ -81,6 +81,8 @@ export class DeleteProfile extends Component {
       return (
         <Col>
           <h5>Your account is deleted</h5>
+          <p>You can no longer log in to ShaCar</p>
+          <p>Any future bookings you had in the system have been cancelled</p>
         </Col>
       );
     } else {

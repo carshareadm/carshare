@@ -22,6 +22,7 @@ import {
   Container,
   Row,
   Col,
+  Alert,
 } from "reactstrap";
 
 import * as http from "../../util/http";
@@ -38,6 +39,8 @@ export class Login extends Component {
       email: "",
       password1: "",
       touched: { email: false },
+      showError: false,
+      errMsg: '',
     };
     this.isFormInvalid = this.isFormInvalid.bind(this);
   }
@@ -68,11 +71,11 @@ export class Login extends Component {
   }
 
   handleEmailChange = evt => {
-    this.setState({ email: evt.target.value });
+    this.setState({ email: evt.target.value, showError: false });
   };
 
   handlePassword1Change = evt => {
-    this.setState({ password1: evt.target.value });
+    this.setState({ password1: evt.target.value, showError: false });
   };
 
   handleSubmit = evt => {
@@ -94,13 +97,46 @@ export class Login extends Component {
           this.props.setAdmin(adm);
         })
         .catch(err => {
-          console.log(err);
+          let msg = '';
+          switch(err.response.status) {
+            case 401:
+              msg = err.response.data;
+              break;
+            default:
+              msg = 'An error occurred';
+              break;
+          }
+          this.setState({
+            ...this.state,
+            showError: true,
+            errMsg: msg,
+          });
         });
     }
   };
 
   isFormInvalid() {
     return Object.keys(this.errors).some(x => this.errors[x] === true);
+  }
+
+  dismissAlert() {
+    this.setState({
+      ...this.state,
+      showError: false,
+    });
+  }
+
+  renderError() {
+    return this.state.showError
+    ? <Row>
+        <Col xs={{ size: 12 }} md={{ size: 8 }} lg={{ size: 6 }}>
+          <Alert color="danger" isOpen={this.state.showAlert} toggle={() => this.dismissAlert()}>
+            {this.state.errMsg}
+          </Alert>
+        </Col>
+      </Row> 
+    
+    : '';
   }
 
   renderLabel(key, labelFor) {
@@ -206,6 +242,7 @@ export class Login extends Component {
                 </Button>
               </Col>
             </Row>
+            {this.renderError()}
           </form>
         </Container>
       </div>
