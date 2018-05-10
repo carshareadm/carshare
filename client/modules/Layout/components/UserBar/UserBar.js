@@ -23,6 +23,7 @@ import {
   Input,
   Label,
   Form,
+  Alert,
 } from "reactstrap";
 
 // Import Style
@@ -36,6 +37,8 @@ export class UserBar extends Component {
       email: "",
       password1: "",
       redirectToHome: false,
+      showError: false,
+      errMsg: '',
     };
 
     //Bind the function to the class
@@ -114,8 +117,41 @@ export class UserBar extends Component {
         this.props.setAdmin(adm);
       })
       .catch(err => {
-        console.log(err);
+        let msg = '';
+        switch(err.response.status) {
+          case 401:
+            msg = err.response.data;
+            break;
+          default:
+            msg = 'An error occurred';
+            break;
+        }
+        this.setState({
+          ...this.state,
+          showError: true,
+          errMsg: msg,
+        });
       });
+  }
+
+  dismissAlert() {
+    this.setState({
+      ...this.state,
+      showError: false,
+    });
+  }
+
+  renderError() {
+    return this.state.showError
+    ? <Row>
+        <Col xs={{ size: 10, offset: 1 }}>
+          <Alert color="danger" isOpen={this.state.showAlert} toggle={() => this.dismissAlert()}>
+            {this.state.errMsg}
+          </Alert>
+        </Col>
+      </Row> 
+    
+    : '';
   }
 
   loginFrm() {
@@ -172,8 +208,9 @@ export class UserBar extends Component {
                 Log in
               </Button>
             </FormGroup>
-          </Col>
+          </Col>          
         </Row>
+        {this.renderError()}
       </div>
     );
   }
