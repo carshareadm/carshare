@@ -16,8 +16,9 @@ import Offer from "./models/offer";
 import VehicleType from "./models/vehicleType";
 
 import moment from "moment";
+import DateUtils from './util/date.helper';
 
-module.exports = function() {
+module.exports = async () => {
   console.log("DB: Start loading seed data");
 
   const errorCode1 = 11000;
@@ -636,26 +637,64 @@ module.exports = function() {
     }
   });
 
-  console.log("____ Seeded data wrap-up ____");
-  User.count({}, (err, count) => {
-    console.log("Number of seeded users:        ", count, "...");
-  });
-  Location.count({}, (err, count) => {
-    console.log("Number of seeded locations:    ", count, "...");
-  });
-  Coordinate.count({}, (err, count) => {
-    console.log("Number of seeded coords:       ", count, "...");
-  });
-  VehicleType.count({}, (err, count) => {
-    console.log("Number of seeded vehicleTypes: ", count, "...");
-  });
-  Car.count({}, (err, count) => {
-    console.log("Number of seeded cars        : ", count, "...");
-  });
-  Booking.count({}, (err, count) => {
-    console.log("Number of seeded bookings        : ", count, "...");
-  });
-  Offer.count({}, (err, count) => {
-    console.log("Number of seeded offers        : ", count, "...");
-  });
+  const generateEnquiry = (from, name, msg, recvdAt, resp, respAt) => {
+    const enq = new  Enquiry();
+    enq.emailFrom = from;
+    enq.name = name;
+    enq.message = msg;
+    enq.receivedAt = recvdAt;
+    enq.response = resp;
+    enq.responseAt = respAt;
+
+    return enq;
+  };
+
+  try {
+    const existing = await Enquiry.find({}).exec();
+    if (existing.length < 6) {
+      const now = new Date();
+      const e1 = generateEnquiry('testuser1@mailinator.com', 'tester1', 'where\'s my car dude?', 
+        DateUtils.addHours(now, -12), 'Dunno dude. Where\'s your car?', DateUtils.addHours(now, -11.75));
+      const e2 = generateEnquiry('testuser2@mailinator.com', 'tester2', 'i cant find the keys', DateUtils.addHours(now, -5), null, null);
+      const e3 = generateEnquiry('testuser2@mailinator.com', 'tester2', 'i dont have a license, can i still use shacar', DateUtils.addHours(now, -4), null, null);
+      const e4 = generateEnquiry('testuser2@mailinator.com', 'tester2', 'i dont have a license, can i still use shacar', DateUtils.addHours(now, -28), null, null);
+      const e5 = generateEnquiry('testuser2@mailinator.com', 'tester2', 'i dont have a license, can i still use shacar', DateUtils.addHours(now, -52), null, null);
+      const e6 = generateEnquiry('testuser2@mailinator.com', 'tester2', 'i dont have a license, can i still use shacar', DateUtils.addHours(now, -124), null, null);
+  
+      await e1.save();
+      await e2.save();
+      await e3.save();
+      await e4.save();
+      await e5.save();
+      await e6.save();
+    }
+  } catch(e) {
+    console.log(e);
+  }
+
+  try {
+    const users = await User.find({}).exec();
+    const locations = await Location.find({}).exec();
+    const coords = await Coordinate.find({}).exec();
+    const vType = await VehicleType.find({}).exec();
+    const cars = await Car.find({}).exec();
+    const bookings = await Booking.find({}).exec();
+    const offers = await Offer.find({}).exec();
+    const enqs = await Enquiry.find({}).exec();
+
+    console.log("____ Seeded data wrap-up ____");
+    console.log("Model         Count");
+    console.log('```````````````````')
+    console.log("Users         " + users.length);
+    console.log("Locations     " + locations.length);
+    console.log("Coordinates   " + coords.length);
+    console.log("VehicleType   " + vType.length);
+    console.log("Cars          " + cars.length);
+    console.log("Bookings      " + bookings.length);
+    console.log("Offers        " + offers.length);
+    console.log("Enquiry       " + enqs.length);
+
+  } catch(e) {
+    console.log('dummyData wrap-up failed', e);
+  }  
 };
