@@ -102,11 +102,15 @@ body {
 }
 
   .buttonRed {
-  background-color: red !important;
-  min-width: 50px;
+  border: solid red 2px !important;
+  min-width: 170px;
   border-radius: 0 !important;
+  background-color: white !important;
+  color: rgb(76, 157, 38) !important;
+  color: red !important;
   padding: 1em;
   }
+  
 
   .buttonSquareOutline{
   border: solid rgb(76, 157, 38) 1px !important;

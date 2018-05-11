@@ -133,7 +133,7 @@ export class Damages extends Component {
 	  			<div className={stylesMain.damageMessage}>{this.state.message}</div>
 	  			<br/>
 	  			<Link to={"/history"}>
-	              <Button className={stylesMain.buttonSquare} color="success">Back to History</Button>
+	              <Button className={stylesMain.buttonSquare} color="success">Back to Bookings</Button>
 	            </Link>
             </div>
   		)

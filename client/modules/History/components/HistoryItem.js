@@ -98,7 +98,7 @@ class HistoryItem extends Component {
       return(
         <div className="float-right">
             <Link to={`/damages/${bs.car._id}`}>
-              <Button className={stylesMain.buttonRed} color="danger" size="lg">!</Button>
+              <Button className={stylesMain.buttonRed} color="danger">Reported Damage</Button>
             </Link>
          </div>
       )
@@ -175,12 +175,12 @@ class HistoryItem extends Component {
                <BookingItem header="Booking Details">  
                 Model: <span className={stylesMain.h4}>{bs.car.make} {bs.car.model} </span><br/>
                 Vehicle Type: <span className={stylesMain.h4}>{bs.car.vehicleType.name} </span><br/>
-                Registration: <span className={stylesMain.h4}>{bs.car.Registration} {bs.car.model} </span><br/>
+                Registration: <span className={stylesMain.h4}>{bs.car.rego}</span><br/>
                 Vehicle Location: <span className={stylesMain.h4}>{bs.car.location.name} </span><br/>
-                Hire Cost: <span className={stylesMain.h4}>{bs.totalCost} </span><br/>
+                Hire Cost: <span className={stylesMain.h4}>$ {bs.totalCost} </span><br/>
                 <br/>
                 {this.renderCancel(bs)}&nbsp;
-                {this.renderExtend(bs)}
+                {this.renderExtend(bs)}&nbsp;
                 {this.renderAddDamage(bs)}
                 </BookingItem>
               </CardText>
