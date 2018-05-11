@@ -188,6 +188,12 @@ const enquiries = {
 }
 // end - manage enquiries
 
+const stats = (api) => {
+  return http
+  .client()
+  .get(`/manage/${api}/stats`);
+};
+
 module.exports = {
   cars: cars,
   locations: locations,
@@ -198,4 +204,5 @@ module.exports = {
   offers: offers,
   damages: damages,
   enquiries: enquiries,
+  stats: stats,
 };

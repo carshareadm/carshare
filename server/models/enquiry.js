@@ -19,7 +19,7 @@ const enquirySchema = new Schema({
   message: { type: "String", required: true, trim: true },
   response: { type: "String", trim: true },
   receivedAt: { type: "Date", default: Date.now, required: true },
-  responseAt: { type: "Date" },
+  responseAt: { type: "Date", default: null },
   priority: { type: "String", enum: ["low", "med", "high"] },
 });
 

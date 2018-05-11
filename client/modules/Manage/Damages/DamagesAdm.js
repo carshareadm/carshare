@@ -72,7 +72,7 @@ export class DamagesAdm extends Component {
             <h1 className={stylesMain.title}>Manage Damages</h1>
           </Col>
           <Col lg="12">
-            <p>Here you can resolve damages. Resolved damages are gidden from the user. If you want to manage damages on a specific car - select a car.</p>
+            <p>Here you can resolve damages. Resolved damages are hidden from the user. If you want to manage damages on a specific car - select a car.</p>
           </Col>
           <Col lg="12">
             <div className="input-group">

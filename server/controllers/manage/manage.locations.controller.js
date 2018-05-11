@@ -1,4 +1,5 @@
 import Location from '../../models/location';
+import Car from '../../models/car';
 import Coordinates from '../../models/coordinate';
 import * as logger from '../../util/logger';
 
@@ -76,6 +77,34 @@ export const update = async (req, res) => {
 
   } catch(e) {
     console.log(e);
+    logger.err(e);
+    return res.status(500).send(e);
+  }
+};
+
+export const stats = async (req, res) => {
+  try {
+    const totalLocations = await Location.find({}).exec();
+    const inactive = totalLocations.filter(f => f.isDisabled === true);
+    const carsWithLocations = await Car.find({})      
+      .populate('location')
+      .exec();
+    const carsWithEnabledLocations = carsWithLocations.filter(f => f.location && f.location.isDisabled === false);
+    const carsWithDisabledLocations = carsWithLocations.filter(f => f.location && f.location.isDisabled === true);
+    const distinctLocationsWithCars = [...new Set(carsWithLocations.map(m => m.location))];
+      
+  
+    const results = {
+      total: totalLocations.length,
+      inactive: inactive.length,
+      carsActiveLocations: carsWithEnabledLocations.length,
+      carsInactiveLocations: carsWithDisabledLocations.length,
+      assignedToCars: distinctLocationsWithCars.length,
+    }
+
+    return res.status(200).send(results);
+  }
+  catch(e) {
     logger.err(e);
     return res.status(500).send(e);
   }
