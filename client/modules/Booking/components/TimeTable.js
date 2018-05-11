@@ -126,6 +126,8 @@ export class TimeTable extends Component {
 
   renderCell(day, hour){
      return (
+      //Make all the previous hours and bookings unavailable
+      moment(day).add(parseInt(hour), "h").isBefore(moment()) || 
       this.checkBooking(moment(day).format("ddd"), hour) ?
         " " : 
         <Button className={styles.buttonAvail} onClick={this.onCellClick} data-date={moment(day).add(hour.substring(0,2),'h').format()}>✓</Button>
