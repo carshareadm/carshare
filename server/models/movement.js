@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
+import moment from 'moment';
 const Schema = mongoose.Schema;
+
+import {checkLocationBookingEnd} from "../util/email.helper"
+
 
 const movementSchema = new Schema({
   car: { 

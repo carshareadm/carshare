@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 import stylesMain from "../../main.css";
 
 import {
-  Container
+  Container,
 } from "reactstrap";
 
 export class SearchResults extends Component {
