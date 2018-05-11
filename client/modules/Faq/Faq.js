@@ -5,8 +5,7 @@ import Fuse from 'fuse.js';
 
 import styles from './Faq.css'
 import stylesMain from '../../main.css';
-import Search from './components/Search'
-
+import Search from './components/Search';
 
 import {
   Button,
@@ -41,13 +40,13 @@ const findMatchingItems = (query) => {
 	return questions;
 }
 
-//Additional component. May be moved to the separate component file later
+// Additional component. May be moved to the separate component file later
 class FaqItem extends Component{
 	render(){
 		items.push({
 			question: this.props.question,
 			children: this.props.children,
-			text: ReactDOMServer.renderToStaticMarkup(this.props.children).replace(/<(?:.|\n)*?>/gm, '')
+			text: ReactDOMServer.renderToStaticMarkup(this.props.children).replace(/<(?:.|\n)*?>/gm, ''),
 		});
 
 		return (
@@ -275,7 +274,7 @@ export class Faq extends Component {
 		this.selectQuestion = this.selectQuestion.bind(this);
 		this.state = {
 			query: "",
-			activeQuestion: ""
+			activeQuestion: "",
 		};
 	}
 
@@ -286,7 +285,7 @@ export class Faq extends Component {
 	selectQuestion(activeQuestion) {
 		this.setState({
 			query: "",
-			activeQuestion
+			activeQuestion,
 		})
 	}
 

@@ -110,14 +110,14 @@ class Locations extends Component {
           </Col>
         </div>
         <div className="row">
-          <Col xs="12" sm="6">
+          <Col xs="12" sm="6" className={styles.addMargin}>
               <SelectLocation 
                 currentLocation={this.state.currentLocation} 
                 locations={this.state.locations}
                 setLocation={this.setLocation}
               />
           </Col>
-          <Col xs="12" sm="6">
+          <Col xs="12" sm="6" className={styles.addMargin}>
               <button type="button" 
                 className={styles.buttons + " btn btn-primary"} 
                 onClick={this.setInitialCoordinates}
@@ -128,7 +128,7 @@ class Locations extends Component {
         </div>
 
         <div className={styles.mapContainer+" row no-gutters"}>
-          <Col xs="12" sm="6">
+          <Col xs="12" sm="6" className={styles.carContainer}>
             <Cars cars={this.state.sortedCars}/>
           </Col>
           <Col className={styles.mapDiv} xs="12" sm="6">
