@@ -232,7 +232,7 @@ export class Booking extends Component {
     } else {
       http
         .client()
-        .put("/booking/", {
+        .post("/booking/", {
           userid: this.state.userid,
           car: this.state.carid,
           startAt: this.state.startDate,

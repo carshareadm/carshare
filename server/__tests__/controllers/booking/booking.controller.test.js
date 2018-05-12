@@ -157,7 +157,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret); 
     request(app)
-      .put("/api/booking/")
+      .post("/api/booking/")
       .set("Authorization", "Bearer " + encodedToken)
       .send()
       .then(response => {
@@ -185,7 +185,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .put("/api/booking/")
+      .post("/api/booking/")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -224,7 +224,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .put("/api/booking")
+      .post("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -265,7 +265,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .put("/api/booking")
+      .post("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -298,7 +298,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .put("/api/booking")
+      .post("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -334,7 +334,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .put("/api/booking")
+      .post("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,
@@ -370,7 +370,7 @@ describe("Booking controller", () => {
       };
       const encodedToken = jwt.encode(token, config.jwt.secret);    
     request(app)
-      .put("/api/booking")
+      .post("/api/booking")
       .set("Authorization", "Bearer " + encodedToken)
       .send({
         userid: testUser._id,

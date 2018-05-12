@@ -71,7 +71,7 @@ describe("isAbleToMakeBookingGuard", () => {
       const encodedToken = jwt.encode(token, config.jwt.secret);
 
       request(app)
-        .put("/api/booking")
+        .post("/api/booking")
         .set("Authorization", "Bearer " + encodedToken)
         .send()
         .then(response => {
@@ -98,7 +98,7 @@ describe("isAbleToMakeBookingGuard", () => {
         const encodedToken = jwt.encode(token, config.jwt.secret);
 
         request(app)
-          .put("/api/booking")
+          .post("/api/booking")
           .set("Authorization", "Bearer " + encodedToken)
           .send()
           .then(response => {
@@ -128,7 +128,7 @@ describe("isAbleToMakeBookingGuard", () => {
         const encodedToken = jwt.encode(token, config.jwt.secret);
 
         request(app)
-          .put("/api/booking")
+          .post("/api/booking")
           .set("Authorization", "Bearer " + encodedToken)
           .send()
           .then(response => {
@@ -158,7 +158,7 @@ describe("isAbleToMakeBookingGuard", () => {
         const encodedToken = jwt.encode(token, config.jwt.secret);
 
         request(app)
-          .put("/api/booking")
+          .post("/api/booking")
           .set("Authorization", "Bearer " + encodedToken)
           .send()
           .then(response => {
@@ -188,7 +188,7 @@ describe("isAbleToMakeBookingGuard", () => {
         const encodedToken = jwt.encode(token, config.jwt.secret);
 
         request(app)
-          .put("/api/booking")
+          .post("/api/booking")
           .set("Authorization", "Bearer " + encodedToken)
           .send()
           .then(response => {

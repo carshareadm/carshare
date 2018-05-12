@@ -43,7 +43,6 @@ export const postImage = function(req, res) {
         logger.err(e);
         return res.status(500).send(e);
       }
-
     }
   });
 };

@@ -417,7 +417,7 @@ describe("Profile controller", () => {
   test("success", async done => {
     const jwt = getToken();
     const response = await request(app)
-      .put("/api/profile/delete")
+      .delete("/api/profile/delete")
       .set("Authorization", "Bearer " + jwt)
       .send();      
       expect(response.statusCode).toBe(200);
