@@ -1,0 +1,15 @@
+.input{
+    padding: 2px 1px; 
+    line-height: 1em;
+    min-width: 222px;
+}
+
+ .submitButton {
+  border: solid rgb(76, 157, 38) 1px !important;
+  background-color: rgb(76, 157, 38) !important;
+  min-width: 100px;
+  border-radius: 0 !important;
+      padding: 3px; 
+    line-height: 1em;
+    color: white !important;
+  }
