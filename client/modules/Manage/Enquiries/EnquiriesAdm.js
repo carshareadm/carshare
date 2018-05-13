@@ -130,6 +130,10 @@ async fetchEnquiries()
         <Row>
           <Col>
             <h1 className={stylesMain.title}>Manage Enquiries</h1>
+            <p>
+              You can respond to enquiries submitted by users.
+              Click Refresh to get the latest enquiries.
+            </p>
             <Button onClick={this.handleRefresh} block >
               Refresh
             </Button>
