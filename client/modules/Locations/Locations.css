@@ -28,11 +28,20 @@
 
 .mapDiv>div{
 	width: 100%;
+  min-height: 300px;
 	height: 100%;
 	margin-bottom: 100px !important;
-	padding-left: 15px;
 }
 
 .mapContainer{
 	margin-bottom: 100px !important;
+}
+
+.carContainer{
+  max-height: 600px;
+  overflow: auto;
+}
+
+.addMargin{
+  margin-bottom: 1em;
 }

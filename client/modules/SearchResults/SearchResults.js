@@ -2,9 +2,7 @@
 import React, { Component, PropTypes } from "react";
 import stylesMain from "../../main.css";
 
-import {
-  Container
-} from "reactstrap";
+import { Container } from "reactstrap";
 
 export class SearchResults extends Component {
 	render() {

@@ -1,4 +1,8 @@
 const config = require('../config');
+import moment from 'moment';
+
+import Booking from "../models/booking";
+import Coordinate from "../models/coordinate"
 
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
@@ -114,4 +118,56 @@ function textToHtml(text)
 {
   const reducer = (html, line) => html + line + '<br />'
   return text.split(/\r\n|\n|\r/).reduce(reducer, '');
+}
+
+
+function sendBookingIssueEmail(booking){
+  const sendTo = config.sendGrid.sendAdminEmailsTo;
+  const subject = `ShaCar - Car wasn't returned on time for booking: ${booking._id}`;
+  const body = `
+    <p>There was an issue with booking</p>
+    <hr />
+    <p>The car ${booking.car.make} ${booking.car.model} wasn't at its location
+    at the end of booking id: ${booking._id}.</p>
+    <br /><br />
+    <p>
+    Shacar Administration
+    </p>
+  `;
+  const msg = {
+    to: sendTo,
+    from: sendTo,
+    bcc: sendTo,
+    subject: subject,
+    html: body,
+  };
+
+  sgMail.send(msg);
+}
+
+export const checkLocationBookingEnd = async function(move){
+  const booking = await 
+    Booking.findOne({
+        endsAt:{$gt:moment().subtract(1, "h"), $lt:moment()}, 
+        car:move.car,
+    }).populate({
+        path: 'car',
+        populate: {
+          path: 'location',
+          populate: {path: 'coordinates'},
+        },
+    });
+    if(!booking){
+      console.log("No unreturned cars");
+      return;
+    }
+    const carCoord = booking.car.location.coordinates;
+    const currentCoord = await Coordinate.findOne(move.coordinates);
+  
+    if(carCoord.latitude!=currentCoord.latitude || carCoord.longitude!=currentCoord.longitude){
+      console.log("Car is in the wrong place");
+      sendBookingIssueEmail(booking);
+    } else {
+      console.log("Car is in the right place");
+    }
 }
