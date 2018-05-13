@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 
 // Import Style
 import stylesMain from '../../../main.css';
+import styles from './Search.css'
 
 class Search extends Component {
   constructor(){
@@ -21,11 +22,14 @@ class Search extends Component {
   render() {
     return(
       <div style={{ width: '90%' }} className="content">
-        <input name="searchquery" onChange={this.saveQuery} value={this.props.query} />
-        <button onClick={this.clear}>clear</button>
+      <h4 className={stylesMain.h4}>Search FAQ </h4>
+        <input name="searchquery" className={styles.input} onChange={this.saveQuery} value={this.props.query} />
+        &nbsp;
+        <button className={styles.submitButton} onClick={this.clear}>Clear</button>
       </div>
     );
   }
 }
+
 
 export default Search;
