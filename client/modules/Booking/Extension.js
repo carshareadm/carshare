@@ -26,6 +26,7 @@ import moment from "moment";
 const storage = require("../../util/persistedStorage");
 
 import styles from "./Extension.css";
+import stylesMain from "../../main.css";
 import TimeTable from "./components/TimeTable";
 
 const nonDigit = /[^0-9]/g;
@@ -193,8 +194,8 @@ export class Extension extends Component {
 
   register() {
     return (
-      <div className={styles.body}>
-        <h1 className={styles.title}>Please Register</h1>
+      <div className={stylesMain.bodyFullPage}>
+        <h1 className={stylesMain.title}>Please Register</h1>
         <p>
           <Link to="/register">Click here to go to Register</Link>
           <br />
@@ -204,8 +205,8 @@ export class Extension extends Component {
   }
   goback() {
     return (
-      <div className={styles.body}>
-        <h1 className={styles.title}>No booking was selected</h1>
+      <div className={stylesMain.bodyFullPage}>
+        <h1 className={stylesMain.title}>No booking was selected</h1>
         <p>
           <Link to={window.history.back()}>Redirecting to previous page</Link>
           <br />
@@ -228,8 +229,8 @@ export class Extension extends Component {
 
   extended() {
     return (
-      <Container className={styles.body}>
-        <h1 className={styles.title}>Booking Extension success</h1>
+      <Container className={stylesMain.bodyFullPage}>
+        <h1 className={stylesMain.title}>Booking Extension Success</h1>
         <Row>
           <Col sm="12" md="6">
             <hr />
@@ -259,33 +260,33 @@ export class Extension extends Component {
           </Col>
           <Col sm="12" md="6">
             <hr />
-            <Card>
-              <CardHeader tag="h5">
-                Booked from <br />
-                <span className="text-muted">
+
+                <h1 className={stylesMain.subtitle}>Your booking has been updated </h1><br />
+                <h4 className={stylesMain.h4}>New booking time</h4>
+                <br />
+                Start Time: 
+                <strong>
                   {" " +
                     moment(this.state.booking.startsAt)
                       .format("MMMM Do YYYY HH:mm")
                       .toString() +
                     " "}
-                </span>
-                to
-                <span className="text-muted">
+                </strong> <br />
+                <br />
+                End Time: 
+                <strong>
                   {" " +
                     moment(this.state.booking.endsAt).format("MMMM Do YYYY HH:mm").toString() +
                     " "}
-                </span>
-              </CardHeader>
-              <CardBody>
-                <CardText>Booking Cost : ${this.state.cost.toFixed(
-                    2)}</CardText>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Link to="/">Click here to return home</Link>
+                </strong>
+                <br />
+                 <br />
+                New Booking Cost : <strong> ${this.state.cost.toFixed(
+                    2)} </strong>
+            <br />
+            <br />
+             <Button className={stylesMain.buttonSquareOutlineGrey} href="/">Click here to return home</Button>
+             
           </Col>
         </Row>
       </Container>
@@ -294,10 +295,10 @@ export class Extension extends Component {
 
   bookingFrm() {
     return (
-      <Container className={styles.body}>
+      <Container className={stylesMain.bodyFullPage}>
         <Row>
           <Col>
-            <h1 className={styles.title}>Booking Extension</h1>
+            <h1 className={stylesMain.title}>Booking Extension</h1>
           </Col>
         </Row>
         <Alert
@@ -336,28 +337,25 @@ export class Extension extends Component {
           </Col>
           <Col sm="12" md="6">
             <hr />
-            <h4 className={styles.h4}>Booking Form</h4>
-            <FormGroup>
+            <h4 className={stylesMain.h4}>Current Booking</h4>
               {this.renderLabel("startDate", "startDate")}
-              <p>{moment(this.state.booking.startsAt)
+              :<strong> {moment(this.state.booking.startsAt)
               .format("MMMM Do YYYY HH:mm")
-              .toString()}</p>
-            </FormGroup>
-            <FormGroup>
+              .toString()}</strong>
+              <br />
               {this.renderLabel("endDate", "endDate")}
-              <p>{moment(this.state.booking.endsAt)
+              :<strong> {moment(this.state.booking.endsAt)
               .format("MMMM Do YYYY HH:mm")
-              .toString()}</p>
-            </FormGroup>
-            <FormGroup>
-              <Button onClick={(e) => this.handleExtend(e, 'add')}>+1 hour</Button>
+              .toString()}</strong>
+              <br />
+            Current Booking Price : <strong>$ {this.state.booking.totalCost.toFixed(2)}</strong>
+            <br />
+            <br />
+            <h4 className={stylesMain.h4}>Press the below button to add an additional hour to the booking </h4>
+            <br />
+              <Button className={stylesMain.buttonSquareOutlineGrey} onClick={(e) => this.handleExtend(e, 'add')}>+1 hour</Button>
               &nbsp;
-              <Button onClick={(e) => this.handleExtend(e, 'minus')}>-1 hour</Button>
-            </FormGroup>
-            <FormGroup>
-            <p>Booking Price : $ {this.state.booking.totalCost.toFixed(
-                    2)}</p>
-            </FormGroup>
+
           </Col>
         </Row>
       </Container>

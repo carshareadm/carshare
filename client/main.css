@@ -120,6 +120,14 @@ body {
   color: rgb(76, 157, 38) !important;
   }
 
+  .buttonSquareOutlineGrey{
+  border: solid rgb(76, 157, 38) 1px !important;
+  min-width: 170px;
+  border-radius: 0 !important;
+  background-color: rgb(226, 226, 226) !important;
+  color: rgb(76, 157, 38) !important;
+  }
+
 .input-group .rbt {
 	width: 230px !important;
 }
