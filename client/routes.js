@@ -37,6 +37,8 @@ import {EnquiriesAdm} from './modules/Manage/Enquiries/EnquiriesAdm';
 import PaymentDetails from './modules/PaymentDetails/PaymentDetails';
 import Unauthorised from './modules/Unauthorised/Unauthorised';
 
+import CoordCheck from './modules/Util/CoordCheck';
+
 import requireAuth from  './infrastructure/requireAuth';
 import requireAdminAuth from  './infrastructure/requireAdminAuth';
 
@@ -82,8 +84,11 @@ export default (
 		<Route path="manage/damages" component={requireAdminAuth(DamagesAdm)} />
 		<Route path="manage/locations" component={requireAdminAuth(LocationsAdm)} />
 		<Route path="manage/users" component={requireAdminAuth(UsersAdm)} />
-    <Route path="manage/enquiries" component={requireAdminAuth(EnquiriesAdm)} />
+    	<Route path="manage/enquiries" component={requireAdminAuth(EnquiriesAdm)} />
 
 		<Route path='unauthorised' component={Unauthorised} />
+		
+		{/* util for testing */}
+		<Route path='coordcheck' component={requireAdminAuth(CoordCheck)} />
 	</Route>
 );

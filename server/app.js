@@ -67,6 +67,7 @@ const contact = require('./routes/contact.routes');
 const confirm = require('./routes/confirm.routes');
 const damage = require('./routes/damage.routes');
 const manage = require('./routes/manage.routes');
+const movement = require('./routes/movement.routes');
 
 
 app.use('/api/account', account);
@@ -81,6 +82,7 @@ app.use('/api/confirm', confirm);
 app.use('/api/contact', contact);
 app.use('/api/damage', damage);
 app.use('/api/manage', manage);
+app.use('/api/movement', movement);
 app.use('/api/*', (req, res) => { res.status(404).send("Not found"); });
 
 
