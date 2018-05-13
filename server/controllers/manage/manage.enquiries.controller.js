@@ -10,7 +10,7 @@ export const getFiltered = async (req, res) => {
   {
     const enquiries = await Enquiries
     .find({responseAt: null})
-    .sort('receivedAt')
+    .sort('-receivedAt')
     .exec();
 
     return res.status(200).send(enquiries);
@@ -72,8 +72,8 @@ export const stats = async (req, res) => {
     const yesterday = DateUtil.addHours(now, -24);
     const sevenDaysAgo = DateUtil.addHours(now, -24 * 7);
     const last24Hours = totalEnquiries.filter(f => f.receivedAt >= yesterday);
-    const last7Days = totalEnquiries.filter(f => f.receivedAt >= sevenDaysAgo);  
-  
+    const last7Days = totalEnquiries.filter(f => f.receivedAt >= sevenDaysAgo);
+
     const results = {
       total: totalEnquiries.length,
       resolved: resolved.length,
