@@ -35,13 +35,15 @@ export const postImage = function(req, res) {
       try{
         if (isPublic) {
           s3Helper.setPublicRead(img.filename, () => res.status(200).send(img.toObject()));
+        } else {
+          return res.status(200).send(img.toObject());
         }
       }
       catch(e) {
         logger.err(e);
         return res.status(500).send(e);
       }
-      
+
     }
   });
 };

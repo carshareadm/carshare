@@ -3,6 +3,8 @@ const License = require('../../models/license');
 const Image = require('../../models/image');
 const s3Helper = require('../../util/aws.helper');
 const ObjectId = require('mongoose').ObjectId;
+const logger = require('../../util/logger');
+const email = require('../../util/email.helper');
 
 export const getById = (req, res) => {
   License.findById(req.params.id)
@@ -50,6 +52,20 @@ export const updateLicenseImage = (req, res) => {
         }
         else {
           res.status(200).send();
+          // find the user so we can email admin.
+          User.findOne({license: req.params.id})
+            .select('email mobile')
+            .exec((err, user) => {
+              if (err) {
+                logger.err(err)
+              } else {
+                try {
+                  email.sendLicImageUpdateEmails(user);
+                } catch (e) {
+                  logger.err(e);
+                }
+              }
+            });
         }
       })
     }
