@@ -9,6 +9,9 @@ import Coordinate from "../models/coordinate"
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+/*
+  Sends confirmation code by email
+*/
 export const sendConfirmAccountUpdateEmail = (sendEmailTo, confirmationCode) => {
   const subject = 'ShaCar - Account update confirmation code';
   const body = `<p>
@@ -32,6 +35,10 @@ export const sendConfirmAccountUpdateEmail = (sendEmailTo, confirmationCode) => 
   sgMail.send(msg);
 };
 
+/*
+  Sends email to enquirer when enquiry received and
+  sends enquiry to admin.
+*/
 export const sendEnquiryCopyEmails = (newEnquiry) => {
   const enquiryId = newEnquiry._id;
   const enquiryEmail = newEnquiry.emailFrom;
@@ -78,8 +85,12 @@ export const sendEnquiryCopyEmails = (newEnquiry) => {
   };
 
   sgMail.send(msg2);
-}
+};
 
+/*
+  Sends email to enquirer and copy to admin when a response
+  is entered for an enquiry.
+ */
 export const sendEnquiryResponseEmail = (respondedEnquiry) => {
   const enquiryId = respondedEnquiry._id;
   const enquiryEmail = respondedEnquiry.emailFrom;
@@ -112,8 +123,78 @@ export const sendEnquiryResponseEmail = (respondedEnquiry) => {
   };
 
   sgMail.send(msg);
-}
+};
 
+export const sendLicImageUpdateEmails = (user) => {
+  const userEmail = user.email;
+  const userMobile = user.mobile;
+  const sendFrom = config.sendGrid.sendEmailsFrom;
+  const subject1 = `New License image for ${userEmail} awaiting approval`
+  const body1 = `
+    <p>
+    User ${userEmail}, mobile number ${userMobile} <br />
+    has uploaded a new license image, which is awaiting approval.
+    </p>
+   `;
+  const msg1 = {
+    to: sendFrom,
+    from: sendFrom,
+    subject: subject1,
+    html: body1,
+  };
+
+  sgMail.send(msg1);
+
+  // email user
+  const subject2 = `ShaCar - New license image uploaded`;
+  const body2 = `
+    <p>
+    We have received an upload of your new license image. Please bear with us
+    while we check and approve the new license image.
+    </p>
+    <p>
+    If you did not upload a new license image, please call us immediately
+    on 1300 000 123.
+    <br /><br />
+    Shacar Administration
+    </p>
+  `
+  const msg2 = {
+    to: userEmail,
+    from: sendFrom,
+    subject: subject2,
+    html: body2,
+  };
+
+  sgMail.send(msg2);
+};
+
+/*
+  Sends email when license image approved
+*/
+export const sendLicImageApprovedEmail = (user) => {
+  const userEmail = user.email;
+  const sendFrom = config.sendGrid.sendEmailsFrom;
+  const subject = `ShaCar - User ${userEmail} new license image approved`
+  const body = `
+    <p>
+    Your uploaded license image has been approved.
+    You can now book cars with ShaCar.
+    </p>
+   `;
+  const msg = {
+    to: userEmail,
+    bcc: sendFrom,
+    from: sendFrom,
+    subject: subject,
+    html: body,
+  };
+
+  sgMail.send(msg);
+};
+
+
+// converts multiline text to html text with breaks
 function textToHtml(text)
 {
   const reducer = (html, line) => html + line + '<br />'

@@ -1,6 +1,6 @@
 import Users from '../../models/user';
 import * as logger from '../../util/logger';
-
+import * as email from '../../util/email.helper';
 
 export const getAll = async (req, res) => {
   try {
@@ -21,16 +21,18 @@ export const update = async (req, res) => {
     const user = await Users.findById(req.params.userId)
     .populate('license')
     .exec();
-    
+
     if (user === null) {
       return res.status(404).send('User not found');
     }
     if (!user.license) {
       return res.status(500).send('User License not found');
     }
-    
+
+    const wasUnapproved = !user.license.approvedByAdmin;
+
     user.email = req.body.email;
-    user.mobile = req.body.mobile;    
+    user.mobile = req.body.mobile;
     user.isDisabled = req.body.isDisabled;
 
     user.license.licenseNumber = req.body.license.licenseNumber;
@@ -38,8 +40,17 @@ export const update = async (req, res) => {
 
     const savedLicense = await user.license.save();
     user.license = savedLicense;
-    
+
     const saved = await user.save();
+
+    if (wasUnapproved && savedLicense.approvedByAdmin) {
+      try {
+        await email.sendLicImageApprovedEmail(saved);
+      } catch (e) {
+        logger.err(e);
+      }
+    }
+
     return res.status(200).send(saved);
 
   } catch(e) {
@@ -55,8 +66,8 @@ export const stats = async (req, res) => {
       .exec();
     const inactive = totalUsers.filter(f => f.isDisabled === true);
     const admin = totalUsers.filter(f => f.isAdmin === true);
-    const pendingLicense = totalUsers.filter(f => f.license && f.license.image && f.license.approvedByAdmin === false);      
-  
+    const pendingLicense = totalUsers.filter(f => f.license && f.license.image && f.license.approvedByAdmin === false);
+
     const results = {
       total: totalUsers.length,
       inactive: inactive.length,

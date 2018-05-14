@@ -39,7 +39,7 @@ export class Profile extends Component {
     this.state = {
       // loading state
       isLoading: false,
-      loadingMsg: '',      
+      loadingMsg: '',
       // user profile deets
       userid: '',
       email: '',
@@ -115,9 +115,9 @@ export class Profile extends Component {
       suburb: this.state.suburb.length < 2,
       state: this.auStates.indexOf(this.state.state) < 0,
       postCode: !this.state.postCode.match(/^\d{4}$/),
-      multiple: (this.state.password.length > 0  && this.state.mobile.length > 0) 
-      || (this.state.password.length > 0  && this.state.mobile.length > 0) 
-      || (this.state.email.length > 0  && this.state.mobile.length > 0) 
+      multiple: (this.state.password.length > 0  && this.state.mobile.length > 0)
+      || (this.state.password.length > 0  && this.state.mobile.length > 0)
+      || (this.state.email.length > 0  && this.state.mobile.length > 0)
       || (this.state.password.length > 0  && this.state.email.length > 0),
     };
     return errs;
@@ -186,8 +186,8 @@ export class Profile extends Component {
 
   requiresConfirmation() {
     // have any sensitive fields been updated?
-    if (this.state.isTouched.email === true || 
-        this.state.isTouched.mobile  === true || 
+    if (this.state.isTouched.email === true ||
+        this.state.isTouched.mobile  === true ||
         this.state.isTouched.licenseNumber === true) {
 
         // have we been through confirmation process yet?
@@ -314,7 +314,7 @@ export class Profile extends Component {
   }
 
   render() {
-    return this.state.codes.isRequested && !this.state.codes.confirmed ? 
+    return this.state.codes.isRequested && !this.state.codes.confirmed ?
       this.renderConfirm(this.state.codes.deliveryMethod) : this.profileFrm()
   }
 
@@ -331,7 +331,7 @@ export class Profile extends Component {
     this.state.multipleUpdate=this.isError('multiple');
 
     const load = this.state.isLoading ? (<Loading msg={this.state.loadingMsg}></Loading>) : '';
-  
+
   return (
     <div className={stylesMain.body}>
       {load}
@@ -551,10 +551,10 @@ export class Profile extends Component {
 
   preLoadImage(imageUrl) {
     if (imageUrl && imageUrl.length > 0) {
-      this.setState({licenseImageUrl: ''}); 
+      this.setState({licenseImageUrl: ''});
       const img = new Image();
       img.onload = () => {
-        this.setState({licenseImageUrl: imageUrl});  
+        this.setState({licenseImageUrl: imageUrl});
       };
       img.src = imageUrl;
     }
@@ -564,7 +564,7 @@ export class Profile extends Component {
     const token = storage.get(storage.Keys.JWT);
   	if(token)
 	  {
-		  this.setState({	
+		  this.setState({
 			  userid: JSON.parse(atob(token.split('.')[1]))['sub'],
   		});
 	  }
