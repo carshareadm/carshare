@@ -8,6 +8,7 @@ import {
 } from '../../infrastructure/AuthActions';
 
 // Import Style
+import mainStyles from '../../main.css';
 import styles from './Layout.css';
 import arrows from './angle-double-right.svg.png';
 
@@ -47,6 +48,7 @@ export class Layout extends Component {
   render() {
     return (
       <div className="row no-gutters">
+        <span className={mainStyles.zIndexFixer}></span>
         <div className={styles.backgrounds+" d-none d-xl-flex col-xl-2"}>
           <img className={styles.arrows1} src={arrows} />
         </div>
