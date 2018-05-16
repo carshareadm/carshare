@@ -1,3 +1,11 @@
+/* the webpack css processor tries to optimise z-indexes
+ * but unfortunatley this breaks production. if it encoutners 
+ * a -ve z-index, it discontinues optimising
+ */
+ .zIndexFixer {
+  z-index: -1;
+}
+
 .bar{
 	position: absolute;
   	top: 70px;

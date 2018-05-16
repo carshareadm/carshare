@@ -27,6 +27,17 @@ input:-moz-placeholder {
 	font-weight: 300;
 }
 
+/* the webpack css processor tries to optimise z-indexes
+ * but unfortunatley this breaks production. if it encoutners 
+ * a -ve z-index, it discontinues optimising
+ */
+.zIndexFixer {
+  z-index: -1;
+  width: 0;
+  height: 0;
+  position: absolute
+}
+
 body {
 	background-color: rgb(41, 97, 31); 
 	font-family: 'Lato', sans-serif;
