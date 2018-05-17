@@ -71,8 +71,17 @@ const updatePaymentDetails = function(req, res)
   CreditCard
     .findById(req.body._id)
     .then((card) => {
-      card.set(update);
-      return card.save();
+      if (card)
+      {
+        card.set(update);
+        return card.save();
+      }
+      else
+      {
+        const e = new Error('Card to be updated does not exist.');
+        e.name = 'DocumentNotFoundError';
+        throw e;
+      }
     })
     .then((card) => { res.status(200).send(card); })
     .catch((err) => {
