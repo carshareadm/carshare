@@ -1,5 +1,6 @@
 import Enquiry from '../../models/enquiry';
 import * as email from '../../util/email.helper';
+import * as logger from '../../util/logger';
 
 export async function addEnquiry(req, res)
 {
@@ -20,13 +21,13 @@ export async function addEnquiry(req, res)
     try {
       await email.sendEnquiryCopyEmails(savedEnquiry);
     } catch (e) {
-      console.log(e);
+      logger.err(e);
     }
     return res.status(200).send(savedEnquiry)
   }
   catch (e)
   {
-    console.log(e);
+    logger.err(e);
     if (e.name === 'ValidationError')
     {
       return res.status(400).send(e);

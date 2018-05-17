@@ -16,7 +16,7 @@ let testUser = null;
 let testEnquiry1 = null;
 let testEnquiry2 = null;
 
-describe("Manage Enquiries", () => {
+describe("Manage enquiries controller", () => {
   beforeAll(async () => {
     await mongoose.connect("mongodb://localhost/test", {
       useMongoClient: true,
@@ -74,7 +74,7 @@ describe("Manage Enquiries", () => {
     let token = {
       sub: testUser._id,
       email: testUser.email,
-      isAdmin: false,
+      isAdmin: true,
       exp: DateUtils.getDateInSeconds(
         DateUtils.addHours(new Date(), config.jwt.lifetimeInHours)
       ),
