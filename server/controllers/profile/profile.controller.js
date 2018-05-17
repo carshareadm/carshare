@@ -11,7 +11,8 @@ import * as logger from '../../util/logger';
 
 const getMyProfile = function(req, res) {
   User.findById(req.userId)
-    .populate("-confirmationCodes -__v")
+    .select("email mobile license address")
+    .populate("address")
     .exec((err, user) => {
       if (err) {
         res.status(500).send(err);
@@ -56,10 +57,10 @@ const updateMyProfile = function(req, res) {
   User.findById(user).populate('address license').exec((usrErr, userFound) => {
     if (usrErr) {
       return res.status(500).send(usrErr);
-    } 
+    }
     if (!userFound) {
       return res.status(404).send();
-    } 
+    }
     if (email && (!mobile && !password)) {
       userFound.email = email;
       isUpdated = true;
@@ -110,8 +111,8 @@ const updateMyProfile = function(req, res) {
           return res.status(500).send(addressUpdErr);
         }
       });
-      isUpdated = true;     
-    } 
+      isUpdated = true;
+    }
 
     if (isUpdated) {
       const usrChkErr = userFound.validateSync();
@@ -124,9 +125,9 @@ const updateMyProfile = function(req, res) {
         } else {
           return res.status(200).send(savedUsr);
         }
-      });        
+      });
     } else {
-      return res.status(400).send('Nothing updated');     
+      return res.status(400).send('Nothing updated');
     }
   });
 };
