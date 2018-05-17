@@ -24,7 +24,7 @@ export const getAll = async (req, res) => {
 	    }
       return d;
     })
-    res.status(200).send(dmg);
+    return res.status(200).send(dmg);
   } catch(e) {
     logger.err(e);
     return res.status(500).send(e);
@@ -35,7 +35,6 @@ export const getAll = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const damage = await Damage.findById(req.params.damageId).exec();
-    console.log(damage);
     damage.isDisabled = true;
     await damage.save();
     return res.status(200).send(damage);

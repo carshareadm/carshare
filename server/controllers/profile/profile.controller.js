@@ -138,8 +138,9 @@ const getMyBookings = function(req, res){
     user: mongoose.Types.ObjectId(req.userId), isDisabled: false})
     .sort({ startsAt: -1 })
     .populate({
-      path:'car', populate: ['vehicleType', 'location'],
+      path:'car', populate: ['vehicleType', 'location'], select: ['-movements -__v'],
     })
+    .select('-isDisabled -__v')
     .exec((err, bookings) =>{
       if(err){
         res.status(500).send(err);

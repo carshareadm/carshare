@@ -21,7 +21,7 @@ const mongoOptions = {
   bufferMaxEntries: 0,
 };
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   const expressSwagger = require('express-swagger-generator')(app);
   
   let swaggerOptions = {

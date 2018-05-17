@@ -6,7 +6,6 @@ import Booking from "../../models/booking";
 import mongoose from 'mongoose';
 import moment from 'moment';
 
-import * as s3Helper from '../../util/aws.helper';
 import * as logger from '../../util/logger';
 
 
@@ -84,9 +83,11 @@ const getCar = function(req, res) {
     _id:mongoose.Types.ObjectId(req.params.carId),
   }).populate('location image vehicleType').exec((err, car) => {
     if(err){
-      res.status(500).send(err);
+      return res.status(500).send(err);
+    } else if (car) {
+      return res.status(200).send(car);
     } else {
-      res.status(200).send(car);
+      return res.status(404).send('car not found');
     }
   });
 }
@@ -124,40 +125,9 @@ const getCarsForType = function(req, res){
 
 }
 
-const getCarImage = async (req, res) => {
-  const carId = req.params.carId;
-
-  try{
-    const car = await Car.findById(carId)
-    .populate('image')
-    .exec();
-
-    if (!car) {
-      return res.status(500).send('Car not found');
-    }
-
-    if (!car.image) {
-      return res.status(404).send('Car Image not found');
-    }
-
-    try {
-      const url = s3Helper.getDownloadSignedUrl(car.image.filename);
-      return res.status(200).send({imageUrl: url});
-    } catch(e) {
-      logger.err(e);
-      return res.status(500).send(e);
-    }
-
-  } catch(e) {
-    logger.err(e);
-    return res.status(500).send(e);
-  }
-};
-
 module.exports = {
   getCars: getCars,
   getTimes: getTimes,
   getCar: getCar,
   getCarsForType: getCarsForType,
-  getCarImage: getCarImage,
 };

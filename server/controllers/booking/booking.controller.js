@@ -28,8 +28,7 @@ const createBooking = function(req, res) {
       return res.status(500).send(usrErr);
     }
     if (!selectedUser) {
-      // Unauthorised if unable to find current user
-      return res.status(401).send();
+      return res.status(404).send('User not found');
     }
 
     Car.findById(carId)
@@ -40,7 +39,7 @@ const createBooking = function(req, res) {
         }
         if (!vehicle) {
           // Bad Request if no requested car
-          return res.status(400).send("vehicle not found");
+          return res.status(404).send("vehicle not found");
         }
         let newBooking = new Booking();
         newBooking.car = vehicle._id;
@@ -185,7 +184,7 @@ const extendBooking = function(req, res) {
     }
     if (!foundBook) {
       // Bad Request if booking not found
-      return res.status(400).send();
+      return res.status(404).send('booking not found');
     }
 
     else
@@ -300,7 +299,7 @@ const cancelBooking = function(req, res) {
         if(booking.user!=userId)
         {
           // Not a booking belonging to the user
-          res.status(401).send();
+          res.status(403).send();
         }
         else if(moment(booking.startsAt).isAfter(moment()))
         {
@@ -318,7 +317,7 @@ const cancelBooking = function(req, res) {
         else
         {
           // Bad Request as booking start time is after current time
-          res.status(400).send();
+          res.status(400).send('booking start time is after current time');
         }
       }
     });
@@ -350,7 +349,7 @@ const getBooking = function(req, res) {
   }
   else
   {
-    res.status(400).send();
+    res.status(400).send('No booking id');
   }
 };
 

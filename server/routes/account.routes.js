@@ -18,6 +18,7 @@ var router = express.Router();
  */
 
 /**
+ * register for a ShaCar account
  * @route POST /account/register
  * @group account
  * @param {RegisterModel.model} registerModel.body.required - user details
@@ -28,6 +29,7 @@ var router = express.Router();
 router.post("/register", register.register);
 
 /**
+ * login to ShaCar
  * @route POST /account/login
  * @group account
  * @param {LoginModel.model} loginModel.body.required - user creds
@@ -37,6 +39,7 @@ router.post("/register", register.register);
 router.post("/login", login.login);
 
 /**
+ * request password reset
  * @route POST /account/reset
  * @group account
  * @param {RegisterModel.model} resetModel.body.required - user details
@@ -44,7 +47,6 @@ router.post("/login", login.login);
  * @returns {Error} 400 - validation errors
  * @returns {Error} 500 - database errors
 */
-
 router.post("/reset", reset.reset);
 
 module.exports = router;

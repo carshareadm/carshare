@@ -22,7 +22,7 @@ const bookingSchema = new Schema({
   }],
   isDisabled: { type: "Boolean", required: true, default: false },
   totalCost: { type: mongoose.Schema.Types.Number},
-  //To aid tracking what code was used with the booking
+  // To aid tracking what code was used with the booking
   offer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Offer',

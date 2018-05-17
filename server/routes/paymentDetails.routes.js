@@ -15,10 +15,12 @@ var router = express.Router();
   * @property {string} nameOnCard
   * @property {string} expiryMonth
   * @property {string} expiryYear
+  */
 
 /**
+ * get payment
  * @route GET /paymentDetails/my
- * @group profile
+ * @group paymentDetails
  * @returns {PaymentDetailsModel.model} 200
  * @returns {Error} 401 - user not authenticated
  * @returns {Error} 404 - user not found
@@ -27,8 +29,10 @@ var router = express.Router();
 router.get('/my', isAuthenticatedGuard, paymentDetails.getMyPaymentDetails);
 
 /**
+ * create payment details
  * @route POST /paymentDetails/add
- * @group profile
+ * @group paymentDetails
+ * @param {CardModel.model} CardModel.body.required
  * @returns {CardModel.model} 200
  * @returns {Error} 400 - invalid card info
  * @returns {Error} 401 - user not authenticated
@@ -38,8 +42,10 @@ router.get('/my', isAuthenticatedGuard, paymentDetails.getMyPaymentDetails);
 router.post('/add', isAuthenticatedGuard, paymentDetails.addPaymentDetails);
 
 /**
- * @route PUT/paymentDetails/update
- * @group profile
+ * update payment details
+ * @route PUT /paymentDetails/update
+ * @group paymentDetails
+ * @param {CardModel.model} CardModel.body.required
  * @returns {CardModel.model} 200
  * @returns {Error} 400 - invalid card info
  * @returns {Error} 401 - user not authenticated

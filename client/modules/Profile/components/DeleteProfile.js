@@ -54,7 +54,7 @@ export class DeleteProfile extends Component {
     })
     
     http.client()
-    .put('/profile/delete')
+    .delete('/profile/delete')
     .then(async res => {
       await this.setState({
         isLoading: false,
