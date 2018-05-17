@@ -387,6 +387,7 @@ export class Profile extends Component {
                   id="street2"
                   placeholder="Street 2"
                   onChange={this.handleStreet2Change.bind(this)}
+                  onBlur={() => this.handleBlur('street2')}
                   value={this.state.street2}
                 />
               </FormGroup>
