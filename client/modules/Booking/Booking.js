@@ -28,6 +28,7 @@ import moment from "moment";
 const storage = require("../../util/persistedStorage");
 
 import styles from "./Booking.css";
+
 import TimeTable from "./components/TimeTable";
 
 const nonDigit = /[^0-9]/g;
@@ -305,7 +306,7 @@ export class Booking extends Component {
 
   cvvPrompt() {
     return (
-      <Container className={styles.body}>
+      <div className={styles.body}>
         <h1 className={styles.title}>CVV Confirmation</h1>
         <Form onSubmit={this.handleCcvConfirmation.bind(this)}>
           <FormGroup>
@@ -325,13 +326,13 @@ export class Booking extends Component {
             Confirm
           </Button>
         </Form>
-      </Container>
+      </div>
     );
   }
 
   booked() {
     return (
-      <Container className={styles.body}>
+      <div className={stylesMain.body}>
         <h1 className={styles.title}>Booking success</h1>
         <Row>
           <Col sm="12" md="6">
@@ -391,7 +392,7 @@ export class Booking extends Component {
             <Link to="/">Click here to return home</Link>
           </Col>
         </Row>
-      </Container>
+      </div>
     );
   }
 
@@ -401,7 +402,7 @@ export class Booking extends Component {
     const isDisabled = this.isFormInvalid();
 
     return (
-      <Container className={styles.body}>
+      <div className={styles.body}>
         <Row>
           <Col>
             <h1 className={styles.title}>Booking</h1>
@@ -533,7 +534,7 @@ export class Booking extends Component {
             </Button>
           </Col>
         </Row>
-      </Container>
+      </div>
     );
   }
 
