@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Inga Pflaumer
+ */
 import Coordinate from '../../models/coordinate';
 import Movement from '../../models/movement';
 import mongoose from 'mongoose';

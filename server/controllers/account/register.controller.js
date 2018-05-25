@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Tianqi Chen
+ */
 import User from "../../models/user";
 import License from "../../models/license";
 import Image from "../../models/image";

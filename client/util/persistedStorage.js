@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ */
+
 // we want to save the auth JWT so it works between refreshes,
 // and also between tabs and windows if local storage is available
 //var storage = window.localStorage || window.sessionStorage;

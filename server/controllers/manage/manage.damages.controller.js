@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ */
 import Cars from '../../models/car';
 import Damage from '../../models/damage';
 import * as logger from '../../util/logger';

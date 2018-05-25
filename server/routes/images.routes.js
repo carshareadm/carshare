@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 const upload = require("../controllers/images/upload.controller");
 const isAuthenticatedGuard = require("../middleware/isAuthenticatedGuard");
 var express = require("express");

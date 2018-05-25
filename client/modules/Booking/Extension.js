@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Tianqi Chen
+ *               - Matthew Ryan
+ */
 //Import react
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";

@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ */
 // Import Actions
 import { ON_LOGIN, ON_LOGOUT, IS_ADMIN } from './AuthActions'; // import actions here
 

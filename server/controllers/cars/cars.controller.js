@@ -1,3 +1,12 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Jason Koh
+ */
 import Car from "../../models/car";
 import VehicleType from "../../models/vehicleType";
 import Location from "../../models/location";

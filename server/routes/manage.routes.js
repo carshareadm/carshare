@@ -1,3 +1,13 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Jason Koh
+ */
 const cars = require("../controllers/manage/manage.cars.controller");
 const locations = require("../controllers/manage/manage.locations.controller");
 const users = require("../controllers/manage/manage.users.controller");

@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Jason Koh
+ */
 import Users from '../../models/user';
 import * as logger from '../../util/logger';
 import * as email from '../../util/email.helper';

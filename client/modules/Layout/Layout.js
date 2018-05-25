@@ -1,3 +1,14 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Jason Koh
+ */
+
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -13,7 +24,6 @@ import styles from './Layout.css';
 import arrows from './angle-double-right.svg.png';
 
 // Import Components
-import DevTools from '../../components/DevTools';
 import Header from './components/Header/Header';
 import UserBar from './components/UserBar/UserBar';
 import Footer from './components/Footer/Footer';

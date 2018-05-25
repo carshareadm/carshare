@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 const User = require('../../models/user');
 const ConfirmationCode = require('../../models/confirmationCode');
 const sms = require('../../util/sms.helper');

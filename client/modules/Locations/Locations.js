@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Inga Pflaumer
+ *               - Jason Koh
+ */
 // Imports
 import React, { Component, PropTypes } from 'react';
 import {geolocated} from 'react-geolocated';

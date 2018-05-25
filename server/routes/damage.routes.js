@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Inga Pflaumer
+ */
 const damage = require("../controllers/damage/damage.controller");
 var express = require("express");
 var router = express.Router();

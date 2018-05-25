@@ -1,4 +1,13 @@
-//Import react
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Matthew Ryan
+ */
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import styles from "./Registration.css";

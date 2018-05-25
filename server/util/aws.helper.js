@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 const AWS = require("aws-sdk");
 
 const s3 = new AWS.S3({ region: "us-east-2" });

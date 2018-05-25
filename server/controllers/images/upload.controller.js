@@ -1,3 +1,12 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Jason Koh
+ */
 const s3Helper = require('../../util/aws.helper');
 const uuidv4 = require('uuid/v4');
 import * as logger from '../../util/logger';

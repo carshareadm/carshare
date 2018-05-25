@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Jason Koh
+ */
 import Enquiries from '../../models/enquiry';
 import * as email from '../../util/email.helper';
 import * as DateUtil from '../../util/date.helper';

@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Inga Pflaumer
+ */
 import React, { Component, PropTypes } from 'react';
 import {GoogleApiWrapper} from 'google-maps-react';
 import GMap from './components/GMap.js'
