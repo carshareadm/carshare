@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ */
 // Export Constants
 export const ON_LOGIN = 'ON_LOGIN';
 export const ON_LOGOUT = 'ON_LOGOUT';

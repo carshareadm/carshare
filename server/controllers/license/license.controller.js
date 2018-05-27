@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Jason Koh
+ */
 const User = require('../../models/user');
 const License = require('../../models/license');
 const Image = require('../../models/image');

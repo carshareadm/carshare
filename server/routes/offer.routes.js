@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Tianqi Chen
+ */
 const offer = require("../controllers/offer/offer.controller");
 const isAuthenticatedGuard = require("../middleware/isAuthenticatedGuard");
 const isAbleToMakeBookingGuard = require('../middleware/isAbleToMakeBookingGuard');

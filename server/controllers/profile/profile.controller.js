@@ -1,3 +1,13 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Jason Koh
+ */
 import User from "../../models/user";
 import Address from "../../models/address";
 import License from "../../models/license";

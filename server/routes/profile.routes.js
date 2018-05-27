@@ -1,3 +1,12 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ */
 const profile = require("../controllers/profile/profile.controller");
 const isAuthenticatedGuard = require("../middleware/isAuthenticatedGuard");
 var express = require("express");

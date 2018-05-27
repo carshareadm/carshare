@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ */
 import React, { Component, PropTypes } from "react";
 import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
 

@@ -1,4 +1,13 @@
-/* Import dbScheme */
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Jason Koh
+ */
 import Address from "./models/address";
 import Booking from "./models/booking";
 import Car from "./models/car";

@@ -1,3 +1,12 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Matthew Ryan
+ */
 //Import react
 import React, { Component, PropTypes } from 'react'; 
 import ReactDOMServer from 'react-dom/server';

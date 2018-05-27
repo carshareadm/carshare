@@ -1,3 +1,13 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Matthew Ryan
+ */
 import React, { Component, PropTypes } from "react";
 import router, { Link, Redirect } from "react-router";
 import { bindActionCreators } from "redux";

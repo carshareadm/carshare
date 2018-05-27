@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 const sms = require("../controllers/confirm/sms.controller");
 const email = require("../controllers/confirm/email.controller");
 const confirm = require("../controllers/confirm/confirm.controller");

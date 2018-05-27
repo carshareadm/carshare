@@ -1,9 +1,16 @@
 /**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ */
+/**
  * Main store function
  */
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import DevTools from './components/DevTools';
 import rootReducer from './reducers';
 
 export function configureStore(initialState = { loggedIn: false, isAdmin: false }) {
@@ -11,11 +18,6 @@ export function configureStore(initialState = { loggedIn: false, isAdmin: false 
   const enhancers = [
     applyMiddleware(thunk),
   ];
-
-  if (process.env.CLIENT && process.env.NODE_ENV === 'development') {
-    // Enable DevTools only when rendering on client and during development.
-    enhancers.push(window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument());
-  }
 
   const store = createStore(rootReducer, initialState, compose(...enhancers));
 

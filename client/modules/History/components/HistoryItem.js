@@ -1,3 +1,12 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Matthew Ryan
+ */
 // Imports
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';

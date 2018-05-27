@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Jason Koh
+ */
 const paymentDetails = require("../controllers/paymentDetails/paymentDetails.controller");
 const isAuthenticatedGuard = require("../middleware/isAuthenticatedGuard");
 var express = require("express");

@@ -1,4 +1,11 @@
-//server.js
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ */
 import 'babel-polyfill';
 const app = require("./app");
 

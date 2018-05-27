@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 const config = require('../config');
 const jwt = require('jwt-simple');
 const User = require('../models/user');

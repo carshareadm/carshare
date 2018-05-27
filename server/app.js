@@ -1,3 +1,13 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Jason Koh
+ */
 import Express from 'express';
 import compression from 'compression';
 import bodyParser from 'body-parser';
@@ -38,7 +48,6 @@ if (isDevMode) {
 }
 
 // React And Redux Setup
-import { configureStore } from '../client/store';
 import { Provider } from 'react-redux';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -46,7 +55,6 @@ import { match, RouterContext } from 'react-router';
 
 // Import required modules
 import routes from '../client/routes';
-import { fetchComponentData } from './util/fetchData';
 import serverConfig from './config';
 
 // Apply body Parser and server public assets and routes

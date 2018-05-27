@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 import User from "../../models/user";
 const config = require('../../config');
 const DateUtils = require('../../util/date.helper');

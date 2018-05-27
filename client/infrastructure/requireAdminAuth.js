@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Paul Crow
+ */
 import React from 'react';
 import { withRouter } from 'react-router';
 import * as TokenUtils from '../util/token.utils';

@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 import {ObjectId} from 'mongoose';
 
 const licenseGuard = (req, res, next) => {

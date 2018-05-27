@@ -1,3 +1,12 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ *               - Jason Koh
+ */
 const dotenv = require('dotenv');
 
 // https://www.npmjs.com/package/dotenv#config

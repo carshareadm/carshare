@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ */
 const s3Helper = require("../../util/aws.helper");
 import * as logger from '../../util/logger';
 const User = require("../../models/user");

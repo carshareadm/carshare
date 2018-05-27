@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ */
 const cars = require("../controllers/cars/cars.controller");
 var express = require("express");
 var router = express.Router();

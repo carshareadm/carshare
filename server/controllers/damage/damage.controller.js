@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Inga Pflaumer
+ */
 import Damage from '../../models/damage';
 import Booking from '../../models/booking';
 import mongoose from 'mongoose';

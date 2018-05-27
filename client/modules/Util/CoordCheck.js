@@ -1,4 +1,10 @@
-// Imports
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Inga Pflaumer
+ */
 import React, { Component, PropTypes } from 'react';
 import {geolocated} from 'react-geolocated';
 import * as http from '../../util/http';

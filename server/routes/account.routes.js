@@ -1,3 +1,11 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Paul Crow
+ *               - Tianqi Chen
+ */
 const register = require("../controllers/account/register.controller");
 const login = require("../controllers/account/login.controller");
 const reset = require("../controllers/account/reset.controller");

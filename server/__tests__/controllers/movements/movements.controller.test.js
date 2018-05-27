@@ -1,3 +1,10 @@
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/26
+ * Authors
+ *               - Inga Pflaumer
+ */
 import {Mockgoose} from 'mockgoose-fix';
 import moment from 'moment';
 import mongoose from 'mongoose';

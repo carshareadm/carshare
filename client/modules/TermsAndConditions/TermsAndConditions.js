@@ -1,4 +1,12 @@
-//Import react
+/**
+ * Project       - ShaCar
+ * Team          - Group 3 Carshare
+ * Last Modified - 2018/05/25
+ * Authors
+ *               - Inga Pflaumer
+ *               - Tianqi Chen
+ *               - Matthew Ryan
+ */
 import React, { Component, PropTypes } from "react";
 
 import style from "./TermsAndConditions.css";
