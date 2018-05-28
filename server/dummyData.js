@@ -425,6 +425,566 @@ module.exports = async () => {
     }
   });
 
+  //Car 5 data Block
+  var regoC5 = "XYZ005";
+  let car5 = null;
+  Car.findOne({ rego: regoC5 }, (error, car) => {
+    if (!car) {
+      car5 = new Car();
+      car5.rego = regoC5;
+      car5.make = "BMW";
+      car5.model = "X5";
+      car5.colour = "Blue";
+      car5.year = "2014";
+      car5.seats = "4";
+      car5.doors = "5";
+      car5.vehicleType = typeSuv;
+      car5.location = location3;
+      car5.isDisabled = false;
+
+      //Movement Block
+      let movementsC5 = new Movement();
+      movementsC5.car = car5;
+      movementsC5.coordinates = location3.coordinates;
+      movementsC5.save().catch(e => {
+        console.log(e);
+      });
+
+      car5.movements = movementsC5;
+
+      car5.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC5, "' already exists.");
+    }
+  });
+
+//Car 6 data Block
+  var regoC6 = "XYZ006";
+  let car6 = null;
+  Car.findOne({ rego: regoC6 }, (error, car) => {
+    if (!car) {
+      car6 = new Car();
+      car6.rego = regoC6;
+      car6.make = "BMW";
+      car6.model = "X5";
+      car6.colour = "Red";
+      car6.year = "2013";
+      car6.seats = "4";
+      car6.doors = "5";
+      car6.vehicleType = typeSuv;
+      car6.location = location3;
+      car6.isDisabled = false;
+
+      //Movement Block
+      let movementsC6 = new Movement();
+      movementsC6.car = car6;
+      movementsC6.coordinates = location3.coordinates;
+      movementsC6.save().catch(e => {
+        console.log(e);
+      });
+
+      car6.movements = movementsC6;
+
+      car6.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC6, "' already exists.");
+    }
+  });
+
+//Car 7 data Block
+  var regoC7 = "XYZ007";
+  let car7 = null;
+  Car.findOne({ rego: regoC7 }, (error, car) => {
+    if (!car) {
+      car7 = new Car();
+      car7.rego = regoC7;
+      car7.make = "BMW";
+      car7.model = "X6";
+      car7.colour = "Gold";
+      car7.year = "2015";
+      car7.seats = "2";
+      car7.doors = "3";
+      car7.vehicleType = typeSuv;
+      car7.location = location3;
+      car7.isDisabled = false;
+
+      //Movement Block
+      let movementsC7 = new Movement();
+      movementsC7.car = car7;
+      movementsC7.coordinates = location3.coordinates;
+      movementsC7.save().catch(e => {
+        console.log(e);
+      });
+
+      car7.movements = movementsC7;
+
+      car7.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC7, "' already exists.");
+    }
+  });
+
+//Car 8 data Block
+  var regoC8 = "XYZ008";
+  let car8 = null;
+  Car.findOne({ rego: regoC8 }, (error, car) => {
+    if (!car) {
+      car8 = new Car();
+      car8.rego = regoC8;
+      car8.make = "Range Rover";
+      car8.model = "Discovery";
+      car8.colour = "Black";
+      car8.year = "2014";
+      car8.seats = "4";
+      car8.doors = "5";
+      car8.vehicleType = typeSuv;
+      car8.location = location3;
+      car8.isDisabled = false;
+
+      //Movement Block
+      let movementsC8 = new Movement();
+      movementsC8.car = car8;
+      movementsC8.coordinates = location3.coordinates;
+      movementsC8.save().catch(e => {
+        console.log(e);
+      });
+
+      car8.movements = movementsC8;
+
+      car8.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC8, "' already exists.");
+    }
+  });
+
+//Car 9 data Block
+  var regoC9 = "XYZ009";
+  let car9 = null;
+  Car.findOne({ rego: regoC9 }, (error, car) => {
+    if (!car) {
+      car9 = new Car();
+      car9.rego = regoC9;
+      car9.make = "BMW";
+      car9.model = "3 Series";
+      car9.colour = "Red";
+      car9.year = "2013";
+      car9.seats = "4";
+      car9.doors = "5";
+      car9.vehicleType = typeLuxury;
+      car9.location = location3;
+      car9.isDisabled = false;
+
+      //Movement Block
+      let movementsC9 = new Movement();
+      movementsC9.car = car9;
+      movementsC9.coordinates = location3.coordinates;
+      movementsC9.save().catch(e => {
+        console.log(e);
+      });
+
+      car9.movements = movementsC9;
+
+      car9.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC9, "' already exists.");
+    }
+  });
+
+//Car 10 data Block
+  var regoC10 = "XYZ010";
+  let car10 = null;
+  Car.findOne({ rego: regoC10 }, (error, car) => {
+    if (!car) {
+      car10 = new Car();
+      car10.rego = regoC10;
+      car10.make = "BMW";
+      car10.model = "3 Series";
+      car10.colour = "Gold";
+      car10.year = "2015";
+      car10.seats = "2";
+      car10.doors = "3";
+      car10.vehicleType = typeLuxury;
+      car10.location = location3;
+      car10.isDisabled = false;
+
+      //Movement Block
+      let movementsC10 = new Movement();
+      movementsC10.car = car10;
+      movementsC10.coordinates = location3.coordinates;
+      movementsC10.save().catch(e => {
+        console.log(e);
+      });
+
+      car10.movements = movementsC10;
+
+      car10.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC10, "' already exists.");
+    }
+  });
+
+//Car 11 data Block
+  var regoC11 = "XYZ011";
+  let car11 = null;
+  Car.findOne({ rego: regoC11 }, (error, car) => {
+    if (!car) {
+      car11 = new Car();
+      car11.rego = regoC11;
+      car11.make = "BMW";
+      car11.model = "3 Series";
+      car11.colour = "Gold";
+      car11.year = "2000";
+      car11.seats = "2";
+      car11.doors = "3";
+      car11.vehicleType = typeLuxury;
+      car11.location = location3;
+      car11.isDisabled = false;
+
+      //Movement Block
+      let movementsC11 = new Movement();
+      movementsC11.car = car11;
+      movementsC11.coordinates = location3.coordinates;
+      movementsC11.save().catch(e => {
+        console.log(e);
+      });
+
+      car11.movements = movementsC11;
+
+      car11.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC11, "' already exists.");
+    }
+  });
+
+//Car 12 data Block
+  var regoC12 = "XYZ012";
+  let car12 = null;
+  Car.findOne({ rego: regoC12 }, (error, car) => {
+    if (!car) {
+      car12 = new Car();
+      car12.rego = regoC12;
+      car12.make = "BMW";
+      car12.model = "7 Series";
+      car12.colour = "Gold";
+      car12.year = "2008";
+      car12.seats = "2";
+      car12.doors = "3";
+      car12.vehicleType = typeLuxury;
+      car12.location = location3;
+      car12.isDisabled = false;
+
+      //Movement Block
+      let movementsC12 = new Movement();
+      movementsC12.car = car12;
+      movementsC12.coordinates = location3.coordinates;
+      movementsC12.save().catch(e => {
+        console.log(e);
+      });
+
+      car12.movements = movementsC12;
+
+      car12.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC12, "' already exists.");
+    }
+  });
+
+//Car 13 data Block
+  var regoC13 = "XYZ013";
+  let car13 = null;
+  Car.findOne({ rego: regoC13 }, (error, car) => {
+    if (!car) {
+      car13 = new Car();
+      car13.rego = regoC13;
+      car13.make = "Toyota";
+      car13.model = "Camry";
+      car13.colour = "White";
+      car13.year = "1994";
+      car13.seats = "2";
+      car13.doors = "3";
+      car13.vehicleType = typeSmall;
+      car13.location = location3;
+      car13.isDisabled = false;
+
+      //Movement Block
+      let movementsC13 = new Movement();
+      movementsC13.car = car13;
+      movementsC13.coordinates = location3.coordinates;
+      movementsC13.save().catch(e => {
+        console.log(e);
+      });
+
+      car13.movements = movementsC13;
+
+      car13.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC13, "' already exists.");
+    }
+  });
+
+//Car 14 data Block
+  var regoC14 = "XYZ014";
+  let car14 = null;
+  Car.findOne({ rego: regoC14 }, (error, car) => {
+    if (!car) {
+      car14 = new Car();
+      car14.rego = regoC14;
+      car14.make = "Toyota";
+      car14.model = "Camry Coupe";
+      car14.colour = "White";
+      car14.year = "2001";
+      car14.seats = "2";
+      car14.doors = "3";
+      car14.vehicleType = typeSmall;
+      car14.location = location3;
+      car14.isDisabled = false;
+
+      //Movement Block
+      let movementsC14 = new Movement();
+      movementsC14.car = car14;
+      movementsC14.coordinates = location3.coordinates;
+      movementsC14.save().catch(e => {
+        console.log(e);
+      });
+
+      car14.movements = movementsC14;
+
+      car14.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC14, "' already exists.");
+    }
+  });
+
+//Car 15 data Block
+  var regoC15 = "XYZ015";
+  let car15 = null;
+  Car.findOne({ rego: regoC15 }, (error, car) => {
+    if (!car) {
+      car15 = new Car();
+      car15.rego = regoC15;
+      car15.make = "Hyundai";
+      car15.model = "i30";
+      car15.colour = "Gold";
+      car15.year = "2015";
+      car15.seats = "4";
+      car15.doors = "5";
+      car15.vehicleType = typeSmall;
+      car15.location = location3;
+      car15.isDisabled = false;
+
+      //Movement Block
+      let movementsC15 = new Movement();
+      movementsC15.car = car15;
+      movementsC15.coordinates = location3.coordinates;
+      movementsC15.save().catch(e => {
+        console.log(e);
+      });
+
+      car15.movements = movementsC15;
+
+      car15.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC15, "' already exists.");
+    }
+  });
+
+//Car 16 data Block
+  var regoC16 = "XYZ016";
+  let car16 = null;
+  Car.findOne({ rego: regoC16 }, (error, car) => {
+    if (!car) {
+      car16 = new Car();
+      car16.rego = regoC16;
+      car16.make = "Hyundai";
+      car16.model = "i20";
+      car16.colour = "Gold";
+      car16.year = "2015";
+      car16.seats = "4";
+      car16.doors = "5";
+      car16.vehicleType = typeSmall;
+      car16.location = location3;
+      car16.isDisabled = false;
+
+      //Movement Block
+      let movementsC16 = new Movement();
+      movementsC16.car = car16;
+      movementsC16.coordinates = location3.coordinates;
+      movementsC16.save().catch(e => {
+        console.log(e);
+      });
+
+      car16.movements = movementsC16;
+
+      car16.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC16, "' already exists.");
+    }
+  });
+
+//Car 17 data Block
+  var regoC17 = "XYZ017";
+  let car17 = null;
+  Car.findOne({ rego: regoC17 }, (error, car) => {
+    if (!car) {
+      car17 = new Car();
+      car17.rego = regoC17;
+      car17.make = "BMW";
+      car17.model = "M3 Series";
+      car17.colour = "Gold";
+      car17.year = "2011";
+      car17.seats = "2";
+      car17.doors = "3";
+      car17.vehicleType = typeSports;
+      car17.location = location3;
+      car17.isDisabled = false;
+
+      //Movement Block
+      let movementsC17 = new Movement();
+      movementsC17.car = car17;
+      movementsC17.coordinates = location3.coordinates;
+      movementsC17.save().catch(e => {
+        console.log(e);
+      });
+
+      car17.movements = movementsC17;
+
+      car17.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC17, "' already exists.");
+    }
+  });
+
+//Car 18 data Block
+  var regoC18 = "XYZ018";
+  let car18 = null;
+  Car.findOne({ rego: regoC18 }, (error, car) => {
+    if (!car) {
+      car18 = new Car();
+      car18.rego = regoC18;
+      car18.make = "BMW";
+      car18.model = "M1 Series";
+      car18.colour = "Black";
+      car18.year = "2012";
+      car18.seats = "2";
+      car18.doors = "3";
+      car18.vehicleType = typeSports;
+      car18.location = location3;
+      car18.isDisabled = false;
+
+      //Movement Block
+      let movementsC18 = new Movement();
+      movementsC18.car = car18;
+      movementsC18.coordinates = location3.coordinates;
+      movementsC18.save().catch(e => {
+        console.log(e);
+      });
+
+      car18.movements = movementsC18;
+
+      car18.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC18, "' already exists.");
+    }
+  });
+
+//Car 19 data Block
+  var regoC19 = "XYZ019";
+  let car19 = null;
+  Car.findOne({ rego: regoC19 }, (error, car) => {
+    if (!car) {
+      car19 = new Car();
+      car19.rego = regoC19;
+      car19.make = "BMW";
+      car19.model = "Z4 Series";
+      car19.colour = "Silver";
+      car19.year = "2013";
+      car19.seats = "2";
+      car19.doors = "3";
+      car19.vehicleType = typeSports;
+      car19.location = location3;
+      car19.isDisabled = false;
+
+      //Movement Block
+      let movementsC19 = new Movement();
+      movementsC19.car = car19;
+      movementsC19.coordinates = location3.coordinates;
+      movementsC19.save().catch(e => {
+        console.log(e);
+      });
+
+      car19.movements = movementsC19;
+
+      car19.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC19, "' already exists.");
+    }
+  });
+
+//Car 20 data Block
+  var regoC20 = "XYZ020";
+  let car20 = null;
+  Car.findOne({ rego: regoC20 }, (error, car) => {
+    if (!car) {
+      car20 = new Car();
+      car20.rego = regoC20;
+      car20.make = "BMW";
+      car20.model = "Z4 Series";
+      car20.colour = "Green";
+      car20.year = "2017";
+      car20.seats = "2";
+      car20.doors = "3";
+      car20.vehicleType = typeSports;
+      car20.location = location3;
+      car20.isDisabled = false;
+
+      //Movement Block
+      let movementsC20 = new Movement();
+      movementsC20.car = car20;
+      movementsC20.coordinates = location3.coordinates;
+      movementsC20.save().catch(e => {
+        console.log(e);
+      });
+
+      car20.movements = movementsC20;
+
+      car20.save().catch(e => {
+        console.log(e);
+      });
+    } else {
+      console.log("Car '", regoC20, "' already exists.");
+    }
+  });
+
   // Dummy Booking data
   Car.find().exec((carErr, anyCar) => {
     if (carErr) {
