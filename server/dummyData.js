@@ -435,7 +435,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC5 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -466,7 +466,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -483,7 +483,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC6 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -514,7 +514,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -531,7 +531,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC7 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -562,7 +562,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -579,7 +579,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC8 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -610,7 +610,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -627,7 +627,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC9 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -658,7 +658,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -675,7 +675,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC10 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -706,7 +706,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -723,7 +723,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC11 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -754,7 +754,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -771,7 +771,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC12 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -802,7 +802,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -819,7 +819,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC13 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -850,7 +850,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -867,7 +867,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC14 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -898,7 +898,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -915,7 +915,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC15 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -946,7 +946,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -963,7 +963,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC16 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -994,7 +994,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -1011,7 +1011,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC17 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -1042,7 +1042,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -1059,7 +1059,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC18 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -1090,7 +1090,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -1107,7 +1107,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC19 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -1139,7 +1139,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
@@ -1156,7 +1156,7 @@ module.exports = async () => {
   Car.findOne({ rego: regoC20 })
   .populate({
     path: 'location',
-    match: {isDisabled: false},
+    
     populate: {path: 'name'},
   })
   .exec((error, car) => {
@@ -1187,7 +1187,7 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
-      if(!car.location.name)
+      if(car.location.name===null)
       {
         car.location=location3;
         car.save().catch(e => {
