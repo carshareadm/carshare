@@ -469,6 +469,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC5, "' already exists.");
     }
@@ -514,6 +517,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC6, "' already exists.");
     }
@@ -559,6 +565,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC7, "' already exists.");
     }
@@ -604,6 +613,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC8, "' already exists.");
     }
@@ -649,6 +661,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC9, "' already exists.");
     }
@@ -694,6 +709,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC10, "' already exists.");
     }
@@ -739,6 +757,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC11, "' already exists.");
     }
@@ -784,6 +805,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC12, "' already exists.");
     }
@@ -829,6 +853,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC13, "' already exists.");
     }
@@ -874,6 +901,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC14, "' already exists.");
     }
@@ -919,6 +949,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC15, "' already exists.");
     }
@@ -964,6 +997,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC16, "' already exists.");
     }
@@ -1009,6 +1045,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC17, "' already exists.");
     }
@@ -1054,6 +1093,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC18, "' already exists.");
     }
@@ -1100,6 +1142,9 @@ module.exports = async () => {
       if(!car.location.name)
       {
         car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
       }
       console.log("Car '", regoC19, "' already exists.");
     }
