@@ -1,7 +1,7 @@
 /**
  * Project       - ShaCar
  * Team          - Group 3 Carshare
- * Last Modified - 2018/05/26
+ * Last Modified - 2018/05/28
  * Authors
  *               - Paul Crow
  *               - Inga Pflaumer
@@ -123,6 +123,7 @@ module.exports = async () => {
   var nameLocation1 = "Sydney Airport";
   Location.findOne({ name: nameLocation1 })
     .populate("coordinates")
+    .populate("name")
     .exec((error, location) => {
       if (!location) {
         let coordinate1 = new Coordinate();
@@ -152,6 +153,7 @@ module.exports = async () => {
   var nameLocation2 = "Melbourne Airport";
   Location.findOne({ name: nameLocation2 })
     .populate("coordinates")
+    .populate("name")
     .exec((error, location) => {
       if (!location) {
         let coordinate2 = new Coordinate();
@@ -181,6 +183,7 @@ module.exports = async () => {
   var nameLocation3 = "Perth Airport";
   Location.findOne({ name: nameLocation3 })
     .populate("coordinates")
+    .populate("name")
     .exec((error, location) => {
       if (!location) {
         let coordinate3 = new Coordinate();
@@ -210,6 +213,7 @@ module.exports = async () => {
   var nameLocation4 = "Sydney Shangri-La";
   Location.findOne({ name: nameLocation4 })
     .populate("coordinates")
+    .populate("name")
     .exec((error, location) => {
       if (!location) {
         let coordinate4 = new Coordinate();
@@ -428,7 +432,13 @@ module.exports = async () => {
   //Car 5 data Block
   var regoC5 = "XYZ005";
   let car5 = null;
-  Car.findOne({ rego: regoC5 }, (error, car) => {
+  Car.findOne({ rego: regoC5 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car5 = new Car();
       car5.rego = regoC5;
@@ -456,6 +466,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC5, "' already exists.");
     }
   });
@@ -463,7 +480,13 @@ module.exports = async () => {
 //Car 6 data Block
   var regoC6 = "XYZ006";
   let car6 = null;
-  Car.findOne({ rego: regoC6 }, (error, car) => {
+  Car.findOne({ rego: regoC6 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car6 = new Car();
       car6.rego = regoC6;
@@ -491,6 +514,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC6, "' already exists.");
     }
   });
@@ -498,7 +528,13 @@ module.exports = async () => {
 //Car 7 data Block
   var regoC7 = "XYZ007";
   let car7 = null;
-  Car.findOne({ rego: regoC7 }, (error, car) => {
+  Car.findOne({ rego: regoC7 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car7 = new Car();
       car7.rego = regoC7;
@@ -526,6 +562,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC7, "' already exists.");
     }
   });
@@ -533,7 +576,13 @@ module.exports = async () => {
 //Car 8 data Block
   var regoC8 = "XYZ008";
   let car8 = null;
-  Car.findOne({ rego: regoC8 }, (error, car) => {
+  Car.findOne({ rego: regoC8 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car8 = new Car();
       car8.rego = regoC8;
@@ -561,6 +610,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC8, "' already exists.");
     }
   });
@@ -568,7 +624,13 @@ module.exports = async () => {
 //Car 9 data Block
   var regoC9 = "XYZ009";
   let car9 = null;
-  Car.findOne({ rego: regoC9 }, (error, car) => {
+  Car.findOne({ rego: regoC9 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car9 = new Car();
       car9.rego = regoC9;
@@ -596,6 +658,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC9, "' already exists.");
     }
   });
@@ -603,7 +672,13 @@ module.exports = async () => {
 //Car 10 data Block
   var regoC10 = "XYZ010";
   let car10 = null;
-  Car.findOne({ rego: regoC10 }, (error, car) => {
+  Car.findOne({ rego: regoC10 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car10 = new Car();
       car10.rego = regoC10;
@@ -631,6 +706,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC10, "' already exists.");
     }
   });
@@ -638,7 +720,13 @@ module.exports = async () => {
 //Car 11 data Block
   var regoC11 = "XYZ011";
   let car11 = null;
-  Car.findOne({ rego: regoC11 }, (error, car) => {
+  Car.findOne({ rego: regoC11 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car11 = new Car();
       car11.rego = regoC11;
@@ -666,6 +754,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC11, "' already exists.");
     }
   });
@@ -673,7 +768,13 @@ module.exports = async () => {
 //Car 12 data Block
   var regoC12 = "XYZ012";
   let car12 = null;
-  Car.findOne({ rego: regoC12 }, (error, car) => {
+  Car.findOne({ rego: regoC12 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car12 = new Car();
       car12.rego = regoC12;
@@ -701,6 +802,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC12, "' already exists.");
     }
   });
@@ -708,7 +816,13 @@ module.exports = async () => {
 //Car 13 data Block
   var regoC13 = "XYZ013";
   let car13 = null;
-  Car.findOne({ rego: regoC13 }, (error, car) => {
+  Car.findOne({ rego: regoC13 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car13 = new Car();
       car13.rego = regoC13;
@@ -736,6 +850,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC13, "' already exists.");
     }
   });
@@ -743,7 +864,13 @@ module.exports = async () => {
 //Car 14 data Block
   var regoC14 = "XYZ014";
   let car14 = null;
-  Car.findOne({ rego: regoC14 }, (error, car) => {
+  Car.findOne({ rego: regoC14 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car14 = new Car();
       car14.rego = regoC14;
@@ -771,6 +898,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC14, "' already exists.");
     }
   });
@@ -778,7 +912,13 @@ module.exports = async () => {
 //Car 15 data Block
   var regoC15 = "XYZ015";
   let car15 = null;
-  Car.findOne({ rego: regoC15 }, (error, car) => {
+  Car.findOne({ rego: regoC15 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car15 = new Car();
       car15.rego = regoC15;
@@ -806,6 +946,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC15, "' already exists.");
     }
   });
@@ -813,7 +960,13 @@ module.exports = async () => {
 //Car 16 data Block
   var regoC16 = "XYZ016";
   let car16 = null;
-  Car.findOne({ rego: regoC16 }, (error, car) => {
+  Car.findOne({ rego: regoC16 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car16 = new Car();
       car16.rego = regoC16;
@@ -841,6 +994,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC16, "' already exists.");
     }
   });
@@ -848,7 +1008,13 @@ module.exports = async () => {
 //Car 17 data Block
   var regoC17 = "XYZ017";
   let car17 = null;
-  Car.findOne({ rego: regoC17 }, (error, car) => {
+  Car.findOne({ rego: regoC17 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car17 = new Car();
       car17.rego = regoC17;
@@ -876,6 +1042,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC17, "' already exists.");
     }
   });
@@ -883,7 +1056,13 @@ module.exports = async () => {
 //Car 18 data Block
   var regoC18 = "XYZ018";
   let car18 = null;
-  Car.findOne({ rego: regoC18 }, (error, car) => {
+  Car.findOne({ rego: regoC18 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car18 = new Car();
       car18.rego = regoC18;
@@ -911,6 +1090,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC18, "' already exists.");
     }
   });
@@ -918,7 +1104,13 @@ module.exports = async () => {
 //Car 19 data Block
   var regoC19 = "XYZ019";
   let car19 = null;
-  Car.findOne({ rego: regoC19 }, (error, car) => {
+  Car.findOne({ rego: regoC19 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car19 = new Car();
       car19.rego = regoC19;
@@ -935,6 +1127,7 @@ module.exports = async () => {
       //Movement Block
       let movementsC19 = new Movement();
       movementsC19.car = car19;
+
       movementsC19.coordinates = location3.coordinates;
       movementsC19.save().catch(e => {
         console.log(e);
@@ -946,6 +1139,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC19, "' already exists.");
     }
   });
@@ -953,7 +1153,13 @@ module.exports = async () => {
 //Car 20 data Block
   var regoC20 = "XYZ020";
   let car20 = null;
-  Car.findOne({ rego: regoC20 }, (error, car) => {
+  Car.findOne({ rego: regoC20 })
+  .populate({
+    path: 'location',
+    
+    populate: {path: 'name'},
+  })
+  .exec((error, car) => {
     if (!car) {
       car20 = new Car();
       car20.rego = regoC20;
@@ -981,6 +1187,13 @@ module.exports = async () => {
         console.log(e);
       });
     } else {
+      if(car.location.name===null)
+      {
+        car.location=location3;
+        car.save().catch(e => {
+          console.log(e);
+        });
+      }
       console.log("Car '", regoC20, "' already exists.");
     }
   });
